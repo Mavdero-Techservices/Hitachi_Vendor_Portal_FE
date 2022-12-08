@@ -1,14 +1,15 @@
-import { Routes, Route } from "react-router-dom"
-import SignUp from "./component/signUp"
-import Test from "./component/test"
+import React from 'react'
+import { Provider } from 'react-redux';
+import store from './store/store'
+import MainRouter from './MainRouter'
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<SignUp />} />
-        <Route path="Test" element={<Test />} />
-      </Routes>
+      <Provider store={store}>
+        <MainRouter />
+      </Provider>
     </div>
   )
 }
 export default App
+
