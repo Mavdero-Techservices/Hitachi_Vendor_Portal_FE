@@ -1,13 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react'
 import "../css/signUp.css"
+import { Link } from 'react-router-dom';
+import apiService from "../services/api.service";
+import Swal from "sweetalert2";
 export class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      FirstName: '',
-      lastName: '',
-      address: '',
-      ContactNumber: ''
+      companyName: '',
+      contactPerson: '',
+      emailId: '',
+      phoneNumber: '',
+      password:'',
+      confirmPassword:'',
+      verifiedUser:'',
+      role:'',
     }
   };
   formValChange = e => {
@@ -20,12 +27,15 @@ export class Signup extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+    apiService.signup(this.state)
+                .then(response => {
+                })
+              
   }
   componentDidMount() {
-    console.log(this.state);
   }
   render() {
-    const { FirstName, lastName, address, ContactNumber } = this.state;
+    const { companyName, contactPerson,emailId,phoneNumber,password,confirmPassword ,verifiedUser,role} = this.state;
     return (
       <div>
         <div className="signup-page scroll">
@@ -36,36 +46,68 @@ export class Signup extends React.Component {
                 <div className="signup-group">
                   <div className="group-1 col-lg-6 col-md-6">
                     <div className="form-group form-field">
-                      <label htmlFor="FirstName">FirstName</label>
+                      <label htmlFor="companyName">companyName</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="FirstName" placeholder="FirstName" id="FirstName" onChange={this.formValChange}
-                        value={FirstName} />
+                        name="companyName" placeholder="companyName" id="companyName" onChange={this.formValChange}
+                        value={companyName} />
                     </div>
                     <div className="form-group form-field">
-                      <label htmlFor="lastName">lastName</label>
+                      <label htmlFor="contactPerson">contactPerson</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="lastName" placeholder="lastName" id="lastName" onChange={this.formValChange}
-                        value={lastName} />
+                        name="contactPerson" placeholder="contactPerson" id="contactPerson" onChange={this.formValChange}
+                        value={contactPerson} />
                     </div>
                     <div className="form-group form-field">
-                      <label htmlFor="address">address</label>
+                      <label htmlFor="emailId">emailId</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="address" placeholder="address" id="address" onChange={this.formValChange}
-                        value={address} />
+                        name="emailId" placeholder="emailId" id="emailId" onChange={this.formValChange}
+                        value={emailId} />
                     </div>
                     <div className="form-group form-field">
-                      <label htmlFor="ContactNumber">ContactNumber</label>
+                      <label htmlFor="phoneNumberr">phoneNumber</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="ContactNumber" placeholder="ContactNumber" id="ContactNumber" onChange={this.formValChange}
-                        value={ContactNumber} />
+                        name="phoneNumber" placeholder="phoneNumber" id="phoneNumber" onChange={this.formValChange}
+                        value={phoneNumber} />
+                    </div>
+                    <div className="form-group form-field">
+                      <label htmlFor="password">password</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="password" placeholder="password" id="password" onChange={this.formValChange}
+                        value={password} />
+                    </div>
+                    <div className="form-group form-field">
+                      <label htmlFor="confirmPassword">confirmPassword</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="confirmPassword" placeholder="confirmPassword" id="confirmPassword" onChange={this.formValChange}
+                        value={confirmPassword} />
+                    </div>
+                    <div className="form-group form-field">
+                      <label htmlFor="verifiedUser">verifiedUser</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="verifiedUser" placeholder="verifiedUser" id="verifiedUser" onChange={this.formValChange}
+                        value={verifiedUser} />
+                    </div>
+                    <div className="form-group form-field">
+                      <label htmlFor="role">role</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="role" placeholder="role" id="role" onChange={this.formValChange}
+                        value={role} />
                     </div>
                   </div>
                 </div>
@@ -77,7 +119,9 @@ export class Signup extends React.Component {
                     <button className="form-signup-button" onClick={this.handleSubmit}>SIGN UP</button>
                   </div>
                   <div className="signup-button-wrapper">
-                    <button className="form-signup-button" >CANCEL</button>
+                  <Link to="/login" className="btn login-button">
+                  LOGIN
+            </Link>
                   </div>
                 </div>
               </div>
