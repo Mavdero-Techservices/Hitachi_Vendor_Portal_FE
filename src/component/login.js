@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import auth from './auth-helper';
-import { Redirect, useLocation } from 'react-router-dom';
+import auth from '../auth/auth-helper';
+import {useLocation } from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import { signin } from '../auth/api-auth';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../reducers/login-slice';
-import TextField from '@mui/material/TextField';
 
 const mailValReg = RegExp(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -95,9 +93,9 @@ export default function Signin(props) {
 
   if (redirectToReferrer) {
     if (role && role === 'Admin') {
-      return (<Redirect to={'/Test'} />)
+      return (<Navigate to={'/Test'} />)
     } else if (role && role === 'User') {
-      return (<Redirect to={'/'} />)
+      return (<Navigate to={'/'} />)
     }
   }
 
@@ -153,11 +151,8 @@ export default function Signin(props) {
     <div className="login-page scroll no-pad">
       <div className="login-header col-lg-4 col-md-5 col-sm-6">
         <form className="login-details" onSubmit={clickSubmit} noValidate>
-          <div className="login-image">
-            <img src={loginimage} alt=""></img>
-          </div>
           <h1>Login</h1>
-          <TextField
+          <input
             fullWidth
             className="form-group form-field"
             placeholder="Username"
@@ -187,7 +182,7 @@ export default function Signin(props) {
               userNameHandle(values.email.length, values.email)
             }
           />
-          <TextField
+          <input
             className="form-group form-field"
             fullWidth
             id="outlined-basic password email-textfield"
