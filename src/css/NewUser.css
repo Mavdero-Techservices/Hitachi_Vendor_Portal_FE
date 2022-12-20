@@ -1,0 +1,115 @@
+.template {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  object-fit: cover;
+}
+
+.form {
+  position: absolute;
+  top: 269px;
+  left: 611px;
+  background-color: white;
+  width: 698px;
+  height: 612px;
+}
+
+.image-2-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+}
+
+.yes-button {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: #575757;
+  position: absolute;
+  top: 603px;
+  left: 728px;
+  border-radius: 10px;
+  width: 465px;
+  height: 72px;
+}
+
+.yes-div {
+  position: absolute;
+  top: 615px;
+  left: 932px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.noButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid #766769;
+  box-sizing: border-box;
+  width: 465px;
+  height: 72px;
+}
+
+.no-div {
+  position: absolute;
+  top: 12px;
+  left: 210px;
+  font-size: 32px;
+  font-weight: 500;
+  font-family: Poppins;
+  color: #766769;
+  text-align: left;
+  display: inline-block;
+}
+
+.no-button {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 694px;
+  left: 728px;
+  width: 465px;
+  height: 72px;
+}
+
+.already-registered-with-hsi {
+  position: absolute;
+  top: 475px;
+  left: 707px;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: "Open Sans";
+  color: #000;
+  text-align: center;
+  display: inline-block;
+}
+
+.hitachi-logo-icon {
+  position: absolute;
+  top: 313px;
+  left: 809px;
+  width: 302px;
+  height: 108px;
+  object-fit: cover;
+}
+
+.new-user-div {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  height: 1080px;
+  overflow: hidden;
+  text-align: left;
+  font-size: 32px;
+  color: #fff;
+  font-family: Poppins;
+}
