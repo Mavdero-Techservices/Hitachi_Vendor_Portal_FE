@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import SignUp from "./component/signUp"
 import Login from "./component/login"
 import Test from "./component/test"
+import ImageUpload from "./component/imageUpload"
+import GetImage from "./component/displayImage"
 import { AdminRoute, UserRoute } from './auth/PrivateRoute';
 import { BrowserRouter } from 'react-router-dom';
 const MainRouter = () => {
@@ -32,6 +34,8 @@ const MainRouter = () => {
         <Route path="/" element={<SignUp />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/ImageUpload" element={<ImageUpload />} />
+        <Route path="/getImage" element={<GetImage />} />
         {/* <Route path="Test" element={<Test />} /> */}
       </Routes>
     </div>

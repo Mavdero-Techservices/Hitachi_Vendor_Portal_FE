@@ -29,6 +29,22 @@ export class Signup extends React.Component {
     e.preventDefault();
     apiService.signup(this.state)
                 .then(response => {
+                  if(response)
+                  {
+                    Swal.fire({
+                      title: "data submitted successfully",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                  });
+                  }
+                  else{
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                  }); 
+                  }
+
                 })
               
   }

@@ -8,5 +8,8 @@ class apiService {
   login(emailId, password) {
     return http.get(`/login/${emailId}/${password}`);
   }
+  getImage() {
+    return http.get("/getImage");
+  }
 }
 export default new apiService();

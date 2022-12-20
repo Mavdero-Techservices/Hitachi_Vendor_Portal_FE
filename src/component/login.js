@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import auth from '../auth/auth-helper';
-import {useLocation } from 'react-router-dom';
-import {Navigate} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { signin } from '../auth/api-auth';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../reducers/login-slice';
+import Swal from "sweetalert2";
 
 const mailValReg = RegExp(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -44,20 +45,36 @@ export default function Signin(props) {
   const clickSubmit = (e) => {
     e.preventDefault()
     const user = {
-      email: values.email || undefined,
+      emailId: values.email || undefined,
       password: values.password || undefined
+
     }
 
     signin(user).then((data) => {
-      const details = data?.user
+      if (data) {
+        Swal.fire({
+          title: "data submitted successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      }
+      else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      console.log("ll", data?.result);
+      const details = data?.result
       setValidation(data)
-      setRole(data?.user?.role);
+      setRole(data?.result?.role);
       if (data === "invalid user") {
         setSubmit(false)
         textFieldForPasswordRef.current.blur();
         setValues({ ...values, error: data.error })
       } else {
-        if (data?.user?.status === 'Active') {
+        if (data?.result?.role === 'Admin') {
           auth.authenticate(data, () => {
             setSubmit(true)
             dispatch(loginAction.login())
@@ -118,7 +135,6 @@ export default function Signin(props) {
     if (!Field) {
       return ""
     }
-
   }
 
   const userPasswordHandle = (e, i) => {
