@@ -1,0 +1,264 @@
+.address1-input {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f8f7f7;
+  position: relative;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 914px;
+  height: 75px;
+  flex-shrink: 0;
+  border-radius: 25px;
+}
+
+.label-div1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+
+}
+
+.address2-input1 {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f8f7f7;
+  position: relative;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 914px;
+  height: 75px;
+  flex-shrink: 0;
+  border-radius: 25px;
+}
+
+.company-input {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f8f7f7;
+  position: relative;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 914px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 25px;
+}
+
+.country-label {
+  cursor: pointer;
+  position: relative;
+  line-height: 16px;
+  display: inline-block;
+}
+
+.cousta-input2 {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f8f7f7;
+  position: relative;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 19px;
+  width: 411px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+.form-div,
+.frame-div3 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  justify-content: flex-start;
+  gap: 89px;
+
+}
+
+.form-div {
+  position: absolute;
+  top: 200px;
+  left: 100px;
+  background-color: #fff;
+  flex-direction: column;
+  padding: 50px 800px 60px 50px;
+
+  align-items: center;
+  gap: 44px;
+}
+
+.image-upload>input {
+  display: none;
+  cursor: pointer;
+}
+
+.image-upload {
+  margin-right: -1800px;
+  margin-top: -200px;
+  height: 180px;
+  cursor: pointer;
+
+}
+
+.basic-information-label {
+  cursor: pointer;
+  position: relative;
+  line-height: 16px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.basicinformation-div9 {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+
+}
+
+.cancel-div {
+  position: relative;
+  font-size: 24px;
+  line-height: 16px;
+  font-family: "Open Sans";
+  color: #fff;
+  text-align: left;
+  display: inline-block;
+
+}
+
+.buttonstyle,
+.buttonrow-div11 {
+  margin-top: 10px;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  display: flex;
+
+}
+
+.buttonstyle {
+  cursor: pointer;
+  border: 0;
+  padding: 24px 44px;
+  background-color: #575757;
+  box-sizing: border-box;
+
+}
+
+.buttonrow-div11 {
+  gap: 32px;
+  margin-top: 40px;
+
+}
+
+.button-div10 {
+  position: absolute;
+  top: 935px;
+  left: 1285px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.vendor-det {
+  position: relative;
+  background-color: #f0f3f6;
+  width: 100%;
+  height: auto;
+  text-align: left;
+  font-size: 24px;
+  color: #000;
+  font-family: "Open Sans";
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+* {
+  box-sizing: border-box;
+}
+
+.ribbon {
+  height: 50px;
+  background: #1a1c18;
+  clip-path: polygon(62% 0, 71% 51%, 63% 100%, 0% 100%, 5% 50%, 0% 0%);
+  font-family: "font_condensed";
+  color: #dddeda;
+  letter-spacing: 0.10em;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  width: 400px;
+  position: relative;
+  top: 10px;
+  text-align-last: justify;
+  padding: 30px;
+}
+.dotActive {
+  height: 12px;
+  width: 12px;
+  background-color:#23B100;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotInActive {
+  height: 12px;
+  width: 12px;
+  background-color: #F53844;
+  border-radius: 50%;
+  display: inline-block;
+}
+.labelName
+{
+font-size: 100%;
+display: inline-block;
+align-items: center;
+padding: 5%;
+}
+.ribbonMain
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ribbon.basic-information-label.left
+{
+  position: relative;
+  float: left;
+}
+.ribbon.basic-information-label.right
+{
+  position: relative;
+  float: right;
+
+}
+.card.basic{
+  box-shadow: none!important;
+}
+.card-header {
+  border-bottom: none!important;
+}
+.imageUpload
+{
+  margin-top: 21%;
+  background: #eeeded!important;
+}
+.btn-primary {
+  background-color: #575757!important;
+  color: #fff;
+  box-shadow: 0 4px 9px -4px #3b71ca;
+}

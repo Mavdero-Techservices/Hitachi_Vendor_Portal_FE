@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f3f6;
+}
+
+.img1 {
+  height: 70px;
+
+}
+
+.navbar {
+  background-color: #B1000E;
+
+}
+a.nav-link
+{
+  display: flex;
+  color: white!important;
+  justify-content: left;
+  align-items: center;
+  padding: 0 15px!important;
+  font-size: 80%;
+}

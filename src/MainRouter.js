@@ -8,7 +8,12 @@ import Test from "./component/test"
 import ImageUpload from "./component/imageUpload"
 import GetImage from "./component/displayImage"
 import { AdminRoute, UserRoute } from './auth/PrivateRoute';
-import { BrowserRouter } from 'react-router-dom';
+import Navbar1 from "./common/navbar";
+import Basic from "./component/Basic.js";
+import Commun from "./component/commu.js";
+import Statutory from "./component/StatutoryDetails.js";
+import Bank from "./component/BankDetails.js";
+import NewUser from "./component/NewUser";
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
   const [state, setState] = useState({
@@ -31,12 +36,17 @@ const MainRouter = () => {
           </AdminRoute>
         }
         />
-        <Route path="/" element={<SignUp />} />
+      <Route path="/" element={<NewUser />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/ImageUpload" element={<ImageUpload />} />
         <Route path="/getImage" element={<GetImage />} />
         {/* <Route path="Test" element={<Test />} /> */}
+        <Route path="/Navbar" element={<Navbar1 />} />
+        <Route path="/basic" element={<Basic />} />
+        <Route path="/commu" element={<Commun />} />
+        <Route path="/statutory" element={<Statutory />} />
+        <Route path="/bank" element={<Bank />} />
       </Routes>
     </div>
   )
