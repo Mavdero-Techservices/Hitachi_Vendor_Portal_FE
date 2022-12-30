@@ -11,5 +11,23 @@ class apiService {
   getImage() {
     return http.get("/getImage");
   }
+  resetPasswordByCode(data)
+  {
+    return http.post("/resetPasswordByCode",data);
+  }
+  resetPassword(data)
+  {
+    return http.post("/resetPassword",data);
+  }
+  //saveVendordetail
+  saveVendordetail(data)
+  {
+    return http.post("/saveVdetail",data);
+  }
+  //SaveVendorCommunication
+  SaveVendorCommunication(data)
+  {
+    return http.post("/SaveVendorCommunication",data);
+  }
 }
 export default new apiService();
