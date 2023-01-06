@@ -1,8 +1,14 @@
 import React from 'react'
 import "../css/signUp.css"
-import { Link } from 'react-router-dom';
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
+import simg from "../img/signup.png";
+import Logo from "../img/logo.png";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
+
 export class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -11,10 +17,6 @@ export class Signup extends React.Component {
       contactPerson: '',
       emailId: '',
       phoneNumber: '',
-      password:'',
-      confirmPassword:'',
-      verifiedUser:'',
-      role:'',
     }
   };
   formValChange = e => {
@@ -27,124 +29,76 @@ export class Signup extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    apiService.signup(this.state)
-                .then(response => {
-                  if(response)
-                  {
-                    Swal.fire({
-                      title: "data submitted successfully",
-                      icon: "success",
-                      confirmButtonText: "OK",
-                  });
-                  }
-                  else{
-                    Swal.fire({
-                      title: "Error While Fetching",
-                      icon: "error",
-                      confirmButtonText: "OK",
-                  }); 
-                  }
+    apiService.saveUser(this.state)
+      .then(response => {
+        if (response) {
+          Swal.fire({
+            title: "Please check your email to proceed",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
 
-                })
-              
+      })
+
   }
   componentDidMount() {
   }
-  render() {
-    const { companyName, contactPerson,emailId,phoneNumber,password,confirmPassword ,verifiedUser,role} = this.state;
-    return (
-      <div>
-        <div className="signup-page scroll">
-          <div className="signup-header">
-            <div className="signup-details col-lg-12 col-md-12 no-pad">
-              <h1>Signup</h1>
-              <form>
-                <div className="signup-group">
-                  <div className="group-1 col-lg-6 col-md-6">
-                    <div className="form-group form-field">
-                      <label htmlFor="companyName">companyName</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="companyName" placeholder="companyName" id="companyName" onChange={this.formValChange}
-                        value={companyName} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="contactPerson">contactPerson</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="contactPerson" placeholder="contactPerson" id="contactPerson" onChange={this.formValChange}
-                        value={contactPerson} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="emailId">emailId</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="emailId" placeholder="emailId" id="emailId" onChange={this.formValChange}
-                        value={emailId} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="phoneNumberr">phoneNumber</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="phoneNumber" placeholder="phoneNumber" id="phoneNumber" onChange={this.formValChange}
-                        value={phoneNumber} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="password">password</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="password" placeholder="password" id="password" onChange={this.formValChange}
-                        value={password} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="confirmPassword">confirmPassword</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="confirmPassword" placeholder="confirmPassword" id="confirmPassword" onChange={this.formValChange}
-                        value={confirmPassword} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="verifiedUser">verifiedUser</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="verifiedUser" placeholder="verifiedUser" id="verifiedUser" onChange={this.formValChange}
-                        value={verifiedUser} />
-                    </div>
-                    <div className="form-group form-field">
-                      <label htmlFor="role">role</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="role" placeholder="role" id="role" onChange={this.formValChange}
-                        value={role} />
-                    </div>
-                  </div>
-                </div>
-              </form>
 
-              <div className="signup-btn">
-                <div className="form-signup-btn">
-                  <div className="signup-button-wrapper">
-                    <button className="form-signup-button" onClick={this.handleSubmit}>SIGN UP</button>
-                  </div>
-                  <div className="signup-button-wrapper">
-                  <Link to="/login" className="btn login-button">
-                  LOGIN
-            </Link>
-                  </div>
+  render() {
+    const { companyName, contactPerson, emailId, phoneNumber, password, confirmPassword, verifiedUser, role } = this.state;
+    return (
+      <Container>
+        <Row>
+          <Col sm={4}>
+            <img className="signup-img" alt="" src={simg} />
+          </Col>
+          <Col sm={8}>
+            <Row>
+              <Col sm={12}>
+                <img className="hitachi-logo" alt="" src={Logo} />
+                <h2 className='textReg'>New Registration</h2>
+              </Col>
+            </Row>
+            <MDBRow className="mb-4">
+              <MDBCol>
+                <div>
+                  <label htmlFor="companyName">Company Name*</label>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div>
+                  <input type="text" className="mb-4" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
+                </div>
+              </MDBCol>
+              <MDBCol>
+                <label >Contact Person*</label>
+                <input type="text" className="mb-4" name="contactPerson" id="contactPerson" onChange={this.formValChange} value={contactPerson} />
+              </MDBCol>
+            </MDBRow>
+            <MDBRow className="mb-4">
+              <MDBCol>
+                <div>
+                  <label htmlFor="phoneNumber">Phone number*</label>
+                </div>
+                <div>
+                  <input type="text" className="mb-4" name="phoneNumber" id="phoneNumber" onChange={this.formValChange} value={phoneNumber} />
+                </div>
+              </MDBCol>
+              <MDBCol>
+                <label htmlFor="emailId">email id*</label>
+                <input type="text" className="mb-4" name="emailId" id="emailId" onChange={this.formValChange} value={emailId} />
+              </MDBCol>
+            </MDBRow>
+            <button className='signupButton' onClick={this.handleSubmit}>Request for provisional login</button>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }

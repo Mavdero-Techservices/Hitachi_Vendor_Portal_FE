@@ -21,7 +21,10 @@ class Image extends Component {
                 this.setState({
                     img: base64Flag + imageStr
                 })
+                console.log("imageStr", base64Flag + imageStr);
             })
+           
+            console.log("image",this.state);
     }
     render() {
         const { img } = this.state;

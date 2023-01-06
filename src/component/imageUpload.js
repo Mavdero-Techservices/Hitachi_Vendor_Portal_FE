@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import apiService from "../services/api.service";
 
 export default function ImageUpload() {
   const [postImage, setPostImage] = useState({

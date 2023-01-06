@@ -8,6 +8,15 @@ import { signin } from '../auth/api-auth';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../reducers/login-slice';
 import Swal from "sweetalert2";
+import apiService from "../services/api.service";
+import Logo from "../img/logo.png";
+import hand from "../img/haand.png";
+import hisys from "../img/HISYSVendorPortal.png";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import "../css/Login.css"
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
 
 const mailValReg = RegExp(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -22,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 export default function Signin(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [role, setRole] = useState();
+  const [verifiedUser, setRole] = useState();
   const [Validation, setValidation] = useState();
   const [submit, setSubmit] = useState(null);
   const [Field, setField] = useState(null);
@@ -34,29 +43,36 @@ export default function Signin(props) {
     email: '',
     password: '',
     error: '',
+    mailConfirmationCode: '',
+    showContent: false,
     redirectToReferrer: false
   });
-
+  const [resetCode, setresetCode] = useState({
+    resetCode: '',
+    redirectToReferrer: false
+  });
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
     setSubmit(true)
   }
+  const handleDropdownChange = name => event => {
+    setresetCode({ ...resetCode, [name]: event.target.value })
+    setSubmit(true)
+  }
+  const [showLoginTab, setshowLoginTab] = useState(true);
+  const [showforgetPassowrd, setShowforgetPassowrd] = useState(false);
+  const [showResetTab, setshowResetTab] = useState(false);
+  const [showPasswordTab, setshowPasswordTab] = useState(false);
 
-  const clickSubmit = (e) => {
+  const login = (e) => {
     e.preventDefault()
     const user = {
       emailId: values.email || undefined,
       password: values.password || undefined
-
     }
-
     signin(user).then((data) => {
       if (data) {
-        Swal.fire({
-          title: "data submitted successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+
       }
       else {
         Swal.fire({
@@ -65,16 +81,15 @@ export default function Signin(props) {
           confirmButtonText: "OK",
         });
       }
-      console.log("ll", data?.result);
       const details = data?.result
       setValidation(data)
-      setRole(data?.result?.role);
+      setRole(data?.result?.verifiedUser);
       if (data === "invalid user") {
         setSubmit(false)
         textFieldForPasswordRef.current.blur();
         setValues({ ...values, error: data.error })
       } else {
-        if (data?.result?.role === 'Admin') {
+        if (data?.result?.verifiedUser === 'approved') {
           auth.authenticate(data, () => {
             setSubmit(true)
             dispatch(loginAction.login())
@@ -87,6 +102,79 @@ export default function Signin(props) {
     })
   }
 
+  const clickSubmit = (e) => {
+    e.preventDefault()
+  }
+  const onResetCode = (e) => {
+    e.preventDefault()
+    const user = {
+      emailId: values.email || undefined,
+    }
+    apiService.resetPasswordByCode(user).then((data) => {
+      if (data) {
+        Swal.fire({
+          title: " check your email,to reset your password",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        setshowLoginTab(true);
+        setShowforgetPassowrd(false);
+      }
+      else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    })
+  }
+  const oncheckresetcode = (e) => {
+    e.preventDefault()
+    const user = {
+      emailId: values.email || undefined,
+      mailConfirmationCode: values.mailConfirmationCode || undefined,
+    }
+    setshowResetTab(false);
+    setshowPasswordTab(true);
+    setShowforgetPassowrd(false);
+  }
+  const onresetPassword = (e) => {
+    e.preventDefault()
+    const user = {
+      emailId: values.email || undefined,
+      mailConfirmationCode: values.mailConfirmationCode || undefined,
+      password: values.password || undefined,
+      confirmPassword: values.confirmPassword || undefined,
+    }
+    apiService.resetPassword(user).then((data) => {
+      if (data) {
+        setshowResetTab(false);
+        setshowPasswordTab(true);
+        setShowforgetPassowrd(false);
+      }
+      else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    })
+
+  }
+  const backToLogin = (e) => {
+    setShowforgetPassowrd(false);
+    setshowPasswordTab(false);
+    setshowLoginTab(true);
+    setshowResetTab(false);
+  }
+  const forgetPassword = (e) => {
+    setShowforgetPassowrd(true);
+    setshowPasswordTab(false);
+    setshowLoginTab(false);
+    setshowResetTab(false);
+  }
   const location = useLocation()
   const data = location.state
 
@@ -109,9 +197,9 @@ export default function Signin(props) {
   const { redirectToReferrer } = values
 
   if (redirectToReferrer) {
-    if (role && role === 'Admin') {
-      return (<Navigate to={'/Test'} />)
-    } else if (role && role === 'User') {
+    if (verifiedUser && verifiedUser === 'approved') {
+      return (<Navigate to={'/basic'} />)
+    } else if (verifiedUser && verifiedUser === 'pending') {
       return (<Navigate to={'/'} />)
     }
   }
@@ -138,7 +226,6 @@ export default function Signin(props) {
   }
 
   const userPasswordHandle = (e, i) => {
-
     if (e === 0 && passwordError === false) {
       return "Password cannot be empty"
     }
@@ -160,86 +247,77 @@ export default function Signin(props) {
     if (!passwordError) {
       return ""
     }
-
   }
-
   return (
-    <div className="login-page scroll no-pad">
-      <div className="login-header col-lg-4 col-md-5 col-sm-6">
-        <form className="login-details" onSubmit={clickSubmit} noValidate>
-          <h1>Login</h1>
-          <input
-            fullWidth
-            className="form-group form-field"
-            placeholder="Username"
-            id="outlined-error-helper-text email"
-            label="Username"
-            type="email"
-            variant="outlined"
-            value={values.email} onChange={handleChange('email')}
-            onFocus={onFocusing}
-            onBlur={offFocusing}
-            inputRef={textFieldForUsernameRef}
-            inputProps={{
-              onKeyPress: event => {
-                const { key } = event;
-                if (key === "Enter") {
-                  textFieldForPasswordRef.current.focus();
-                  offFocusing()
-                } else {
-                  onFocusing()
-                }
-              }
-            }}
-            error={
-              userNameHandle(values.email.length, values.email)
-            }
-            helperText={
-              userNameHandle(values.email.length, values.email)
-            }
-          />
-          <input
-            className="form-group form-field"
-            fullWidth
-            id="outlined-basic password email-textfield"
-            type="password"
-            label="Password"
-            variant="outlined"
-            value={values.password} onChange={handleChange('password')}
-            onFocus={onFocusPassword}
-            onBlur={offFocusPassword}
-            inputRef={textFieldForPasswordRef}
-            inputProps={{
-              onKeyPress: event => {
-                const { key } = event;
-                if (key === "Enter") {
-                  offFocusPassword()
-                  buttonForLoginRef.current.click();
-                } else {
-                  onFocusPassword()
-                }
-              }
-            }}
-            error={
-              userPasswordHandle(values.password.length, values.password)}
-            helperText={
-              userPasswordHandle(values.password.length, values.password)
-            }
-          />
-          <div className="form-group form-remember">
-            <input className="form-check-input" type="checkbox" />
-            <label> Remember me</label>
-          </div>
-          <div className="login-button-wrapper col-lg-12 col-md-12 col-sm-12 no-pad">
-            <button className="btn sigup-button"
-              ref={buttonForLoginRef}
-              type="submit">LOGIN</button>
-            <Link to="/signup" className="btn login-button">
-              SIGN UP
-            </Link>
-          </div>
-        </form>
-      </div>
+    <div className='login'>
+      <Container>
+        <Row md={2}>
+          <Col xs={4}>
+            <Col>   <img className="hisys-img" alt="" src={hisys} /> </Col>
+            <Col> <img className="person-img" alt="" src={hand} /></Col>
+          </Col>
+          <Col xs={12}>
+            <img className="hit-logo" alt="" src={Logo} />
+            <form>
+              {showLoginTab ?
+                <div>
+                  <MDBRow className="mb-4">
+                    <MDBCol>
+                      <div>
+                        <label htmlFor="userName">user name*</label>
+                      </div>
+                      <div>
+                        <input type="text" className="mb-4" value={values.email} onChange={handleChange('email')} />
+                      </div>
+                    </MDBCol>
+                  </MDBRow>
+                  <MDBRow className="mb-4">
+                    <MDBCol>
+                      <label >password*</label>
+                      <input className="mb-4" type="password" label="Password" variant="outlined" value={values.password} onChange={handleChange('password')} />
+                    </MDBCol>
+                  </MDBRow>
+                  <MDBRow>
+                    <MDBCol>
+                      {!showPasswordTab && showLoginTab && !showforgetPassowrd ? <div className="form-group form-remember">
+                        <button className='ForgetBtn' onClick={forgetPassword}> forget password?</button>
+                      </div>
+                        : null}
+                    </MDBCol>
+                  </MDBRow>
+                  <MDBRow>
+                    <MDBCol>
+                      <button onClick={login} className='signupButton'>sign In</button>
+                    </MDBCol>
+                  </MDBRow>
+                </div>
+                : null}
+              {showforgetPassowrd ? <div>
+                <MDBRow className="mb-4">
+                  <MDBCol>
+                    <div>
+                      <label htmlFor="userName">user name*</label>
+                    </div>
+                    <div>
+                      <input type="text" className="mb-4" value={values.email} onChange={handleChange('email')} />
+                    </div>
+                  </MDBCol>
+                </MDBRow>
+                <MDBRow>
+                  <MDBCol>
+                    <button className='resetButton' onClick={onResetCode}>Click To continue</button>
+                  </MDBCol>
+                  <MDBCol>
+                    <button className='resetButton' onClick={backToLogin}>
+                      Back To Login
+                    </button>
+                  </MDBCol>
+                </MDBRow>
+              </div> : null}
+            </form>
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }

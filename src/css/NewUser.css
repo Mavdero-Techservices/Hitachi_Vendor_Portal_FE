@@ -1,0 +1,102 @@
+*{box-sizing: border-box; padding: 0; margin: 0}
+.template {
+  position: absolute;
+ width: 100%;
+ height: 100%;
+ background-image: url("../img/newuser.png");
+ background-size: 100%; background-repeat: no-repeat;
+}
+.text-Qa h3
+{
+position: relative;
+top:250px;
+margin-left: 430px;
+}
+.redirect-button
+{
+  position: relative;
+  top:260px;
+  margin-left: 2%;
+}
+.redirectButton
+{
+  width: 300px;
+  height: 65px;
+  color: black;
+  border-radius: 6px;
+  margin-left: 450px;
+  border: 1px solid rgb(158, 158, 158);
+}
+.redirectButton.Yes
+{
+margin-bottom: 2%;
+}
+.redirectButton:hover
+{
+  width: 300px;
+  height: 65px;
+  color: white;
+  background-color: black;
+  border-radius: 6px;
+  margin-left: 450px;
+  border: 1px solid rgb(158, 158, 158);
+}
+
+
+.hitachi-logo-icon {
+  position: absolute;
+  margin-left: 35%;
+  margin-top: 10%;
+
+}
+/* For Mobile devices */
+@media only screen and (min-device-width:320px) and (max-device-width: 480px) {
+  .hitachi-logo-icon {
+    position: absolute;
+    left: 0px;
+    top: 13%;
+    margin-left: 0%!important;
+    margin-top: 0%!important;
+}
+  
+.text-Qa h3 {
+  position: relative;
+  top: 236px;
+  left: 4%;
+  margin-left: 0%!important;
+}
+.redirect-button {
+  position: relative;
+  top: 270px;
+  right: 416px;
+  margin-left: 0!important;
+}
+.template {
+ background-image:none;
+}
+}
+
+/* For Tablets or iPad:  - 768px */
+@media only screen and (min-device-width:480px) and (max-device-width: 768px) {
+  .template {
+   background-image:none;
+  }
+}
+/* For Laptop or small-size screen: 768px -1024px */
+@media only screen and (min-device-width:768px) and (max-device-width:1024px) {
+  .template {
+   background-image:none;
+  }
+}
+/* For Desktop or large-size screen: 1024px -1200px */
+@media only screen and (min-device-width:1024px) and (max-device-width: 1200px) {
+}
+/* For Extra-large size device: 1200px and more */
+@media (hover: hover) {
+  .redirectButton:hover
+  {
+    color: white;
+    background-color: black;
+    border: 1px solid rgb(158, 158, 158);
+  }
+}

@@ -6,7 +6,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
   return (<Route
     {...rest}
     render={(props) => {
-      return auth?.isAuthenticated()?.user?.role === "Admin" ? (
+      return auth?.isAuthenticated()?.user?.verifiedUser === "approved" ? (
         <Component {...props} />
       ) : (auth.clearJWT(() => props?.history.push('/')))
     }
@@ -18,7 +18,7 @@ const UserRoute = ({ component: Component, ...rest }) => {
   return (<Route
     {...rest}
     render={(props) => {
-      return auth?.isAuthenticated()?.user?.role === "User" ? (
+      return auth?.isAuthenticated()?.user?.verifiedUser === "pending" ? (
         <Component {...props} />
       ) : (auth.clearJWT(() => props?.history.push('/')))
     }
@@ -26,4 +26,4 @@ const UserRoute = ({ component: Component, ...rest }) => {
   />)
 }
 
-export { AdminRoute,UserRoute }
+export { AdminRoute, UserRoute }

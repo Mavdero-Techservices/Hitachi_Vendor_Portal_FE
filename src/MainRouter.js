@@ -14,6 +14,8 @@ import Commun from "./component/commu.js";
 import Statutory from "./component/StatutoryDetails.js";
 import Bank from "./component/BankDetails.js";
 import NewUser from "./component/NewUser";
+import Password from "./component/password";
+
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
   const [state, setState] = useState({
@@ -25,7 +27,7 @@ const MainRouter = () => {
   const pathname = useLocation().pathname
   useEffect(() => {
     state.userInfo = JSON.parse(window.sessionStorage.getItem("jwt"));
-    state.userRole = state?.userInfo?.user?.role;
+    state.userRole = state?.userInfo?.user?.verifiedUser;
   }, [pathname, isLoggedIn])
   return (
     <div>
@@ -36,7 +38,7 @@ const MainRouter = () => {
           </AdminRoute>
         }
         />
-      <Route path="/" element={<NewUser />} />
+        <Route path="/" element={<NewUser />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/ImageUpload" element={<ImageUpload />} />
@@ -47,6 +49,8 @@ const MainRouter = () => {
         <Route path="/commu" element={<Commun />} />
         <Route path="/statutory" element={<Statutory />} />
         <Route path="/bank" element={<Bank />} />
+        <Route path="/passwordGeneration" element={<Password />} />
+        <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
       </Routes>
     </div>
   )
