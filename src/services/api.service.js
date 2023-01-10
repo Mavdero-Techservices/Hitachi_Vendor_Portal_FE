@@ -34,5 +34,8 @@ class apiService {
   getStateAndcityByzipcode(code, pinCode) {
     return http.get(`/getStateAndcityByzipcode/${code}/${pinCode}`);
   }
+  savebankdetail(data) {
+    return http.post("/saveBankdetail", data);
+  }
 }
 export default new apiService();

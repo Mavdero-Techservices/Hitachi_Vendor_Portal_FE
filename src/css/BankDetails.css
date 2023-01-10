@@ -1,215 +1,27 @@
-.rectangle-input {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background-color: rgba(248, 247, 247, 0.5);
-  position: relative;
-  border-radius: 25px;
-  box-sizing: border-box;
-  width: 411px;
-  height: 56px;
-  flex-shrink: 0;
+.inputbox{
+  width: 100% !important;
+  text-indent: 15px;
 }
-
-.bank-ac-name {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 10px;
+.bank_fileupload {
+  min-width: auto !important;
+  max-width: auto !important;
+  border: dashed 2px #B1000E !important;
 }
-
-.rectangle-input1 {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background-color: #f8f7f7;
-  position: relative;
-  border-radius: 25px;
-  box-sizing: border-box;
-  width: 411px;
-  height: 56px;
-  flex-shrink: 0;
+.uploadFile {
+  background-color: #B1000E !important;
+  color: white !important;
 }
-
-.bank-details-upper-row {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 90px;
-}
-
-.micr-code-swift-code {
-  position: relative;
-  line-height: 16px;
-  display: inline-block;
-}
-
-.upper-box {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 56px 64px;
-  box-sizing: border-box;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 42px;
-  font-size: 24px;
-}
-
-.payment-will-be-processed-base {
-  position: relative;
+.bank_title {
+  color:black;
+  margin-left:0px !important;
   font-size: 20px;
-  line-height: 30px;
-  color: #b1000e;
-  display: inline-block;
-  width: 1539px;
+  font-weight: 700;
 }
-
-.upper-box-name {
-  width: 1539px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 10px;
+.bank_subtitle{
+  margin-left:0px !important;
+  font-size: 12px;
 }
-
-.upload-files {
-  position: relative;
-  line-height: 16px;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.upload-your-files-here-for-ver {
-  position: relative;
-  font-size: 20px;
-  line-height: 24px;
-  display: inline-block;
-}
-
-.select-or-drag-file {
-  border-radius: 4px;
-  background-color: #fffdfd;
-  border: 1px dashed #b1000e;
-  box-sizing: border-box;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  padding: 22px 48px;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.upload-files1 {
-  position: relative;
-  font-size: 24px;
-  line-height: 16px;
-  font-family: "Open Sans";
-  color: #fffdfd;
-  text-align: left;
-  display: inline-block;
-}
-
-.upload-file,
-.upload-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.upload-file {
-  cursor: pointer;
-  border: 0;
-  padding: 24px 44px;
-  background-color: #b1000e;
-  border-radius: 4px;
-  overflow: hidden;
-  box-sizing: border-box;
-  align-items: flex-start;
-}
-
-.upload-section {
-  align-items: flex-end;
-  gap: 59px;
-}
-
-.innerbox-with-name,
-.lower-box,
-.lower-box-name {
-  width: 1541px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.lower-box {
-  background-color: #fff;
-  padding: 56px 326px 56px 64px;
-  box-sizing: border-box;
-  gap: 20px;
-  font-size: 24px;
-}
-
-.innerbox-with-name,
-.lower-box-name {
-  gap: 10px;
-}
-
-.innerbox-with-name {
-  width: 1539px;
-  gap: 32px;
-}
-
-.cancel {
-  position: relative;
-  font-size: 24px;
-  line-height: 16px;
-  font-family: "Open Sans";
-  color: #fff;
-  text-align: left;
-  display: inline-block;
-}
-
-.cancel-button,
-.decision-buttons,
-.frame-div {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.cancel-button {
-  cursor: pointer;
-  border: 0;
-  padding: 24px 44px;
-  background-color: #575757;
-  box-sizing: border-box;
-}
-
-.decision-buttons,
-.frame-div {
-  gap: 32px;
-}
-
-.frame-div {
-  position: absolute;
-  top: 150px;
-  left: 379px;
-  width: 1358px;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
-}
-
-.bank-details {
-  position: relative;
-  background-color: #f0f3f6;
-  width: 100%;
-  height: 1090px;
-  overflow: hidden;
-  text-align: left;
-  font-size: 36px;
-  color: #000;
-  font-family: "Open Sans";
+.bankbtn {
+  text-transform: unset !important;
+  font-size: 15px;
 }
