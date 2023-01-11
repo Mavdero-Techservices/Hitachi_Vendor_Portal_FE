@@ -70,12 +70,12 @@ export class Password extends React.Component {
                   <label htmlFor="password">Password*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4" name="password" id="password" onChange={this.formValChange} value={password} />
+                  <input type="text" className="mb-4 signupInput" name="password" id="password" onChange={this.formValChange} value={password} />
                 </div>
               </MDBCol>
               <MDBCol>
                 <label >confirm Password*</label>
-                <input type="text" className="mb-4" name="confirmPassword" id="confirmPassword" onChange={this.formValChange} value={confirmPassword} />
+                <input type="text" className="mb-4 signupInput" name="confirmPassword" id="confirmPassword" onChange={this.formValChange} value={confirmPassword} />
               </MDBCol>
             </MDBRow>
             <button className='signupButton' onClick={this.handleSubmit}>Create password</button>

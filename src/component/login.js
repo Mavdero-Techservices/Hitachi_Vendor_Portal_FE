@@ -267,14 +267,14 @@ export default function Signin(props) {
                         <label htmlFor="userName">user name*</label>
                       </div>
                       <div>
-                        <input type="text" className="mb-4" value={values.email} onChange={handleChange('email')} />
+                        <input type="text" className="mb-4 loginInput" value={values.email} onChange={handleChange('email')} />
                       </div>
                     </MDBCol>
                   </MDBRow>
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <label >password*</label>
-                      <input className="mb-4" type="password" label="Password" variant="outlined" value={values.password} onChange={handleChange('password')} />
+                      <input className="mb-4 loginInput" type="password" label="Password" variant="outlined" value={values.password} onChange={handleChange('password')} />
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -299,7 +299,7 @@ export default function Signin(props) {
                       <label htmlFor="userName">user name*</label>
                     </div>
                     <div>
-                      <input type="text" className="mb-4" value={values.email} onChange={handleChange('email')} />
+                      <input type="text" className="mb-4 loginInput" value={values.email} onChange={handleChange('email')} />
                     </div>
                   </MDBCol>
                 </MDBRow>

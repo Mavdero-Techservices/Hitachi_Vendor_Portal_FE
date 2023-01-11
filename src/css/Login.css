@@ -2,15 +2,17 @@
 {
   margin: 5%;
 }
-input{
-  margin: 0;
+.mb-4.loginInput
+{
+    padding: 2%;
+    margin: 0;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px !important;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-    padding: 2%;
-    margin-top: 4%;
-    padding-left: 3%;
-    border-radius: 10px;
+    background: #efefef;
 }
 .person-img
 {

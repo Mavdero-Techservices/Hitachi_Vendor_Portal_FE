@@ -29,10 +29,11 @@
   padding: 1%;
 }
 
-input {
+.mb-4.signupInput {
+  padding: 2%;
   margin: 0;
   width: 100%;
-  border: 1px solid rgb(213, 30, 30);
+  border: 1px solid rgb(0, 0, 0);
   border-radius: 5px !important;
   font-family: inherit;
   font-size: inherit;

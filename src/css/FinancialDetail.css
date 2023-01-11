@@ -1,0 +1,32 @@
+  .bank_fileupload {
+    min-width: auto !important;
+    max-width: auto !important;
+    border: dashed 2px #B1000E !important;
+  }
+  .uploadFile {
+    background-color: #B1000E !important;
+    color: white !important;
+  }
+  .bank_title {
+    color:black;
+    margin-left:0px !important;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .bank_subtitle{
+    margin-left:0px !important;
+    font-size: 12px;
+  }
+  .bankbtn {
+    text-transform: unset !important;
+    font-size: 15px;
+  }
+  .lkjDVC {
+    border: dashed 2px #b1000e !important;
+  }
+  .inputbox
+  {
+    border-radius: 15px;
+    background: #efefef;
+    border: 1px solid rgb(172, 170, 170);
+  }

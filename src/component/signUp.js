@@ -73,12 +73,12 @@ export class Signup extends React.Component {
                   <label htmlFor="companyName">Company Name*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
+                  <input type="text" className="mb-4 signupInput" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
                 </div>
               </MDBCol>
               <MDBCol>
                 <label >Contact Person*</label>
-                <input type="text" className="mb-4" name="contactPerson" id="contactPerson" onChange={this.formValChange} value={contactPerson} />
+                <input type="text" className="mb-4 signupInput" name="contactPerson" id="contactPerson" onChange={this.formValChange} value={contactPerson} />
               </MDBCol>
             </MDBRow>
             <MDBRow className="mb-4">
@@ -87,12 +87,12 @@ export class Signup extends React.Component {
                   <label htmlFor="phoneNumber">Phone number*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4" name="phoneNumber" id="phoneNumber" onChange={this.formValChange} value={phoneNumber} />
+                  <input type="text" className="mb-4 signupInput" name="phoneNumber" id="phoneNumber" onChange={this.formValChange} value={phoneNumber} />
                 </div>
               </MDBCol>
               <MDBCol>
                 <label htmlFor="emailId">email id*</label>
-                <input type="text" className="mb-4" name="emailId" id="emailId" onChange={this.formValChange} value={emailId} />
+                <input type="text" className="mb-4 signupInput" name="emailId" id="emailId" onChange={this.formValChange} value={emailId} />
               </MDBCol>
             </MDBRow>
             <button className='signupButton' onClick={this.handleSubmit}>Request for provisional login</button>
