@@ -74,14 +74,12 @@ const BankDetails = () => {
               </div>
             </div>
             <div className="  float-end" >
-              <button type="button" className="btn bankbtn btn-primary btn-md m-3">Cancel</button>
-              <button type="submit" className="btn bankbtn btn-primary btn-md m-3">Save</button>
-              <button type="button" className="btn bankbtn btn-primary btn-md m-3">Next</button>
+              <button type="button" className="btn bankbtn btn-primary btn-md m-2">Cancel</button>
+              <button type="submit" className="btn bankbtn btn-primary btn-md m-2">Save</button>
+              <button type="button" className="btn bankbtn btn-primary btn-md m-2">Next</button>
             </div>
           </div>
         </form>
-      </div>
-      <div>
       </div>
     </div>
   );
