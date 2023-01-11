@@ -3,11 +3,12 @@
   position: relative;
   font-size: inherit;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: bold;
   font-family: inherit;
   display: inline-block;
   margin-top: 40px;
-  margin-left: 100px;
+margin-bottom: 2%;
+color: #000;
 }
 
 .msme-status-name {
@@ -18,7 +19,10 @@
   text-align: left;
   display: inline-block;
 }
-
+.statutory-Note
+{
+  color: #B1000E;
+}
 .button {
   width: 24px;
   height: 24px;
@@ -231,20 +235,23 @@
   background-color: #fff;
   border-radius: 5px;
   display: inline-block;
-  padding: 14px 40px;
+  padding: 2% 10%;
   text-align: center;
-  border: 1px solid rgba(177, 0, 14, 0.44);
-  /* color: #b1000e; */
-  font-size: large;
-
-
+  border: 1px solid #B1000E;
+  font-size: 16px;
+  position: relative;
+  top: 32px;
+  color:#B1000E;
 }
 
 .frame-input2 input[type="file"] {
   display: none;
 
 }
+.statutoryInput{
+  border-radius: 25px!important;
 
+}
 .frame-input2 label {
 
   position: absolute;
@@ -392,4 +399,15 @@
   font-size: 36px;
   color: #000;
   font-family: "Open Sans";
+}
+
+.statutoryButton
+{
+background-color: #575757!important;
+}
+.sbtn
+{
+  position: relative;
+  float:right;
+  margin-bottom: 5%;
 }

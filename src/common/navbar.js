@@ -39,9 +39,10 @@ function App() {
             <Nav className="me-auto">
               <Nav.Link href="/basic">Vendor Details</Nav.Link>
               <Nav.Link href="/statutory">Statutory Details</Nav.Link>
-              <Nav.Link href="/ComplianceDetails">Compliance Details</Nav.Link>
+              <Nav.Link href="/ComplianceDetail">Compliance Details</Nav.Link>
               <Nav.Link href="/bank">Bank Details</Nav.Link>
-              <Nav.Link href="/bank">contact Details</Nav.Link>
+              <Nav.Link href="/FinancialDetail">Financial Details</Nav.Link>
+              <Nav.Link href="/">Contact Details</Nav.Link>
               {/* <Nav.Link  onClick={handleClickOpen} id="b3">logOut</Nav.Link> */}
             </Nav>
           </Navbar.Collapse>

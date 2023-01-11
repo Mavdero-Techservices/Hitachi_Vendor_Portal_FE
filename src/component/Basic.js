@@ -265,7 +265,7 @@ export class Basic extends React.Component {
                                           <label htmlFor="pinCode">Pincode*</label>
                                         </div>
                                         <div>
-                                          <input type="text" className="mb-4" name="pinCode" id="pinCode" value={pinCode} onMouseLeave={this.mouseOut} onChange={this.mouseEnter} />
+                                          <input type="text" className="mb-4 VendorInput" name="pinCode" id="pinCode" value={pinCode} onMouseLeave={this.mouseOut} onChange={this.mouseEnter} />
                                         </div>
 
                                       </MDBCol>
@@ -277,7 +277,7 @@ export class Basic extends React.Component {
                                           <label htmlFor="state">State*</label>
                                         </div>
                                         <div>
-                                          <input type="text" className="mb-4" name="state" id="state" onChange={this.formValChange} value={this.state.state} />
+                                          <input type="text" className="mb-4 VendorInput" name="state" id="state" onChange={this.formValChange} value={this.state.state} />
                                         </div>
                                       </MDBCol>
                                       <MDBCol>
@@ -285,7 +285,7 @@ export class Basic extends React.Component {
                                           <label htmlFor="city">City*</label>
                                         </div>
                                         <div>
-                                          <input type="text" className="mb-4" name="city" id="city" onChange={this.formValChange} value={this.state.city} />
+                                          <input type="text" className="mb-4 VendorInput" name="city" id="city" onChange={this.formValChange} value={this.state.city} />
                                         </div>
                                       </MDBCol>
                                     </MDBRow>
@@ -306,6 +306,7 @@ export class Basic extends React.Component {
                                   onChange={(e) => this.handleFileRead(e)}
                                   id="image"
                                   value={this.base64}
+                                  className="mb-4 VendorInput"
                                 />
                                 <MDBCardHeader className="py-3">
                                   <MDBTypography tag="h5" className="mb-0">Company's Upload logo</MDBTypography>
@@ -345,95 +346,95 @@ export class Basic extends React.Component {
                             <MDBRow className="mb-4">
                               <MDBCol>
                                 <label >Contactname*</label>
-                                <input type="text" className="mb-4" name="financeSpoccontactName" id="financeSpoccontactName" onChange={this.formValChange} value={financeSpoccontactName} />
+                                <input type="text" className="mb-4 VendorInput" name="financeSpoccontactName" id="financeSpoccontactName" onChange={this.formValChange} value={financeSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
                                 <label>Designation*</label>
-                                <input type="text" className="mb-4" name="financeSpocdesignation" id="financeSpocdesignation" onChange={this.formValChange} value={financeSpocdesignation} />
+                                <input type="text" className="mb-4 VendorInput" name="financeSpocdesignation" id="financeSpocdesignation" onChange={this.formValChange} value={financeSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
                                 <label >phoneNo*</label>
-                                <input type="text" className="mb-4" name="financeSpocphoneNo" id="financeSpocphoneNo" onChange={this.formValChange} value={financeSpocphoneNo} />
+                                <input type="text" className="mb-4 VendorInput" name="financeSpocphoneNo" id="financeSpocphoneNo" onChange={this.formValChange} value={financeSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
                                 <label >email*</label>
-                                <input type="text" className="mb-4" name="financeSpocemail" id="financeSpocemail" onChange={this.formValChange} value={financeSpocemail} />
+                                <input type="text" className="mb-4 VendorInput" name="financeSpocemail" id="financeSpocemail" onChange={this.formValChange} value={financeSpocemail} />
                               </MDBCol>
                             </MDBRow>
                             <label >Operation Spoc</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
                                 <label >Contactname*</label>
-                                <input type="text" className="mb-4" name="operationSpoccontactName" id="operationSpoccontactName" onChange={this.formValChange} value={operationSpoccontactName} />
+                                <input type="text" className="mb-4 VendorInput" name="operationSpoccontactName" id="operationSpoccontactName" onChange={this.formValChange} value={operationSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
                                 <label>Designation*</label>
-                                <input type="text" className="mb-4" name="operationSpocdesignation" id="operationSpocdesignation" onChange={this.formValChange} value={operationSpocdesignation} />
+                                <input type="text" className="mb-4 VendorInput" name="operationSpocdesignation" id="operationSpocdesignation" onChange={this.formValChange} value={operationSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
                                 <label >phoneNo*</label>
-                                <input type="text" className="mb-4" name="operationSpocphoneNo" id="operationSpocphoneNo" onChange={this.formValChange} value={operationSpocphoneNo} />
+                                <input type="text" className="mb-4 VendorInput" name="operationSpocphoneNo" id="operationSpocphoneNo" onChange={this.formValChange} value={operationSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
                                 <label >email*</label>
-                                <input type="text" className="mb-4" name="operationSpocemail" id="operationSpocemail" onChange={this.formValChange} value={operationSpocemail} />
+                                <input type="text" className="mb-4 VendorInput" name="operationSpocemail" id="operationSpocemail" onChange={this.formValChange} value={operationSpocemail} />
                               </MDBCol>
                             </MDBRow>
                             <label >Collection Spoc</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
                                 <label >Contactname*</label>
-                                <input type="text" className="mb-4" name="collectionSpoccontactName" id="collectionSpoccontactName" onChange={this.formValChange} value={collectionSpoccontactName} />
+                                <input type="text" className="mb-4 VendorInput" name="collectionSpoccontactName" id="collectionSpoccontactName" onChange={this.formValChange} value={collectionSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
                                 <label>Designation*</label>
-                                <input type="text" className="mb-4" name="collectionSpocdesignation" id="collectionSpocdesignation" onChange={this.formValChange} value={collectionSpocdesignation} />
+                                <input type="text" className="mb-4 VendorInput" name="collectionSpocdesignation" id="collectionSpocdesignation" onChange={this.formValChange} value={collectionSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
                                 <label >phoneNo*</label>
-                                <input type="text" className="mb-4" name="collectionSpocphoneNo" id="collectionSpocphoneNo" onChange={this.formValChange} value={collectionSpocphoneNo} />
+                                <input type="text" className="mb-4 VendorInput" name="collectionSpocphoneNo" id="collectionSpocphoneNo" onChange={this.formValChange} value={collectionSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
                                 <label >email*</label>
-                                <input type="text" className="mb-4" name="collectionSpocemail" id="collectionSpocemail" onChange={this.formValChange} value={collectionSpocemail} />
+                                <input type="text" className="mb-4 VendorInput" name="collectionSpocemail" id="collectionSpocemail" onChange={this.formValChange} value={collectionSpocemail} />
                               </MDBCol>
                             </MDBRow>
                             <label >Management Spoc</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
                                 <label >Contactname*</label>
-                                <input type="text" className="mb-4" name="managementSpoccontactName" id="managementSpoccontactName" onChange={this.formValChange} value={managementSpoccontactName} />
+                                <input type="text" className="mb-4 VendorInput" name="managementSpoccontactName" id="managementSpoccontactName" onChange={this.formValChange} value={managementSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
                                 <label>Designation*</label>
-                                <input type="text" className="mb-4" name="managementSpocdesignation" id="managementSpocdesignation" onChange={this.formValChange} value={managementSpocdesignation} />
+                                <input type="text" className="mb-4 VendorInput" name="managementSpocdesignation" id="managementSpocdesignation" onChange={this.formValChange} value={managementSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
                                 <label >phoneNo*</label>
-                                <input type="text" className="mb-4" name="managementSpocphoneNo" id="managementSpocphoneNo" onChange={this.formValChange} value={managementSpocphoneNo} />
+                                <input type="text" className="mb-4 VendorInput" name="managementSpocphoneNo" id="managementSpocphoneNo" onChange={this.formValChange} value={managementSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
                                 <label >email*</label>
-                                <input type="text" className="mb-4" name="managementSpocemail" id="managementSpocemail" onChange={this.formValChange} value={managementSpocemail} />
+                                <input type="text" className="mb-4 VendorInput" name="managementSpocemail" id="managementSpocemail" onChange={this.formValChange} value={managementSpocemail} />
                               </MDBCol>
                             </MDBRow>
                             <label >others</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
                                 <label >Contactname*</label>
-                                <input type="text" className="mb-4" name="contactName" id="contactName" onChange={this.formValChange} value={contactName} />
+                                <input type="text" className="mb-4 VendorInput" name="contactName" id="contactName" onChange={this.formValChange} value={contactName} />
                               </MDBCol>
                               <MDBCol>
                                 <label>Designation*</label>
-                                <input type="text" className="mb-4" name="designation" id="designation" onChange={this.formValChange} value={designation} />
+                                <input type="text" className="mb-4 VendorInput" name="designation" id="designation" onChange={this.formValChange} value={designation} />
                               </MDBCol>
                               <MDBCol>
                                 <label >phoneNo*</label>
-                                <input type="text" className="mb-4" name="phoneNo" id="phoneNo" onChange={this.formValChange} value={phoneNo} />
+                                <input type="text" className="mb-4 VendorInput" name="phoneNo" id="phoneNo" onChange={this.formValChange} value={phoneNo} />
                               </MDBCol>
                               <MDBCol>
                                 <label >email*</label>
-                                <input type="text" className="mb-4" name="email" id="email" onChange={this.formValChange} value={email} />
+                                <input type="text" className="mb-4 VendorInput" name="email" id="email" onChange={this.formValChange} value={email} />
                               </MDBCol>
                             </MDBRow>
                             <div className="d-flex justify-content-center">

@@ -15,6 +15,8 @@ import Statutory from "./component/StatutoryDetails.js";
 import Bank from "./component/BankDetails.js";
 import NewUser from "./component/NewUser";
 import Password from "./component/password";
+import FinancialDetail from "./component/FinancialDetail";
+import ComplianceDetail from "./component/Compliance";
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
@@ -51,6 +53,8 @@ const MainRouter = () => {
         <Route path="/bank" element={<Bank />} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
+        <Route path="/FinancialDetail" element={<FinancialDetail />} />
+        <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
       </Routes>
     </div>
   )

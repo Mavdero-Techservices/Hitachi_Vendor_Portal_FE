@@ -87,7 +87,7 @@
   float: right;
 }
 
-input {
+/* input {
   margin: 0 !important;
   width: 100% !important;
   border: 1px solid rgb(172, 170, 170) !important;
@@ -98,19 +98,20 @@ input {
   background: #efefef !important;
   padding-left: 2% !important;
   padding: 0% !important;
-}
+} */
 
-/* input{
+.mb-4.VendorInput{
   margin: 0;
   width: 100%;
   border: 1px solid rgb(172, 170, 170);
-  border-radius: 25px;
-  font-family: inherit;
+  border-radius: 25px ;
+  font-family: inherit ;
   font-size: inherit;
   line-height: inherit;
   background: #efefef;
-  padding-left: 2%!important;
-} */
+  padding-left: 2%;
+  padding: 0%;
+}
 select {
   width: 100%;
   height: 45px;
@@ -130,12 +131,6 @@ select {
 .imageUpload {
   margin-top: 21%;
   background: #eeeded !important;
-}
-
-.btn-primary {
-  background-color: #575757 !important;
-  color: #fff;
-  box-shadow: 0 4px 9px -4px #3b71ca;
 }
 
 .camera-img {
