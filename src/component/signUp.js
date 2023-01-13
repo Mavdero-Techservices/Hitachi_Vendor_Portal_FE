@@ -7,8 +7,8 @@ import Logo from "../img/logo.png";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import withRouter from '../component/withRouter';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
-
 export class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +37,7 @@ export class Signup extends React.Component {
             icon: "success",
             confirmButtonText: "OK",
           });
+          this.props.navigate("/login");
         }
         else {
           Swal.fire({
@@ -103,4 +104,4 @@ export class Signup extends React.Component {
   }
 }
 
-export default Signup;
+export default withRouter(Signup);

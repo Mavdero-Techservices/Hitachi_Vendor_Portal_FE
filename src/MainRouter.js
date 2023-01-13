@@ -17,7 +17,7 @@ import NewUser from "./component/NewUser";
 import Password from "./component/password";
 import FinancialDetail from "./component/FinancialDetail";
 import ComplianceDetail from "./component/Compliance";
-
+import ContactTeam from "./component/ContactTeam";
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
   const [state, setState] = useState({
@@ -34,7 +34,7 @@ const MainRouter = () => {
   return (
     <div>
       <Routes>
-        <Route path="/Test" element={
+      <Route path="/Test" element={
           <AdminRoute >
             <Test />
           </AdminRoute>
@@ -55,6 +55,7 @@ const MainRouter = () => {
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
         <Route path="/FinancialDetail" element={<FinancialDetail />} />
         <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
+        <Route path="/ContactTeam" element={<ContactTeam />} />
       </Routes>
     </div>
   )

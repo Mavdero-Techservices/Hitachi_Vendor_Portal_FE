@@ -4,13 +4,16 @@ import Navbar1 from "../common/navbar.js";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-
+import { useParams } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 export default function Statutory(props) {
+  const navigate = useNavigate();
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("Micro");
   const [MSME_status, setMSME_status] = useState("Registered");
@@ -22,8 +25,9 @@ export default function Statutory(props) {
   const [MSME_Doc, setMSME_Doc] = useState();
   const [Tax_residency_Doc, setTax_residency_Doc] = useState();
   const [submit, setSubmit] = useState(null);
+  const params = useParams()
   const [values, setValues] = useState({
-    userId: '',
+    userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: '',
     GST_No: '',
     GST_Doc: '',
@@ -80,9 +84,13 @@ export default function Statutory(props) {
   function onFileChangeMSME_Doc(e) {
     setMSME_Doc(e.target.files[0])
   }
+  function next(e) {
+    navigate('/ComplianceDetail');
+  }
+  useEffect(() => {
 
+  })
   const saveStatutoryDetail = (e) => {
-
     e.preventDefault()
     const data = new FormData();
     data.append('GST_Doc', GST_Doc);
@@ -102,33 +110,25 @@ export default function Statutory(props) {
     data.append('MSME_No', values.MSME_No);
     data.append('MSME_Type', MSME);
     data.append('TAN_No', values.TAN_No);
+    data.append('userId', values.userId);
     data.append('Tax_residency_No', values.Tax_residency_No);
     axios.post("http://localhost:12707/saveStatutoryDetail", data)
       .then(res => {
-
-
+        if (res.data.status === 'success') {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       })
-
-    const user = {
-      GST_type: GST_type || undefined,
-      GST_No: values.GST_No || undefined,
-      GST_Doc: GST_Doc || undefined,
-      PAN_No: values.PAN_No || undefined,
-      PAN_Doc: values.PAN_Doc || undefined,
-      form_10f_Doc: values.form_10f_Doc || undefined,
-      TAN_Doc: values.TAN_Doc || undefined,
-      PE_DeclarationNo: values.PE_DeclarationNo || undefined,
-      PE_Declaration_Doc: values.PE_Declaration_Doc || undefined,
-      MSME_Doc: values.MSME_Doc || undefined,
-      Tax_residency_Doc: values.Tax_residency_Doc || undefined,
-      CIN_No: values.CIN_No || undefined,
-      form_10f: values.form_10f || undefined,
-      MSME_status: values.MSME_status || undefined,
-      MSME_No: values.MSME_No || undefined,
-      MSME_Type: MSME || undefined,
-      TAN_No: values.TAN_No || undefined,
-      Tax_residency_No: values.Tax_residency_No || undefined,
-    }
   }
   return (
     <div>
@@ -323,11 +323,11 @@ export default function Statutory(props) {
           </Col>
         </Row>
         <Row className="sbtn">
-          <Col sm={4}>
-            <Button className="statutoryButton">cancel</Button>
-          </Col>
-          <Col sm={4}><Button className="statutoryButton" onClick={saveStatutoryDetail}>save</Button></Col>
-          <Col sm={4}><Button className="statutoryButton">next</Button></Col>
+          <div className="float-end mt-2" >
+            <button type="button" className="btn statutorybtn btn-primary btn-md m-1">Cancel</button>
+            <button type="button" onClick={saveStatutoryDetail} className="btn statutorybtn btn-primary btn-md m-1">Save</button>
+            <button type="button" onClick={next} className="btn statutorybtn btn-primary btn-md m-1">Next</button>
+          </div>
         </Row>
       </Container>
     </div>

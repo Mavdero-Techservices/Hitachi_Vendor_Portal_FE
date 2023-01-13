@@ -20,11 +20,9 @@ class apiService {
   resetPassword(data) {
     return http.post("/resetPassword", data);
   }
-  //saveVendordetail
   saveVendordetail(data) {
     return http.post("/saveVdetail", data);
   }
-  //SaveVendorCommunication
   SaveVendorCommunication(data) {
     return http.post("/SaveVendorCommunication", data);
   }
@@ -42,6 +40,16 @@ class apiService {
   }
   savebankdetail(data) {
     return http.post("/saveBankdetail", data);
+  }
+  saveFinacialDetail(data) {
+    return http.post("/saveFinacialDetail", data);
+  }
+  downloadPdf()
+  {
+    return http.post("/downloadPdf"); 
+  }
+  saveContactTeam(data) {
+    return http.post("/saveContactTeam", data);
   }
 }
 export default new apiService();

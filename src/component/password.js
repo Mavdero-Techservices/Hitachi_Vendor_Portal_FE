@@ -16,6 +16,7 @@ export class Password extends React.Component {
     this.state = {
       password: '',
       confirmPassword: '',
+      userName: '',
       emailId: this.props.params.emailId,
       mailConfirmationCode: this.props.params.mailConfirmationCode
     }
@@ -50,7 +51,7 @@ export class Password extends React.Component {
 
   }
   render() {
-    const { password, confirmPassword } = this.state;
+    const { password, confirmPassword, userName } = this.state;
     return (
       <Container>
         <Row>
@@ -61,9 +62,17 @@ export class Password extends React.Component {
             <Row>
               <Col sm={12}>
                 <img className="hitachi-logo" alt="" src={Logo} />
-                <h2 className='textReg'>Create Password</h2>
+                <h2 className='textReg'>UserName and Password Generation</h2>
               </Col>
             </Row>
+            <MDBCol>
+              <div>
+                <label htmlFor="userName">userName*</label>
+              </div>
+              <div>
+                <input type="text" className="mb-4 signupInput" name="userName" id="userName" onChange={this.formValChange} value={userName} />
+              </div>
+            </MDBCol>
             <MDBRow className="mb-4">
               <MDBCol>
                 <div>

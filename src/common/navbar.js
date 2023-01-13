@@ -4,7 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import Swal from "sweetalert2";
 import auth from "../auth/auth-helper";
+import { useNavigate } from 'react-router-dom';
+
 function App() {
+  const navigate = useNavigate();
   const handleClickOpen = () => {
     document.getElementById('b3')
       .onclick = function () {
@@ -15,17 +18,7 @@ function App() {
           confirmButtonText: "OK",
           dangerMode: true,
         }).then((willDelete) => {
-          if (willDelete) {
-            Swal.fire({
-              title: "Thank you for login In!",
-            })
-              .then(() => {
-                // auth.clearJWT(() => history.push('/'))
-              });
-          }
-          else {
-
-          }
+          auth.clearJWT(() => navigate('/login'))
         });
       }
   };
@@ -42,8 +35,8 @@ function App() {
               <Nav.Link href="/ComplianceDetail">Compliance Details</Nav.Link>
               <Nav.Link href="/bank">Bank Details</Nav.Link>
               <Nav.Link href="/FinancialDetail">Financial Details</Nav.Link>
-              <Nav.Link href="/">Contact Details</Nav.Link>
-              {/* <Nav.Link  onClick={handleClickOpen} id="b3">logOut</Nav.Link> */}
+              <Nav.Link href="/ContactTeam">Contact Team</Nav.Link>
+              <Nav.Link  onClick={handleClickOpen} id="b3">logOut</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

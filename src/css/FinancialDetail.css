@@ -1,4 +1,4 @@
-  .bank_fileupload {
+  .financial_fileupload {
     min-width: auto !important;
     max-width: auto !important;
     border: dashed 2px #B1000E !important;
@@ -7,17 +7,17 @@
     background-color: #B1000E !important;
     color: white !important;
   }
-  .bank_title {
+  .financial_title {
     color:black;
     margin-left:0px !important;
     font-size: 20px;
     font-weight: 700;
   }
-  .bank_subtitle{
+  .financial_subtitle{
     margin-left:0px !important;
     font-size: 12px;
   }
-  .bankbtn {
+  .financialbtn {
     text-transform: unset !important;
     font-size: 15px;
   }

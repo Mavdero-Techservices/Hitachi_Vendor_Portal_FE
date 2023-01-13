@@ -40,7 +40,7 @@ export default function Signin(props) {
   const textFieldForPasswordRef = useRef(null);
   const buttonForLoginRef = useRef(null);
   const [values, setValues] = useState({
-    email: '',
+    userName: '',
     password: '',
     error: '',
     mailConfirmationCode: '',
@@ -67,7 +67,7 @@ export default function Signin(props) {
   const login = (e) => {
     e.preventDefault()
     const user = {
-      emailId: values.email || undefined,
+      userName: values.userName || undefined,
       password: values.password || undefined
     }
     signin(user).then((data) => {
@@ -108,7 +108,7 @@ export default function Signin(props) {
   const onResetCode = (e) => {
     e.preventDefault()
     const user = {
-      emailId: values.email || undefined,
+      userName: values.userName || undefined,
     }
     apiService.resetPasswordByCode(user).then((data) => {
       if (data) {
@@ -132,7 +132,7 @@ export default function Signin(props) {
   const oncheckresetcode = (e) => {
     e.preventDefault()
     const user = {
-      emailId: values.email || undefined,
+      userName: values.userName || undefined,
       mailConfirmationCode: values.mailConfirmationCode || undefined,
     }
     setshowResetTab(false);
@@ -142,7 +142,7 @@ export default function Signin(props) {
   const onresetPassword = (e) => {
     e.preventDefault()
     const user = {
-      emailId: values.email || undefined,
+      userName: values.userName || undefined,
       mailConfirmationCode: values.mailConfirmationCode || undefined,
       password: values.password || undefined,
       confirmPassword: values.confirmPassword || undefined,
@@ -267,7 +267,7 @@ export default function Signin(props) {
                         <label htmlFor="userName">user name*</label>
                       </div>
                       <div>
-                        <input type="text" className="mb-4 loginInput" value={values.email} onChange={handleChange('email')} />
+                        <input type="text" className="mb-4 loginInput" value={values.userName} onChange={handleChange('userName')} />
                       </div>
                     </MDBCol>
                   </MDBRow>
@@ -299,7 +299,7 @@ export default function Signin(props) {
                       <label htmlFor="userName">user name*</label>
                     </div>
                     <div>
-                      <input type="text" className="mb-4 loginInput" value={values.email} onChange={handleChange('email')} />
+                      <input type="text" className="mb-4 loginInput" value={values.userName} onChange={handleChange('userName')} />
                     </div>
                   </MDBCol>
                 </MDBRow>

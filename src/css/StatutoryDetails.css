@@ -408,3 +408,9 @@ background-color: #575757!important;
   float:right;
   margin-bottom: 5%;
 }
+.statutorybtn
+{
+  text-transform: unset !important;
+  font-size: 15px;
+  background-color: #4f4f4f !important;
+}
