@@ -5,6 +5,7 @@ import { FileUploader } from "react-drag-drop-files";
 import axios from 'axios';
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import apiService from "../services/api.service";
 const FinancialDetails = () => {
   const navigate = useNavigate();
   const [fileFD, setfileFD] = useState();
@@ -43,7 +44,7 @@ const FinancialDetails = () => {
     data.append('currentAssets', values.currentAssets);
     data.append('directorDetails', values.directorDetails);
     data.append('userId', values.userId);
-    axios.post("http://localhost:12707/saveFinacialDetail", data)
+    apiService.saveFinacialDetail(data)
       .then(res => {
         if (res.data.status === 'success') {
           Swal.fire({

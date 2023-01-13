@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
+import apiService from "../services/api.service";
 import { useNavigate } from 'react-router-dom';
 export default function Statutory(props) {
   const navigate = useNavigate();
@@ -112,7 +113,7 @@ export default function Statutory(props) {
     data.append('TAN_No', values.TAN_No);
     data.append('userId', values.userId);
     data.append('Tax_residency_No', values.Tax_residency_No);
-    axios.post("http://localhost:12707/saveStatutoryDetail", data)
+    apiService.saveStatutoryDetail(data)
       .then(res => {
         if (res.data.status === 'success') {
           Swal.fire({

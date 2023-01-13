@@ -1,4 +1,5 @@
 import http from "../common/http-common";
+import axios from 'axios';
 
 class apiService {
   verifiedUser = '';
@@ -33,16 +34,17 @@ class apiService {
     return http.get(`/getStateAndcityByzipcode/${code}/${pinCode}`);
   }
   saveStatutoryDetail(data) {
-    return http.post("/saveStatutoryDetail", data);
+    return axios.post("http://localhost:12707/saveStatutoryDetail", data);
+
   }
   saveComplianceDetail(data) {
-    return http.post("/saveComplianceDetail", data);
+    return axios.post("http://localhost:12707/saveComplianceDetail", data);
   }
   savebankdetail(data) {
     return http.post("/saveBankdetail", data);
   }
   saveFinacialDetail(data) {
-    return http.post("/saveFinacialDetail", data);
+    return axios.post("http://localhost:12707/saveFinacialDetail", data);
   }
   downloadPdf()
   {

@@ -5,6 +5,7 @@ import Navbar1 from "../common/navbar.js";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import Container from 'react-bootstrap/Container';
+import withRouter from '../component/withRouter';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
@@ -85,6 +86,9 @@ export class Basic extends React.Component {
       commu: true,
     });
   }
+  next = e => {
+    this.props.navigate("/statutory");
+  }
   handleChange(e) {
     this.setState({ country: e.target.value });
   };
@@ -121,7 +125,7 @@ export class Basic extends React.Component {
     e.preventDefault();
     apiService.SaveVendorCommunication(this.state)
       .then(response => {
-        if (response) {
+        if (response.status === 'success') {
           Swal.fire({
             title: "Data saved",
             icon: "success",
@@ -439,15 +443,11 @@ export class Basic extends React.Component {
                             </MDBRow>
                             <div className="d-flex justify-content-center">
                               <MDBRow className="mb-4">
-                                <MDBCol>
-                                  <MDBBtn>cancel</MDBBtn>
-                                </MDBCol>
-                                <MDBCol>
-                                  <MDBBtn onClick={this.handleSubmitComDetail}>save</MDBBtn>
-                                </MDBCol>
-                                <MDBCol>
-                                  <MDBBtn>next</MDBBtn>
-                                </MDBCol>
+                                <div className="float-end" >
+                                  <button type="button" className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
+                                  <button type="submit" onClick={this.handleSubmitComDetail} className="btn financialbtn btn-primary btn-md m-3">Save</button>
+                                  <button type="button" onClick={this.next} className="btn financialbtn btn-primary btn-md m-3">Next</button>
+                                </div>
                               </MDBRow>
                             </div>
                           </form>
@@ -465,4 +465,4 @@ export class Basic extends React.Component {
   }
 }
 
-export default Basic;
+export default withRouter(Basic);

@@ -49,8 +49,8 @@ const ComplianceDetails = () => {
     data.append('NDA_Doc', fileNDA);
     data.append('COC_Doc', fileCOC);
     data.append('userId', values.userId);
-    axios.post("http://localhost:12707/saveComplianceDetail", data)
-      .then(res => {
+   
+    apiService.saveComplianceDetail(data) .then(res => {
         if (res.data.status === 'success') {
           Swal.fire({
             title: "Data saved",
