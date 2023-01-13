@@ -71,10 +71,13 @@ const ComplianceDetails = () => {
   return (
     <div className="Compliance-details">
       <Navbar1 />
+      <div className="container-fluid  py-5" style={{ backgroundColor: '#f3f4f7' }}>
       <Container fluid="md">
         <Row>
           <Col>
-            <h2 className="statutory-details-name">Compliance Details</h2>
+          <div className="container" >
+            <h2 className="Compliance_title">Compliance Details</h2>
+        </div>
           </Col>
         </Row>
         <Row>
@@ -85,8 +88,10 @@ const ComplianceDetails = () => {
                   <Row>
                     <Form.Label>Related Party Disclosure*</Form.Label>
                     <Col>
-
-                      <Button className="ViewBtn" onClick={downloadPdf}>Download</Button>
+                    <a  onClick={downloadPdf} download="MyExampleDoc" target='_blank'>
+                    <Button className="ViewBtn">Download</Button>
+</a>
+                    
                     </Col>
                     <Col sm={6} >
 
@@ -158,13 +163,14 @@ const ComplianceDetails = () => {
           </Col>
         </Row>
         <Row className="sbtn">
-          <Col sm={4}>
-            <Button className="statutoryButton">cancel</Button>
-          </Col>
-          <Col sm={4}><Button className="statutoryButton" onClick={saveComplianceDetail}>save</Button></Col>
-          <Col sm={4}><Button onClick={next} className="statutoryButton">next</Button></Col>
+        <div className="float-end mt-2" >
+              <button type="button" className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
+              <button type="button" onClick={saveComplianceDetail} className="btn bankbtn btn-primary btn-md m-1">Save</button>
+              <button type="button" onClick={next}  className="btn bankbtn btn-primary btn-md m-1">Next</button>
+            </div>
         </Row>
       </Container>
+      </div>
       <div>
       </div>
     </div>

@@ -30,3 +30,13 @@
     background: #efefef;
     border: 1px solid rgb(172, 170, 170);
   }
+  .btn.financialbtn
+  {
+    background-color:#575757;
+    color: #efefef;
+  }
+  .btn.financialbtn:hover
+  {
+    background-color:#575757;
+    color: #efefef;
+  }

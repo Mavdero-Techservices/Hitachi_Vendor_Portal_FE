@@ -5,7 +5,16 @@
 .mb-12.g {
   margin-bottom: 0% !important;
 }
-
+.btn.basicbtn
+  {
+    background-color:#575757;
+    color: #efefef;
+  }
+  .btn.basicbtn:hover
+  {
+    background-color:#575757;
+    color: #efefef;
+  }
 .basic-information-label {
   cursor: pointer;
   position: relative;

@@ -4,8 +4,9 @@ import Navbar1 from "../common/navbar.js";
 import { FileUploader } from "react-drag-drop-files";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
-
+import { useNavigate } from 'react-router-dom';
 const BankDetails = (props) => {
+  const navigate = useNavigate();
   const [acName, setAcName] = useState("");
   const [bankname, setBankname] = useState("");
   const [acno, setAcno] = useState("");
@@ -16,6 +17,9 @@ const BankDetails = (props) => {
 
   const onFileChange = (file) => {
     setfileBank(file);
+  }
+  function next(e) {
+    navigate('/FinancialDetail');
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -108,7 +112,7 @@ const BankDetails = (props) => {
             <div className="float-end mt-2" >
               <button type="button" className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
               <button type="submit" className="btn bankbtn btn-primary btn-md m-1">Save</button>
-              <button type="button" className="btn bankbtn btn-primary btn-md m-1">Next</button>
+              <button type="button" onClick={next} className="btn bankbtn btn-primary btn-md m-1">Next</button>
             </div>
           </div>
         </form>

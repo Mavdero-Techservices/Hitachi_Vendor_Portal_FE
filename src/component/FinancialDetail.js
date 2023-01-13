@@ -130,7 +130,7 @@ const FinancialDetails = () => {
             </div>
             <div className="float-end" >
               <button type="button" className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
-              <button type="submit" onClick={saveFinancialDetail} className="btn financialbtn btn-primary btn-md m-3">Save</button>
+              <button type="button" onClick={saveFinancialDetail} className="btn financialbtn btn-primary btn-md m-3">Save</button>
               <button type="button" onClick={next} className="btn financialbtn btn-primary btn-md m-3">Next</button>
             </div>
           </div>

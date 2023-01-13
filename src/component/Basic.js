@@ -320,15 +320,11 @@ export class Basic extends React.Component {
                           </MDBRow>
                           <div className="d-flex justify-content-center">
                             <MDBRow className="mb-4">
-                              <MDBCol>
-                                <MDBBtn>cancel</MDBBtn>
-                              </MDBCol>
-                              <MDBCol>
-                                <MDBBtn onClick={this.handleSubmit}>save</MDBBtn>
-                              </MDBCol>
-                              <MDBCol>
-                                <MDBBtn onClick={this.togglebuttonCommu}>next</MDBBtn>
-                              </MDBCol>
+                            <div className="float-end" >
+                                  <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
+                                  <button type="button" onClick={this.handleSubmit} className="btn basicbtn btn-primary btn-md m-3">Save</button>
+                                  <button type="button" onClick={this.togglebuttonCommu} className="btn basicbtn btn-primary btn-md m-3">Next</button>
+                                </div>
                             </MDBRow>
                           </div>
                         </div>
@@ -444,9 +440,9 @@ export class Basic extends React.Component {
                             <div className="d-flex justify-content-center">
                               <MDBRow className="mb-4">
                                 <div className="float-end" >
-                                  <button type="button" className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
-                                  <button type="submit" onClick={this.handleSubmitComDetail} className="btn financialbtn btn-primary btn-md m-3">Save</button>
-                                  <button type="button" onClick={this.next} className="btn financialbtn btn-primary btn-md m-3">Next</button>
+                                  <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
+                                  <button type="button" onClick={this.handleSubmitComDetail} className="btn basicbtn btn-primary btn-md m-3">Save</button>
+                                  <button type="button" onClick={this.next} className="btn basicbtn btn-primary btn-md m-3">Next</button>
                                 </div>
                               </MDBRow>
                             </div>
