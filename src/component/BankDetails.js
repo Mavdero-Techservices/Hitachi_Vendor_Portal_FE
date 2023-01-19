@@ -24,7 +24,7 @@ const BankDetails = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append('userid', props.user.result._id);
+    data.append('userid', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
     data.append('bankAccountName', acName);
     data.append('bankName', bankname);
     data.append('bankAccountNumber', acno);
