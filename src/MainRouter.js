@@ -18,6 +18,10 @@ import Password from "./component/password";
 import FinancialDetail from "./component/FinancialDetail";
 import ComplianceDetail from "./component/Compliance";
 import ContactTeam from "./component/ContactTeam";
+import AdminPage from './component/AdminPage';
+import ApprovedVendors from './component/ApprovedVendors';
+import RejectedVendors from './component/RejectedVendors';
+
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
   const [state, setState] = useState({
@@ -49,13 +53,16 @@ const MainRouter = () => {
         <Route path="/Navbar" element={<Navbar1 />} />
         <Route path="/basic" element={<Basic />} />
         <Route path="/commu" element={<Commun />} />
-        <Route path="/statutory" element={<Statutory />} />
-        <Route path="/bank" element={<Bank />} />
+        <Route path="/statutory" element={<Statutory/>} />
+        <Route path="/bank" element={<Bank user={ state.userInfo}/>} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
         <Route path="/FinancialDetail" element={<FinancialDetail />} />
         <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
         <Route path="/ContactTeam" element={<ContactTeam />} />
+        <Route path="/approval" element={<AdminPage/>} />
+        <Route path="/approvedVendors" element={<ApprovedVendors/>} />
+        <Route path="/rejectedVendors" element={<RejectedVendors/>} />
       </Routes>
     </div>
   )

@@ -1,0 +1,39 @@
+.approvalManagerfile input[type="file"] {
+  display: none !important;
+
+}
+.approvalManagerfile label {
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 2% 10%;
+  text-align: center;
+  border: 1px solid #B1000E;
+  font-size: 14px;
+  color: #B1000E;
+}
+.approverFile1{
+
+}
+.compliancebtn {
+  vertical-align: middle !important;
+  text-transform: unset !important;
+  font-size: 15px;
+  background-color: #4f4f4f !important;
+}
+.headlines {
+  color: #B1000E;
+}
+.approvalsform label {
+  color: black;
+}
+/* .approvalsform input {
+  pointer-events: none;
+} */
+/* .cont1 {
+  pointer-events: none;
+}
+.cont2 {
+  pointer-events: visible;
+} */

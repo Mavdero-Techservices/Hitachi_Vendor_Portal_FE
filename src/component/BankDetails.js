@@ -25,6 +25,7 @@ const BankDetails = (props) => {
     event.preventDefault();
     const data = new FormData();
     data.append('userid', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
+    // data.append('userid',13);
     data.append('bankAccountName', acName);
     data.append('bankName', bankname);
     data.append('bankAccountNumber', acno);
@@ -60,7 +61,7 @@ const BankDetails = (props) => {
             <span className="bank_title">Bank Details</span>
             <div className="row p-5 sectionbg" >
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                <label className="banklabel">Bank A/C name</label>
+                <label className="banklabel">Name as per Bank A/c</label>
                 <input type="text" className="mb-4 inputbox" name="acName" value={acName} onChange={(e) => setAcName(e.target.value)} />
               </div>
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
