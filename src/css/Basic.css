@@ -1,7 +1,15 @@
 * {
   box-sizing: border-box;
 }
-
+.mandatoryField
+{
+color: #F53844;
+}
+.fieldHeader
+{
+  color: #000;
+  font-weight: bold;
+}
 .mb-12.g {
   margin-bottom: 0% !important;
 }

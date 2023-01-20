@@ -6,6 +6,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import apiService from "../services/api.service";
 import { useNavigate } from 'react-router-dom';
+
 const ContactTeam = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -38,7 +39,20 @@ const ContactTeam = () => {
     }
     apiService.saveContactTeam(user)
       .then(response => {
-
+        if (response.data.status === 'success') {
+          Swal.fire({
+            title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       })
   }
   return (

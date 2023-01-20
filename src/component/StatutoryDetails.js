@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
 import apiService from "../services/api.service";
 import { useNavigate } from 'react-router-dom';
+import { FileUploader } from "react-drag-drop-files";
 export default function Statutory(props) {
   const navigate = useNavigate();
   const [GST_type, setGST_type] = useState("Registered");
@@ -26,7 +27,8 @@ export default function Statutory(props) {
   const [MSME_Doc, setMSME_Doc] = useState();
   const [Tax_residency_Doc, setTax_residency_Doc] = useState();
   const [submit, setSubmit] = useState(null);
-  const params = useParams()
+  const params = useParams();
+  const [fileRPD, setfileRPD] = useState();
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: '',
@@ -34,12 +36,9 @@ export default function Statutory(props) {
     GST_Doc: '',
     PAN_No: '',
     PAN_Doc: '',
-    form_10f_Doc: '',
     TAN_Doc: '',
     PE_DeclarationNo: '',
-    PE_Declaration_Doc: '',
     MSME_Doc: '',
-    Tax_residency_Doc: '',
     CIN_No: '',
     form_10f: '',
     MSME_status: '',
@@ -68,16 +67,16 @@ export default function Statutory(props) {
   }
 
   function onFileChangeTax_residency_Doc(e) {
-    setTax_residency_Doc(e.target.files[0])
+    setTax_residency_Doc(e)
   }
   function onFileChangeform_10f_Doc(e) {
-    setform_10f_Doc(e.target.files[0])
+    setform_10f_Doc(e)
   }
   function onFileChangePAN_Doc(e) {
     setPAN_Doc(e.target.files[0])
   }
   function onFileChangePE_Declaration_Doc(e) {
-    setPE_Declaration_Doc(e.target.files[0])
+    setPE_Declaration_Doc(e)
   }
   function onFileChangeTAN_Doc(e) {
     setTAN_Doc(e.target.files[0])
@@ -88,6 +87,8 @@ export default function Statutory(props) {
   function next(e) {
     navigate('/ComplianceDetail');
   }
+
+
   useEffect(() => {
 
   })
@@ -204,29 +205,31 @@ export default function Statutory(props) {
                         <Col>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Form 10F*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.form_10f} onChange={handleChange('form_10f')} />
+                            <FileUploader className="financial_fileupload"
+                              handleChange={onFileChangeform_10f_Doc}
+                              required
+                              type="file"
+                              name="fileFD"
+                            />
+                            <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
+
                           </Form.Group>
                         </Col>
-                        <Col>
-                          <div className="frame-input">
-                            <label for="fileuploadForm10F">Upload Form 10F</label>
-                            <input type="file" id="fileuploadForm10F" value={values.form_10f_Doc} onChange={onFileChangeform_10f_Doc} required />
-                          </div>
-                        </Col>
+
                       </Row>
                       <Row>
                         <Col>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>No PE declaration*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.PE_DeclarationNo} onChange={handleChange('PE_DeclarationNo')} />
-                          </Form.Group>
+                            <FileUploader className="financial_fileupload"
+                              handleChange={onFileChangePE_Declaration_Doc}
+                              required
+                              type="file"
+                              name="fileFD"
+                            /> </Form.Group>
+                          <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span>
                         </Col>
-                        <Col>
-                          <div className="frame-input">
-                            <label for="fileuploadPED">Upload PED</label>
-                            <input type="file" id="fileuploadPED" value={values.PE_Declaration_Doc} onChange={onFileChangePE_Declaration_Doc} required />
-                          </div>
-                        </Col>
+
                       </Row>
 
                     </Form></Col>
@@ -299,15 +302,17 @@ export default function Statutory(props) {
                         <Col>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Tax Residency Certificate*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.Tax_residency_No} onChange={handleChange('Tax_residency_No')} />
+                            <FileUploader className="financial_fileupload"
+                              handleChange={onFileChangeTax_residency_Doc}
+                              required
+                              type="file"
+                              name="fileFD"
+                            />
+                            <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
+
                           </Form.Group>
                         </Col>
-                        <Col>
-                          <div className="frame-input">
-                            <label for="fileuploadTRC">Upload TRC</label>
-                            <input type="file" id="fileuploadTRC" value={values.Tax_residency_Doc} onChange={onFileChangeTax_residency_Doc} required />
-                          </div>
-                        </Col>
+
                       </Row>
                     </Form>
                   </Col>

@@ -6,6 +6,10 @@
 {
     background-color: #b1000f1e !important;
     color: #000000 !important;
+    background-image: url('../img/Vector.png');
+    background-repeat: no-repeat;
+    background-position: 7px center; 
+    background-size: 8%; 
 }
 .Compliance_fileupload
 {

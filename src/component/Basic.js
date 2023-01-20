@@ -41,6 +41,7 @@ export class Basic extends React.Component {
       designation: '',
       phoneNo: '',
       email: '',
+      mastervendor_email: '',
       open: true,
       commu: false
     }
@@ -125,7 +126,7 @@ export class Basic extends React.Component {
     e.preventDefault();
     apiService.SaveVendorCommunication(this.state)
       .then(response => {
-        if (response.status === 'success') {
+        if (response.data.msg === 'success') {
           Swal.fire({
             title: "Data saved",
             icon: "success",
@@ -205,7 +206,7 @@ export class Basic extends React.Component {
       managementSpocemail,
       designation,
       phoneNo,
-      email } = this.state;
+      email, mastervendor_email } = this.state;
     return (
       <>
         <div className="vendor-det">
@@ -320,11 +321,11 @@ export class Basic extends React.Component {
                           </MDBRow>
                           <div className="d-flex justify-content-center">
                             <MDBRow className="mb-4">
-                            <div className="float-end" >
-                                  <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
-                                  <button type="button" onClick={this.handleSubmit} className="btn basicbtn btn-primary btn-md m-3">Save</button>
-                                  <button type="button" onClick={this.togglebuttonCommu} className="btn basicbtn btn-primary btn-md m-3">Next</button>
-                                </div>
+                              <div className="float-end" >
+                                <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
+                                <button type="button" onClick={this.handleSubmit} className="btn basicbtn btn-primary btn-md m-3">Save</button>
+                                <button type="button" onClick={this.togglebuttonCommu} className="btn basicbtn btn-primary btn-md m-3">Next</button>
+                              </div>
                             </MDBRow>
                           </div>
                         </div>
@@ -335,106 +336,116 @@ export class Basic extends React.Component {
               )}
               {commu && (
                 <div class="container-fluid">
-                  <MDBTypography tag="h5" className="mb-0 info">Communication Detail</MDBTypography>
+                  <MDBTypography tag="h5" className="mb-0 info">Communication Details*</MDBTypography>
                   <br />
                   <MDBRow>
                     <MDBCol md="12" className="mb-12">
                       <MDBCard className="mb-12">
                         <div class="container-fluid">
                           <form>
-                            <label >FinanceSpoc</label>
+                            <label className="fieldHeader" >Finance Spoc<span className="mandatoryField">*</span></label>
                             <MDBRow className="mb-4">
                               <MDBCol>
-                                <label >Contactname*</label>
+                                <label >Contact name</label>
                                 <input type="text" className="mb-4 VendorInput" name="financeSpoccontactName" id="financeSpoccontactName" onChange={this.formValChange} value={financeSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
-                                <label>Designation*</label>
+                                <label>Designation</label>
                                 <input type="text" className="mb-4 VendorInput" name="financeSpocdesignation" id="financeSpocdesignation" onChange={this.formValChange} value={financeSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
-                                <label >phoneNo*</label>
+                                <label >Phone No</label>
                                 <input type="text" className="mb-4 VendorInput" name="financeSpocphoneNo" id="financeSpocphoneNo" onChange={this.formValChange} value={financeSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
-                                <label >email*</label>
+                                <label >Email*</label>
                                 <input type="text" className="mb-4 VendorInput" name="financeSpocemail" id="financeSpocemail" onChange={this.formValChange} value={financeSpocemail} />
                               </MDBCol>
                             </MDBRow>
-                            <label >Operation Spoc</label>
+                            <label className="fieldHeader" >Operation Spoc</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
-                                <label >Contactname*</label>
+                                <label >Contact name</label>
                                 <input type="text" className="mb-4 VendorInput" name="operationSpoccontactName" id="operationSpoccontactName" onChange={this.formValChange} value={operationSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
-                                <label>Designation*</label>
+                                <label>Designation</label>
                                 <input type="text" className="mb-4 VendorInput" name="operationSpocdesignation" id="operationSpocdesignation" onChange={this.formValChange} value={operationSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
-                                <label >phoneNo*</label>
+                                <label >Phone No</label>
                                 <input type="text" className="mb-4 VendorInput" name="operationSpocphoneNo" id="operationSpocphoneNo" onChange={this.formValChange} value={operationSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
-                                <label >email*</label>
+                                <label >Email</label>
                                 <input type="text" className="mb-4 VendorInput" name="operationSpocemail" id="operationSpocemail" onChange={this.formValChange} value={operationSpocemail} />
                               </MDBCol>
                             </MDBRow>
-                            <label >Collection Spoc</label>
+                            <label className="fieldHeader">Collection Spoc</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
-                                <label >Contactname*</label>
+                                <label >Contact name</label>
                                 <input type="text" className="mb-4 VendorInput" name="collectionSpoccontactName" id="collectionSpoccontactName" onChange={this.formValChange} value={collectionSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
-                                <label>Designation*</label>
+                                <label>Designation</label>
                                 <input type="text" className="mb-4 VendorInput" name="collectionSpocdesignation" id="collectionSpocdesignation" onChange={this.formValChange} value={collectionSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
-                                <label >phoneNo*</label>
+                                <label >Phone No</label>
                                 <input type="text" className="mb-4 VendorInput" name="collectionSpocphoneNo" id="collectionSpocphoneNo" onChange={this.formValChange} value={collectionSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
-                                <label >email*</label>
+                                <label >Email</label>
                                 <input type="text" className="mb-4 VendorInput" name="collectionSpocemail" id="collectionSpocemail" onChange={this.formValChange} value={collectionSpocemail} />
                               </MDBCol>
                             </MDBRow>
-                            <label >Management Spoc</label>
+                            <label className="fieldHeader">Management Spoc<span className="mandatoryField">*</span></label>
                             <MDBRow className="mb-4">
                               <MDBCol>
-                                <label >Contactname*</label>
+                                <label >Contact name</label>
                                 <input type="text" className="mb-4 VendorInput" name="managementSpoccontactName" id="managementSpoccontactName" onChange={this.formValChange} value={managementSpoccontactName} />
                               </MDBCol>
                               <MDBCol>
-                                <label>Designation*</label>
+                                <label>Designation</label>
                                 <input type="text" className="mb-4 VendorInput" name="managementSpocdesignation" id="managementSpocdesignation" onChange={this.formValChange} value={managementSpocdesignation} />
                               </MDBCol>
                               <MDBCol>
-                                <label >phoneNo*</label>
+                                <label >Phone No</label>
                                 <input type="text" className="mb-4 VendorInput" name="managementSpocphoneNo" id="managementSpocphoneNo" onChange={this.formValChange} value={managementSpocphoneNo} />
                               </MDBCol>
                               <MDBCol>
-                                <label >email*</label>
+                                <label >Email</label>
                                 <input type="text" className="mb-4 VendorInput" name="managementSpocemail" id="managementSpocemail" onChange={this.formValChange} value={managementSpocemail} />
                               </MDBCol>
                             </MDBRow>
-                            <label >others</label>
+                            <label className="fieldHeader">others</label>
                             <MDBRow className="mb-4">
                               <MDBCol>
-                                <label >Contactname*</label>
+                                <label >Contact name</label>
                                 <input type="text" className="mb-4 VendorInput" name="contactName" id="contactName" onChange={this.formValChange} value={contactName} />
                               </MDBCol>
                               <MDBCol>
-                                <label>Designation*</label>
+                                <label>Designation</label>
                                 <input type="text" className="mb-4 VendorInput" name="designation" id="designation" onChange={this.formValChange} value={designation} />
                               </MDBCol>
                               <MDBCol>
-                                <label >phoneNo*</label>
+                                <label >Phone No</label>
                                 <input type="text" className="mb-4 VendorInput" name="phoneNo" id="phoneNo" onChange={this.formValChange} value={phoneNo} />
                               </MDBCol>
                               <MDBCol>
-                                <label >email*</label>
+                                <label >Email</label>
                                 <input type="text" className="mb-4 VendorInput" name="email" id="email" onChange={this.formValChange} value={email} />
+                              </MDBCol>
+                            </MDBRow>
+                            <MDBRow>
+                              <MDBCol>
+                                <label className="fieldHeader">Master vendor email id<span className="mandatoryField">*</span></label>
+                                <input type="text" className="mb-4 VendorInput" name="mastervendor_email" id="mastervendor_email" onChange={this.formValChange} value={mastervendor_email} />
+                              </MDBCol>
+                              <MDBCol>
+                              </MDBCol>
+                              <MDBCol>
                               </MDBCol>
                             </MDBRow>
                             <div className="d-flex justify-content-center">

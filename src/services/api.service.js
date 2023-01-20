@@ -41,13 +41,19 @@ class apiService {
     return axios.post("http://localhost:12707/saveComplianceDetail", data);
   }
   savebankdetail(data) {
-    return http.post("/saveBdetail", data);
+    return http.post("/saveBankDetail", data);
   }
   saveFinacialDetail(data) {
     return axios.post("http://localhost:12707/saveFinacialDetail", data);
   }
   createRelatedDisclosurePdf(data) {
     return axios.post("http://localhost:12707/createRelatedDisclosurePdf", data);
+  }
+  createCocPdf(data) {
+    return axios.post("http://localhost:12707/createCompliancePdf", data);
+  }
+  createNDAPdf(data) {
+    return axios.post("http://localhost:12707/createnonDisclosure", data);
   }
   downloadPdf(data) {
     return axios.post("http://localhost:12707/downloadPdf", data);
