@@ -8,7 +8,7 @@ function ApprovalFields(props) {
     // const [company_logo, setcompany_logo] = useState("");
     const [address1, setaddress1] = useState("");
     const [address2, setaddress2] = useState("");
-    const [companyName, setcompanyName] = useState("");
+    const [companyName, setcompanyName] = useState("Hitachi");
     const [country, setcountry] = useState("");
     const [state, setstate] = useState("");
     const [city, setcity] = useState();
@@ -83,17 +83,17 @@ function ApprovalFields(props) {
     const [acManager, setacManager] = useState("");
     const [mkcheck, setmkcheck] = useState(false);
     const [approverFile, setapproverFile] = useState("");
-    // const [style, setStyle] = useState("cont1");
+    const [style, setStyle] = useState("approvalsform");
 
+    const [formdata, setformdata] = useState();
     const onApproverFileChange = (event) => {
         setapproverFile(event.target.files[0])
     }
 
-    // const handleEdit = (event) => {
-
-    //     setStyle("cont2");
-    //     console.log("edit", style)
-    // }
+    const handleEdit = (event) => {
+        setStyle("cont2");
+        console.log("edit", style)
+    }
 
     const handleRegject = (event) => {
         event.preventDefault();
@@ -101,57 +101,42 @@ function ApprovalFields(props) {
         // apiService.savebankdetail(data)
         //   .then(response => {
         //     if (response) {
-        const { value: text } = Swal.fire({
-            input: 'textarea',
-            inputLabel: 'Comment',
-            inputPlaceholder: 'Type your comments here...',
-            inputAttributes: {
-                'aria-label': 'Type your comments here'
-            },
-            showCancelButton: true
-        })
-
-        if (text) {
-            Swal.fire(text)
-        }
-        const { value: file } = Swal.fire({
-            title: 'Select File',
-            input: 'file',
-            inputAttributes: {
-                'accept': 'image/*',
-                'aria-label': 'Upload your profile picture'
-            }
-        })
-
-        const { value: formValues } = Swal.fire({
+        // const { value: text } = Swal.fire({
+        //     input: 'textarea',
+        //     inputLabel: 'Comment',
+        //     inputPlaceholder: 'Type your comments here...',
+        //     inputAttributes: {
+        //         'aria-label': 'Type your comments here'
+        //     },
+        //     showCancelButton: true,
+        // })
+        Swal.fire({
+            heightAuto: true,
             title: 'Review vendor details',
-            html:
-                '<input type="textarea" autocomplete="off" id="swal-input1" cols="5" rows="5" class="swal2-input" placeholder="Type your comments here...">' +
-                '<input type="file"  style="width:75%"  id="swal-input2" class="swal2-input">',
-            focusConfirm: false,
-            showCancelButton: true,
+            html: `<div class="rejectstyle">
+            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+       </div> `,
             confirmButtonText: 'Reject',
-
+            showCancelButton: true,
+            focusConfirm: false,
+            customClass: 'swal-wide',
             preConfirm: () => {
-                return [
-                    document.getElementById('swal-input1').value,
-                    document.getElementById('swal-input2').value
-                ]
+
+                const comment = Swal.getPopup().querySelector('#comment').value
+                const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0]
+                if (!comment || !rejectdoc) {
+                    Swal.showValidationMessage(`Please enter comments and file`)
+                } else {
+                    const reject = {
+                        "comment": comment,
+                        "rejectdoc": rejectdoc
+                    }
+                    console.log("reject---------->>", reject)
+                }
             }
         })
 
-        if (formValues) {
-            Swal.fire(JSON.stringify(formValues))
-        }
-        //     }
-        //     else {
-        //       Swal.fire({
-        //         title: "Error While Fetching",
-        //         icon: "error",
-        //         confirmButtonText: "OK",
-        //       });
-        //     }
-        //   })
     }
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -279,39 +264,40 @@ function ApprovalFields(props) {
     return (
         <Box>
             <div className="container-fluid  py-2" style={{ backgroundColor: '#f3f4f7' }}>
-                <form className="mb-5 approvalsform" onSubmit={handleSubmit}>
-                    {/* <div className={style}> */}
-                    <div className="container">
-                        <div className="section1" style={{ overflowY: 'scroll', height: '300px' }}>
+                <form className={style} style={{ marginBottom: '3em' }} onSubmit={handleSubmit} disabled>
+                    {/* <div > */}
+                    <div className={style}>
+                        <div style={{ overflowY: 'scroll', height: '300px' }}>
+
                             <div className="row px-5  pt-2" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Vendor Details Basic Informations</b></h5>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="companyName*">Company Name</label>
                                     <input type="text" className="mb-4 inputbox" name="companyName" value={companyName} onChange={(e) => setcompanyName(e.target.value)} />
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="address1">Address 1</label>
                                     <input type="text" className="mb-4 inputbox" name="address1" value={address1} onChange={(e) => setaddress1(e.target.value)} />
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="address2">Address 2</label>
                                     <input type="text" className="mb-4 inputbox" name="address2" value={address2} onChange={(e) => setaddress2(e.target.value)} />
 
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="country">Country</label>
                                     <input type="text" className="mb-4 inputbox" name="country" value={country} onChange={(e) => setcountry(e.target.value)} />
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="state">State</label>
                                     <input type="text" className="mb-4 inputbox" name="state" value={state} onChange={(e) => setstate(e.target.value)} />
 
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="city">City</label>
                                     <input type="text" className="mb-4 inputbox" name="city" value={city} onChange={(e) => setcity(e.target.value)} />
                                 </div>
-                                <div className="col-lg-4 col-sm-6 col-xs-12">
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                     <label htmlFor="pinCode">PinCode</label>
                                     <input type="text" className="mb-4 inputbox" name="pinCode" value={pinCode} onChange={(e) => setpinCode(e.target.value)} />
                                 </div>
@@ -332,7 +318,7 @@ function ApprovalFields(props) {
                                     <input type="text" className="mb-4 inputbox" name="branchAdd" value={""} onChange={(e) => setcompanyName(e.target.value)}/>
                                 </div> */}
                                 {/* <div className="col-lg-4 col-sm-6 col-xs-12 mt-2">
-                                    <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View logo</button>
+                                    <button type="button" className="btn bankbtn btn-primary btn-md m-2">View logo</button>
                                 </div> */}
 
                             </div>
@@ -340,7 +326,7 @@ function ApprovalFields(props) {
                             <div className="row px-5" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Communication Details</b></h5>
                                 <p><b>Finance Spoc</b></p>
-                                <div className="row" >
+                                <div className="row">
                                     <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                         <label htmlFor="fs_ContactName">Contact Name</label>
                                         <input type="text" className="mb-4 inputbox" name="fs_ContactName" value={fs_ContactName} onChange={(e) => setfs_ContactName(e.target.value)} />
@@ -379,7 +365,7 @@ function ApprovalFields(props) {
                                     </div>
                                 </div>
 
-                                <p><b>Collection Spoc</b></p>
+                                {/* <p><b>Collection Spoc</b></p> */}
                                 {/* <div className="row" >
                                     <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                                         <label htmlFor="country">Contact Name</label>
@@ -439,12 +425,16 @@ function ApprovalFields(props) {
                                         <input type="text" className="mb-4 inputbox" name="others_Email" value={others_Email} onChange={(e) => setothers_Email(e.target.value)} />
                                     </div>
                                 </div>
+                                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                                    <label htmlFor="pinCode">Master vendor email id*</label>
+                                    <input type="text" className="mb-4 inputbox" name="pinCode" value={pinCode} onChange={(e) => setpinCode(e.target.value)} />
+                                </div>
                             </div>
 
                             <div className="row px-5" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Statutary Details</b></h5>
                                 <div className="row" >
-                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
                                         <div className="row">
                                             <label>Vendor GST Type*</label>
                                             <div className="col">
@@ -472,57 +462,8 @@ function ApprovalFields(props) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
-                                                <label htmlFor="GST_No">GST no*</label>
-                                                <input type="text" className="mb-4 inputbox" name="GST_No" value={GST_No} onChange={(e) => setGST_No(e.target.value)} />
-                                            </div>
-                                            <div className="col-sm-12 col-md-4 approvalManagerfile mt-3">
-                                                <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
-                                                {/* <label htmlFor="GST_Doc1">UPLOAD GST</label>
-                                                <input type="file" id="GST_Doc1" name="GST_Doc" value={GST_Doc} onChange={(e) => setGST_Doc(e.target.value)} /> */}
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
-                                                <label htmlFor="PAN_No">PAN no*</label>
-                                                <input type="text" className="mb-4 inputbox" name="PAN_No" value={PAN_No} onChange={(e) => setPAN_No(e.target.value)} />
-                                            </div>
-                                            <div className="col-sm-12 col-md-4 approvalManagerfile mt-3">
-                                                <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
-                                                {/* <label htmlFor="PAN_Doc1">UPLOAD PAN</label>
-                                                <input type="file" id="PAN_Doc1" value={PAN_Doc} onChange={(e) => setPAN_Doc(e.target.value)} /> */}
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
-                                                <label htmlFor="CIN_No">CIN no*</label>
-                                                <input type="text" className="mb-4 inputbox" name="CIN_No" value={CIN_No} onChange={(e) => setCIN_No(e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
-                                                <label htmlFor="form_10f">Form 10F*</label>
-                                                <input type="text" className="mb-4 inputbox" name="form_10f" value={form_10f} onChange={(e) => setform_10f(e.target.value)} />
-                                            </div>
-                                            {/* <div className="col-sm-12 col-md-4 approvalManagerfile mt-4">
-                                                <label htmlFor="fileupload">UPLOAD FORM 10F</label>
-                                                <input type="file" id="fileupload" />
-                                            </div> */}
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
-                                                <label htmlFor="pe_declaration">No PE declaration*</label>
-                                                <input type="text" className="mb-4 inputbox" name="pe_declaration" value={pe_declaration} onChange={(e) => setpe_declaration(e.target.value)} />
-                                            </div>
-                                            {/* <div className="col-sm-12 col-md-4 approvalManagerfile mt-4">
-                                                <label htmlFor="fileupload">UPLOAD GST</label>
-                                                <input type="file" id="fileupload" />
-                                            </div> */}
-                                        </div>
                                     </div>
-
-                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
                                         <div className="row">
                                             <label>MSME status*</label>
                                             <div className="col">
@@ -542,17 +483,47 @@ function ApprovalFields(props) {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-2">
                                         <div className="row">
-                                            <div className="col-sm-12 col-md-8">
+                                            <div className="col-sm-12 col-lg-8">
+                                                <label htmlFor="GST_No">GST no*</label>
+                                                <input type="text" className="mb-4 inputbox" name="GST_No" value={GST_No} onChange={(e) => setGST_No(e.target.value)} />
+                                            </div>
+                                            <div className="col-sm-12 col-lg-4 m-auto">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                                {/* <label htmlFor="GST_Doc1">UPLOAD GST</label>
+                                                <input type="file" id="GST_Doc1" name="GST_Doc" value={GST_Doc} onChange={(e) => setGST_Doc(e.target.value)} /> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-2">
+                                        <div className="row">
+                                            <div className="col-sm-12 col-lg-8">
                                                 <label htmlFor="MSME_No">MSME no*</label>
                                                 <input type="text" className="mb-4 inputbox" name="MSME_No" value={MSME_No} onChange={(e) => setMSME_No(e.target.value)} />
                                             </div>
-                                            <div className="col-sm-12 col-md-4 approvalManagerfile mt-3">
-                                                <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
+                                            <div className="col-sm-12 col-lg-4 m-auto">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
                                                 {/* <label htmlFor="MSME_Doc1">UPLOAD MSME</label>
                                                 <input type="file" id="MSME_Doc1" name="MSME_Doc" value={MSME_Doc} onChange={(e) => setMSME_Doc(e.target.value)} /> */}
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
+                                        <div className="row">
+                                            <div className="col-sm-12 col-lg-8">
+                                                <label htmlFor="PAN_No">PAN no*</label>
+                                                <input type="text" className="mb-4 inputbox" name="PAN_No" value={PAN_No} onChange={(e) => setPAN_No(e.target.value)} />
+                                            </div>
+                                            <div className="col-sm-12 col-lg-4 m-auto">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                                {/* <label htmlFor="PAN_Doc1">UPLOAD PAN</label>
+                                                <input type="file" id="PAN_Doc1" value={PAN_Doc} onChange={(e) => setPAN_Doc(e.target.value)} /> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
                                         <div className="row">
                                             <label>MSME Type*</label>
                                             <div className="col">
@@ -580,49 +551,102 @@ function ApprovalFields(props) {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
+                                        {/* <div className="row">
+                                            <div className="col-sm-12 col-md-8"> */}
+                                                <label htmlFor="CIN_No">CIN no*</label>
+                                                <input type="text" className="mb-4 inputbox" name="CIN_No" value={CIN_No} onChange={(e) => setCIN_No(e.target.value)} />
+                                            {/* </div> */}
+                                        {/* </div> */}
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
                                         <div className="row">
-                                            <div className="col-sm-12 col-md-8">
+                                            <div className="col-sm-12 col-lg-8">
                                                 <label htmlFor="TAN_No">TAN no*</label>
                                                 <input type="text" className="mb-4 inputbox" name="TAN_No" value={TAN_No} onChange={(e) => setTAN_No(e.target.value)} />
                                             </div>
-                                            <div className="col-sm-12 col-md-4 approvalManagerfile mt-3">
-                                                <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
+                                            <div className="col-sm-12 col-lg-4 m-auto">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
                                                 {/* <label htmlFor="TAN_Doc1">UPLOAD TAN</label>
                                                 <input type="file" id="TAN_Doc1" value={TAN_Doc} onChange={(e) => setTAN_Doc(e.target.value)} /> */}
                                             </div>
                                         </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-8">
+                                    </div>
+                                    <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
+                                        {/* <div className="row">
+                                            <div className="col-sm-12 col-md-8"> */}
+                                                <label htmlFor="form_10f">Form 10F*</label>
+                                                <input type="text" className="mb-4 inputbox" name="form_10f" value={form_10f} onChange={(e) => setform_10f(e.target.value)} />
+                                            {/* </div> */}
+                                            {/* <div className="col-sm-12 col-md-4 approvalManagerfile mt-4">
+                                                <label htmlFor="fileupload">UPLOAD FORM 10F</label>
+                                                <input type="file" id="fileupload" />
+                                            </div> */}
+                                        {/* </div> */}
+                                    </div>
+                                    <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
+                                        {/* <div className="row">
+                                            <div className="col-sm-12 col-md-8"> */}
                                                 <label htmlFor="Tax_residency">Tax Residency certificate*</label>
                                                 <input type="text" className="mb-4 inputbox" name="Tax_residency" value={Tax_residency} onChange={(e) => setTax_residency(e.target.value)} />
-                                            </div>
+                                            {/* </div> */}
                                             {/* <div className="col-sm-12 col-md-4 approvalManagerfile mt-4">
                                                 <label htmlFor="fileupload">UPLOAD TRC</label>
                                                 <input type="file" id="fileupload" />
                                             </div> */}
-                                        </div>
+                                        {/* </div> */}
                                     </div>
-
+                                    <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
+                                        {/* <div className="row">
+                                            <div className="col-sm-12 col-md-8"> */}
+                                                <label htmlFor="pe_declaration">No PE declaration*</label>
+                                                <input type="text" className="mb-4 inputbox" name="pe_declaration" value={pe_declaration} onChange={(e) => setpe_declaration(e.target.value)} />
+                                            {/* </div> */}
+                                            {/* <div className="col-sm-12 col-md-4 approvalManagerfile mt-4">
+                                                <label htmlFor="fileupload">UPLOAD GST</label>
+                                                <input type="file" id="fileupload" />
+                                            </div> */}
+                                        {/* </div> */}
+                                    </div>
                                 </div>
                             </div>
                             <div className="row px-5" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Compliance Details</b></h5>
-                                <div className="row" >
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-center">
-                                        <label className="banklabel">Related party disclosure*</label>
-                                        <button type="button" className="btn compliancebtn btn-primary btn-md m-2 ">View File</button>
+                                <div className="row text-center" >
+                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pt-1">
+                                        <div className="row text-center" >
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                                                <label className="banklabel">Related party disclosure*</label>
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-center">
-                                        <label className="banklabel">COC for services support/installation*</label>
-                                        <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
+                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pt-1">
+                                        <div className="row text-center" >
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                                                <label className="banklabel">COC for services support/ installation*</label>
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-center">
-                                        <label className="banklabel">Non disclosure agreement*</label>
-                                        <button type="button" className="btn compliancebtn btn-primary btn-md m-2">View File</button>
+                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pt-1">
+                                        <div className="row text-center" >
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                <label className="banklabel">Non disclosure agreement*</label>
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                                                <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row px-5" style={{ backgroundColor: '#fff' }}>
+                            <div className="row px-5 pt-2" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Bank Details</b></h5>
                                 <div className="row" >
                                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -654,7 +678,7 @@ function ApprovalFields(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row px-5" style={{ backgroundColor: '#fff' }}>
+                            <div className="row px-5 pt-2" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Financial Details</b></h5>
                                 <div className="row" >
                                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -690,7 +714,7 @@ function ApprovalFields(props) {
                                 </div>
                             </div>
 
-                            <div className="row px-5 pt-1" style={{ backgroundColor: '#fff' }}>
+                            <div className="row px-5 pt-2" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Hitachi Contact Team</b></h5>
                                 <div className="row" >
                                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -731,68 +755,69 @@ function ApprovalFields(props) {
                                     </div>
                                 </div>
                             </div>
-                            {/* </div> */}
+                        </div>
 
-                            <div className="section2" >
-                                <div className="row px-5 pt-2" >
-                                    <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
-                                        <label htmlFor="Distributors">Vendor Type</label>
-                                        <select className="form-select" id="Distributors" name="vendorType" aria-label="Disabled select example" value={vendorType} onChange={(e) => setvendorType(e.target.value)}>
-                                            {/* <option selected>Open this select menu</option> */}
-                                            <option value="Distributor">Distributor</option>
-                                            <option value="import">import</option>
-                                            <option value="OEM">OEM</option>
-                                            <option value="local vendor">local vendor</option>
-                                            <option value="others">others</option>
-                                        </select>
-                                    </div>
-                                    <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
-                                        <span>Vendor A/C Manager</span>
-                                        <div className="row">
-                                            <div className="col-lg-3 col-sm-12 col-xs-12">
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="acManager" id="acManager1" value={"Rajender San"} checked={acManager === "Rajender San"} onChange={(e) => setacManager(e.target.value)} />
-                                                    <label className="form-check-label" htmlFor="acManager1">
-                                                        Rajender San
-                                                    </label>
-                                                </div>
+
+                        <div className="section2" >
+                            <div className="row px-5 pt-2" >
+                                <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
+                                    <label htmlFor="Distributors">Vendor Type</label>
+                                    <select className="form-select" id="Distributors" name="vendorType" aria-label="Disabled select example" value={vendorType} onChange={(e) => setvendorType(e.target.value)}>
+                                        {/* <option selected>Open this select menu</option> */}
+                                        <option value="Distributor">Distributor</option>
+                                        <option value="import">import</option>
+                                        <option value="OEM">OEM</option>
+                                        <option value="local vendor">local vendor</option>
+                                        <option value="others">others</option>
+                                    </select>
+                                </div>
+                                <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
+                                    <span>Vendor A/C Manager</span>
+                                    <div className="row">
+                                        <div className="col-lg-3 col-sm-12 col-xs-12">
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name="acManager" id="acManager1" value={"Rajender San"} checked={acManager === "Rajender San"} onChange={(e) => setacManager(e.target.value)} />
+                                                <label className="form-check-label" htmlFor="acManager1">
+                                                    Rajender San
+                                                </label>
                                             </div>
-                                            <div className="col-lg-3 col-sm-12 col-xs-12">
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="acManager" id="acManager2" value={"Keshav San"} checked={acManager === "Keshav San"} onChange={(e) => setacManager(e.target.value)} />
-                                                    <label className="form-check-label" htmlFor="acManager2">
-                                                        Keshav San
-                                                    </label>
-                                                </div>
+                                        </div>
+                                        <div className="col-lg-3 col-sm-12 col-xs-12">
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name="acManager" id="acManager2" value={"Keshav San"} checked={acManager === "Keshav San"} onChange={(e) => setacManager(e.target.value)} />
+                                                <label className="form-check-label" htmlFor="acManager2">
+                                                    Keshav San
+                                                </label>
                                             </div>
-                                            <div className="col-lg-4 col-sm-12 col-xs-12">
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="checkbox" id="mkcheck1" name="mkcheck" checked={mkcheck} onChange={(e) => setmkcheck(!mkcheck)} />
-                                                    <label className="form-check-label" htmlFor="mkcheck1">
-                                                        MK Denial Check
-                                                    </label>
-                                                </div>
+                                        </div>
+                                        <div className="col-lg-4 col-sm-12 col-xs-12">
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" id="mkcheck1" name="mkcheck" checked={mkcheck} onChange={(e) => setmkcheck(!mkcheck)} />
+                                                <label className="form-check-label" htmlFor="mkcheck1">
+                                                    MK Denial Check
+                                                </label>
                                             </div>
-                                            <div className="approvalManagerfile col-lg-2 col-sm-12 col-xs-12">
-                                                <label htmlFor="approverFile1">Select File</label>
-                                                <input type="file" id="approverFile1" onChange={onApproverFileChange} required />
-                                            </div>
+                                        </div>
+                                        <div className="approvalManagerfile col-lg-2 col-sm-12 col-xs-12">
+                                            <label htmlFor="approverFile1">Select File</label>
+                                            <input type="file" id="approverFile1" onChange={onApproverFileChange} required />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div className="float-end" >
-                        <button type="button" className="btn bankbtn btn-primary btn-md m-2">Edit</button>
+                        <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
                         <button type="submit" className="btn bankbtn btn-primary btn-md m-2">Save</button>
                         <button type="button" onClick={handleRegject} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
                         <button type="button" className="btn bankbtn btn-primary btn-md m-2">Approve</button>
                     </div>
-
+                    {/* </div> */}
                 </form>
-            </div>
-        </Box>
+            </div >
+        </Box >
     )
 }
 

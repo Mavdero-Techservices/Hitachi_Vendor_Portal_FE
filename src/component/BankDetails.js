@@ -25,7 +25,6 @@ const BankDetails = (props) => {
     event.preventDefault();
     const data = new FormData();
     data.append('userid', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
-    // data.append('userid',13);
     data.append('bankAccountName', acName);
     data.append('bankName', bankname);
     data.append('bankAccountNumber', acno);
