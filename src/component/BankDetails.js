@@ -58,7 +58,7 @@ const BankDetails = (props) => {
         <form onSubmit={handleSubmit} className="mb-5">
           <div className="container" >
             <span className="bank_title">Bank Details</span>
-            <div className="row p-5 sectionbg" >
+            <div className="row p-3 sectionbg" >
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <label className="banklabel">Name as per Bank A/c</label>
                 <input type="text" className="mb-4 inputbox" name="acName" value={acName} onChange={(e) => setAcName(e.target.value)} />
@@ -93,7 +93,7 @@ const BankDetails = (props) => {
           <div className="container mt-3" >
             <span className="bank_title">Upload Files</span><br />
             <span className="bank_subtitle">Upload your files here for verification.</span>
-            <div className="row p-5 ml-2 sectionbg">
+            <div className="row p-3 ml-2 sectionbg">
               <div className="row"> <span className="ml-2">Copy of cancel Cheque/Bank detail duly certified from bank*</span> </div>
               <div className="col-md-6 col-sm-12 col-xs-12 my-auto">
                 <FileUploader className="bank_fileupload"

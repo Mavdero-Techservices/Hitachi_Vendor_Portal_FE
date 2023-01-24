@@ -14,7 +14,7 @@ import SideBar from './SideBar';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-function ApprovedVendors() {
+function JapanApprovedvendors() {
     const [expanded, setExpanded] = useState(false);
     const handleChange =
         (panel) => (event, isExpanded) => {
@@ -26,7 +26,7 @@ function ApprovedVendors() {
             <CssBaseline />
             <AdminHeader />
             <Box sx={{ display: 'flex' }}>
-                <SideBar />
+                <SideBar japan="JapanTeam" />
                 <Box sx={{ mt: 2 }}>
                     <Accordion className='accordion1' sx={{ mt: 1 }}>
                         <AccordionSummary
@@ -74,7 +74,7 @@ function ApprovedVendors() {
                             <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>2 Days</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <ApprovalFields />
+                            <ApprovalFields japan="JapanTeam" />
                         </AccordionDetails>
                     </Accordion>
                 </Box>
@@ -83,5 +83,5 @@ function ApprovedVendors() {
     )
 }
 
-export default ApprovedVendors
+export default JapanApprovedvendors
 

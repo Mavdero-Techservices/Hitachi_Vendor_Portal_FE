@@ -14,8 +14,9 @@ import SideBar from './SideBar';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-function ApprovedVendors() {
+function JapanRejectedVendors() {
     const [expanded, setExpanded] = useState(false);
+
     const handleChange =
         (panel) => (event, isExpanded) => {
             setExpanded(isExpanded ? panel : false);
@@ -26,14 +27,14 @@ function ApprovedVendors() {
             <CssBaseline />
             <AdminHeader />
             <Box sx={{ display: 'flex' }}>
-                <SideBar />
+                <SideBar japan="JapanTeam" />
                 <Box sx={{ mt: 2 }}>
                     <Accordion className='accordion1' sx={{ mt: 1 }}>
                         <AccordionSummary
                             aria-controls="panel3a-content"
                             id="panel3a-header"
                         >
-                            <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approved</Typography>
+                            <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Rejected</Typography>
                             <Typography sx={{ width: '36%', }}></Typography>
                             <TextField
                                 InputProps={{
@@ -67,14 +68,14 @@ function ApprovedVendors() {
                         >
                             <IconButton sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                                <Typography>&nbsp;Chandran</Typography>
+                                <Typography>&nbsp;Raju</Typography>
                             </IconButton>
-                            <Typography textAlign="center" sx={{ width: '65%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
+                            <Typography textAlign="center" sx={{ width: '68%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
                             <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Dec 30</Typography>
                             <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>2 Days</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <ApprovalFields />
+                            <ApprovalFields japan="JapanTeam" />
                         </AccordionDetails>
                     </Accordion>
                 </Box>
@@ -83,5 +84,5 @@ function ApprovedVendors() {
     )
 }
 
-export default ApprovedVendors
+export default JapanRejectedVendors
 

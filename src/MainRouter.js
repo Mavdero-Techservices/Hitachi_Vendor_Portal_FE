@@ -21,6 +21,12 @@ import ContactTeam from "./component/ContactTeam";
 import AdminPage from './component/AdminPage';
 import ApprovedVendors from './component/ApprovedVendors';
 import RejectedVendors from './component/RejectedVendors';
+import JapanTeam from './component/JapanTeam';
+import JapanApprovedvendors from './component/JapanApprovedvendors';
+import JapanRejectedVendors from './component/JapanRejectedVendors';
+import MRTteam from './component/MRTteam';
+import MRTapprovedvendors from './component/MRTapprovedvendors';
+import MRTrejectedvendors from './component/MRTrejectedvendors';
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
@@ -63,6 +69,12 @@ const MainRouter = () => {
         <Route path="/approval" element={<AdminPage/>} />
         <Route path="/approvedVendors" element={<ApprovedVendors/>} />
         <Route path="/rejectedVendors" element={<RejectedVendors/>} />
+        <Route path="/japanTeam" element={<JapanTeam/>} />
+        <Route path="/japanapprovedVendors" element={<JapanApprovedvendors/>} />
+        <Route path="/japanrejectedVendors" element={<JapanRejectedVendors/>} />
+        <Route path="/MRTteam" element={<MRTteam/>} />
+        <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors/>} />
+        <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors/>} />
       </Routes>
     </div>
   )
