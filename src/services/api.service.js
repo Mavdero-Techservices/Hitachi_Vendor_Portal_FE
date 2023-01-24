@@ -41,7 +41,7 @@ class apiService {
     return axios.post("http://localhost:12707/saveComplianceDetail", data);
   }
   savebankdetail(data) {
-    return http.post("/saveBankDetail", data);
+    return axios.post("http://localhost:12707/saveBankDetail", data);
   }
   saveFinacialDetail(data) {
     return axios.post("http://localhost:12707/saveFinacialDetail", data);

@@ -33,7 +33,7 @@ function JapanApprovedvendors() {
                             aria-controls="panel3a-content"
                             id="panel3a-header"
                         >
-                            <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approved</Typography>
+                            <Typography variant="h5" sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approved</Typography>
                             <Typography sx={{ width: '36%', }}></Typography>
                             <TextField
                                 InputProps={{

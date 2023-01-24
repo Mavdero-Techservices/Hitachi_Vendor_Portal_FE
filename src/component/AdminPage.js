@@ -44,7 +44,7 @@ function AdminPage() {
                 aria-controls="panel3a-content"
                 id="panel3a-header"
               >
-                <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approvals</Typography>
+                <Typography variant="h5" sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approvals</Typography>
                 <Typography sx={{ width: '36%', }}></Typography>
                 <TextField
                   // label="With normal TextField"
