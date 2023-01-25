@@ -27,6 +27,10 @@ import JapanRejectedVendors from './component/JapanRejectedVendors';
 import MRTteam from './component/MRTteam';
 import MRTapprovedvendors from './component/MRTapprovedvendors';
 import MRTrejectedvendors from './component/MRTrejectedvendors';
+import ApprovalRequest from './component/ApprovalRequest';
+import VendorPortalHeader from './common/VendorPortalHeader';
+import Documents from './component/Documents';
+import AccountStatements from './component/AccountStatements';
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
@@ -75,6 +79,10 @@ const MainRouter = () => {
         <Route path="/MRTteam" element={<MRTteam/>} />
         <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors/>} />
         <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors/>} />
+        <Route path="/approvalReq" element={<ApprovalRequest/>} />
+        <Route path="/vendorPortal" element={<VendorPortalHeader/>} />
+        <Route path="/documents" element={<Documents/>} />
+        <Route path="/acStatement" element={<AccountStatements/>} />
       </Routes>
     </div>
   )

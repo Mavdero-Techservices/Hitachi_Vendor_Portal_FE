@@ -14,10 +14,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Logo1 from "../img/logo1.png";
-
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MailIcon from '@mui/icons-material/Mail';
 const pages = ['Home', 'Admin', 'Master'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-function AdminHeader() {
+function VendorPortalHeader() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const handleOpenNavMenu = (event) => {
@@ -52,7 +53,7 @@ function AdminHeader() {
                             component="a"
                             href="/"
                             sx={{
-                                mr: 2,
+                                mr: 2, my: 2,
                                 display: { xs: 'none', sm: 'flex' },
                                 fontFamily: 'monospace',
                                 fontWeight: 700,
@@ -63,7 +64,11 @@ function AdminHeader() {
                         >
                             <img className="img1" src={Logo1} alt="" />
                         </Typography>
-
+                        <Button style={{ textTransform: 'capitalize' }}
+                            sx={{ mx: 4, mt: 1, color: '#B1000E', display: { xs: 'none', sm: 'flex' }, }}
+                        >
+                            <h5> <b>Vendor Portal</b></h5>
+                        </Button>
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
                             <IconButton
                                 size="large"
@@ -121,12 +126,22 @@ function AdminHeader() {
                         </Typography>
 
                         <Box display="flex" justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}>
-                                <Button style={{ textTransform: 'capitalize' }}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 3, mr: 2, color: '#B1000E', fontWeight: '700', display: 'block' }}
-                                >
-                                    Vendor Creation Team
-                                </Button>
+                            <Button style={{ textTransform: 'capitalize' }}
+                                onClick={handleOpenUserMenu}
+                                sx={{ mr: 2, color: 'black', fontWeight: '700', display: 'block' }}
+                            >
+                                City vendor code
+                            </Button>
+                            <Tooltip title="Mail">
+                                <IconButton onClick={handleOpenUserMenu} >
+                                    <MailIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Notifications">
+                                <IconButton >
+                                    <NotificationsIcon />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
@@ -165,5 +180,5 @@ function AdminHeader() {
     )
 }
 
-export default AdminHeader
+export default VendorPortalHeader
 
