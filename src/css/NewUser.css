@@ -1,53 +1,64 @@
-*{box-sizing: border-box; padding: 0; margin: 0}
-.template {
-  position: absolute;
- width: 100%;
- height: 100%;
- background-image: url("../img/newuser.png");
-background-repeat: no-repeat;
-background-size: cover;
-}
-
-.text-Qa h3
-{
-position: relative;
-top:250px;
-margin-left: 430px;
-}
-.redirect-button
-{
+.userBackground {
+  background-size: cover;
+  background-position: top;
+  min-height: 100%;
+  height: 100vh !important;
   position: relative;
-  top:260px;
-  margin-left: 2%;
+  width: 100%;
 }
-.redirectButton
-{
-  width: 300px;
-  height: 65px;
-  color: black;
-  border-radius: 6px;
-  margin-left: 450px;
-  border: 1px solid rgb(158, 158, 158);
+
+.content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
-.redirectButton.Yes
-{
-margin-bottom: 2%;
+
+.userTitle {
+  text-align: center !important;
 }
-.redirectButton:hover
-{
-  width: 300px;
-  height: 65px;
-  color: white;
+
+.agreebtn {
+  position: relative;
+  left: 25%;
+}
+
+.redirectButton.Yes {
+  border: 1px solid gray;
+  border-radius: 7%;
+  font-size: 0.875;
+  word-wrap: break-word;
+  width: 200px;
+  max-width: 100%;
+}
+
+.redirectButton.No {
+  border: 1px solid gray;
+  border-radius: 7%;
+  font-size: 0.875;
+  word-wrap: break-word;
+  width: 200px;
+  max-width: 100%;
+}
+
+.redirectButton.No:hover {
+  border: 1px solid gray;
+  border-radius: 7%;
+  font-size: 0.875;
+  word-wrap: break-word;
+  width: 200px;
+  max-width: 100%;
   background-color: black;
-  border-radius: 6px;
-  margin-left: 450px;
-  border: 1px solid rgb(158, 158, 158);
+  color: white;
 }
 
-
-.hitachi-logo-icon {
-  position: absolute;
-  margin-left: 35%;
-  margin-top: 10%;
-
+.redirectButton.Yes:hover {
+  border: 1px solid gray;
+  border-radius: 7%;
+  font-size: 0.875;
+  word-wrap: break-word;
+  width: 200px;
+  max-width: 100%;
+  background-color: black;
+  color: white;
 }
