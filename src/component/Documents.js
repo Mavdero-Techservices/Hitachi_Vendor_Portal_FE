@@ -24,7 +24,7 @@ function Documents() {
                     variant="contained"
                     color="primary"
                     size="small"
-                    sx={{'&:hover': { backgroundColor: '#B1000E' },textTransform: 'capitalize', backgroundColor: '#B1000E'}}
+                    sx={{ '&:hover': { backgroundColor: '#B1000E' }, textTransform: 'capitalize', backgroundColor: '#B1000E' }}
                     style={{ marginLeft: 16 }}
                     onClick={() => {
                         // parseName(params.row.col6)
@@ -34,7 +34,7 @@ function Documents() {
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{'&:hover': { backgroundColor: '#B1000E' },textTransform: 'capitalize', backgroundColor: '#B1000E'}}
+                    sx={{ '&:hover': { backgroundColor: '#B1000E' }, textTransform: 'capitalize', backgroundColor: '#B1000E' }}
                     color="primary"
                     size="small"
                     style={{ marginLeft: 16 }}
@@ -44,6 +44,10 @@ function Documents() {
                 >
                     Upload
                 </Button>
+                {/* <div className="approvalManagerfile ">
+                    <label for="fileupload">Select File</label>
+                    <input type="file" id="fileupload" />
+                </div> */}
             </strong>
         )
     }
@@ -57,7 +61,7 @@ function Documents() {
         {
             field: 'quaterly',
             headerName: '',
-            renderCell:renderDetailsButton,
+            renderCell: renderDetailsButton,
             width: 300,
         },
     ];
@@ -76,7 +80,7 @@ function Documents() {
                 <CssBaseline />
                 <VendorPortalHeader />
                 <Box sx={{ display: 'flex' }}>
-                    <VendorPortSidemenu/>
+                    <VendorPortSidemenu />
                     <Box sx={{ mt: 2, width: '100%' }}>
                         <Container>
                             <Accordion className='accordion1' sx={{ mt: 1, }}>
@@ -84,10 +88,10 @@ function Documents() {
                                     aria-controls="panel3a-content"
                                     id="panel3a-header"
                                 >
-                                    <Typography sx={{ mt: 1, width: '30%', flexShrink: 0, fontWeight: "bold",color: '#B1000E' }}>PERIODIC DOCUMENTS</Typography>
-                                    <Typography sx={{ mt: 1, width: '20%', flexShrink: 0,color: '#B1000E'}}>AGREEMENTS</Typography>
-                                    <Typography sx={{ mt: 1, width: '30%', flexShrink: 0,color: '#B1000E'}}>TDS CERTIFICATE</Typography>
-                                    
+                                    <Typography sx={{ mt: 1, width: '30%', flexShrink: 0, fontWeight: "bold", color: '#B1000E' }}>PERIODIC DOCUMENTS</Typography>
+                                    <Typography sx={{ mt: 1, width: '20%', flexShrink: 0, color: '#B1000E' }}>AGREEMENTS</Typography>
+                                    <Typography sx={{ mt: 1, width: '30%', flexShrink: 0, color: '#B1000E' }}>TDS CERTIFICATE</Typography>
+
                                 </AccordionSummary>
                             </Accordion>
                             <Box sx={{ mt: 4, height: 350, width: '100%' }}>
