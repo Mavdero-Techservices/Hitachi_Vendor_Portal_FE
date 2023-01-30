@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useCallback }  from 'react'
 import "../css/signUp.css"
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
@@ -7,55 +7,112 @@ import Logo from "../img/logo.png";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import withRouter from '../component/withRouter';
+import { useNavigate } from 'react-router-dom';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
-export class Signup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const mailValReg = RegExp(
+  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+)
+
+const mobileValReg = RegExp(
+  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+)
+export default function Signup(props) {
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({})
+    const [values, setValues] = useState({
       companyName: '',
       contactPerson: '',
       emailId: '',
       phoneNumber: '',
-    }
-  };
-  formValChange = e => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value
     })
-    this.setState({ [e.target.id]: e.target.value })
+ 
+    const formValChange  = name => event => {
+      setValues({ ...values, [name]: event.target.value })
+      setErrors(event)
+if (!!errors[name])
+setErrors({
+    ...errors,
+    [name]: null
+})
   };
-  handleSubmit = e => {
+  const validateForm = () => {
+    const { companyName, contactPerson,emailId,phoneNumber} = values;
+
+    const newErrors = {}
+
+    if (!companyName ||  companyName === "")
+    {
+      newErrors.companyName = "Please enter companyName"
+    }
+        
+  if (!contactPerson || contactPerson === "")
+  {
+    newErrors.contactPerson = "Please enter contactPerson"
+  }
+  if (!phoneNumber || phoneNumber === "")
+  {
+    newErrors.phoneNumber = "Please enter phoneNumber"
+  }
+  else if (!mobileValReg.test(phoneNumber))
+  newErrors.phoneNumber = "Please enter a valid phoneNumber"
+  if (!emailId || emailId === "")
+  {
+    newErrors.emailId = "Please enter emailId"
+  }
+  else if (!mailValReg.test(emailId))
+  newErrors.emailId = "Please enter a valid email"
+ return newErrors
+}
+  const handleSubmit = e => {
+    const user = {
+      companyName: values.companyName || undefined,
+      contactPerson: values.contactPerson || undefined,
+      phoneNumber: values.phoneNumber || undefined,
+      emailId:values.emailId|| undefined,
+      
+    }
+    const formErrors = validateForm()
     e.preventDefault();
-    apiService.saveUser(this.state)
-      .then(response => {
-        if (response) {
-          Swal.fire({
-            title: "Please check your email to proceed",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-          this.props.navigate("/login");
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors) 
+  } 
+  else{
+    apiService.saveUser(user)
+    .then(response => {
+      console.log(response.data.message);
+      if (response.data.message==='User already exist') {
+        Swal.fire({
+          title: response.data.message,
+          icon:  "error",
+          confirmButtonText: "OK",
+        });
 
-      })
+      }
+      else if(response.data.message==='Registered Successfully')
+      {
+        Swal.fire({
+          title: "Please check your email to proceed",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        this.props.navigate("/login");
+      }
+      else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+
+    })
+  }
+ 
 
   }
-  componentDidMount() {
-  }
+ 
 
-  render() {
-    const { companyName, contactPerson, emailId, phoneNumber, password, confirmPassword, verifiedUser, role } = this.state;
-    return (
+   return (
       <Container>
         <Row>
           <Col sm={4}>
@@ -74,12 +131,14 @@ export class Signup extends React.Component {
                   <label htmlFor="companyName">Company Name*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4 signupInput" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
+                  <input type="text" className="mb-4 signupInput" name="companyName" id="companyName" onChange={formValChange('companyName')} value={values.companyName} />
+                  {errors.companyName ? <p className="text text-danger small">{errors.companyName}</p> : ""}
                 </div>
               </MDBCol>
               <MDBCol>
                 <label >Contact Person*</label>
-                <input type="text" className="mb-4 signupInput" name="contactPerson" id="contactPerson" onChange={this.formValChange} value={contactPerson} />
+                <input type="text" className="mb-4 signupInput" name="contactPerson" id="contactPerson" onChange={formValChange('contactPerson')} value={values.contactPerson} />
+                {errors.contactPerson ? <p className="text text-danger small">{errors.contactPerson}</p> : ""}
               </MDBCol>
             </MDBRow>
             <MDBRow className="mb-4">
@@ -88,20 +147,21 @@ export class Signup extends React.Component {
                   <label htmlFor="phoneNumber">Phone number*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4 signupInput" name="phoneNumber" id="phoneNumber" onChange={this.formValChange} value={phoneNumber} />
+                  <input type="text" className="mb-4 signupInput" name="phoneNumber" id="phoneNumber" onChange={formValChange('phoneNumber')} value={values.phoneNumber} />
+                  {errors.phoneNumber ? <p className="text text-danger small">{errors.phoneNumber}</p> : ""}
                 </div>
               </MDBCol>
               <MDBCol>
                 <label htmlFor="emailId">email id*</label>
-                <input type="text" className="mb-4 signupInput" name="emailId" id="emailId" onChange={this.formValChange} value={emailId} />
+                <input type="text" className="mb-4 signupInput" name="emailId" id="emailId" onChange={formValChange('emailId')} value={values.emailId} />
+                {errors.emailId ? <p className="text text-danger small">{errors.emailId}</p> : ""}
               </MDBCol>
             </MDBRow>
-            <button className='signupButton' onClick={this.handleSubmit}>Request for provisional login</button>
+            <button className='signupButton' onClick={handleSubmit}>Request for provisional login</button>
           </Col>
         </Row>
       </Container>
     )
   }
-}
 
-export default withRouter(Signup);
+

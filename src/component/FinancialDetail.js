@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import apiService from "../services/api.service";
 const FinancialDetails = () => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({})
   const [fileFD, setfileFD] = useState();
   const [fileFD2, setfileFD2] = useState();
   const [values, setValues] = useState({
@@ -30,10 +31,28 @@ const FinancialDetails = () => {
   }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
+    let e = {...errors}
+    setErrors(e)
+    if (!!errors[name])
+    setErrors({
+        ...errors,
+        [name]: null
+    })
   }
-  const saveFinancialDetail = (e) => {
+  const validateForm = () => {
+    const {yearOfAuditedFinancial} = values;
 
+    const newErrors = {}
+
+    if (yearOfAuditedFinancial.length<4)
+    {
+      newErrors.yearOfAuditedFinancial = "Please enter valid year"
+    }
+    return newErrors
+}
+  const saveFinancialDetail = (e) => {
     e.preventDefault()
+    const formErrors = validateForm()
     const data = new FormData();
     data.append('financial_data', fileFD);
     data.append('financial_data2', fileFD2);
@@ -44,6 +63,10 @@ const FinancialDetails = () => {
     data.append('currentAssets', values.currentAssets);
     data.append('directorDetails', values.directorDetails);
     data.append('userId', values.userId);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors) 
+  } 
+    else {
     apiService.saveFinacialDetail(data)
       .then(res => {
         if (res.data.status === 'success') {
@@ -61,7 +84,7 @@ const FinancialDetails = () => {
           });
         }
       })
-
+    }
   }
   return (
     <div className="financial-details">
@@ -73,7 +96,8 @@ const FinancialDetails = () => {
             <div className="row p-5" style={{ backgroundColor: '#fff' }}>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="yearOfAuditedFinancial*">Year of audited financial</label>
-                <input type="text" className="mb-4 inputbox" name="yearOfAuditedFinancial" value={values.yearOfAuditedFinancial} onChange={handleChange('yearOfAuditedFinancial')} />
+                <input type="number" className="mb-4 inputbox" name="yearOfAuditedFinancial" value={values.yearOfAuditedFinancial} onChange={handleChange('yearOfAuditedFinancial')} />
+                {errors.yearOfAuditedFinancial ? <p className="text text-danger small">{errors.yearOfAuditedFinancial}</p> : ""}
                 <label htmlFor="netWorth">NetWorth*</label>
                 <input type="text" className="mb-4 inputbox" name="netWorth" value={values.netWorth} onChange={handleChange('netWorth')} />
               </div>

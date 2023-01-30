@@ -65,5 +65,11 @@ class apiService {
   saveContactTeam(data) {
     return http.post("/saveContactTeam", data);
   }
+  getAllCollection(userId) {
+    return http.get(`/getAllCollection/${userId}`);
+  }
+  getvendorDetail(userId) {
+    return http.get(`/getvendorDetail/${userId}`);
+  }
 }
 export default new apiService();

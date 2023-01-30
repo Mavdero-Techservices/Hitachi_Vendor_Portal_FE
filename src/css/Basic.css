@@ -157,14 +157,7 @@ select {
   margin-bottom: 5%;
 }
 
-.ForgetBtn {
-  border: none !important;
-  background-color: transparent !important;
-  color: #F53844;
-  float: right;
-  margin-top: -4%;
-  margin-bottom: 5%;
-}
+
 
 .resetButton {
   background-color: rgb(60, 60, 60);

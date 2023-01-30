@@ -13,6 +13,7 @@ export class Basic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       address1: '',
       address2: '',
       city: '',
@@ -43,7 +44,8 @@ export class Basic extends React.Component {
       email: '',
       mastervendor_email: '',
       open: true,
-      commu: false
+      commu: false,
+ 
     }
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -103,7 +105,18 @@ export class Basic extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    apiService.saveVendordetail(this.state)
+    const basicInfo = {
+      userId: this.state.userId,
+      address1: this.state.address1,
+      address2: this.state.address2,
+      city: this.state.city,
+      state:this.state.state,
+      country: this.state.country,
+      pinCode: this.state.pinCode,
+      companyName: this.state.companyName,
+      image: this.state.image,
+    }
+    apiService.saveVendordetail(basicInfo)
       .then(response => {
         if (response) {
           Swal.fire({
@@ -122,9 +135,34 @@ export class Basic extends React.Component {
         }
       })
   }
+  
   handleSubmitComDetail = e => {
     e.preventDefault();
-    apiService.SaveVendorCommunication(this.state)
+    const communicationDetails = {
+      userId:this.state.userId,
+      financeSpoccontactName: this.state.financeSpoccontactName,
+      financeSpocdesignation: this.state.financeSpocdesignation,
+      financeSpocphoneNo: this.state.financeSpocphoneNo,
+      financeSpocemail:  this.state.financeSpocemail,
+      operationSpoccontactName:  this.state.operationSpoccontactName,
+      operationSpocdesignation:  this.state.operationSpocdesignation,
+      operationSpocphoneNo: this.state.operationSpocphoneNo,
+      operationSpocemail: this.state.operationSpocemail,
+      collectionSpoccontactName:  this.state.collectionSpoccontactName,
+      collectionSpocdesignation: this.state.collectionSpocdesignation,
+      collectionSpocphoneNo:  this.state.collectionSpocphoneNo,
+      collectionSpocemail:  this.state.collectionSpocemail,
+      managementSpoccontactName: this.state.managementSpoccontactName,
+      managementSpocdesignation:  this.state.managementSpocdesignation,
+      managementSpocphoneNo: this.state.managementSpocphoneNo,
+      managementSpocemail: this.state.managementSpocemail,
+      contactName: this.state.contactName,
+      designation: this.state.designation,
+      phoneNo: this.state.phoneNo,
+      email: this.state.email,
+      mastervendor_email:  this.state.mastervendor_email,
+    }
+    apiService.SaveVendorCommunication(communicationDetails)
       .then(response => {
         if (response.data.msg === 'success') {
           Swal.fire({

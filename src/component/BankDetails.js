@@ -5,8 +5,10 @@ import { FileUploader } from "react-drag-drop-files";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$"
 const BankDetails = (props) => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({})
   const [acName, setAcName] = useState("");
   const [bankname, setBankname] = useState("");
   const [acno, setAcno] = useState("");
@@ -24,7 +26,7 @@ const BankDetails = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append('userid', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
+    data.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
     data.append('bankAccountName', acName);
     data.append('bankName', bankname);
     data.append('bankAccountNumber', acno);

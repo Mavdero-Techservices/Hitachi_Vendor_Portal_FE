@@ -17,7 +17,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "../css/Login.css"
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
-
 const mailValReg = RegExp(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 )
@@ -34,31 +33,57 @@ export default function Signin(props) {
   const [verifiedUser, setRole] = useState();
   const [Validation, setValidation] = useState();
   const [submit, setSubmit] = useState(null);
-  const [Field, setField] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
-  const textFieldForUsernameRef = useRef(null);
   const textFieldForPasswordRef = useRef(null);
-  const buttonForLoginRef = useRef(null);
+  const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
     userName: '',
     password: '',
     error: '',
     mailConfirmationCode: '',
     showContent: false,
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    rememberMe: false
   });
+  const [validationMessages, setValidationMessages] = useState([]);
   const [resetCode, setresetCode] = useState({
     resetCode: '',
     redirectToReferrer: false
   });
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
+    let e = {...errors}
+setErrors(e)
+if (!!errors[name])
+setErrors({
+    ...errors,
+    [name]: null
+})
     setSubmit(true)
   }
-  const handleDropdownChange = name => event => {
-    setresetCode({ ...resetCode, [name]: event.target.value })
-    setSubmit(true)
+  const validateForm = () => {
+    const { userName, password} = values;
+
+    const newErrors = {}
+
+    if (!userName ||  userName === "")
+    {
+      newErrors.userName = "Please enter user name"
+    }
+        
+  if (!password || password === "")
+  {
+    newErrors.password = "Please enter password"
   }
+ 
+    return newErrors
+}
+const validateForm2 = () => {
+  const { userName} = values;
+  const newErrors = {}
+  if (!userName ||  userName === "")
+      newErrors.userName = "Please enter user name"
+  return newErrors
+}
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [showforgetPassowrd, setShowforgetPassowrd] = useState(false);
   const [showResetTab, setshowResetTab] = useState(false);
@@ -66,17 +91,25 @@ export default function Signin(props) {
 
   const login = (e) => {
     e.preventDefault()
+    const formErrors = validateForm()
     const user = {
       userName: values.userName || undefined,
       password: values.password || undefined
     }
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors) 
+  } 
+    else {
     signin(user).then((data) => {
-      if (data) {
+      setErrors(formErrors) 
+      if (data.status==='success') {
+localStorage.setItem("userName", JSON.stringify(values.userName));
+localStorage.setItem("password", JSON.stringify(values.password)); 
 
-      }
-      else {
+}
+      else {      
         Swal.fire({
-          title: "Error While Fetching",
+          title: data.data.message,
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -101,15 +134,19 @@ export default function Signin(props) {
       }
     })
   }
-
-  const clickSubmit = (e) => {
-    e.preventDefault()
   }
+
   const onResetCode = (e) => {
     e.preventDefault()
+    const formErrors = validateForm2()
     const user = {
       userName: values.userName || undefined,
     }
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors) 
+  } 
+  else
+  {
     apiService.resetPasswordByCode(user).then((data) => {
       if (data) {
         Swal.fire({
@@ -129,38 +166,6 @@ export default function Signin(props) {
       }
     })
   }
-  const oncheckresetcode = (e) => {
-    e.preventDefault()
-    const user = {
-      userName: values.userName || undefined,
-      mailConfirmationCode: values.mailConfirmationCode || undefined,
-    }
-    setshowResetTab(false);
-    setshowPasswordTab(true);
-    setShowforgetPassowrd(false);
-  }
-  const onresetPassword = (e) => {
-    e.preventDefault()
-    const user = {
-      userName: values.userName || undefined,
-      mailConfirmationCode: values.mailConfirmationCode || undefined,
-      password: values.password || undefined,
-      confirmPassword: values.confirmPassword || undefined,
-    }
-    apiService.resetPassword(user).then((data) => {
-      if (data) {
-        setshowResetTab(false);
-        setshowPasswordTab(true);
-        setShowforgetPassowrd(false);
-      }
-      else {
-        Swal.fire({
-          title: "Error While Fetching",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-    })
 
   }
   const backToLogin = (e) => {
@@ -175,25 +180,6 @@ export default function Signin(props) {
     setshowLoginTab(false);
     setshowResetTab(false);
   }
-  const location = useLocation()
-  const data = location.state
-
-  const onFocusing = () => {
-    setField(true)
-  }
-
-  const offFocusing = () => {
-    setField(false)
-  }
-
-  const onFocusPassword = () => {
-    setPasswordError(true)
-  }
-
-  const offFocusPassword = () => {
-    setPasswordError(false)
-  }
-
   const { redirectToReferrer } = values
 
   if (redirectToReferrer) {
@@ -203,57 +189,12 @@ export default function Signin(props) {
       return (<Navigate to={'/'} />)
     }
   }
-
-  const userNameHandle = (e, i) => {
-    if (e === 0 && Field === false) {
-      return "User name cannot be empty"
-    }
-    else if (e > 0 && !submit && Validation === "invalid user" && !Field) {
-      return "User name is incorrect"
-    }
-    if (e === 0 && !submit && Validation === "invalid user" && !Field) {
-      return "User name is required"
-    }
-    if (e === 0 && Field === null) {
-      return ""
-    }
-    if (e > 0 && !mailValReg.test(i) && !Field) {
-      return "Enter a valid user name"
-    }
-    if (!Field) {
-      return ""
-    }
-  }
-
-  const userPasswordHandle = (e, i) => {
-    if (e === 0 && passwordError === false) {
-      return "Password cannot be empty"
-    }
-    if (e === 0 && !submit && Validation === "invalid user" && !passwordError) {
-      return "Password cannot be empty"
-    }
-    else if (!submit && Validation === "invalid user" && !passwordError) {
-      return "Password is incorrect"
-    }
-    if (e === 0 && passwordError === null) {
-      return ""
-    }
-    else if (e <= 6 && passwordError === false) {
-      return "Password should atleast contain 6 characters"
-    }
-    else if (e <= 6 && passwordError === false && !submit && Validation === "invalid user") {
-      return "Password should atleast contain 6 characters"
-    }
-    if (!passwordError) {
-      return ""
-    }
-  }
   return (
     <div className='login'>
       <Container>
         <Row md={2}>
           <Col xs={4}>
-            <Col>   <img className="hisys-img" alt="" src={hisys} /> </Col>
+            <Col> <img className="hisys-img" alt="" src={hisys} /> </Col>
             <Col> <img className="person-img" alt="" src={hand} /></Col>
           </Col>
           <Col xs={12}>
@@ -267,20 +208,25 @@ export default function Signin(props) {
                         <label htmlFor="userName">user name*</label>
                       </div>
                       <div>
-                        <input type="text" className="mb-4 loginInput" value={values.userName} onChange={handleChange('userName')} />
+                        <input type="text" className="mb-4 loginInput" value={values.userName || ''} onChange={handleChange('userName')} />
                       </div>
+                      {errors.userName ? <p className="text text-danger small">{errors.userName}</p> : ""}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <label >password*</label>
                       <input className="mb-4 loginInput" type="password" label="Password" variant="outlined" value={values.password} onChange={handleChange('password')} />
-                    </MDBCol>
+                      {errors.password ? <p className="text text-danger small">{errors.password}</p> : ""}
+                   </MDBCol>
                   </MDBRow>
                   <MDBRow>
                     <MDBCol>
                       {!showPasswordTab && showLoginTab && !showforgetPassowrd ? <div className="form-group form-remember">
                         <button className='ForgetBtn' onClick={forgetPassword}> forget password?</button>
+                        <label className='rememberMe'>
+        <input name="rememberMe"  type="checkbox"/> Remember me
+      </label>
                       </div>
                         : null}
                     </MDBCol>
@@ -300,6 +246,7 @@ export default function Signin(props) {
                     </div>
                     <div>
                       <input type="text" className="mb-4 loginInput" value={values.userName} onChange={handleChange('userName')} />
+                      {errors.userName ? <p className="text text-danger small">{errors.userName}</p> : ""}
                     </div>
                   </MDBCol>
                 </MDBRow>

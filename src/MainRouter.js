@@ -48,13 +48,8 @@ const MainRouter = () => {
   return (
     <div>
       <Routes>
-      <Route path="/Test" element={
-          <AdminRoute >
-            <Test />
-          </AdminRoute>
-        }
-        />
         <Route path="/" element={<NewUser />} />
+        <Route path="/Test" element={<Test />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/ImageUpload" element={<ImageUpload />} />

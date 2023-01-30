@@ -14,7 +14,11 @@ import Swal from "sweetalert2";
 import apiService from "../services/api.service";
 import { useNavigate } from 'react-router-dom';
 import { FileUploader } from "react-drag-drop-files";
+const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
+const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 export default function Statutory(props) {
+  const [showLoginTab, setshowLoginTab] = useState(true);
+  const [errors, setErrors] = useState({})
   const navigate = useNavigate();
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("Micro");
@@ -29,6 +33,7 @@ export default function Statutory(props) {
   const [submit, setSubmit] = useState(null);
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
+  const [country, setcountry] = useState({});
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: '',
@@ -56,9 +61,18 @@ export default function Statutory(props) {
   function onChangeValueMSME_status(event) {
     setMSME_status(event.target.value);
   }
-
+  const clickMe = (data) => {
+    console.log("value pushed",data);
+    navigate("/ContactTeam", {data: data});  
+  }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
+    setErrors(event)
+    if (!!errors[name])
+    setErrors({
+        ...errors,
+        [name]: null
+    })
     setSubmit(true)
   }
   const onFileChange = (event) => {
@@ -87,13 +101,41 @@ export default function Statutory(props) {
   function next(e) {
     navigate('/ComplianceDetail');
   }
+  const validateForm = () => {
+    const { GST_No,PAN_No} = values;
 
+    const newErrors = {}
+
+    if (!GSTValidation.test(GST_No))
+    {
+      newErrors.GST_No= "Please enter a valid GST No"
+    }
+    if (!PANValidation.test(PAN_No))
+    {
+      newErrors.PAN_No= "Please enter a valid PAN No"
+    }
+    return newErrors
+}
 
   useEffect(() => {
+    apiService.getvendorDetail(values.userId)
+    .then(res => {
+      setcountry(res.data.country);
+      if(res.data.country==='IN')
+      {
+        setshowLoginTab(false);
+      }
 
+    })
   })
   const saveStatutoryDetail = (e) => {
-    e.preventDefault()
+    const formErrors = validateForm()
+    e.preventDefault();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors) 
+  } 
+  else
+  {
     const data = new FormData();
     data.append('GST_Doc', GST_Doc);
     data.append('GST_type', GST_type);
@@ -132,6 +174,8 @@ export default function Statutory(props) {
         }
       })
   }
+ 
+  }
   return (
     <div>
       <Navbar1 />
@@ -167,6 +211,7 @@ export default function Statutory(props) {
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>GST no*</Form.Label>
                             <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
+                            {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -181,6 +226,7 @@ export default function Statutory(props) {
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>PAN no*</Form.Label>
                             <Form.Control className="statutoryInput" type="text" value={values.PAN_No} onChange={handleChange('PAN_No')} />
+                            {errors.PAN_No ? <p className="text text-danger small">{errors.PAN_No}</p> : ""}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -201,8 +247,10 @@ export default function Statutory(props) {
 
                         </Col>
                       </Row>
+                      
                       <Row>
                         <Col>
+                        { showLoginTab ?
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Form 10F*</Form.Label>
                             <FileUploader className="financial_fileupload"
@@ -214,11 +262,13 @@ export default function Statutory(props) {
                             <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
 
                           </Form.Group>
+                            : null}
                         </Col>
-
+                      
                       </Row>
                       <Row>
                         <Col>
+                        { showLoginTab ?
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>No PE declaration*</Form.Label>
                             <FileUploader className="financial_fileupload"
@@ -226,9 +276,11 @@ export default function Statutory(props) {
                               required
                               type="file"
                               name="fileFD"
-                            /> </Form.Group>
-                          <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span>
-                        </Col>
+                            /> 
+                              <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span></Form.Group>
+                        
+                          : null}
+                          </Col>
 
                       </Row>
 
@@ -300,6 +352,7 @@ export default function Statutory(props) {
                       </Row>
                       <Row>
                         <Col>
+                        { showLoginTab ?
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Tax Residency Certificate*</Form.Label>
                             <FileUploader className="financial_fileupload"
@@ -311,6 +364,7 @@ export default function Statutory(props) {
                             <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
 
                           </Form.Group>
+                          : null}
                         </Col>
 
                       </Row>

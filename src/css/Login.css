@@ -24,6 +24,22 @@
   margin-left: 15%;
   margin-bottom: 5%;
 }
+.ForgetBtn {
+  border: none !important;
+  background-color: transparent !important;
+  color: #F53844;
+  float: right;
+  margin-top: -4%;
+  margin-bottom: 5%;
+}
+.rememberMe {
+  border: none !important;
+  background-color: transparent !important;
+  color: #F53844;
+  float: left;
+  margin-top: -4%;
+  margin-bottom: 5%;
+}
 /* For Mobile devices */
 @media only screen and (min-device-width:320px) and (max-device-width: 480px) {
 
@@ -46,4 +62,8 @@
 }
 /* For Desktop or large-size screen: 1024px -1200px */
 @media only screen and (min-device-width:1024px) and (max-device-width: 1200px) {
+}
+.ErrorMessage
+{
+  color: red;
 }
