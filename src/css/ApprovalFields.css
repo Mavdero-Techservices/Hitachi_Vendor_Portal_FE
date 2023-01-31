@@ -31,6 +31,9 @@
   pointer-events: auto !important;
   color: black;
 }
+.cont2 input{
+  background-color: white;
+}
 .inline-flex {
   display: inline-flex !important;
   margin: .5em !important;

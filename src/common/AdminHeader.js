@@ -17,7 +17,7 @@ import Logo1 from "../img/logo1.png";
 
 const pages = ['Home', 'Admin', 'Master'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-function AdminHeader() {
+function AdminHeader(props) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const handleOpenNavMenu = (event) => {
@@ -119,15 +119,33 @@ function AdminHeader() {
                         >
                             <img className="img1" src={Logo1} alt="" />
                         </Typography>
-
-                        <Box display="flex" justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}>
+                        {props.team === "vendor" ?
+                            <Box display="flex" justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}>
                                 <Button style={{ textTransform: 'capitalize' }}
                                     onClick={handleCloseNavMenu}
                                     sx={{ my: 3, mr: 2, color: '#B1000E', fontWeight: '700', display: 'block' }}
                                 >
                                     Vendor Creation Team
                                 </Button>
-                        </Box>
+                            </Box> : ""}
+                            {props.team === "japanTeam" ?
+                            <Box display="flex" justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}>
+                                <Button style={{ textTransform: 'capitalize' }}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 3, mr: 2, color: '#B1000E', fontWeight: '700', display: 'block' }}
+                                >
+                                    Japan Team
+                                </Button>
+                            </Box> : ""}
+                            {props.team === "mrtTeam" ?
+                            <Box display="flex" justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}>
+                                <Button style={{ textTransform: 'capitalize' }}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 3, mr: 2, color: '#B1000E', fontWeight: '700', display: 'block' }}
+                                >
+                                    MRT Team
+                                </Button>
+                            </Box> : ""}
 
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">

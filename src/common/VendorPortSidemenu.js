@@ -24,7 +24,80 @@ export const VendorPortSidemenu = (props) => {
     //   setOpen(open);
     // },[open]);
     return (
-        <Box sx={{ width: '100%', ...(open && { width: '60px' }), maxWidth: 280, minHeight: '100vh', bgcolor: '#B1000E', color: 'white' }}>
+        <>
+        <Box sx={{ flexGrow: 1, display: { xs: 'block', sm: 'none'}, maxWidth:60, minHeight: '100%', bgcolor: '#B1000E', color: 'white'  }}>
+        <nav aria-label="main mailbox folders">
+                <List>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={sidemenuOpen}
+                        sx={{ ml: 1 }}
+                    >
+                        {/* <MenuIcon /> */}
+                    </IconButton>
+                </List>
+                <List>
+                    <ListItem disablePadding sx={{ color: 'white' }}>
+                        <ListItemButton sx={{ }}>
+                            <ListItemIcon>
+                                <WindowIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }} />
+                            </ListItemIcon>
+                            <ListItemText primary="Home" sx={{ mr: 2, display: 'none'  }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ color: 'white' }}>
+                        <ListItemButton >
+                            <ListItemIcon>
+                                <ListAltIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Purchase Order" sx={{ mr: 2, display: 'none'}} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ color: 'white' }}>
+                        <ListItemButton >
+                            <ListItemIcon>
+                                <PendingActionsIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Estimated Delivery Date" sx={{ mr: 2, display: 'none' }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ color: 'white' }}>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <GradingIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Invoices" sx={{ mr: 2, display: 'none' }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding component={Link} to="/acStatement" sx={{ color: 'white' }}>
+                        <ListItemButton >
+                            <ListItemIcon>
+                                <AccountBalanceIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Account Statement" sx={{ mr: 2, display: 'none' }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding component={Link} to="/documents" sx={{ color: 'white' }}>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <DescriptionIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Documents" sx={{ mr: 2, display: 'none' }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ color: 'white' }}>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <SignalCellularAltIcon sx={{ color: 'white','&:hover': { backgroundColor: 'gray' }, borderRadius: '20px'  }}  />
+                            </ListItemIcon>
+                            <ListItemText primary="Reports" sx={{ mr: 2, display: 'none' }} />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+            </nav>
+            </Box>
+        <Box sx={{ display: { xs: 'none', sm: 'block' } ,width: '100%', ...(open && { width: '60px' }), maxWidth: 280, minHeight: '100vh', bgcolor: '#B1000E', color: 'white' }}>
             <nav aria-label="main mailbox folders">
                 <List>
                     <IconButton
@@ -96,6 +169,7 @@ export const VendorPortSidemenu = (props) => {
                 </List>
             </nav>
         </Box >
+        </>
     )
 }
 

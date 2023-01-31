@@ -26,7 +26,7 @@ function JapanRejectedVendors() {
     return (
         <Box style={{ backgroundColor: '#f3f4f7' }} sx={{ height: '100vh', backgroundColor: 'gray' }} >
             <CssBaseline />
-            <AdminHeader />
+            <AdminHeader team="japanTeam"/>
             <Box sx={{ display: 'flex' }}>
                 <SideBar japan="JapanTeam" />
                 <Box sx={{ mt: 2, width: '100%' }}>

@@ -73,7 +73,7 @@ function ApprovalRequest() {
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <AdminHeader />
+                <AdminHeader team="vendor"/>
                 <Box sx={{ display: 'flex' }}>
                     <SideBar />
                     <Box sx={{ mt: 2, width: '100%' }}>

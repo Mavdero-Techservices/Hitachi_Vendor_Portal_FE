@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -10,7 +10,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import VendorPortalHeader from '../common/VendorPortalHeader';
 import VendorPortSidemenu from '../common/VendorPortSidemenu';
 import Button from '@mui/material/Button';
+import { CustomFooterTotalComponent } from './CustomFooterTotalComponent';
+
 function AccountStatements() {
+    const [total, setTotal] = useState("");
     const theme = createTheme({
         Link: {
             textTransform: "none"
@@ -122,20 +125,45 @@ function AccountStatements() {
                                     sx={{ backgroundColor: "white", mt: 2 }}
                                     rows={rows}
                                     columns={columns}
+                                    components={{
+                                        // Toolbar: GridToolbar,
+                                        Footer: CustomFooterTotalComponent
+                                      }}
+                                      componentsProps={{
+                                        footer: { total }
+                                      }}
+
+                                      onStateChange={(state) => {
+                                        const visibleRows = state.filter.visibleRowsLookup;
+                                        let visibleItems = [];
+                                        for (const [id, value] of Object.entries(visibleRows)) {
+                                          if (value === true) {
+                                            visibleItems.push(id);
+                                          }
+                                        }
+                                        console.log(visibleItems);
+                                        const res = rows.filter((item) => visibleItems.includes(item.id));
+                                       console.log("res=========>>>>", res)
+                                        const total = res
+                                          .map((item) => item.remainAmt)
+                                          .reduce((a, b) => a + b, 0);
+                                        console.log(total);
+                                        setTotal(total);
+                                      }}
                                     // pageSize={5}
                                   
-                                     initialState={{
-                                        aggregation: {
-                                            model: {
-                                                remainAmt: 'sum',
-                                            },
-                                        },
-                                    }}
-                                    experimentalFeatures={{aggregation: true }}
+                                    //  initialState={{
+                                    //     aggregation: {
+                                    //         model: {
+                                    //             remainAmt: 'sum',
+                                    //         },
+                                    //     },
+                                    // }}
+                                    // experimentalFeatures={{aggregation: true }}
                                 />
-                                <div className="float-end" >
+                                {/* <div className="float-end" >
                                     <button type="button" className="btn bankbtn btn-primary btn-md m-2">Download</button>
-                                </div>
+                                </div> */}
                             </Box>
 
                         </Container>

@@ -115,6 +115,7 @@ function ApprovalFields(props) {
             <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
        </div> `,
             confirmButtonText: 'Reject',
+            confirmButtonColor: "#B1000E",
             showCancelButton: true,
             focusConfirm: false,
             customClass: 'swal-wide',

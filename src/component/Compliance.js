@@ -24,6 +24,7 @@ const ComplianceDetails = () => {
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName,
     userName:JSON.parse(window.sessionStorage.getItem("jwt")).result.userName,
+    userId:JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
   });
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
@@ -58,6 +59,7 @@ const ComplianceDetails = () => {
     const user = {
       companyName: pdfValues.companyName || undefined,
       userName:pdfValues.userName|| undefined,
+      userId:pdfValues.userId|| undefined,
     }
     apiService.createRelatedDisclosurePdf(user).then(res => {
       console.log("pdfCreated");

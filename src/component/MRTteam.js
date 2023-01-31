@@ -34,7 +34,7 @@ function MRTteam() {
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <AdminHeader />
+                <AdminHeader team="mrtTeam"/>
                 <Box sx={{ display: 'flex' }}>
                     <SideBar MRT="MRTteam" />
                     <Box sx={{ mt: 2, width: '100%' }}>

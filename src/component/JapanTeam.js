@@ -34,7 +34,7 @@ function JapanTeam() {
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <AdminHeader />
+                <AdminHeader team="japanTeam"/>
                 <Box sx={{ display: 'flex' }}>
                     <SideBar japan="JapanTeam" />
                     <Box sx={{ mt: 2, width: '100%' }}>

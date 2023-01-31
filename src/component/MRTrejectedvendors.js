@@ -26,7 +26,7 @@ function MRTrejectedvendors() {
     return (
         <Box style={{ backgroundColor: '#f3f4f7' }} sx={{ height: '100vh', backgroundColor: 'gray' }} >
             <CssBaseline />
-            <AdminHeader />
+            <AdminHeader team="mrtTeam"/>
             <Box sx={{ display: 'flex' }}>
                 <SideBar MRT="MRTteam" />
                 <Box sx={{ mt: 2, width: '100%' }}>
