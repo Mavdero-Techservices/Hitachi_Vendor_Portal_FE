@@ -274,22 +274,24 @@ export class Basic extends React.Component {
                                           <label htmlFor="companyName">Company Name*</label>
                                         </div>
                                         <div>
-                                          <input type="text" className="mb-4 VendorInput" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
+                                          <input type="text" className="mb-4 VendorInputCompanyName" name="companyName" id="companyName" onChange={this.formValChange} value={companyName} />
                                         </div>
                                       </MDBCol>
                                     </MDBRow>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div> <label htmlFor="address1">Address line - 1*</label></div>
-                                        <div><input type="text" className="mb-4 VendorInput" name="address1" id="address1" onChange={this.formValChange} value={address1} /></div>
-                                      </MDBCol>
+                                        <div>
+                                    <textarea type="text" className="addressLine" name="address1" id="address1" onChange={this.formValChange} value={address1} ></textarea>
+                                  </div>
+                                    </MDBCol>
                                     </MDBRow>
                                     <div>
-                                      <label htmlFor="address2">Address line - 2*</label>
+                                      <label htmlFor="address2">Address line - 2</label>
                                     </div>
                                     <div>
-                                      <input type="text" className="mb-4 VendorInput" name="address2" id="address2" onChange={this.formValChange} value={address2} />
-                                    </div>
+                                    <textarea type="text" className="addressLine" name="address2" id="address2" onChange={this.formValChange} value={address2} ></textarea>
+                                  </div>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div>
@@ -297,7 +299,7 @@ export class Basic extends React.Component {
                                         </div>
                                         <div>
 
-                                          <select className="mb-4" name="country" id="country" value={this.state.country} onChange={this.handleChange}>
+                                          <select className="mb-4 VendorInput" name="country" id="country" value={this.state.country} onChange={this.handleChange}>
                                             {countriesList}
                                           </select>
                                         </div>

@@ -1,5 +1,5 @@
 import "../css/StatutoryDetails.css";
-import information from "../img/information.jpg";
+import pdf from "../pdf/Declaration of GST Non Enrollment Format.pdf";
 import Navbar1 from "../common/navbar.js";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -17,9 +17,12 @@ import { FileUploader } from "react-drag-drop-files";
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 export default function Statutory(props) {
+  const [url, seturl] = useState();
+  const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [errors, setErrors] = useState({})
   const navigate = useNavigate();
+  const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("Micro");
   const [MSME_status, setMSME_status] = useState("Registered");
@@ -54,6 +57,17 @@ export default function Statutory(props) {
   });
   function onChangeValue(event) {
     setGST_type(event.target.value);
+    if(event.target.value==='UnRegistered')
+    {
+      sethideunRegisteredField(false);
+    }
+    else
+    {
+      sethideunRegisteredField(true);
+    }
+  }
+  function onFileDisclosurechange(e) {
+    setfileDisclosure(e)
   }
   function onChangeValueMSME(event) {
     setMSME(event.target.value);
@@ -118,6 +132,7 @@ export default function Statutory(props) {
 }
 
   useEffect(() => {
+
     apiService.getvendorDetail(values.userId)
     .then(res => {
       setcountry(res.data.country);
@@ -127,6 +142,7 @@ export default function Statutory(props) {
       }
 
     })
+    seturl(pdf);
   })
   const saveStatutoryDetail = (e) => {
     const formErrors = validateForm()
@@ -156,6 +172,7 @@ export default function Statutory(props) {
     data.append('TAN_No', values.TAN_No);
     data.append('userId', values.userId);
     data.append('Tax_residency_No', values.Tax_residency_No);
+    data.append('fileDisclosure', fileDisclosure);
     apiService.saveStatutoryDetail(data)
       .then(res => {
         if (res.data.status === 'success') {
@@ -207,6 +224,7 @@ export default function Statutory(props) {
                             </Col>
                           </Row>
                         </Form.Group>
+                        { hideunRegisteredField ?
                         <Col>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>GST no*</Form.Label>
@@ -214,12 +232,15 @@ export default function Statutory(props) {
                             {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
                           </Form.Group>
                         </Col>
+: null}
+  { hideunRegisteredField ?
                         <Col>
                           <div className="frame-input">
                             <label for="fileupload">Upload GST</label>
                             <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
                           </div>
                         </Col>
+                        : null}
                       </Row>
                       <Row>
                         <Col>
@@ -247,7 +268,27 @@ export default function Statutory(props) {
 
                         </Col>
                       </Row>
-                      
+                      {!hideunRegisteredField ?
+                      <Row>
+                        <Col sm={8}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Declaration Form for Non-Registered in GST*</Form.Label>
+                            <FileUploader className="financial_fileupload"          
+                  required
+                  type="file"
+                  handleChange={onFileDisclosurechange}
+                  name="fileDisclosure"
+                />
+                 <span>{fileDisclosure ? `File name: ${fileDisclosure.name}` : "No File Chosen"}</span>
+              </Form.Group>
+                        </Col>
+                        <Col sm={2}>
+                        <a href={url} download>
+                          <Button className="DownloadDisclosure">Download</Button>
+                        </a>
+                        </Col>
+                      </Row>
+                       : null}
                       <Row>
                         <Col>
                         { showLoginTab ?
@@ -350,9 +391,9 @@ export default function Statutory(props) {
                           </div>
                         </Col>
                       </Row>
+                      { showLoginTab ?
                       <Row>
-                        <Col>
-                        { showLoginTab ?
+                        <Col>            
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Tax Residency Certificate*</Form.Label>
                             <FileUploader className="financial_fileupload"
@@ -362,12 +403,12 @@ export default function Statutory(props) {
                               name="fileFD"
                             />
                             <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
-
                           </Form.Group>
-                          : null}
                         </Col>
 
                       </Row>
+                      : null}
+                       
                     </Form>
                   </Col>
                 </Row>
@@ -376,7 +417,7 @@ export default function Statutory(props) {
             </Card>
           </Col>
         </Row>
-
+        
         <Row>
           <Col>
             <p className="statutory-Note">NOTE: If the vendor is not registered with the above compliance, they can mention it as “Non-Registered” in that column and they will upload the discloser for the same on the document upload option.</p>
@@ -390,6 +431,7 @@ export default function Statutory(props) {
           </div>
         </Row>
       </Container>
+      
     </div>
   )
 }

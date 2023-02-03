@@ -414,3 +414,10 @@ background-color: #575757!important;
   font-size: 15px;
   background-color: #4f4f4f !important;
 }
+.DownloadDisclosure{
+  position: relative;
+  top: 36%;
+  border: 1px solid #b1000e !important;
+  background-color: transparent !important;
+  color: #B1000E !important;
+}

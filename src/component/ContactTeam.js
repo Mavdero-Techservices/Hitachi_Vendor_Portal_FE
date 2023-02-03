@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar1 from "../common/navbar.js";
 import "../css/ContactTeam.css";
 import { FileUploader } from "react-drag-drop-files";
@@ -33,36 +33,33 @@ const ContactTeam = () => {
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
-    let e = {...errors}
+    let e = { ...errors }
     setErrors(e)
     if (!!errors[name])
-    setErrors({
+      setErrors({
         ...errors,
         [name]: null
-    })
+      })
   }
   const validateForm = () => {
-    const {contactName1,emailId1,contactNumber1} = values;
+    const { contactName1, emailId1, contactNumber1 } = values;
 
     const newErrors = {}
-    if (!contactName1 || contactName1 === "")
-    {
-      newErrors.contactName1 = "Please enter contactName"
+    if (!contactName1 || contactName1 === "") {
+      newErrors.contactName1 = "contactName"
     }
-    if (!emailId1 ||  emailId1 === "")
-    {
-      newErrors.emailId1 = "Please enter emailId"
+    if (!emailId1 || emailId1 === "") {
+      newErrors.emailId1 = "EmailId"
     } else if (!mailValReg.test(emailId1))
-    newErrors.emailId1 = "Please enter a valid email"
-        
-  if (!contactNumber1 || contactNumber1 === "")
-  {
-    newErrors.contactNumber1 = "Please entercontactNumber1"
-  }
- 
+      newErrors.emailId1 = "Please enter a valid email"
+
+    if (!contactNumber1 || contactNumber1 === "") {
+      newErrors.contactNumber1 = "contactNumber"
+    }
+
     return newErrors
-}
-  const saveContactTeam =(e) => {
+  }
+  const saveContactTeam = (e) => {
     e.preventDefault()
     const formErrors = validateForm()
     var arr = [];
@@ -70,119 +67,199 @@ const ContactTeam = () => {
     var statutoryDetailArray = [];
     var compalianceDetailArray = [];
     var bankDetailArray = [];
-    var financeDetailArray = [];
-    
-if(basicInfo)
-{
-  Object.entries(basicInfo).map(([key, value]) => {
-  
-    Object.entries(value).map(([key2, value2]) => {
+    var basicVendor = [];
+    var communicationVendor = [];
+    var statutoryValidation = [];
+    var compalianceDetailValidation = [];
+    var contactDetailValidation = [];
+    var bankDetailValidation = [];
+    if (basicInfo) {
+      Object.entries(basicInfo).map(([key, value]) => {
+        if (value === 'All details filled') {
+          arr.length = 0;
+        }
+        else {
+          Object.entries(value).map(([key2, value2]) => {
 
-      if(value2==='')
-      {
-        arr.push([key2]);
-        
+            if (Object.keys(value2).length <= 0) {
+
+              arr.push(key2);
+            }
+          })
+        }
+
+
+      })
+    }
+    if (communicationDetail) {
+      Object.entries(communicationDetail).map(([key, value]) => {
+        if (value === 'All details filled') {
+          communicationDetailArray.length = 0;
+        }
+        else {
+          Object.entries(value).map(([key2, value2]) => {
+            if (Object.keys(value2).length <= 0) {
+              communicationDetailArray.push(key2);
+            }
+          })
+        }
+
+
+      })
+    }
+    if (statutory) {
+      Object.entries(statutory).map(([key, value]) => {
+        if (value === 'All details filled') {
+          statutoryDetailArray.length = 0;
+        }
+        else {
+          Object.entries(value).map(([key2, value2]) => {
+            if (Object.keys(value2).length <= 0) {
+              statutoryDetailArray.push(key2);
+            }
+          })
+        }
+
+
+      })
+    }
+    if (compaliance) {
+
+      Object.entries(compaliance).map(([key, value]) => {
+        if (value === 'All details filled') {
+          compalianceDetailArray.length = 0;
+        }
+        else {
+          Object.entries(value).map(([key2, value2]) => {
+            if (Object.keys(value2).length <= 0) {
+              compalianceDetailArray.push(key2);
+            }
+          })
+        }
+
+
+      })
+    }
+    if (bankDetail) {
+      Object.entries(bankDetail).map(([key, value]) => {
+        if (value === 'All details filled') {
+          bankDetailArray.length = 0;
+        }
+        else {
+          Object.entries(value).map(([key2, value2]) => {
+
+            if (Object.keys(value2).length <= 0) {
+              bankDetailArray.push(key2);
+            }
+          })
+        }
+      })
+    }
+    Object.entries(arr).map(([key, value]) => {
+      if (value === 'address1') {
+        basicVendor.push('Address Line-1');
       }
-      else
-      {
-        console.log("noterror");
+      if (value === 'address2') {
+        basicVendor.push('Address Line-2');
+      }
+      if (value === 'city') {
+        basicVendor.push('city');
+      }
+      if (value === 'companyName') {
+        basicVendor.push('companyName');
+      }
+      if (value === 'country') {
+        basicVendor.push('country');
+      }
+      if (value === 'pinCode') {
+        basicVendor.push('pinCode');
+      }
+      if (value === 'state') {
+        basicVendor.push('state');
+      }
+    })
+    Object.entries(communicationDetailArray).map(([key, value]) => {
+      if (value === 'financeSpoccontactName') {
+        communicationVendor.push('financeSpoc-contactName');
+      }
+      if (value === 'financeSpocdesignation') {
+        communicationVendor.push('financeSpoc-designation');
+      }
+      if (value === 'financeSpocphoneNo') {
+        communicationVendor.push('financeSpoc-phoneNo');
+      }
+      if (value === 'financeSpocemail') {
+        communicationVendor.push('financeSpoc-Email');
       }
 
-    
-    })
- 
-})
-}
-if(communicationDetail)
-{
-  Object.entries(communicationDetail).map(([key, value]) => {
-
-  if(value.collectionSpoccontactName==='')
-  {
-    
-    console.log("valuee")
-  }
-    Object.entries(value).map(([key2, value2]) => {
-
-      if(value2==='')
-      {
-        communicationDetailArray.push([key2]);
-        
+      if (value === 'managementSpoccontactName') {
+        communicationVendor.push('managementSpoc-contactName');
       }
-      else
-      {
-        console.log("noterror");
+      if (value === 'managementSpocdesignation') {
+        communicationVendor.push('managementSpoc-designation');
+      }
+      if (value === 'managementSpocphoneNo') {
+        communicationVendor.push('managementSpoc-phoneNo');
+      }
+      if (value === 'managementSpocemail') {
+        communicationVendor.push('managementSpoc-Email');
+      }
+      if (value === 'mastervendor_email') {
+        communicationVendor.push('mastervendor EmailId');
       }
 
-    
     })
-  
-}) 
-}
-if(statutory)
-{
-  Object.entries(statutory).map(([key, value]) => {
-  
-    Object.entries(value).map(([key2, value2]) => {
-  
-      if(value2==='')
-      {
-        statutoryDetailArray.push([key2]);
-        
+    Object.entries(statutoryDetailArray).map(([key, value]) => {
+      if (value === 'GST_No') {
+        statutoryValidation.push('GST No');
       }
-      else
-      {
-        console.log("noterror");
+      if (value === 'PAN_No') {
+        statutoryValidation.push('PAN No');
       }
-  
-    
+      if (value === 'CIN_No') {
+        statutoryValidation.push('CIN No');
+      }
+      if (value === 'MSME No') {
+        statutoryValidation.push('MSME No');
+      }
+      if (value === 'TAN_No') {
+        statutoryValidation.push('TAN No');
+      }
     })
-  
-  }) 
-}  
- if(compaliance)
- {
-  Object.entries(compaliance).map(([key, value]) => {
-  
-    Object.entries(value).map(([key2, value2]) => {
-  
-      if(value2==='')
-      {
-        compalianceDetailArray.push([key2]);
-        
+    Object.entries(compalianceDetailArray).map(([key, value]) => {
+      if (value === 'RPD_Doc') {
+        compalianceDetailValidation.push('Related Party Disclosure');
       }
-      else
-      {
-        console.log("noterror");
+      if (value === 'COC_Doc') {
+        compalianceDetailValidation.push('COC for services support/installation');
       }
-  
-    
+      if (value === 'NDA_Doc') {
+        compalianceDetailValidation.push('Non-disclosure agreement');
+      }
     })
-  
-  }) 
- }
- if(bankDetail)
- {
-  Object.entries(bankDetail).map(([key, value]) => {
-  
-    Object.entries(value).map(([key2, value2]) => {
-  
-      if(value2==='')
-      {
-        bankDetailArray.push([key2]);
-        
+    Object.entries(bankDetailArray).map(([key, value]) => {
+      if (value === 'bankAccountName') {
+        bankDetailValidation.push('Bank Account Name');
       }
-      else
-      {
-        console.log("noterror");
+      if (value === 'bankName') {
+        bankDetailValidation.push('Bank Name');
       }
-  
-    
+      if (value === 'bankAccountNumber') {
+        bankDetailValidation.push('Bank AccountNumber');
+      }
+      if (value === 'ifscCode') {
+        bankDetailValidation.push('IFSC Code');
+      }
+      if (value === 'MICRcode') {
+        bankDetailValidation.push('MICR Code');
+      }
+      if (value === 'bankdetailDoc') {
+        bankDetailValidation.push('Bank Detail Document');
+      }
     })
-  
-  }) 
- }
- console.log(arr.address1)
+    Object.entries(formErrors).map(([key, value]) => {
+      contactDetailValidation.push(value);
+    })
     const user = {
       userId: values.userId || undefined,
       contactName1: values.contactName1 || undefined,
@@ -195,50 +272,50 @@ if(statutory)
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
     }
-        Swal.fire({
-          title: 'please complete this field.',
-          html: `VENDOR DETAIL-BASIC INFO:<br> ${arr}<br>VENDOR DETAIL-COMMUNICATION DETAIL:<br> ${communicationDetailArray}, <br> SATUTORY DETAIL:<br>${statutoryDetailArray},<br> COMPLIANCE DETAIL:<br> ${compalianceDetailArray},<br> FINANCIAL DETAIL: <br> ${financeDetailArray},<br> BANK DETAIL: <br> ${bankDetailArray}`,
-          padding: '3px',
-          icon: 'warning',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'ok'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            if (Object.keys(formErrors).length > 0) {
-              setErrors(formErrors) 
-          } 
-          else{
-            apiService.saveContactTeam(user)
+    Swal.fire({
+      title: 'please complete this field.',
+      html: `VENDOR DETAIL-BASIC INFO:<br> ${basicVendor}<br>VENDOR DETAIL-COMMUNICATION DETAIL:<br> ${communicationVendor}, <br> SATUTORY DETAIL:<br>${statutoryValidation},<br> COMPLIANCE DETAIL:<br> ${compalianceDetailValidation}<br> BANK DETAIL: <br> ${bankDetailValidation} <br> CONTACT DETAIL: <br> ${contactDetailValidation}`,
+      padding: '3px',
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (Object.keys(formErrors).length > 0) {
+          setErrors(formErrors)
+        }
+        else {
+          apiService.saveContactTeam(user)
             .then(response => {
-              if (response.data.status === 'success') { 
+              if (response.data.status === 'success') {
                 Swal.fire(
                   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
                 )
               }
-                else {
-        Swal.fire({
-          title: "Error While Fetching",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
+              else {
+                Swal.fire({
+                  title: "Error While Fetching",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
             })
-          }
-           
-           
-          }
-        })
+        }
+
+
+      }
+    })
   }
   useEffect(() => {
     apiService.getAllCollection(values.userId)
-    .then(getAllCollection => {
-      setbasicInfo(getAllCollection.data.basicInfo);
-      setcommunicationDetail(getAllCollection.data.CommunicationDetails);
-      setstatutory(getAllCollection.data.Statutory);
-      setcompaliance(getAllCollection.data.ComplianceDetail);
-      setfinancialDetail(getAllCollection.data.FinancialDetail);
-      setbankDetail(getAllCollection.data.Bankdetail);
-    })
+      .then(getAllCollection => {
+        setbasicInfo(getAllCollection.data.basicInfo);
+        setcommunicationDetail(getAllCollection.data.CommunicationDetails);
+        setstatutory(getAllCollection.data.Statutory);
+        setcompaliance(getAllCollection.data.ComplianceDetail);
+        setfinancialDetail(getAllCollection.data.FinancialDetail);
+        setbankDetail(getAllCollection.data.Bankdetail);
+      })
   }, [])
   return (
     <div className="Contact-details" >
@@ -249,29 +326,26 @@ if(statutory)
             <span className="Contact_title">Contact Team</span>
             <div className="row p-5" style={{ backgroundColor: '#fff' }}>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor=" contactName1">Name</label>
+                <label htmlFor=" contactName1">Name*</label>
                 <input type="text" className="mb-4 Contactinputbox" name="contactName1" value={values.contactName1} onChange={handleChange('contactName1')} />
-                {errors.contactName1 ? <p className="text text-danger small">{errors.contactName1}</p> : ""}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="emailId1">Email*</label>
                 <input type="text" className="mb-4 Contactinputbox" name="emailId1" value={values.emailId1} onChange={handleChange('emailId1')} />
-                {errors.emailId1? <p className="text text-danger small">{errors.emailId1}</p> : ""}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="contactNumber1">Contact Number*</label>
                 <input type="number" className="mb-4 Contactinputbox" name="contactNumber1" value={values.contactNumber1} onChange={handleChange('contactNumber1')} />
-                {errors.contactNumber1? <p className="text text-danger small">{errors.contactNumber1}</p> : ""}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor=" contactName2">Name</label>
                 <input type="text" className="mb-4 Contactinputbox" name="contactName2" value={values.contactName2} onChange={handleChange('contactName2')} />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="emailId2">Email*</label>
+                <label htmlFor="emailId2">Email</label>
                 <input type="text" className="mb-4 Contactinputbox" name="emailId2" value={values.emailId2} onChange={handleChange('emailId2')} />  </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="contactNumber2">Contact Number*</label>
+                <label htmlFor="contactNumber2">Contact Number</label>
                 <input type="number" className="mb-4 Contactinputbox" name="contactNumber2" value={values.contactNumber2} onChange={handleChange('contactNumber2')} />
 
               </div>
@@ -280,11 +354,11 @@ if(statutory)
                 <input type="text" className="mb-4 Contactinputbox" name="contactName3" value={values.contactName3} onChange={handleChange('contactName3')} />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="emailId3">Email*</label>
+                <label htmlFor="emailId3">Email</label>
                 <input type="text" className="mb-4 Contactinputbox" name="emailId3" value={values.emailId3} onChange={handleChange('emailId3')} />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="contactNumber3">Contact Number*</label>
+                <label htmlFor="contactNumber3">Contact Number</label>
                 <input type="number" className="mb-4 Contactinputbox" name="contactNumber3" value={values.contactNumber3} onChange={handleChange('contactNumber3')} />
               </div>
 

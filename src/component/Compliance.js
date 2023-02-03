@@ -21,6 +21,7 @@ const ComplianceDetails = () => {
   const [urlNDA, seturlNDA] = useState();
   const [fileCOC, setfileCOC] = useState();
   const [fileNDA, setfileNDA] = useState();
+  const [financialYearEnd, setfinancialYearEnd] = useState();
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName,
     userName:JSON.parse(window.sessionStorage.getItem("jwt")).result.userName,
@@ -70,10 +71,14 @@ const ComplianceDetails = () => {
     apiService.createNDAPdf(user).then(res => {
       console.log("pdfCreated");
     })
+    apiService.getFinancialDate().then(res => {
+      console.log("financialyear",res.data.endDate);
+      setfinancialYearEnd(res.data.endDate);
+    })
     seturlRPD(`http://localhost:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`);
     seturlCoc(`http://localhost:12707/downloadPdf/${pdfValues.companyName}COC.pdf`);
     seturlNDA(`http://localhost:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`);
-  })
+  }, [])
   const saveComplianceDetail = (e) => {
     e.preventDefault()
     const data = new FormData();
@@ -140,6 +145,12 @@ const ComplianceDetails = () => {
                         <Button className="UploadBtn">Upload files</Button>
 
                       </Col>
+                      {fileRPD ?
+                      <Col>
+                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
+                      </Col>
+                      : null}
                     </Row>
                     <Row>
                       <Form.Label>COC for services support/installation*</Form.Label>
@@ -163,6 +174,12 @@ const ComplianceDetails = () => {
                         <Button className="UploadBtn">Upload files</Button>
 
                       </Col>
+                      {fileCOC ?
+                      <Col>
+                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
+                      </Col>
+                      : null}
                     </Row>
                     <Row>
                       <Form.Label>Non-disclosure agreement*</Form.Label>
@@ -184,6 +201,12 @@ const ComplianceDetails = () => {
                       <Col>
                         <Button className="UploadBtn">Upload files</Button>
                       </Col>
+                      {fileNDA ?
+                      <Col>
+                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
+                      </Col>
+                      : null}
                     </Row>
                   </Form>
                 </Card.Body>

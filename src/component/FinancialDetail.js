@@ -95,22 +95,22 @@ const FinancialDetails = () => {
             <span className="financial_title">Financial Detail</span>
             <div className="row p-5" style={{ backgroundColor: '#fff' }}>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="yearOfAuditedFinancial*">Year of audited financial</label>
+                <label htmlFor="yearOfAuditedFinancial">Year of audited financial</label>
                 <input type="number" className="mb-4 inputbox" name="yearOfAuditedFinancial" value={values.yearOfAuditedFinancial} onChange={handleChange('yearOfAuditedFinancial')} />
                 {errors.yearOfAuditedFinancial ? <p className="text text-danger small">{errors.yearOfAuditedFinancial}</p> : ""}
-                <label htmlFor="netWorth">NetWorth*</label>
+                <label htmlFor="netWorth">NetWorth</label>
                 <input type="text" className="mb-4 inputbox" name="netWorth" value={values.netWorth} onChange={handleChange('netWorth')} />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="Revenue">Revenue*</label>
+                <label htmlFor="Revenue">Revenue</label>
                 <input type="text" className="mb-4 inputbox" name="Revenue" value={values.Revenue} onChange={handleChange('Revenue')} />
-                <label htmlFor="currentAssets">Current assets*</label>
+                <label htmlFor="currentAssets">Current assets</label>
                 <input type="text" className="mb-4 inputbox" name="currentAssets" value={values.currentAssets} onChange={handleChange('currentAssets')} />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
-                <label htmlFor="Profit">Profit*</label>
+                <label htmlFor="Profit">Profit</label>
                 <input type="text" className="mb-4 inputbox" name="Profit" value={values.Profit} onChange={handleChange('Profit')} />
-                <label htmlFor="directorDetails">Director Detail*</label>
+                <label htmlFor="directorDetails">Director Detail</label>
                 <input type="text" className="mb-4 inputbox" name="directorDetails" value={values.directorDetails} onChange={handleChange('directorDetails')} />
               </div>
             </div>

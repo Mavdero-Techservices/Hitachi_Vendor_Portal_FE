@@ -71,5 +71,9 @@ class apiService {
   getvendorDetail(userId) {
     return http.get(`/getvendorDetail/${userId}`);
   }
+  getFinancialDate()
+  {
+    return http.get("/getfinacialYear");
+  }
 }
 export default new apiService();

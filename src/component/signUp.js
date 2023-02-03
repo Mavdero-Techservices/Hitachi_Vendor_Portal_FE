@@ -79,7 +79,6 @@ setErrors({
   else{
     apiService.saveUser(user)
     .then(response => {
-      console.log(response.data.message);
       if (response.data.message==='User already exist') {
         Swal.fire({
           title: response.data.message,

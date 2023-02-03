@@ -128,7 +128,20 @@ color: #F53844;
   line-height: inherit;
   background: #efefef;
   padding-left: 2%; 
-  padding: 0% !important;
+  padding: 3% !important;
+}
+.mb-4.VendorInputCompanyName{
+  width: 100% !important;
+  text-indent: 15px;
+  width: 100%;
+  border: 1px solid rgb(172, 170, 170);
+  border-radius: 25px ;
+  font-family: inherit ; 
+  font-size: inherit;
+  line-height: inherit;
+  background: #efefef;
+  padding-left: 2%; 
+  padding: 1.5% !important;
 }
 select {
   width: 100%;
@@ -156,7 +169,14 @@ select {
   margin-left: 31%;
   margin-bottom: 5%;
 }
-
+.addressLine
+{
+  border-radius:35px;
+  width: 100%;
+  background: #efefef;
+  padding-left: 4%; 
+  padding-top: 1%; 
+}
 
 
 .resetButton {
