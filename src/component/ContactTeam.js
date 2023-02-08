@@ -6,10 +6,12 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import apiService from "../services/api.service";
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 const mailValReg = RegExp(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 )
 const ContactTeam = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({})
   const [basicInfo, setbasicInfo] = useState({})
@@ -73,9 +75,9 @@ const ContactTeam = () => {
     var compalianceDetailValidation = [];
     var contactDetailValidation = [];
     var bankDetailValidation = [];
-    if (basicInfo) {
+   if (basicInfo) {
       Object.entries(basicInfo).map(([key, value]) => {
-        if (value === 'All details filled') {
+        if (value === 'null') {
           arr.length = 0;
         }
         else {
@@ -93,7 +95,7 @@ const ContactTeam = () => {
     }
     if (communicationDetail) {
       Object.entries(communicationDetail).map(([key, value]) => {
-        if (value === 'All details filled') {
+        if (value === 'null') {
           communicationDetailArray.length = 0;
         }
         else {
@@ -109,12 +111,14 @@ const ContactTeam = () => {
     }
     if (statutory) {
       Object.entries(statutory).map(([key, value]) => {
-        if (value === 'All details filled') {
+        if (value === 'null'||!value) {
           statutoryDetailArray.length = 0;
         }
         else {
           Object.entries(value).map(([key2, value2]) => {
-            if (Object.keys(value2).length <= 0) {
+          
+           if (Object.keys(value2).length <= 0) {
+           
               statutoryDetailArray.push(key2);
             }
           })
@@ -126,7 +130,7 @@ const ContactTeam = () => {
     if (compaliance) {
 
       Object.entries(compaliance).map(([key, value]) => {
-        if (value === 'All details filled') {
+        if (value === 'null') {
           compalianceDetailArray.length = 0;
         }
         else {
@@ -142,7 +146,7 @@ const ContactTeam = () => {
     }
     if (bankDetail) {
       Object.entries(bankDetail).map(([key, value]) => {
-        if (value === 'All details filled') {
+        if (value === 'null') {
           bankDetailArray.length = 0;
         }
         else {
@@ -155,88 +159,154 @@ const ContactTeam = () => {
         }
       })
     }
-    Object.entries(arr).map(([key, value]) => {
-      if (value === 'address1') {
-        basicVendor.push('Address Line-1');
-      }
-      if (value === 'address2') {
-        basicVendor.push('Address Line-2');
-      }
-      if (value === 'city') {
-        basicVendor.push('city');
-      }
-      if (value === 'companyName') {
-        basicVendor.push('companyName');
-      }
-      if (value === 'country') {
-        basicVendor.push('country');
-      }
-      if (value === 'pinCode') {
-        basicVendor.push('pinCode');
-      }
-      if (value === 'state') {
-        basicVendor.push('state');
-      }
-    })
-    Object.entries(communicationDetailArray).map(([key, value]) => {
-      if (value === 'financeSpoccontactName') {
-        communicationVendor.push('financeSpoc-contactName');
-      }
-      if (value === 'financeSpocdesignation') {
-        communicationVendor.push('financeSpoc-designation');
-      }
-      if (value === 'financeSpocphoneNo') {
-        communicationVendor.push('financeSpoc-phoneNo');
-      }
-      if (value === 'financeSpocemail') {
-        communicationVendor.push('financeSpoc-Email');
-      }
+    if(arr.length<=0)
+    {
+      basicVendor.push('Address Line-1');
+      basicVendor.push('city');
+      basicVendor.push('companyName');
+      basicVendor.push('country');
+      basicVendor.push('pinCode');
+      basicVendor.push('state');
+    }
+    else
+    {
+      Object.entries(arr).map(([key, value]) => {
+        if (value === 'address1') {
+          basicVendor.push('Address Line-1');
+        }
+        if (value === 'city') {
+          basicVendor.push('city');
+        }
+        if (value === 'companyName') {
+          basicVendor.push('companyName');
+        }
+        if (value === 'country') {
+          basicVendor.push('country');
+        }
+        if (value === 'pinCode') {
+          basicVendor.push('pinCode');
+        }
+        if (value === 'state') {
+          basicVendor.push('state');
+        }
+      })
+    }
+    if(communicationDetailArray.length<=0)
+    {
+      communicationVendor.push('financeSpoc-contactName');
+      communicationVendor.push('financeSpoc-designation');
+      communicationVendor.push('financeSpoc-phoneNo');
+      communicationVendor.push('financeSpoc-Email');
+      communicationVendor.push('managementSpoc-contactName');
+      communicationVendor.push('managementSpoc-designation');
+      communicationVendor.push('managementSpoc-phoneNo');
+      communicationVendor.push('managementSpoc-Email');
+      communicationVendor.push('mastervendor EmailId');
+    }
+    else
+    {
+      Object.entries(communicationDetailArray).map(([key, value]) => {
+        if (value === 'financeSpoccontactName') {
+          communicationVendor.push('financeSpoc-contactName');
+        }
+        if (value === 'financeSpocdesignation') {
+          communicationVendor.push('financeSpoc-designation');
+        }
+        if (value === 'financeSpocphoneNo') {
+          communicationVendor.push('financeSpoc-phoneNo');
+        }
+        if (value === 'financeSpocemail') {
+          communicationVendor.push('financeSpoc-Email');
+        }
+  
+        if (value === 'managementSpoccontactName') {
+          communicationVendor.push('managementSpoc-contactName');
+        }
+        if (value === 'managementSpocdesignation') {
+          communicationVendor.push('managementSpoc-designation');
+        }
+        if (value === 'managementSpocphoneNo') {
+          communicationVendor.push('managementSpoc-phoneNo');
+        }
+        if (value === 'managementSpocemail') {
+          communicationVendor.push('managementSpoc-Email');
+        }
+        if (value === 'mastervendor_email') {
+          communicationVendor.push('mastervendor EmailId');
+        }
+  
+      })
+    }
+    if(statutoryDetailArray.length<=0)
+    {
+      statutoryValidation.push('GST No');
+      statutoryValidation.push('PAN No');
+      statutoryValidation.push('CIN No');
+      statutoryValidation.push('MSME No');
+      statutoryValidation.push('TAN No');
+    }
+    else
+    {
+      Object.entries(statutoryDetailArray).map(([key, value]) => {
+ if(statutoryDetailArray.length===1)
+ {
+  if (value === 'id') {
+    statutoryValidation.push('No empty fields');
+  }
+ }
+ else
+ {
+  if (value === 'GST_No') {
+    statutoryValidation.push('GST No');
+  }
+  if (value === 'PAN_No') {
+    statutoryValidation.push('PAN No');
+  }
+  if (value === 'CIN_No') {
+    statutoryValidation.push('CIN No');
+  }
+  if (value === 'MSME No') {
+    statutoryValidation.push('MSME No');
+  }
+  if (value === 'TAN_No') {
+    statutoryValidation.push('TAN No');
+  }
+ }
 
-      if (value === 'managementSpoccontactName') {
-        communicationVendor.push('managementSpoc-contactName');
-      }
-      if (value === 'managementSpocdesignation') {
-        communicationVendor.push('managementSpoc-designation');
-      }
-      if (value === 'managementSpocphoneNo') {
-        communicationVendor.push('managementSpoc-phoneNo');
-      }
-      if (value === 'managementSpocemail') {
-        communicationVendor.push('managementSpoc-Email');
-      }
-      if (value === 'mastervendor_email') {
-        communicationVendor.push('mastervendor EmailId');
-      }
+       
+      })
+    }
+    if(compalianceDetailArray.length<=0)
+    {
+      compalianceDetailValidation.push('Related Party Disclosure');
+      compalianceDetailValidation.push('COC for services support/installation');
+      compalianceDetailValidation.push('Non-disclosure agreement');
+    }
+    else{
+      Object.entries(compalianceDetailArray).map(([key, value]) => {
+        if (value === 'RPD_Doc') {
+          compalianceDetailValidation.push('Related Party Disclosure');
+        }
+        if (value === 'COC_Doc') {
+          compalianceDetailValidation.push('COC for services support/installation');
+        }
+        if (value === 'NDA_Doc') {
+          compalianceDetailValidation.push('Non-disclosure agreement');
+        }
+      
+      })
+    }
+    if(bankDetailArray.length<=0)
+    {
+      bankDetailValidation.push('Bank Account Name');
+      bankDetailValidation.push('Bank Name');
+      bankDetailValidation.push('Bank AccountNumber');
+      bankDetailValidation.push('IFSC Code');
+      bankDetailValidation.push('MICR Code');
+      bankDetailValidation.push('Bank Detail Document');
+    }
+   else{
 
-    })
-    Object.entries(statutoryDetailArray).map(([key, value]) => {
-      if (value === 'GST_No') {
-        statutoryValidation.push('GST No');
-      }
-      if (value === 'PAN_No') {
-        statutoryValidation.push('PAN No');
-      }
-      if (value === 'CIN_No') {
-        statutoryValidation.push('CIN No');
-      }
-      if (value === 'MSME No') {
-        statutoryValidation.push('MSME No');
-      }
-      if (value === 'TAN_No') {
-        statutoryValidation.push('TAN No');
-      }
-    })
-    Object.entries(compalianceDetailArray).map(([key, value]) => {
-      if (value === 'RPD_Doc') {
-        compalianceDetailValidation.push('Related Party Disclosure');
-      }
-      if (value === 'COC_Doc') {
-        compalianceDetailValidation.push('COC for services support/installation');
-      }
-      if (value === 'NDA_Doc') {
-        compalianceDetailValidation.push('Non-disclosure agreement');
-      }
-    })
     Object.entries(bankDetailArray).map(([key, value]) => {
       if (value === 'bankAccountName') {
         bankDetailValidation.push('Bank Account Name');
@@ -256,11 +326,29 @@ const ContactTeam = () => {
       if (value === 'bankdetailDoc') {
         bankDetailValidation.push('Bank Detail Document');
       }
+    
     })
+   }
+   if(formErrors.length<=0)
+   {
+    contactDetailValidation.push('There is no empty data');
+   }
+   else
+   {
     Object.entries(formErrors).map(([key, value]) => {
       contactDetailValidation.push(value);
     })
-    const user = {
+
+   }
+   console.log("datas::",statutory);
+   console.log("datasstatutoryDetailArray::",statutoryDetailArray);
+ 
+  //  console.log("basicarr1,",arr.length);
+  //  console.log("commuarr,",communicationDetailArray.length);
+  //  console.log("statutoryDetailArray,",statutoryDetailArray.length);
+  //  console.log("compalianceDetailArray,",compalianceDetailArray.length); 
+  //  console.log("bankDetailArray,",bankDetailArray.length); 
+   const user = {
       userId: values.userId || undefined,
       contactName1: values.contactName1 || undefined,
       emailId1: values.emailId1 || undefined,
@@ -272,9 +360,21 @@ const ContactTeam = () => {
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
     }
+ console.log("basicVendor",basicVendor);
+ console.log("communicationVendor",communicationVendor);
+ console.log("statutoryValidation",statutoryValidation);
+ console.log("compalianceDetailValidation",compalianceDetailValidation);
+ console.log("contactDetailValidation",contactDetailValidation);
+ console.log("bankDetailValidation",bankDetailValidation);
+
     Swal.fire({
       title: 'please complete this field.',
-      html: `VENDOR DETAIL-BASIC INFO:<br> ${basicVendor}<br>VENDOR DETAIL-COMMUNICATION DETAIL:<br> ${communicationVendor}, <br> SATUTORY DETAIL:<br>${statutoryValidation},<br> COMPLIANCE DETAIL:<br> ${compalianceDetailValidation}<br> BANK DETAIL: <br> ${bankDetailValidation} <br> CONTACT DETAIL: <br> ${contactDetailValidation}`,
+      html: `<b> VENDOR DETAIL-BASIC INFO:</b> <br> ${basicVendor}<br>
+     <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationVendor}, <br>
+     <b> SATUTORY DETAIL: </b> <br>${statutoryValidation},<br>
+     <b> COMPLIANCE DETAIL: </b> <br> ${compalianceDetailValidation}<br> 
+     <b>BANK DETAIL:  </b> <br> ${bankDetailValidation} <br>
+     <b> CONTACT DETAIL: </b> <br> ${contactDetailValidation}`,
       padding: '3px',
       icon: 'warning',
       confirmButtonColor: '#3085d6',
@@ -307,6 +407,23 @@ const ContactTeam = () => {
     })
   }
   useEffect(() => {
+    if (params.userId) {
+      apiService.getAllCollection(params.userId).then((res) => {
+        Object.entries(res.data.contactDetail).map(([key, value]) => {
+          setValues({
+            contactName1: value.contactName1,
+            emailId1:value.emailId1,
+            contactNumber1:value.contactNumber1,
+            contactName2: value.contactName2,
+            emailId2:value.emailId2,
+            contactNumber2:value.contactNumber2,
+            contactName3:value.contactName3,
+            emailId3:value.emailId3,
+            contactNumber3:value.contactNumber3,
+          })
+        })
+      })
+    }
     apiService.getAllCollection(values.userId)
       .then(getAllCollection => {
         setbasicInfo(getAllCollection.data.basicInfo);

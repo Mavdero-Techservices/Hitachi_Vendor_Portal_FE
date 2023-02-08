@@ -89,6 +89,7 @@ const ComplianceDetails = () => {
 
     apiService.saveComplianceDetail(data).then(res => {
       if (res.data.status === 'success') {
+        
         Swal.fire({
           title: "Data saved",
           icon: "success",

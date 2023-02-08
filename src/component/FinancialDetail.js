@@ -88,6 +88,7 @@ const FinancialDetails = () => {
     }
   }
   useEffect(() => {
+    
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {

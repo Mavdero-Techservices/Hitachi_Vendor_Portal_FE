@@ -125,6 +125,7 @@ export default function Statutory(props) {
   }
 
   useEffect(() => {
+    
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {

@@ -55,6 +55,7 @@ const BankDetails = (props) => {
       })
   }
   useEffect(() => {
+    
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
