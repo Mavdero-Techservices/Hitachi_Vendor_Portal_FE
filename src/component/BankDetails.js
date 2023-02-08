@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import "../css/BankDetails.css";
 import Navbar1 from "../common/navbar.js";
 import { FileUploader } from "react-drag-drop-files";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$"
 const BankDetails = (props) => {
   const navigate = useNavigate();
+  const params = useParams();
   const [errors, setErrors] = useState({})
   const [acName, setAcName] = useState("");
   const [bankname, setBankname] = useState("");
@@ -52,7 +54,21 @@ const BankDetails = (props) => {
         }
       })
   }
-
+  useEffect(() => {
+    if (params.userId) {
+      apiService.getAllCollection(params.userId).then((res) => {
+        Object.entries(res.data.Bankdetail).map(([key, value]) => {
+       setAcName(value.bankAccountName)
+       setBankname(value.bankName)
+         setAcno(value.bankAccountNumber)
+         setIfsc(value.ifscCode)
+         setMicr(value.MICRcode)
+         setbranchAdd(value.branchAddress)
+         setfileBank(value.bankdetailDoc)
+        })
+      })
+    }
+  }, [])
   return (
     <div className="bank-details">
       <Navbar1 />

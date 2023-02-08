@@ -61,12 +61,15 @@ const MainRouter = () => {
         <Route path="/commu" element={<Commun />} />
         <Route path="/statutory" element={<Statutory/>} />
         <Route path="/statutory/:userId" element={<Statutory/>} />
+        <Route path="/bank/:userId" element={<Bank user={ state.userInfo}/>} />
         <Route path="/bank" element={<Bank user={ state.userInfo}/>} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
         <Route path="/FinancialDetail" element={<FinancialDetail />} />
+        <Route path="/FinancialDetail/:userId" element={<FinancialDetail />} />
         <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
         <Route path="/ContactTeam" element={<ContactTeam />} />
+        <Route path="/ContactTeam/:userId" element={<ContactTeam />} />
         <Route path="/approval" element={<AdminPage/>} />
         <Route path="/approvedVendors" element={<ApprovedVendors/>} />
         <Route path="/rejectedVendors" element={<RejectedVendors/>} />

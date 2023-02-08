@@ -123,7 +123,7 @@ export default function Statutory(props) {
     }
     return newErrors
   }
-  
+
   useEffect(() => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
@@ -137,6 +137,33 @@ export default function Statutory(props) {
             PAN_No: value.PAN_No,
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
+            // GST_Doc: value.GST_Doc,
+            // PAN_Doc: value.PAN_Doc,
+            // TAN_Doc:value.TAN_Doc,
+            // PE_DeclarationNo:value.PE_DeclarationNo,
+            // MSME_Doc:value.MSME_Doc,
+            // form_10f:value.form_10f,
+            // MSME_status:value.MSME_status,
+            // MSME_No:value.MSME_No,
+            // MSME_Type:value.MSME_Type,
+            // TAN_No:value.TAN_No,
+            Tax_residency_No: value.Tax_residency_No,
+
+          })
+          setFile({
+            GST_Doc: value.GST_Doc,
+          })
+          setPAN_Doc({
+            PAN_Doc: value.PAN_Doc,
+          })
+          setform_10f_Doc({
+            form_10f_Doc: value.form_10f_Doc
+          })
+          setPE_Declaration_Doc({
+            PE_Declaration_Doc: value.PE_Declaration_Doc
+          })
+          setMSME_Doc({
+            MSME_Doc: value.MSME_Doc
           })
         })
       });
@@ -159,7 +186,7 @@ export default function Statutory(props) {
     }
     else {
       const data = new FormData();
-      data.append('GST_Doc', GST_Doc);
+      data.append('GST_Doc', GST_Doc.GST_Doc);
       data.append('GST_type', GST_type);
       data.append('GST_No', values.GST_No);
       data.append('PAN_No', values.PAN_No);

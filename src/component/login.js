@@ -53,39 +53,37 @@ export default function Signin(props) {
   });
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
-    let e = {...errors}
-setErrors(e)
-if (!!errors[name])
-setErrors({
-    ...errors,
-    [name]: null
-})
+    let e = { ...errors }
+    setErrors(e)
+    if (!!errors[name])
+      setErrors({
+        ...errors,
+        [name]: null
+      })
     setSubmit(true)
   }
   const validateForm = () => {
-    const { userName, password} = values;
+    const { userName, password } = values;
 
     const newErrors = {}
 
-    if (!userName ||  userName === "")
-    {
+    if (!userName || userName === "") {
       newErrors.userName = "Please enter user name"
     }
-        
-  if (!password || password === "")
-  {
-    newErrors.password = "Please enter password"
-  }
- 
+
+    if (!password || password === "") {
+      newErrors.password = "Please enter password"
+    }
+
     return newErrors
-}
-const validateForm2 = () => {
-  const { userName} = values;
-  const newErrors = {}
-  if (!userName ||  userName === "")
+  }
+  const validateForm2 = () => {
+    const { userName } = values;
+    const newErrors = {}
+    if (!userName || userName === "")
       newErrors.userName = "Please enter user name"
-  return newErrors
-}
+    return newErrors
+  }
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [showforgetPassowrd, setShowforgetPassowrd] = useState(false);
   const [showResetTab, setshowResetTab] = useState(false);
@@ -93,56 +91,56 @@ const validateForm2 = () => {
 
   const login = (e) => {
     e.preventDefault()
-   
+
     const formErrors = validateForm()
     const user = {
       userName: values.userName || undefined,
       password: values.password || undefined
     }
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors) 
-  } 
+      setErrors(formErrors)
+    }
     else {
-    signin(user).then((data) => {
-      setErrors(formErrors) 
-      if (data.status==='success') {
-localStorage.setItem("userName", JSON.stringify(values.userName));
-localStorage.setItem("password", JSON.stringify(values.password)); 
-}
-      else {      
-        Swal.fire({
-          title: data.data.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-      const details = data?.result
-      setValidation(data)
-      setRole(data?.result?.verifiedUser);
-      if (data === "invalid user") {
-        setSubmit(false)
-        textFieldForPasswordRef.current.blur();
-        setValues({ ...values, error: data.error })
-      } else {
-        if (data?.result?.verifiedUser === 'approved') {
-          apiService.getAllCollection(data?.result?.userId)
-          .then(getAllCollection => {
-            seteditUser(getAllCollection.data.basicInfo);
-            setuserId(data?.result?.userId);
-    auth.authenticate(data, () => {
-      setSubmit(true)
-      dispatch(loginAction.login())
-      setValues({ ...values, error: '', redirectToReferrer: true })
-    })
-          })
-
-        
-        } else {
-          setValues({ ...values, error: 'Please verify your email' })
+      signin(user).then((data) => {
+        setErrors(formErrors)
+        if (data.status === 'success') {
+          localStorage.setItem("userName", JSON.stringify(values.userName));
+          localStorage.setItem("password", JSON.stringify(values.password));
         }
-      }
-    })
-  }
+        else {
+          Swal.fire({
+            title: data.data.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        const details = data?.result
+        setValidation(data)
+        setRole(data?.result?.verifiedUser);
+        if (data === "invalid user") {
+          setSubmit(false)
+          textFieldForPasswordRef.current.blur();
+          setValues({ ...values, error: data.error })
+        } else {
+          if (data?.result?.verifiedUser === 'approved') {
+            apiService.getAllCollection(data?.result?.userId)
+              .then(getAllCollection => {
+                seteditUser(getAllCollection.data.basicInfo);
+                setuserId(data?.result?.userId);
+                auth.authenticate(data, () => {
+                  setSubmit(true)
+                  dispatch(loginAction.login())
+                  setValues({ ...values, error: '', redirectToReferrer: true })
+                })
+              })
+
+
+          } else {
+            setValues({ ...values, error: 'Please verify your email' })
+          }
+        }
+      })
+    }
   }
 
   const onResetCode = (e) => {
@@ -152,35 +150,34 @@ localStorage.setItem("password", JSON.stringify(values.password));
       userName: values.userName || undefined,
     }
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors) 
-  } 
-  else
-  {
-    apiService.resetPasswordByCode(user).then((data) => {
-      if (data) {
-        Swal.fire({
-          title: " check your email,to reset your password",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        setshowLoginTab(true);
-        setShowforgetPassowrd(false);
-      }
-      else {
-        Swal.fire({
-          title: "Error While Fetching",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-    })
-  }
+      setErrors(formErrors)
+    }
+    else {
+      apiService.resetPasswordByCode(user).then((data) => {
+        if (data) {
+          Swal.fire({
+            title: " check your email,to reset your password",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+          setshowLoginTab(true);
+          setShowforgetPassowrd(false);
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      })
+    }
 
   }
   useEffect(() => {
 
-    
-    })
+
+  })
   const backToLogin = (e) => {
     setShowforgetPassowrd(false);
     setshowPasswordTab(false);
@@ -198,17 +195,14 @@ localStorage.setItem("password", JSON.stringify(values.password));
 
   if (redirectToReferrer) {
     if (verifiedUser && verifiedUser === 'approved') {
-      console.log("edit",editUser);
-if(editUser==='null')
-{
-  return (<Navigate to={'/basic'} />)
-}
-else
-{
-  console.log("editUser",editUser);
-  return (<Navigate to={`/basic/${userId}`} />)
-}
-      
+      if (editUser[0] === 'null') {
+        return (<Navigate to={'/basic'} />)
+
+      }
+      else {
+        return (<Navigate to={`/basic/${userId}`} />)
+      }
+
     } else if (verifiedUser && verifiedUser === 'pending') {
       return (<Navigate to={'/'} />)
     }
@@ -242,15 +236,15 @@ else
                       <label >password*</label>
                       <input className="mb-4 loginInput" type="password" label="Password" variant="outlined" value={values.password} onChange={handleChange('password')} />
                       {errors.password ? <p className="text text-danger small">{errors.password}</p> : ""}
-                   </MDBCol>
+                    </MDBCol>
                   </MDBRow>
                   <MDBRow>
                     <MDBCol>
                       {!showPasswordTab && showLoginTab && !showforgetPassowrd ? <div className="form-group form-remember">
                         <button className='ForgetBtn' onClick={forgetPassword}> forget password?</button>
                         <label className='rememberMe'>
-        <input name="rememberMe"  type="checkbox"/> Remember me
-      </label>
+                          <input name="rememberMe" type="checkbox" /> Remember me
+                        </label>
                       </div>
                         : null}
                     </MDBCol>

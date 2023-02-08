@@ -24,8 +24,8 @@ const ComplianceDetails = () => {
   const [financialYearEnd, setfinancialYearEnd] = useState();
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName,
-    userName:JSON.parse(window.sessionStorage.getItem("jwt")).result.userName,
-    userId:JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+    userName: JSON.parse(window.sessionStorage.getItem("jwt")).result.userName,
+    userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
   });
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
@@ -45,7 +45,7 @@ const ComplianceDetails = () => {
   const downloadPdf = (e) => {
     const user = {
       companyName: pdfValues.companyName || undefined,
-      userName:pdfValues.userName|| undefined,
+      userName: pdfValues.userName || undefined,
     }
     e.preventDefault();
     apiService.downloadPdf(user)
@@ -59,20 +59,20 @@ const ComplianceDetails = () => {
   useEffect(() => {
     const user = {
       companyName: pdfValues.companyName || undefined,
-      userName:pdfValues.userName|| undefined,
-      userId:pdfValues.userId|| undefined,
+      userName: pdfValues.userName || undefined,
+      userId: pdfValues.userId || undefined,
     }
     apiService.createRelatedDisclosurePdf(user).then(res => {
-      console.log("pdfCreated");
+
     })
     apiService.createCocPdf(user).then(res => {
-      console.log("pdfCreated");
+
     })
     apiService.createNDAPdf(user).then(res => {
-      console.log("pdfCreated");
+
     })
     apiService.getFinancialDate().then(res => {
-      console.log("financialyear",res.data.endDate);
+
       setfinancialYearEnd(res.data.endDate);
     })
     seturlRPD(`http://localhost:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`);
@@ -146,11 +146,11 @@ const ComplianceDetails = () => {
 
                       </Col>
                       {fileRPD ?
-                      <Col>
-                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
-                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
-                      </Col>
-                      : null}
+                        <Col>
+                          <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                          <p className='financialYearEnd'>{financialYearEnd}</p>
+                        </Col>
+                        : null}
                     </Row>
                     <Row>
                       <Form.Label>COC for services support/installation*</Form.Label>
@@ -175,11 +175,11 @@ const ComplianceDetails = () => {
 
                       </Col>
                       {fileCOC ?
-                      <Col>
-                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
-                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
-                      </Col>
-                      : null}
+                        <Col>
+                          <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                          <p className='financialYearEnd'>{financialYearEnd}</p>
+                        </Col>
+                        : null}
                     </Row>
                     <Row>
                       <Form.Label>Non-disclosure agreement*</Form.Label>
@@ -189,7 +189,6 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6} >
-
                         <FileUploader
                           handleChange={onFileChangeNDA}
                           required
@@ -202,11 +201,11 @@ const ComplianceDetails = () => {
                         <Button className="UploadBtn">Upload files</Button>
                       </Col>
                       {fileNDA ?
-                      <Col>
-                      <p className='ValidityofDeclaration'>Validity of Declaration</p>
-                      <p className='financialYearEnd'>{financialYearEnd}</p>                   
-                      </Col>
-                      : null}
+                        <Col>
+                          <p className='ValidityofDeclaration'>Validity of Declaration</p>
+                          <p className='financialYearEnd'>{financialYearEnd}</p>
+                        </Col>
+                        : null}
                     </Row>
                   </Form>
                 </Card.Body>

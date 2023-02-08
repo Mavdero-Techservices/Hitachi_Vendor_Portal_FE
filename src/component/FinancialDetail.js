@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../css/FinancialDetail.css";
 import Navbar1 from "../common/navbar.js";
 import { FileUploader } from "react-drag-drop-files";
@@ -6,7 +6,9 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import apiService from "../services/api.service";
+import { useParams } from 'react-router-dom';
 const FinancialDetails = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({})
   const [fileFD, setfileFD] = useState();
@@ -31,25 +33,24 @@ const FinancialDetails = () => {
   }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
-    let e = {...errors}
+    let e = { ...errors }
     setErrors(e)
     if (!!errors[name])
-    setErrors({
+      setErrors({
         ...errors,
         [name]: null
-    })
+      })
   }
   const validateForm = () => {
-    const {yearOfAuditedFinancial} = values;
+    const { yearOfAuditedFinancial } = values;
 
     const newErrors = {}
 
-    if (yearOfAuditedFinancial.length<4)
-    {
+    if (yearOfAuditedFinancial.length < 4) {
       newErrors.yearOfAuditedFinancial = "Please enter valid year"
     }
     return newErrors
-}
+  }
   const saveFinancialDetail = (e) => {
     e.preventDefault()
     const formErrors = validateForm()
@@ -64,28 +65,44 @@ const FinancialDetails = () => {
     data.append('directorDetails', values.directorDetails);
     data.append('userId', values.userId);
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors) 
-  } 
+      setErrors(formErrors)
+    }
     else {
-    apiService.saveFinacialDetail(data)
-      .then(res => {
-        if (res.data.status === 'success') {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
+      apiService.saveFinacialDetail(data)
+        .then(res => {
+          if (res.data.status === 'success') {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
     }
   }
+  useEffect(() => {
+    if (params.userId) {
+      apiService.getAllCollection(params.userId).then((res) => {
+        Object.entries(res.data.FinancialDetail).map(([key, value]) => {
+          setValues({
+            yearOfAuditedFinancial: value.yearOfAuditedFinancial,
+            Revenue: value.Revenue,
+            Profit: value.Profit,
+            netWorth: value.netWorth,
+            currentAssets: value.currentAssets,
+            directorDetails: value.directorDetails,
+          })
+        })
+      })
+    }
+  }, [])
   return (
     <div className="financial-details">
       <Navbar1 />
