@@ -57,8 +57,10 @@ const MainRouter = () => {
         {/* <Route path="Test" element={<Test />} /> */}
         <Route path="/Navbar" element={<Navbar1 />} />
         <Route path="/basic" element={<Basic />} />
+        <Route path="/basic/:userId" element={<Basic />} />
         <Route path="/commu" element={<Commun />} />
         <Route path="/statutory" element={<Statutory/>} />
+        <Route path="/statutory/:userId" element={<Statutory/>} />
         <Route path="/bank" element={<Bank user={ state.userInfo}/>} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />

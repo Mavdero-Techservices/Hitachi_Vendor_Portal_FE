@@ -31,10 +31,12 @@ export default function Signin(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [verifiedUser, setRole] = useState();
+  const [userId, setuserId] = useState();
   const [Validation, setValidation] = useState();
   const [submit, setSubmit] = useState(null);
   const textFieldForPasswordRef = useRef(null);
   const [errors, setErrors] = useState({})
+  const [editUser, seteditUser] = useState();
   const [values, setValues] = useState({
     userName: '',
     password: '',
@@ -91,6 +93,7 @@ const validateForm2 = () => {
 
   const login = (e) => {
     e.preventDefault()
+   
     const formErrors = validateForm()
     const user = {
       userName: values.userName || undefined,
@@ -105,7 +108,6 @@ const validateForm2 = () => {
       if (data.status==='success') {
 localStorage.setItem("userName", JSON.stringify(values.userName));
 localStorage.setItem("password", JSON.stringify(values.password)); 
-
 }
       else {      
         Swal.fire({
@@ -123,11 +125,18 @@ localStorage.setItem("password", JSON.stringify(values.password));
         setValues({ ...values, error: data.error })
       } else {
         if (data?.result?.verifiedUser === 'approved') {
-          auth.authenticate(data, () => {
-            setSubmit(true)
-            dispatch(loginAction.login())
-            setValues({ ...values, error: '', redirectToReferrer: true })
+          apiService.getAllCollection(data?.result?.userId)
+          .then(getAllCollection => {
+            seteditUser(getAllCollection.data.basicInfo);
+            setuserId(data?.result?.userId);
+    auth.authenticate(data, () => {
+      setSubmit(true)
+      dispatch(loginAction.login())
+      setValues({ ...values, error: '', redirectToReferrer: true })
+    })
           })
+
+        
         } else {
           setValues({ ...values, error: 'Please verify your email' })
         }
@@ -168,6 +177,10 @@ localStorage.setItem("password", JSON.stringify(values.password));
   }
 
   }
+  useEffect(() => {
+
+    
+    })
   const backToLogin = (e) => {
     setShowforgetPassowrd(false);
     setshowPasswordTab(false);
@@ -180,11 +193,22 @@ localStorage.setItem("password", JSON.stringify(values.password));
     setshowLoginTab(false);
     setshowResetTab(false);
   }
+
   const { redirectToReferrer } = values
 
   if (redirectToReferrer) {
     if (verifiedUser && verifiedUser === 'approved') {
-      return (<Navigate to={'/basic'} />)
+      console.log("edit",editUser);
+if(editUser==='null')
+{
+  return (<Navigate to={'/basic'} />)
+}
+else
+{
+  console.log("editUser",editUser);
+  return (<Navigate to={`/basic/${userId}`} />)
+}
+      
     } else if (verifiedUser && verifiedUser === 'pending') {
       return (<Navigate to={'/'} />)
     }

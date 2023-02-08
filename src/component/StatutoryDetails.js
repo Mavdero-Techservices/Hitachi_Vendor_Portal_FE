@@ -20,6 +20,7 @@ export default function Statutory(props) {
   const [url, seturl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
+  const [editTab, seteditTab] = useState(true);
   const [errors, setErrors] = useState({})
   const navigate = useNavigate();
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
@@ -57,12 +58,10 @@ export default function Statutory(props) {
   });
   function onChangeValue(event) {
     setGST_type(event.target.value);
-    if(event.target.value==='UnRegistered')
-    {
+    if (event.target.value === 'UnRegistered') {
       sethideunRegisteredField(false);
     }
-    else
-    {
+    else {
       sethideunRegisteredField(true);
     }
   }
@@ -75,18 +74,14 @@ export default function Statutory(props) {
   function onChangeValueMSME_status(event) {
     setMSME_status(event.target.value);
   }
-  const clickMe = (data) => {
-    console.log("value pushed",data);
-    navigate("/ContactTeam", {data: data});  
-  }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
     setErrors(event)
     if (!!errors[name])
-    setErrors({
+      setErrors({
         ...errors,
         [name]: null
-    })
+      })
     setSubmit(true)
   }
   const onFileChange = (event) => {
@@ -116,82 +111,93 @@ export default function Statutory(props) {
     navigate('/ComplianceDetail');
   }
   const validateForm = () => {
-    const { GST_No,PAN_No} = values;
+    const { GST_No, PAN_No } = values;
 
     const newErrors = {}
 
-    if (!GSTValidation.test(GST_No))
-    {
-      newErrors.GST_No= "Please enter a valid GST No"
+    if (!GSTValidation.test(GST_No)) {
+      newErrors.GST_No = "Please enter a valid GST No"
     }
-    if (!PANValidation.test(PAN_No))
-    {
-      newErrors.PAN_No= "Please enter a valid PAN No"
+    if (!PANValidation.test(PAN_No)) {
+      newErrors.PAN_No = "Please enter a valid PAN No"
     }
     return newErrors
-}
-
+  }
+  
   useEffect(() => {
-
+    if (params.userId) {
+      apiService.getAllCollection(params.userId).then((res) => {
+        Object.entries(res.data.Statutory).map(([key, value]) => {
+          setValues({
+            GST_No: value.GST_No,
+            GST_type: value.GST_type,
+            MSME_No: value.MSME_No,
+            MSME_Type: value.MSME_Type,
+            MSME_status: value.MSME_status,
+            PAN_No: value.PAN_No,
+            CIN_No: value.CIN_No,
+            TAN_No: value.TAN_No,
+          })
+        })
+      });
+    }
     apiService.getvendorDetail(values.userId)
-    .then(res => {
-      setcountry(res.data.country);
-      if(res.data.country==='IN')
-      {
-        setshowLoginTab(false);
-      }
+      .then(res => {
+        setcountry(res.data.country);
+        if (res.data.country === 'IN') {
+          setshowLoginTab(false);
+        }
 
-    })
+      })
     seturl(pdf);
-  })
+  }, [])
   const saveStatutoryDetail = (e) => {
     const formErrors = validateForm()
     e.preventDefault();
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors) 
-  } 
-  else
-  {
-    const data = new FormData();
-    data.append('GST_Doc', GST_Doc);
-    data.append('GST_type', GST_type);
-    data.append('GST_No', values.GST_No);
-    data.append('PAN_No', values.PAN_No);
-    data.append('PAN_Doc', PAN_Doc);
-    data.append('form_10f_Doc', form_10f_Doc);
-    data.append('TAN_Doc', TAN_Doc);
-    data.append('PE_DeclarationNo', values.PE_DeclarationNo);
-    data.append('PE_Declaration_Doc', PE_Declaration_Doc);
-    data.append('MSME_Doc', MSME_Doc);
-    data.append('Tax_residency_Doc', Tax_residency_Doc);
-    data.append('CIN_No', values.CIN_No);
-    data.append('form_10f', values.form_10f);
-    data.append('MSME_status', MSME_status);
-    data.append('MSME_No', values.MSME_No);
-    data.append('MSME_Type', MSME);
-    data.append('TAN_No', values.TAN_No);
-    data.append('userId', values.userId);
-    data.append('Tax_residency_No', values.Tax_residency_No);
-    data.append('fileDisclosure', fileDisclosure);
-    apiService.saveStatutoryDetail(data)
-      .then(res => {
-        if (res.data.status === 'success') {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
-  }
- 
+      setErrors(formErrors)
+    }
+    else {
+      const data = new FormData();
+      data.append('GST_Doc', GST_Doc);
+      data.append('GST_type', GST_type);
+      data.append('GST_No', values.GST_No);
+      data.append('PAN_No', values.PAN_No);
+      data.append('PAN_Doc', PAN_Doc);
+      data.append('form_10f_Doc', form_10f_Doc);
+      data.append('TAN_Doc', TAN_Doc);
+      data.append('PE_DeclarationNo', values.PE_DeclarationNo);
+      data.append('PE_Declaration_Doc', PE_Declaration_Doc);
+      data.append('MSME_Doc', MSME_Doc);
+      data.append('Tax_residency_Doc', Tax_residency_Doc);
+      data.append('CIN_No', values.CIN_No);
+      data.append('form_10f', values.form_10f);
+      data.append('MSME_status', MSME_status);
+      data.append('MSME_No', values.MSME_No);
+      data.append('MSME_Type', MSME);
+      data.append('TAN_No', values.TAN_No);
+      data.append('userId', values.userId);
+      data.append('Tax_residency_No', values.Tax_residency_No);
+      data.append('fileDisclosure', fileDisclosure);
+      apiService.saveStatutoryDetail(data)
+        .then(res => {
+          if (res.data.status === 'success') {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+
   }
   return (
     <div>
@@ -224,23 +230,23 @@ export default function Statutory(props) {
                             </Col>
                           </Row>
                         </Form.Group>
-                        { hideunRegisteredField ?
-                        <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>GST no*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
-                            {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
-                          </Form.Group>
-                        </Col>
-: null}
-  { hideunRegisteredField ?
-                        <Col>
-                          <div className="frame-input">
-                            <label for="fileupload">Upload GST</label>
-                            <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
-                          </div>
-                        </Col>
-                        : null}
+                        {hideunRegisteredField ?
+                          <Col>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>GST no*</Form.Label>
+                              <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
+                              {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
+                            </Form.Group>
+                          </Col>
+                          : null}
+                        {hideunRegisteredField ?
+                          <Col>
+                            <div className="frame-input">
+                              <label for="fileupload">Upload GST</label>
+                              <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
+                            </div>
+                          </Col>
+                          : null}
                       </Row>
                       <Row>
                         <Col>
@@ -269,59 +275,59 @@ export default function Statutory(props) {
                         </Col>
                       </Row>
                       {!hideunRegisteredField ?
-                      <Row>
-                        <Col sm={8}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Declaration Form for Non-Registered in GST*</Form.Label>
-                            <FileUploader className="financial_fileupload"          
-                  required
-                  type="file"
-                  handleChange={onFileDisclosurechange}
-                  name="fileDisclosure"
-                />
-                 <span>{fileDisclosure ? `File name: ${fileDisclosure.name}` : "No File Chosen"}</span>
-              </Form.Group>
-                        </Col>
-                        <Col sm={2}>
-                        <a href={url} download>
-                          <Button className="DownloadDisclosure">Download</Button>
-                        </a>
-                        </Col>
-                      </Row>
-                       : null}
+                        <Row>
+                          <Col sm={8}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>Declaration Form for Non-Registered in GST*</Form.Label>
+                              <FileUploader className="financial_fileupload"
+                                required
+                                type="file"
+                                handleChange={onFileDisclosurechange}
+                                name="fileDisclosure"
+                              />
+                              <span>{fileDisclosure ? `File name: ${fileDisclosure.name}` : "No File Chosen"}</span>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={2}>
+                            <a href={url} download>
+                              <Button className="DownloadDisclosure">Download</Button>
+                            </a>
+                          </Col>
+                        </Row>
+                        : null}
                       <Row>
                         <Col>
-                        { showLoginTab ?
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Form 10F*</Form.Label>
-                            <FileUploader className="financial_fileupload"
-                              handleChange={onFileChangeform_10f_Doc}
-                              required
-                              type="file"
-                              name="fileFD"
-                            />
-                            <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
+                          {showLoginTab ?
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>Form 10F*</Form.Label>
+                              <FileUploader className="financial_fileupload"
+                                handleChange={onFileChangeform_10f_Doc}
+                                required
+                                type="file"
+                                name="fileFD"
+                              />
+                              <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
 
-                          </Form.Group>
+                            </Form.Group>
                             : null}
                         </Col>
-                      
+
                       </Row>
                       <Row>
                         <Col>
-                        { showLoginTab ?
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>No PE declaration*</Form.Label>
-                            <FileUploader className="financial_fileupload"
-                              handleChange={onFileChangePE_Declaration_Doc}
-                              required
-                              type="file"
-                              name="fileFD"
-                            /> 
+                          {showLoginTab ?
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>No PE declaration*</Form.Label>
+                              <FileUploader className="financial_fileupload"
+                                handleChange={onFileChangePE_Declaration_Doc}
+                                required
+                                type="file"
+                                name="fileFD"
+                              />
                               <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span></Form.Group>
-                        
-                          : null}
-                          </Col>
+
+                            : null}
+                        </Col>
 
                       </Row>
 
@@ -370,7 +376,7 @@ export default function Statutory(props) {
                                 <input onChange={onChangeValueMSME} type="radio" value="Small" name="Small" checked={MSME === "Small"} /> Small
                               </Col>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME} type="radio" value="Macro" name="Macro" checked={MSME === "Macro"} /> Micro
+                                <input onChange={onChangeValueMSME} type="radio" value="Macro" name="Macro" checked={MSME === "Macro"} /> Macro
                               </Col>
                             </Row>
                           </Form.Group>
@@ -391,24 +397,24 @@ export default function Statutory(props) {
                           </div>
                         </Col>
                       </Row>
-                      { showLoginTab ?
-                      <Row>
-                        <Col>            
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Tax Residency Certificate*</Form.Label>
-                            <FileUploader className="financial_fileupload"
-                              handleChange={onFileChangeTax_residency_Doc}
-                              required
-                              type="file"
-                              name="fileFD"
-                            />
-                            <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
-                          </Form.Group>
-                        </Col>
+                      {showLoginTab ?
+                        <Row>
+                          <Col>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>Tax Residency Certificate*</Form.Label>
+                              <FileUploader className="financial_fileupload"
+                                handleChange={onFileChangeTax_residency_Doc}
+                                required
+                                type="file"
+                                name="fileFD"
+                              />
+                              <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
+                            </Form.Group>
+                          </Col>
 
-                      </Row>
-                      : null}
-                       
+                        </Row>
+                        : null}
+
                     </Form>
                   </Col>
                 </Row>
@@ -417,7 +423,7 @@ export default function Statutory(props) {
             </Card>
           </Col>
         </Row>
-        
+
         <Row>
           <Col>
             <p className="statutory-Note">NOTE: If the vendor is not registered with the above compliance, they can mention it as “Non-Registered” in that column and they will upload the discloser for the same on the document upload option.</p>
@@ -431,7 +437,7 @@ export default function Statutory(props) {
           </div>
         </Row>
       </Container>
-      
+
     </div>
   )
 }

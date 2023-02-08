@@ -75,5 +75,9 @@ class apiService {
   {
     return http.get("/getfinacialYear");
   }
+  updateVendordetail(userId,data)
+  {
+    return http.put(`/updateVdetail/${userId}`, data);
+  }
 }
 export default new apiService();
