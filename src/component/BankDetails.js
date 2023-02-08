@@ -104,6 +104,7 @@ const BankDetails = (props) => {
                   type="file"
                   name="fileBank"
                 />
+                <span>{fileBank ? `File name: ${fileBank.name}` : "No File Chosen"}</span>
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 my-auto" >
                 <button type="button" className="btn m-2 uploadFile">Upload files</button>
