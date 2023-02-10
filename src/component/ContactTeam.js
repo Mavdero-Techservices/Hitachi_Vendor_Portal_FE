@@ -15,6 +15,7 @@ const ContactTeam = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({})
   const [basicInfo, setbasicInfo] = useState({})
+  const [basicInfoNotEmpty, setbasicInfoNotEmpty] = useState({})
   const [communicationDetail, setcommunicationDetail] = useState({})
   const [statutory, setstatutory] = useState({})
   const [compaliance, setcompaliance] = useState({})
@@ -61,294 +62,208 @@ const ContactTeam = () => {
 
     return newErrors
   }
-  const saveContactTeam = (e) => {
+  const saveContactTeam = async (e) => {
     e.preventDefault()
-    const formErrors = validateForm()
-    var arr = [];
-    var communicationDetailArray = [];
-    var statutoryDetailArray = [];
-    var compalianceDetailArray = [];
+    const formErrors = validateForm();
+    var basicInfoArray = [];
+    var basicInfoMandtatory = '';
+    var communicationArray = [];
+    var complianceArray = [];
+    var statutoryArray = [];
     var bankDetailArray = [];
-    var basicVendor = [];
-    var communicationVendor = [];
-    var statutoryValidation = [];
-    var compalianceDetailValidation = [];
-    var contactDetailValidation = [];
-    var bankDetailValidation = [];
-   if (basicInfo) {
-      Object.entries(basicInfo).map(([key, value]) => {
-        if (value === 'null') {
-          arr.length = 0;
-        }
-        else {
-          Object.entries(value).map(([key2, value2]) => {
-
-            if (Object.keys(value2).length <= 0) {
-
-              arr.push(key2);
-            }
-          })
-        }
-
-
-      })
+    var contactDetailArray = [];
+    if (basicInfo.length <= 0) {
+      basicInfoArray.push('Address Line-1');
+      basicInfoArray.push('city');
+      basicInfoArray.push('companyName');
+      basicInfoArray.push('country');
+      basicInfoArray.push('pinCode');
+      basicInfoArray.push('state');
     }
-    if (communicationDetail) {
-      Object.entries(communicationDetail).map(([key, value]) => {
-        if (value === 'null') {
-          communicationDetailArray.length = 0;
-        }
-        else {
-          Object.entries(value).map(([key2, value2]) => {
-            if (Object.keys(value2).length <= 0) {
-              communicationDetailArray.push(key2);
-            }
-          })
-        }
-
-
-      })
-    }
-    if (statutory) {
-      Object.entries(statutory).map(([key, value]) => {
-        if (value === 'null'||!value) {
-          statutoryDetailArray.length = 0;
-        }
-        else {
-          Object.entries(value).map(([key2, value2]) => {
-          
-           if (Object.keys(value2).length <= 0) {
-           
-              statutoryDetailArray.push(key2);
-            }
-          })
-        }
-
-
-      })
-    }
-    if (compaliance) {
-
-      Object.entries(compaliance).map(([key, value]) => {
-        if (value === 'null') {
-          compalianceDetailArray.length = 0;
-        }
-        else {
-          Object.entries(value).map(([key2, value2]) => {
-            if (Object.keys(value2).length <= 0) {
-              compalianceDetailArray.push(key2);
-            }
-          })
-        }
-
-
-      })
-    }
-    if (bankDetail) {
-      Object.entries(bankDetail).map(([key, value]) => {
-        if (value === 'null') {
-          bankDetailArray.length = 0;
-        }
-        else {
-          Object.entries(value).map(([key2, value2]) => {
-
-            if (Object.keys(value2).length <= 0) {
-              bankDetailArray.push(key2);
-            }
-          })
+    else {
+      Object.entries(basicInfo[0]).map(([key, value]) => {
+        if (value === '' || null) {
+          if (key === 'address1') {
+            basicInfoArray.push('Address Line-1');
+          }
+          if (key === 'city') {
+            basicInfoArray.push('city');
+          }
+          if (key === 'companyName') {
+            basicInfoArray.push('companyName');
+          }
+          if (key === 'country') {
+            basicInfoArray.push('country');
+          }
+          if (key === 'pinCode') {
+            basicInfoArray.push('pinCode');
+          }
+          if (key === 'state') {
+            basicInfoArray.push('state');
+          }
         }
       })
     }
-    if(arr.length<=0)
-    {
-      basicVendor.push('Address Line-1');
-      basicVendor.push('city');
-      basicVendor.push('companyName');
-      basicVendor.push('country');
-      basicVendor.push('pinCode');
-      basicVendor.push('state');
-    }
-    else
-    {
-      Object.entries(arr).map(([key, value]) => {
-        if (value === 'address1') {
-          basicVendor.push('Address Line-1');
-        }
-        if (value === 'city') {
-          basicVendor.push('city');
-        }
-        if (value === 'companyName') {
-          basicVendor.push('companyName');
-        }
-        if (value === 'country') {
-          basicVendor.push('country');
-        }
-        if (value === 'pinCode') {
-          basicVendor.push('pinCode');
-        }
-        if (value === 'state') {
-          basicVendor.push('state');
-        }
-      })
-    }
-    if(communicationDetailArray.length<=0)
-    {
-      communicationVendor.push('financeSpoc-contactName');
-      communicationVendor.push('financeSpoc-designation');
-      communicationVendor.push('financeSpoc-phoneNo');
-      communicationVendor.push('financeSpoc-Email');
-      communicationVendor.push('managementSpoc-contactName');
-      communicationVendor.push('managementSpoc-designation');
-      communicationVendor.push('managementSpoc-phoneNo');
-      communicationVendor.push('managementSpoc-Email');
-      communicationVendor.push('mastervendor EmailId');
-    }
-    else
-    {
-      Object.entries(communicationDetailArray).map(([key, value]) => {
-        if (value === 'financeSpoccontactName') {
-          communicationVendor.push('financeSpoc-contactName');
-        }
-        if (value === 'financeSpocdesignation') {
-          communicationVendor.push('financeSpoc-designation');
-        }
-        if (value === 'financeSpocphoneNo') {
-          communicationVendor.push('financeSpoc-phoneNo');
-        }
-        if (value === 'financeSpocemail') {
-          communicationVendor.push('financeSpoc-Email');
-        }
-  
-        if (value === 'managementSpoccontactName') {
-          communicationVendor.push('managementSpoc-contactName');
-        }
-        if (value === 'managementSpocdesignation') {
-          communicationVendor.push('managementSpoc-designation');
-        }
-        if (value === 'managementSpocphoneNo') {
-          communicationVendor.push('managementSpoc-phoneNo');
-        }
-        if (value === 'managementSpocemail') {
-          communicationVendor.push('managementSpoc-Email');
-        }
-        if (value === 'mastervendor_email') {
-          communicationVendor.push('mastervendor EmailId');
-        }
-  
-      })
-    }
-    if(statutoryDetailArray.length<=0)
-    {
-      statutoryValidation.push('GST No');
-      statutoryValidation.push('PAN No');
-      statutoryValidation.push('CIN No');
-      statutoryValidation.push('MSME No');
-      statutoryValidation.push('TAN No');
-    }
-    else
-    {
-      Object.entries(statutoryDetailArray).map(([key, value]) => {
- if(statutoryDetailArray.length===1)
- {
-  if (value === 'id') {
-    statutoryValidation.push('No empty fields');
-  }
- }
- else
- {
-  if (value === 'GST_No') {
-    statutoryValidation.push('GST No');
-  }
-  if (value === 'PAN_No') {
-    statutoryValidation.push('PAN No');
-  }
-  if (value === 'CIN_No') {
-    statutoryValidation.push('CIN No');
-  }
-  if (value === 'MSME No') {
-    statutoryValidation.push('MSME No');
-  }
-  if (value === 'TAN_No') {
-    statutoryValidation.push('TAN No');
-  }
- }
 
-       
+    if (communicationDetail.length <= 0) {
+      communicationArray.push('financeSpoc-contactName');
+      communicationArray.push('financeSpoc-designation');
+      communicationArray.push('financeSpoc-phoneNo');
+      communicationArray.push('financeSpoc-Email');
+      communicationArray.push('managementSpoc-contactName');
+      communicationArray.push('managementSpoc-designation');
+      communicationArray.push('managementSpoc-phoneNo');
+      communicationArray.push('managementSpoc-Email');
+      communicationArray.push('mastervendor EmailId');
+    }
+    else {
+      Object.entries(communicationDetail[0]).map(([key, value]) => {
+        if (value === '' || null) {
+          if (key === 'financeSpoccontactName') {
+            communicationArray.push('financeSpoc-contactName');
+          }
+          if (key === 'financeSpocdesignation') {
+            communicationArray.push('financeSpoc-designation');
+          }
+          if (key === 'financeSpocphoneNo') {
+            communicationArray.push('financeSpoc-phoneNo');
+          }
+          if (key === 'financeSpocemail') {
+            communicationArray.push('financeSpoc-Email');
+          }
+
+          if (key === 'managementSpoccontactName') {
+            communicationArray.push('managementSpoc-contactName');
+          }
+          if (key === 'managementSpocdesignation') {
+            communicationArray.push('managementSpoc-designation');
+          }
+          if (key === 'managementSpocphoneNo') {
+            communicationArray.push('managementSpoc-phoneNo');
+          }
+          if (key === 'managementSpocemail') {
+            communicationArray.push('managementSpoc-Email');
+          }
+          if (key === 'mastervendor_email') {
+            communicationArray.push('mastervendor EmailId');
+          }
+        }
+
       })
     }
-    if(compalianceDetailArray.length<=0)
-    {
-      compalianceDetailValidation.push('Related Party Disclosure');
-      compalianceDetailValidation.push('COC for services support/installation');
-      compalianceDetailValidation.push('Non-disclosure agreement');
+    if (statutory.length <= 0) {
+      statutoryArray.push('GST No');
+      statutoryArray.push('PAN No');
+      statutoryArray.push('CIN No');
+      statutoryArray.push('MSME No');
+      statutoryArray.push('TAN No');
     }
-    else{
-      Object.entries(compalianceDetailArray).map(([key, value]) => {
-        if (value === 'RPD_Doc') {
-          compalianceDetailValidation.push('Related Party Disclosure');
+    else {
+      Object.entries(statutory[0]).map(([key, value]) => {
+        if (value === '' || null) {
+          if (key === 'GST_No') {
+            statutoryArray.push('GST No');
+          }
+          if (key === 'PAN_No') {
+            statutoryArray.push('PAN No');
+          }
+          if (key === 'CIN_No') {
+            statutoryArray.push('CIN No');
+          }
+          if (key === 'MSME No') {
+            statutoryArray.push('MSME No');
+          }
+          if (key === 'TAN_No') {
+            statutoryArray.push('TAN No');
+          }
         }
-        if (value === 'COC_Doc') {
-          compalianceDetailValidation.push('COC for services support/installation');
-        }
-        if (value === 'NDA_Doc') {
-          compalianceDetailValidation.push('Non-disclosure agreement');
-        }
-      
       })
     }
-    if(bankDetailArray.length<=0)
-    {
-      bankDetailValidation.push('Bank Account Name');
-      bankDetailValidation.push('Bank Name');
-      bankDetailValidation.push('Bank AccountNumber');
-      bankDetailValidation.push('IFSC Code');
-      bankDetailValidation.push('MICR Code');
-      bankDetailValidation.push('Bank Detail Document');
+    if (compaliance.length <= 0) {
+      complianceArray.push('Related Party Disclosure');
+      complianceArray.push('COC for services support/installation');
+      complianceArray.push('Non-disclosure agreement');
     }
-   else{
+    else {
+      Object.entries(compaliance[0]).map(([key, value]) => {
+        if (value === '' || null) {
+          if (key === 'RPD_Doc') {
+            complianceArray.push('Related Party Disclosure');
+          }
+          if (key === 'COC_Doc') {
+            complianceArray.push('COC support/installation');
+          }
+          if (key === 'NDA_Doc') {
+            complianceArray.push('Non-disclosure agreement');
+          }
+        }
+      })
+    }
+    if (bankDetail.length <= 0) {
+      bankDetailArray.push('Bank Account Name');
+      bankDetailArray.push('Bank Name');
+      bankDetailArray.push('Bank AccountNumber');
+      bankDetailArray.push('IFSC Code');
+      bankDetailArray.push('MICR Code');
+      bankDetailArray.push('Bank Detail Document');
+    }
+    else {
+      Object.entries(bankDetail[0]).map(([key, value]) => {
+        if (value === '' || null) {
+          if (key === 'bankAccountName') {
+            bankDetailArray.push('Bank Account Name');
+          }
+          if (key === 'bankName') {
+            bankDetailArray.push('Bank Name');
+          }
+          if (key === 'bankAccountNumber') {
+            bankDetailArray.push('Bank AccountNumber');
+          }
+          if (key === 'ifscCode') {
+            bankDetailArray.push('IFSC Code');
+          }
+          if (key === 'MICRcode') {
+            bankDetailArray.push('MICR Code');
+          }
+          if (key === 'bankdetailDoc') {
+            bankDetailArray.push('Bank Detail Document');
+          }
+        }
+      })
+    }
+    if (formErrors.length <= 0) {
+      contactDetailArray.push('Name');
+      contactDetailArray.push('Email');
+      contactDetailArray.push('phoneNumber');
+    }
+    else {
+      Object.entries(formErrors).map(([key, value]) => {
+        contactDetailArray.push(value);
+      })
+    }
 
-    Object.entries(bankDetailArray).map(([key, value]) => {
-      if (value === 'bankAccountName') {
-        bankDetailValidation.push('Bank Account Name');
-      }
-      if (value === 'bankName') {
-        bankDetailValidation.push('Bank Name');
-      }
-      if (value === 'bankAccountNumber') {
-        bankDetailValidation.push('Bank AccountNumber');
-      }
-      if (value === 'ifscCode') {
-        bankDetailValidation.push('IFSC Code');
-      }
-      if (value === 'MICRcode') {
-        bankDetailValidation.push('MICR Code');
-      }
-      if (value === 'bankdetailDoc') {
-        bankDetailValidation.push('Bank Detail Document');
-      }
-    
-    })
-   }
-   if(formErrors.length<=0)
-   {
-    contactDetailValidation.push('There is no empty data');
-   }
-   else
-   {
-    Object.entries(formErrors).map(([key, value]) => {
-      contactDetailValidation.push(value);
-    })
+    if (basicInfoArray.length <= 0) {
+      basicInfoArray.push('There are no blank or incomplete required fields');
+    }
+    if (communicationArray.length <= 0) {
+      communicationArray.push('There are no blank or incomplete required fields');
+    }
+    if (statutoryArray.length <= 0) {
+      statutoryArray.push('There are no blank or incomplete required fields');
+    }
+    if (complianceArray.length <= 0) {
+      complianceArray.push('There are no blank or incomplete required fields');
+    }
+    if (bankDetailArray.length <= 0) {
+      bankDetailArray.push('There are no blank or incomplete required fields');
+    }
+    if (contactDetailArray.length <= 0) {
+      contactDetailArray.push('There are no blank or incomplete required fields');
+    }
 
-   }
-   console.log("datas::",statutory);
-   console.log("datasstatutoryDetailArray::",statutoryDetailArray);
- 
-  //  console.log("basicarr1,",arr.length);
-  //  console.log("commuarr,",communicationDetailArray.length);
-  //  console.log("statutoryDetailArray,",statutoryDetailArray.length);
-  //  console.log("compalianceDetailArray,",compalianceDetailArray.length); 
-  //  console.log("bankDetailArray,",bankDetailArray.length); 
-   const user = {
+
+
+    const user = {
       userId: values.userId || undefined,
       contactName1: values.contactName1 || undefined,
       emailId1: values.emailId1 || undefined,
@@ -360,51 +275,36 @@ const ContactTeam = () => {
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
     }
- console.log("basicVendor",basicVendor);
- console.log("communicationVendor",communicationVendor);
- console.log("statutoryValidation",statutoryValidation);
- console.log("compalianceDetailValidation",compalianceDetailValidation);
- console.log("contactDetailValidation",contactDetailValidation);
- console.log("bankDetailValidation",bankDetailValidation);
-
-    Swal.fire({
-      title: 'please complete this field.',
-      html: `<b> VENDOR DETAIL-BASIC INFO:</b> <br> ${basicVendor}<br>
-     <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationVendor}, <br>
-     <b> SATUTORY DETAIL: </b> <br>${statutoryValidation},<br>
-     <b> COMPLIANCE DETAIL: </b> <br> ${compalianceDetailValidation}<br> 
-     <b>BANK DETAIL:  </b> <br> ${bankDetailValidation} <br>
-     <b> CONTACT DETAIL: </b> <br> ${contactDetailValidation}`,
-      padding: '3px',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ok'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (Object.keys(formErrors).length > 0) {
-          setErrors(formErrors)
+    apiService.saveContactTeam(user)
+      .then(response => {
+        if (response.data.status === 'success') {
+          Swal.fire({
+            title: 'please complete this field.',
+            html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+         <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
+         <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+         <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
+         <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
+         <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
+            padding: '3px',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'ok'
+          }).then((result) => {
+            // Swal.fire(
+            //   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
+            // )
+          })
         }
         else {
-          apiService.saveContactTeam(user)
-            .then(response => {
-              if (response.data.status === 'success') {
-                Swal.fire(
-                  'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
-                )
-              }
-              else {
-                Swal.fire({
-                  title: "Error While Fetching",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
+      })
 
-
-      }
-    })
   }
   useEffect(() => {
     if (params.userId) {
@@ -412,14 +312,14 @@ const ContactTeam = () => {
         Object.entries(res.data.contactDetail).map(([key, value]) => {
           setValues({
             contactName1: value.contactName1,
-            emailId1:value.emailId1,
-            contactNumber1:value.contactNumber1,
+            emailId1: value.emailId1,
+            contactNumber1: value.contactNumber1,
             contactName2: value.contactName2,
-            emailId2:value.emailId2,
-            contactNumber2:value.contactNumber2,
-            contactName3:value.contactName3,
-            emailId3:value.emailId3,
-            contactNumber3:value.contactNumber3,
+            emailId2: value.emailId2,
+            contactNumber2: value.contactNumber2,
+            contactName3: value.contactName3,
+            emailId3: value.emailId3,
+            contactNumber3: value.contactNumber3,
           })
         })
       })

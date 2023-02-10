@@ -13,7 +13,7 @@ export class Basic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+      userId: '',
       address1: '',
       address2: '',
       city: '',
@@ -46,6 +46,7 @@ export class Basic extends React.Component {
       open: true,
       commu: false,
       edit: true,
+      editStatutory: '',
     }
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -88,9 +89,19 @@ export class Basic extends React.Component {
       open: false,
       commu: true,
     });
+    this.handleSubmitComDetail();
   }
   next = e => {
-    this.props.navigate("/statutory");
+    e.preventDefault();
+    if (this.state.editStatutory.length <= 0 || '' || undefined) {
+      this.handleSubmit(e);
+      this.props.navigate("/statutory");
+    }
+    else {
+      this.handleSubmit(e);
+      this.props.navigate(`/statutory/${this.props.params.userId}`);
+    }
+
   }
   handleChange(e) {
     this.setState({ country: e.target.value });
@@ -106,86 +117,84 @@ export class Basic extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const basicInfo = {
-      userId: this.state.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       address1: this.state.address1,
       address2: this.state.address2,
       city: this.state.city,
-      state:this.state.state,
+      state: this.state.state,
       country: this.state.country,
       pinCode: this.state.pinCode,
       companyName: this.state.companyName,
       image: this.state.image,
     }
-    if(this.props.params.userId)
-    {
-      apiService.updateVendordetail(this.props.params.userId,basicInfo)
-      .then(response => {
-        if (response) {
-          Swal.fire({
-            title: "Data Updated",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
+    if (this.props.params.userId) {
+      apiService.updateVendordetail(this.props.params.userId, basicInfo)
+        .then(response => {
+          if (response) {
+            Swal.fire({
+              title: "Data Updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
 
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
     }
-    else
-    {
+    else {
       apiService.saveVendordetail(basicInfo)
-      .then(response => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
+        .then(response => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
 
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
     }
-   
+
   }
-  
+
   handleSubmitComDetail = e => {
     e.preventDefault();
     const communicationDetails = {
-      userId:this.state.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,
       financeSpocdesignation: this.state.financeSpocdesignation,
       financeSpocphoneNo: this.state.financeSpocphoneNo,
-      financeSpocemail:  this.state.financeSpocemail,
-      operationSpoccontactName:  this.state.operationSpoccontactName,
-      operationSpocdesignation:  this.state.operationSpocdesignation,
+      financeSpocemail: this.state.financeSpocemail,
+      operationSpoccontactName: this.state.operationSpoccontactName,
+      operationSpocdesignation: this.state.operationSpocdesignation,
       operationSpocphoneNo: this.state.operationSpocphoneNo,
       operationSpocemail: this.state.operationSpocemail,
-      collectionSpoccontactName:  this.state.collectionSpoccontactName,
+      collectionSpoccontactName: this.state.collectionSpoccontactName,
       collectionSpocdesignation: this.state.collectionSpocdesignation,
-      collectionSpocphoneNo:  this.state.collectionSpocphoneNo,
-      collectionSpocemail:  this.state.collectionSpocemail,
+      collectionSpocphoneNo: this.state.collectionSpocphoneNo,
+      collectionSpocemail: this.state.collectionSpocemail,
       managementSpoccontactName: this.state.managementSpoccontactName,
-      managementSpocdesignation:  this.state.managementSpocdesignation,
+      managementSpocdesignation: this.state.managementSpocdesignation,
       managementSpocphoneNo: this.state.managementSpocphoneNo,
       managementSpocemail: this.state.managementSpocemail,
       contactName: this.state.contactName,
       designation: this.state.designation,
       phoneNo: this.state.phoneNo,
       email: this.state.email,
-      mastervendor_email:  this.state.mastervendor_email,
+      mastervendor_email: this.state.mastervendor_email,
     }
     apiService.SaveVendorCommunication(communicationDetails)
       .then(response => {
@@ -233,62 +242,63 @@ export class Basic extends React.Component {
       image: btoa(binaryString)
     })
   }
-  
-  updateVendordetail(userId,data) {
-    apiService.updateVendordetail(userId,data)
-    .then(response => {
 
-    })
+  updateVendordetail(userId, data) {
+    apiService.updateVendordetail(userId, data)
+      .then(response => {
+
+      })
 
   }
   componentDidMount() {
-   if(this.props.params.userId)
-    {
+    if (this.props.params.userId) {
       this.edit = true;
-      apiService.getAllCollection(this.props.params.userId).then((res) => {       
-      Object.entries(res.data.basicInfo).map(([key, value]) => {
+      apiService.getAllCollection(this.props.params.userId).then((res) => {
         this.setState({
-          companyName: value.companyName,
-          address1: value.address1,
-          address2: value.address2,
-          city: value.city,
-          state:value.state,
-          country:value.country,
-          pinCode:value.pinCode,
-          companyName:value.companyName,
-          image:value.image,
-        });
-      })
-      Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
-        this.setState({
-          financeSpoccontactName:value.financeSpoccontactName,
-          financeSpocdesignation:value.financeSpocdesignation,
-          financeSpocphoneNo:value.financeSpocphoneNo,
-          financeSpocemail:value.financeSpocemail,
-          operationSpoccontactName:value.operationSpoccontactName,
-          operationSpocdesignation:value.operationSpocdesignation,
-          operationSpocphoneNo:value.operationSpocphoneNo,
-          operationSpocemail:value.operationSpocemail,
-          collectionSpoccontactName:value.collectionSpoccontactName,
-          collectionSpocdesignation:value.collectionSpocdesignation,
-          collectionSpocphoneNo:value.collectionSpocphoneNo,
-          collectionSpocemail:value.collectionSpocemail,
-          managementSpoccontactName:value.managementSpoccontactName,
-          managementSpocdesignation:value.managementSpocdesignation,
-          managementSpocphoneNo:value.managementSpocphoneNo,
-          managementSpocemail:value.managementSpocemail,
-          contactName: value.contactName,
-          designation:value.designation,
-          phoneNo:value.phoneNo,
-          email:value.email,
-          mastervendor_email:value.mastervendor_email,
-        });
-      })
-    });
+          editStatutory: res.data.Statutory
+        })
+        Object.entries(res.data.basicInfo).map(([key, value]) => {
+          this.setState({
+            companyName: value.companyName,
+            address1: value.address1,
+            address2: value.address2,
+            city: value.city,
+            state: value.state,
+            country: value.country,
+            pinCode: value.pinCode,
+            companyName: value.companyName,
+            image: value.image,
+          });
+        })
+        Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
+          this.setState({
+            financeSpoccontactName: value.financeSpoccontactName,
+            financeSpocdesignation: value.financeSpocdesignation,
+            financeSpocphoneNo: value.financeSpocphoneNo,
+            financeSpocemail: value.financeSpocemail,
+            operationSpoccontactName: value.operationSpoccontactName,
+            operationSpocdesignation: value.operationSpocdesignation,
+            operationSpocphoneNo: value.operationSpocphoneNo,
+            operationSpocemail: value.operationSpocemail,
+            collectionSpoccontactName: value.collectionSpoccontactName,
+            collectionSpocdesignation: value.collectionSpocdesignation,
+            collectionSpocphoneNo: value.collectionSpocphoneNo,
+            collectionSpocemail: value.collectionSpocemail,
+            managementSpoccontactName: value.managementSpoccontactName,
+            managementSpocdesignation: value.managementSpocdesignation,
+            managementSpocphoneNo: value.managementSpocphoneNo,
+            managementSpocemail: value.managementSpocemail,
+            contactName: value.contactName,
+            designation: value.designation,
+            phoneNo: value.phoneNo,
+            email: value.email,
+            mastervendor_email: value.mastervendor_email,
+          });
+        })
+      });
     }
-    else
-    {
-      
+    else {
+
       this.edit = false;
     }
     apiService.getCountry()
@@ -364,16 +374,16 @@ export class Basic extends React.Component {
                                       <MDBCol>
                                         <div> <label htmlFor="address1">Address line - 1*</label></div>
                                         <div>
-                                    <textarea type="text" className="addressLine" name="address1" id="address1" onChange={this.formValChange} value={address1} ></textarea>
-                                  </div>
-                                    </MDBCol>
+                                          <textarea type="text" className="addressLine" name="address1" id="address1" onChange={this.formValChange} value={address1} ></textarea>
+                                        </div>
+                                      </MDBCol>
                                     </MDBRow>
                                     <div>
                                       <label htmlFor="address2">Address line - 2</label>
                                     </div>
                                     <div>
-                                    <textarea type="text" className="addressLine" name="address2" id="address2" onChange={this.formValChange} value={address2} ></textarea>
-                                  </div>
+                                      <textarea type="text" className="addressLine" name="address2" id="address2" onChange={this.formValChange} value={address2} ></textarea>
+                                    </div>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../css/BankDetails.css";
 import Navbar1 from "../common/navbar.js";
 import { FileUploader } from "react-drag-drop-files";
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$"
 const BankDetails = (props) => {
+  const [EditBank, setEditBank] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
   const [errors, setErrors] = useState({})
@@ -20,13 +21,24 @@ const BankDetails = (props) => {
   const [fileBank, setfileBank] = useState();
 
   const onFileChange = (file) => {
-    setfileBank(file);
+    if (file.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileBank(file);
+    }
+
   }
   function next(e) {
+    handleSubmit(e);
     navigate('/FinancialDetail');
   }
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const data = new FormData();
     data.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
     data.append('bankAccountName', acName);
@@ -55,19 +67,24 @@ const BankDetails = (props) => {
       })
   }
   useEffect(() => {
-    
+
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
-       setAcName(value.bankAccountName)
-       setBankname(value.bankName)
-         setAcno(value.bankAccountNumber)
-         setIfsc(value.ifscCode)
-         setMicr(value.MICRcode)
-         setbranchAdd(value.branchAddress)
-         setfileBank(value.bankdetailDoc)
+          var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
+          var bankdetailDoc = initialUrlbankDoc.split('/');
+          setAcName(value.bankAccountName)
+          setBankname(value.bankName)
+          setAcno(value.bankAccountNumber)
+          setIfsc(value.ifscCode)
+          setMicr(value.MICRcode)
+          setbranchAdd(value.branchAddress)
+          setfileBank(bankdetailDoc)
         })
       })
+    }
+    else {
+      setEditBank(false);
     }
   }, [])
   return (
@@ -121,10 +138,18 @@ const BankDetails = (props) => {
                   type="file"
                   name="fileBank"
                 />
-                <span>{fileBank ? `File name: ${fileBank.name}` : "No File Chosen"}</span>
+                {EditBank ? (
+                  <span>{fileBank ? `File name: ${fileBank}` : "No File Chosen"}</span>
+                ) : (
+                  <span>{fileBank ? `File name: ${fileBank.name}` : "No File Chosen"}</span>
+                )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 my-auto" >
-                <button type="button" className="btn m-2 uploadFile">Upload files</button>
+                {EditBank ? (
+                  <button type="button" className="btn m-2 uploadFile">Delete files</button>
+                ) : (
+                  <button type="button" className="btn m-2 uploadFile">Upload files</button>
+                )}
               </div>
               <div className="col-md-2 col-sm-12 col-xs-12">
               </div>

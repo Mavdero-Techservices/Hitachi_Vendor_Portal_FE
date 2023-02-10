@@ -59,30 +59,31 @@ const MainRouter = () => {
         <Route path="/basic" element={<Basic />} />
         <Route path="/basic/:userId" element={<Basic />} />
         <Route path="/commu" element={<Commun />} />
-        <Route path="/statutory" element={<Statutory/>} />
-        <Route path="/statutory/:userId" element={<Statutory/>} />
-        <Route path="/bank/:userId" element={<Bank user={ state.userInfo}/>} />
-        <Route path="/bank" element={<Bank user={ state.userInfo}/>} />
+        <Route path="/statutory" element={<Statutory />} />
+        <Route path="/statutory/:userId" element={<Statutory />} />
+        <Route path="/bank/:userId" element={<Bank user={state.userInfo} />} />
+        <Route path="/bank" element={<Bank user={state.userInfo} />} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
         <Route path="/FinancialDetail" element={<FinancialDetail />} />
         <Route path="/FinancialDetail/:userId" element={<FinancialDetail />} />
         <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
+        <Route path="/ComplianceDetail/:userId" element={<ComplianceDetail />} />
         <Route path="/ContactTeam" element={<ContactTeam />} />
         <Route path="/ContactTeam/:userId" element={<ContactTeam />} />
-        <Route path="/approval" element={<AdminPage/>} />
-        <Route path="/approvedVendors" element={<ApprovedVendors/>} />
-        <Route path="/rejectedVendors" element={<RejectedVendors/>} />
-        <Route path="/japanTeam" element={<JapanTeam/>} />
-        <Route path="/japanapprovedVendors" element={<JapanApprovedvendors/>} />
-        <Route path="/japanrejectedVendors" element={<JapanRejectedVendors/>} />
-        <Route path="/MRTteam" element={<MRTteam/>} />
-        <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors/>} />
-        <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors/>} />
-        <Route path="/approvalReq" element={<ApprovalRequest/>} />
-        <Route path="/vendorPortal" element={<VendorPortalHeader/>} />
-        <Route path="/documents" element={<Documents/>} />
-        <Route path="/acStatement" element={<AccountStatements/>} />
+        <Route path="/approval" element={<AdminPage />} />
+        <Route path="/approvedVendors" element={<ApprovedVendors />} />
+        <Route path="/rejectedVendors" element={<RejectedVendors />} />
+        <Route path="/japanTeam" element={<JapanTeam />} />
+        <Route path="/japanapprovedVendors" element={<JapanApprovedvendors />} />
+        <Route path="/japanrejectedVendors" element={<JapanRejectedVendors />} />
+        <Route path="/MRTteam" element={<MRTteam />} />
+        <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors />} />
+        <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors />} />
+        <Route path="/approvalReq" element={<ApprovalRequest />} />
+        <Route path="/vendorPortal" element={<VendorPortalHeader />} />
+        <Route path="/documents" element={<Documents />} />
+        <Route path="/acStatement" element={<AccountStatements />} />
       </Routes>
     </div>
   )

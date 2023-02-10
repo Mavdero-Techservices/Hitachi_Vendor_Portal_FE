@@ -17,12 +17,14 @@ import { FileUploader } from "react-drag-drop-files";
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 export default function Statutory(props) {
+  const [HideImport, setHideImport] = useState(true);
   const [url, seturl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [editTab, seteditTab] = useState(true);
   const [errors, setErrors] = useState({})
   const navigate = useNavigate();
+  const [hideMSMEunRegisteredField, sethideMSMEunRegisteredField] = useState(true);
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("Micro");
@@ -64,15 +66,37 @@ export default function Statutory(props) {
     else {
       sethideunRegisteredField(true);
     }
+    if (event.target.value === 'Import') {
+      setHideImport(false);
+    }
+    else {
+      setHideImport(true);
+    }
   }
   function onFileDisclosurechange(e) {
-    setfileDisclosure(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileDisclosure(e)
+    }
+
   }
   function onChangeValueMSME(event) {
     setMSME(event.target.value);
   }
   function onChangeValueMSME_status(event) {
     setMSME_status(event.target.value);
+    if (event.target.value === 'UnRegistered') {
+      sethideMSMEunRegisteredField(false);
+    }
+    else {
+      sethideMSMEunRegisteredField(true);
+    }
   }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
@@ -86,29 +110,104 @@ export default function Statutory(props) {
   }
   const onFileChange = (event) => {
     event.preventDefault();
-    setFile(event.target.files[0])
+    if (event.target.files[0].size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setFile(event.target.files[0])
+    }
+
   }
 
   function onFileChangeTax_residency_Doc(e) {
-    setTax_residency_Doc(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setTax_residency_Doc(e)
+    }
+
   }
   function onFileChangeform_10f_Doc(e) {
-    setform_10f_Doc(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setform_10f_Doc(e)
+    }
+
   }
   function onFileChangePAN_Doc(e) {
-    setPAN_Doc(e.target.files[0])
+    if (e.target.files[0].size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setPAN_Doc(e.target.files[0])
+    }
+
   }
   function onFileChangePE_Declaration_Doc(e) {
-    setPE_Declaration_Doc(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setPE_Declaration_Doc(e)
+    }
   }
   function onFileChangeTAN_Doc(e) {
-    setTAN_Doc(e.target.files[0])
+    if (e.target.files[0].size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setTAN_Doc(e.target.files[0])
+    }
+
   }
   function onFileChangeMSME_Doc(e) {
-    setMSME_Doc(e.target.files[0])
+    if (e.target.files[0].size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setMSME_Doc(e.target.files[0])
+    }
+
   }
   function next(e) {
-    navigate('/ComplianceDetail');
+    if (params.userId) {
+      navigate(`/ComplianceDetail/${params.userId}`);
+    }
+    else {
+      navigate('/ComplianceDetail');
+    }
+
   }
   const validateForm = () => {
     const { GST_No, PAN_No } = values;
@@ -125,10 +224,13 @@ export default function Statutory(props) {
   }
 
   useEffect(() => {
-    
+
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
+          var initialUrl = res.data.Statutory[0].form_10f_Doc;
+          var form_10f_DocUrl = initialUrl.split('/');
+          console.log("form_10f_Doc", form_10f_DocUrl);
           setValues({
             GST_No: value.GST_No,
             GST_type: value.GST_type,
@@ -258,7 +360,50 @@ export default function Statutory(props) {
                             </Col>
                           </Row>
                         </Form.Group>
-                        {hideunRegisteredField ?
+
+                        {HideImport && hideunRegisteredField ? (
+                          <Row>
+                            <Col>
+                              <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>GST no*</Form.Label>
+                                <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
+                                {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              <div className="frame-input">
+                                <label for="fileupload">Upload GST</label>
+                                <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
+                              </div>
+                            </Col>
+                          </Row>
+
+
+                        ) : (
+
+                          <Row>
+
+                            <Col>
+                              <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>GST no*</Form.Label>
+                                <Form.Control className="statutoryInput" type="text" value='N/A' onChange={handleChange('GST_No')} disabled="true" />
+                                {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              {!HideImport && hideunRegisteredField ? (
+                                <Row>
+
+                                </Row>) : (<Row>
+                                  <div className="frame-input">
+                                    <label for="fileupload">Upload UnRegister Gst</label>
+                                    <input type="file" id="fileupload" handleChange={onFileDisclosurechange} name="fileDisclosure" required />
+                                  </div> </Row>)}
+
+                            </Col>
+                          </Row>
+                        )}
+                        {/* {hideunRegisteredField ?
                           <Col>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                               <Form.Label>GST no*</Form.Label>
@@ -274,7 +419,7 @@ export default function Statutory(props) {
                               <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
                             </div>
                           </Col>
-                          : null}
+                          : null} */}
                       </Row>
                       <Row>
                         <Col>
@@ -302,7 +447,7 @@ export default function Statutory(props) {
 
                         </Col>
                       </Row>
-                      {!hideunRegisteredField ?
+                      {/* {!hideunRegisteredField ?
                         <Row>
                           <Col sm={8}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -322,7 +467,7 @@ export default function Statutory(props) {
                             </a>
                           </Col>
                         </Row>
-                        : null}
+                        : null} */}
                       <Row>
                         <Col>
                           {showLoginTab ?
@@ -378,20 +523,38 @@ export default function Statutory(props) {
                         </Col>
 
                       </Row>
-                      <Row>
-                        <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>MSME no*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.MSME_No} onChange={handleChange('MSME_No')} />
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <div className="frame-input">
-                            <label for="fileuploadMSME">Upload MSME</label>
-                            <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} required />
-                          </div>
-                        </Col>
-                      </Row>
+                      {hideMSMEunRegisteredField ? (
+                        <Row>
+                          <Col>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>MSME no*</Form.Label>
+                              <Form.Control className="statutoryInput" type="text" value={values.MSME_No} onChange={handleChange('MSME_No')} />
+                            </Form.Group>
+                          </Col>
+                          <Col>
+                            <div className="frame-input">
+                              <label for="fileuploadMSME">Upload MSME</label>
+                              <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} required />
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : (
+                        <Row>
+                          <Col>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Label>MSME no*</Form.Label>
+                              <Form.Control className="statutoryInput" type="text" value="N/A" disabled="true" />
+                            </Form.Group>
+                          </Col>
+                          <Col>
+                            <div className="frame-input">
+                              <label for="fileuploadMSME">Upload MSME</label>
+                              <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} disabled="true" />
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+
                       <Row>
                         <Col>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -404,7 +567,7 @@ export default function Statutory(props) {
                                 <input onChange={onChangeValueMSME} type="radio" value="Small" name="Small" checked={MSME === "Small"} /> Small
                               </Col>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME} type="radio" value="Macro" name="Macro" checked={MSME === "Macro"} /> Macro
+                                <input onChange={onChangeValueMSME} type="radio" value="Macro" name="Macro" checked={MSME === "Macro"} /> Medium
                               </Col>
                             </Row>
                           </Form.Group>
@@ -451,8 +614,18 @@ export default function Statutory(props) {
             </Card>
           </Col>
         </Row>
-
+        {!hideunRegisteredField ?
+          <Row>
+            <Col>
+              <a href={url} download>
+                <Button className="DownloadDisclosure">Download Declaration under non-registered GST</Button>
+              </a>
+            </Col>
+          </Row>
+          : null}
+        <br />
         <Row>
+
           <Col>
             <p className="statutory-Note">NOTE: If the vendor is not registered with the above compliance, they can mention it as “Non-Registered” in that column and they will upload the discloser for the same on the document upload option.</p>
           </Col>
@@ -465,7 +638,6 @@ export default function Statutory(props) {
           </div>
         </Row>
       </Container>
-
     </div>
   )
 }

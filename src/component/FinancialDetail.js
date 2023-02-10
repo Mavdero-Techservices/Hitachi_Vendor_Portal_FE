@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 const FinancialDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [EditfinancialDetail, setEditfinancialDetail] = useState(true);
   const [errors, setErrors] = useState({})
   const [fileFD, setfileFD] = useState();
   const [fileFD2, setfileFD2] = useState();
@@ -23,12 +24,33 @@ const FinancialDetails = () => {
     directorDetails: '',
   });
   function onFileChangeFD(e) {
-    setfileFD(e);
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileFD(e);
+    }
+
   }
   function onFileChangeFD2(e) {
-    setfileFD2(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileFD2(e);
+    }
+
   }
   function next(e) {
+    saveFinancialDetail(e);
     navigate('/ContactTeam');
   }
   const handleChange = name => event => {
@@ -53,7 +75,6 @@ const FinancialDetails = () => {
   }
   const saveFinancialDetail = (e) => {
     e.preventDefault()
-    const formErrors = validateForm()
     const data = new FormData();
     data.append('financial_data', fileFD);
     data.append('financial_data2', fileFD2);
@@ -64,34 +85,35 @@ const FinancialDetails = () => {
     data.append('currentAssets', values.currentAssets);
     data.append('directorDetails', values.directorDetails);
     data.append('userId', values.userId);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors)
-    }
-    else {
-      apiService.saveFinacialDetail(data)
-        .then(res => {
-          if (res.data.status === 'success') {
-            Swal.fire({
-              title: "Data saved",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          }
-          else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        })
-    }
+
+    apiService.saveFinacialDetail(data)
+      .then(res => {
+        if (res.data.status === 'success') {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      })
+
   }
   useEffect(() => {
-    
+
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
+          var initialUrlfinancial_data = res.data.FinancialDetail[0].financial_data;
+          var financial_data1 = initialUrlfinancial_data.split('/');
+          var initialUrlfinancial_data2 = res.data.FinancialDetail[0].financial_data2;
+          var financial_data2 = initialUrlfinancial_data2.split('/');
           setValues({
             yearOfAuditedFinancial: value.yearOfAuditedFinancial,
             Revenue: value.Revenue,
@@ -100,6 +122,9 @@ const FinancialDetails = () => {
             currentAssets: value.currentAssets,
             directorDetails: value.directorDetails,
           })
+          setfileFD2(financial_data2)
+          setfileFD(financial_data1);
+          setEditfinancialDetail(true);
         })
       })
     }
@@ -145,10 +170,21 @@ const FinancialDetails = () => {
                   type="file"
                   name="fileFD"
                 />
-                <span>{fileFD ? `File name: ${fileFD.name}` : "No File Chosen"}</span>
+                {EditfinancialDetail ? (
+                  <span>{fileFD ? `File name: ${fileFD}` : "No File Chosen"}</span>
+                ) : (
+                  <span>{fileFD ? `File name: ${fileFD.name}` : "No File Chosen"}</span>
+                )}
+
               </div>
               <div className="col-sm-4 col-xs-12 my-auto" >
-                <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Upload files</button>
+                {EditfinancialDetail ? (
+                  <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Delete files</button>
+
+                ) : (
+                  <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Upload files</button>
+
+                )}
               </div>
               <div className="col-sm-2 col-xs-12">
               </div>
@@ -162,11 +198,20 @@ const FinancialDetails = () => {
                   type="file"
                   name="fileFD2"
                 />
-                <span>{fileFD2 ? `File name: ${fileFD2.name}` : "No File Chosen"}</span>
+                {EditfinancialDetail ? (
+                  <span>{fileFD2 ? `File name: ${fileFD2}` : "No File Chosen"}</span>
+                ) : (
+                  <span>{fileFD2 ? `File name: ${fileFD2.name}` : "No File Chosen"}</span>
+                )}
               </div>
               <div className="col-sm-4 col-xs-12 my-auto" >
-                <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Upload files</button>
-              </div>
+                {EditfinancialDetail ? (
+                  <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Delete files</button>
+
+                ) : (
+                  <button type="button" className="btn  m-2 uploadFile" style={{ fontSize: '12px' }}>Upload files</button>
+
+                )}  </div>
               <div className="col-sm-2 col-xs-12">
               </div>
             </div>

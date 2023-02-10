@@ -10,12 +10,15 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
-import hisys from "../img/HISYSVendorPortal.png";
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 const ComplianceDetails = () => {
+  const params = useParams();
   const navigate = useNavigate();
+  const [EditCompliance, setEditCompliance] = useState(true);
+  const [showEditUploadsField, setshowEditUploadsField] = useState(true);
   const [fileRPD, setfileRPD] = useState();
+  const [editfileRPD, seteditfileRPD] = useState();
   const [urlRPD, seturlRPD] = useState();
   const [urlCoc, seturlCoc] = useState();
   const [urlNDA, seturlNDA] = useState();
@@ -34,13 +37,43 @@ const ComplianceDetails = () => {
     RPD_Doc: '',
   });
   function onFileChangeRPD(e) {
-    setfileRPD(e);
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileRPD(e);
+    }
+
   }
   function onFileChangeCOC(e) {
-    setfileCOC(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileCOC(e);
+    }
+
   }
   function onFileChangeNDA(e) {
-    setfileNDA(e)
+    if (e.size > 5000000) {
+      Swal.fire({
+        title: "file size should be less than 5mb",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else {
+      setfileNDA(e);
+    }
+
   }
   const downloadPdf = (e) => {
     const user = {
@@ -54,14 +87,35 @@ const ComplianceDetails = () => {
       })
   }
   function next(e) {
+    saveComplianceDetail(e);
     navigate('/bank');
   }
   useEffect(() => {
+    if (params.userId) {
+      apiService.getAllCollection(params.userId).then((res) => {
+        Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
+          var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
+          var RPD_Doc = initialUrlRPD_Doc.split('/');
+          var initialUrlCOC_Doc = res.data.ComplianceDetail[0].COC_Doc;
+          var COC_Doc = initialUrlCOC_Doc.split('/');
+          var initialUrlNDA_Doc = res.data.ComplianceDetail[0].NDA_Doc;
+          var NDA_Doc = initialUrlNDA_Doc.split('/');
+          setfileRPD(RPD_Doc[1]);
+          setfileCOC(COC_Doc[1]);
+          setfileNDA(NDA_Doc[1]);
+          setEditCompliance(true);
+        })
+      });
+    }
+    else {
+      setEditCompliance(false);
+    }
     const user = {
       companyName: pdfValues.companyName || undefined,
       userName: pdfValues.userName || undefined,
       userId: pdfValues.userId || undefined,
     }
+    setshowEditUploadsField(true);
     apiService.createRelatedDisclosurePdf(user).then(res => {
 
     })
@@ -86,10 +140,10 @@ const ComplianceDetails = () => {
     data.append('NDA_Doc', fileNDA);
     data.append('COC_Doc', fileCOC);
     data.append('userId', values.userId);
-
+    var initial_url = 'uploads/RPD_Doc-1675924508613.pdf';
+    var url = initial_url.split('/');
     apiService.saveComplianceDetail(data).then(res => {
       if (res.data.status === 'success') {
-        
         Swal.fire({
           title: "Data saved",
           icon: "success",
@@ -131,21 +185,24 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6} >
-
                         <FileUploader
                           handleChange={onFileChangeRPD}
                           required
                           type="file"
                           name="fileRPD"
                         />
-                        <span>{fileRPD ? `File name: ${fileRPD.name}` : "No File Chosen"}</span>
-
-
+                        {EditCompliance ? (
+                          <span>{fileRPD ? `File name:${fileRPD}` : "No File Chosen"}</span>
+                        ) : (
+                          <span>{fileRPD ? `File name:${fileRPD.name}` : "No File Chosen"}</span>
+                        )}
                       </Col>
                       <Col>
-                        <Button className="UploadBtn">Upload files</Button>
-
-                      </Col>
+                        {EditCompliance ? (
+                          <Button className="UploadBtn">Delete files</Button>
+                        ) : (
+                          <Button className="UploadBtn">Upload files</Button>
+                        )}  </Col>
                       {fileRPD ?
                         <Col>
                           <p className='ValidityofDeclaration'>Validity of Declaration</p>
@@ -167,12 +224,20 @@ const ComplianceDetails = () => {
                           type="file"
                           name="fileCOC"
                         />
-                        <span>{fileCOC ? `File name: ${fileCOC.name}` : "No File Chosen"}</span>
+                        {EditCompliance ? (
+                          <span>{fileCOC ? `File name:${fileCOC}` : "No File Chosen"}</span>
+                        ) : (
+                          <span>{fileCOC ? `File name: ${fileCOC.name}` : "No File Chosen"}</span>
+                        )}
 
 
                       </Col>
                       <Col>
-                        <Button className="UploadBtn">Upload files</Button>
+                        {EditCompliance ? (
+                          <Button className="UploadBtn">Delete files</Button>
+                        ) : (
+                          <Button className="UploadBtn">Upload files</Button>
+                        )}
 
                       </Col>
                       {fileCOC ?
@@ -196,11 +261,19 @@ const ComplianceDetails = () => {
                           type="file"
                           name="fileNDA"
                         />
-                        <span>{fileNDA ? `File name: ${fileNDA.name}` : "No File Chosen"}</span>
+                        {EditCompliance ? (
+                          <span>{fileNDA ? `File name:${fileNDA}` : "No File Chosen"}</span>
+                        ) : (
+                          <span>{fileNDA ? `File name:${fileNDA.name}` : "No File Chosen"}</span>
+                        )}
+
                       </Col>
                       <Col>
-                        <Button className="UploadBtn">Upload files</Button>
-                      </Col>
+                        {EditCompliance ? (
+                          <Button className="UploadBtn">Delete files</Button>
+                        ) : (
+                          <Button className="UploadBtn">Upload files</Button>
+                        )}</Col>
                       {fileNDA ?
                         <Col>
                           <p className='ValidityofDeclaration'>Validity of Declaration</p>

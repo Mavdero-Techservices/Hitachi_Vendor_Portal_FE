@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Signin(props) {
-  
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const [verifiedUser, setRole] = useState();
@@ -196,9 +196,8 @@ export default function Signin(props) {
 
   if (redirectToReferrer) {
     if (verifiedUser && verifiedUser === 'approved') {
-      if (editUser[0] === 'null') {
+      if (editUser.length <= 0) {
         return (<Navigate to={'/basic'} />)
-
       }
       else {
         return (<Navigate to={`/basic/${userId}`} />)
