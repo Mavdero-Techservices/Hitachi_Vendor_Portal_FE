@@ -34,8 +34,8 @@ function JapanTeam() {
     });
 
     useEffect(() => {
-        apiService.getAllUserDetail().then(res => {
-            res.data.basicInfo[0].map((item) => {
+        apiService.getApprovedStatus().then(res => {
+            res.data.result.forEach((item) => {
                 var date1 = new Date();
                 var date01 = new Date(item.createdAt);
                 var date2 = new Date();
@@ -47,7 +47,7 @@ function JapanTeam() {
                 item.createdAt = s
             })
             setvendors([])
-            setvendors((array) => [...array, ...res.data.basicInfo[0]]);
+            setvendors((array) => [...array, ...res.data.result]);
         })
     }, [])
     return (
@@ -90,7 +90,7 @@ function JapanTeam() {
                                     <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Vendor name</Typography>
                                     <Typography sx={{ width: '36%', }}></Typography>
                                     <Typography sx={{ width: '12%', fontWeight: "bold" }}>Submit date</Typography>
-                                    <Typography sx={{ fontWeight: "bold" }}>Due date</Typography>
+                                    <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
                                 </AccordionSummary>
                             </Accordion>
                             {vendors?.map((item, key) => <>
@@ -100,7 +100,7 @@ function JapanTeam() {
                                         aria-controls="panelbh-content"
                                         id={"panel1bh-header"}
                                     >
-                                        <IconButton sx={{ p: 0, width: '18%' }} >
+                                        <IconButton sx={{ p: 0, width: '18%',justifyContent: 'flex-start'  }} >
                                             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                             <Typography >&nbsp;{item.userId}</Typography>
                                         </IconButton>

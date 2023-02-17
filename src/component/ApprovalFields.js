@@ -27,8 +27,6 @@ function ApprovalFields(props) {
     useEffect(() => {
         apiService.getAllCollection(props.userid)
             .then(res => {
-                console.log("props.userid------------->>>>>", res.data)
-
                 if ((res.data.basicInfo[0] !== "null") && (res.data.basicInfo.length > 0)) {
                     setaddress1(res.data.basicInfo[0].address1);
                     setaddress2(res.data.basicInfo[0].address2)
@@ -946,10 +944,91 @@ function ApprovalFields(props) {
         }
     }
 
+    const handleNoConcernFound = (event) => {
+  
+        const userId = event;
+        const data = new FormData();
+        // data.append('level1Status', "approved");
+        data.append('userId', event);
+        // data.append('level1RejectComment', "");
+        // data.append('level1rejectFileDoc', "");
+        data.append('level2Status', "approved");
+        // data.append('level2RejectComment', "");
+        // data.append('level2rejectFileDoc', "");
+        apiService.updateApprovalStatus(userId, data)
+            .then(response => {
+                if (response) {
+                    Swal.fire({
+                        title: "Data saved",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error While Fetching",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
+            })
+    }
+    const handleConcernFound = (event) => {
+        console.log("handleConcernFound",event)
+     
+        Swal.fire({
+            heightAuto: true,
+            title: 'Review vendor details',
+            html: `<div class="rejectstyle">
+            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+       </div> `,
+            confirmButtonText: 'Reject',
+            confirmButtonColor: "#B1000E",
+            showCancelButton: true,
+            focusConfirm: false,
+            customClass: 'swal-wide',
+            preConfirm: () => {
+
+                const comment = Swal.getPopup().querySelector('#comment').value
+                const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0]
+                if (!comment || !rejectdoc) {
+                    Swal.showValidationMessage(`Please enter comments and file`)
+                } else {
+                    console.log("dataaa",rejectdoc)
+                    const data = new FormData();
+                    data.append('userId', event);
+                    data.append('level2Status', "rejected");
+                    data.append('level2RejectComment', comment);
+                    data.append('level2rejectFileDoc', rejectdoc);
+                    const userId = event;
+                    apiService.updateApprovalStatus(userId, data)
+                        .then(response => {
+                            if (response) {
+                                Swal.fire({
+                                    title: "Data saved",
+                                    icon: "success",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Error While Fetching",
+                                    icon: "error",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                        })
+                }
+            }
+        })
+    }
+
     const handleApprove = (event) => {
+        console.log("handleApprove",event)
         const data = new FormData();
         data.append('level1Status', "approved");
-        data.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
+        data.append('userId', event);
         // data.append('level1RejectComment', "");
         // data.append('level1rejectFileDoc', "");
         // data.append('level2Status', "");
@@ -975,7 +1054,7 @@ function ApprovalFields(props) {
     }
 
     const handleRegject = (event) => {
-        event.preventDefault();
+
         Swal.fire({
             heightAuto: true,
             title: 'Review vendor details',
@@ -996,7 +1075,7 @@ function ApprovalFields(props) {
                     Swal.showValidationMessage(`Please enter comments and file`)
                 } else {
                     const data = new FormData();
-                    data.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
+                    data.append('userId', event);
                     data.append('level1Status', "rejected");
                     data.append('level1RejectComment', comment);
                     data.append('level1rejectFileDoc', rejectdoc);
@@ -2002,23 +2081,23 @@ function ApprovalFields(props) {
 
                     {props.japan ? <>
                         <div className="float-end my-2" >
-                            <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Concern found</button>
-                            <button type="submit" className="btn bankbtn btn-primary btn-md m-2">No Concern found</button>
+                            <button type="button" onClick={(e) => handleConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Concern found</button>
+                            <button type="button" onClick={(e) => handleNoConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">No Concern found</button>
                         </div>
                     </> :
                         props.MRT ?
                             <>
                                 <div className="float-end" >
                                     <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
-                                    <button type="submit" className="btn bankbtn btn-primary btn-md m-2">Save</button>
+                                    <button type="button" className="btn bankbtn btn-primary btn-md m-2">Save</button>
                                     <button type="button" onClick={handleRegject} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
                                     <button type="button" className="btn bankbtn btn-primary btn-md m-2">Approve</button>
                                 </div></> : <>
                                 <div className="float-end" >
                                     <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
                                     <button type="submit" className="btn bankbtn btn-primary btn-md m-2">Save</button>
-                                    <button type="button" onClick={handleRegject} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
-                                    <button type="button" onClick={handleApprove} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
+                                    <button type="button" onClick={(e) => handleRegject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
+                                    <button type="button" onClick={(e) => handleApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
                                 </div></>
                     }
 

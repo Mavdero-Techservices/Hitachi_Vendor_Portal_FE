@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import IconButton from '@mui/material/IconButton';
+import { useLocation } from "react-router-dom";
 import { Box } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,6 +19,7 @@ export const SideBar = (props) => {
   const sidemenuOpen = () => {
     setOpen(!open);
   };
+  const {pathname} = useLocation();
 
   return (
     <Box sx={{ width: '100%', ...(open && { width: '60px' }), maxWidth: 180, minHeight: '100vh', bgcolor: '#B1000E', color: 'white' }}>
@@ -33,7 +35,7 @@ export const SideBar = (props) => {
           </IconButton>
         </List>
         {props.japan === 'JapanTeam' ? <>
-          <List>
+          <List sx={{my:3}}>
             <ListItem disablePadding component={Link} to="/japanTeam" sx={{ color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
@@ -45,7 +47,7 @@ export const SideBar = (props) => {
             <ListItem disablePadding component={Link} to="/japanapprovedVendors" sx={{ color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
-                  <AssignmentTurnedInIcon sx={{ color: 'white' }} />
+                  <AssignmentTurnedInIcon sx={{ color: 'white' }}/>
                 </ListItemIcon>
                 <ListItemText primary="Approved" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
@@ -96,7 +98,7 @@ export const SideBar = (props) => {
           </List>
         </> : <>
           <List>
-            <ListItem disablePadding component={Link} to="/approval" sx={{ color: 'white' }}>
+            <ListItem sx={{ backgroundColor: pathname === '/approval' ?  'gray' :"" ,  borderRadius: '20px',color: 'white'}}  disablePadding component={Link} to="/approval" >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <GppGoodIcon sx={{ color: 'white' }} />
@@ -112,7 +114,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Requests" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem> */}
-            <ListItem disablePadding component={Link} to="/approvedVendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/approvedVendors" sx={{ backgroundColor: pathname === '/approvedVendors' ?  'gray' :"" , borderRadius: '20px', color: 'white'}} >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <AssignmentTurnedInIcon sx={{ color: 'white' }} />
@@ -120,7 +122,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approved" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/RejectedVendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/RejectedVendors" sx={{ backgroundColor: pathname === '/RejectedVendors' ?  'gray' :"" , borderRadius: '20px', color: 'white'}} >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <EventBusyIcon sx={{ color: 'white' }} />

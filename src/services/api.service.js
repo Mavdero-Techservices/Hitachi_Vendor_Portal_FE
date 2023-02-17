@@ -97,5 +97,8 @@ class apiService {
   getRejectStatus() {
     return axios.get("http://localhost:12707/getRejectStatus");
   }
+  getApprovalList() {
+    return axios.get("http://localhost:12707/getApprovalList");
+  }
 }
 export default new apiService();

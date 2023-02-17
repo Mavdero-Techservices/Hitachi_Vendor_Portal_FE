@@ -34,23 +34,26 @@ function MRTteam() {
     });
 
     useEffect(() => {
-
-        apiService.getAllUserDetail().then(res => {
-            res.data.basicInfo[0].map((item) => {
-                var date1 = new Date();
-                var date01 = new Date(item.createdAt);
-                var date2 = new Date();
-                date2.setDate(date01.getDate() + 3);
-                var Difference_In_Time = date2.getTime() - date1.getTime();
-                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                item.updatedAt = Difference_In_Days
-                const s = moment(item.createdAt).format('MMM DD');
-                item.createdAt = s
+        const Level2rejected = []
+        apiService.getApprovalList().then(res => {
+            res.data.result.forEach((item) => {
+                if (item.level2Status === 'rejected') {
+                    var date1 = new Date();
+                    var date01 = new Date(item.createdAt);
+                    var date2 = new Date();
+                    date2.setDate(date01.getDate() + 3);
+                    var Difference_In_Time = date2.getTime() - date1.getTime();
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    item.updatedAt = Difference_In_Days
+                    const s = moment(item.createdAt).format('MMM DD');
+                    item.createdAt = s
+                    Level2rejected.push(item)
+                }
             })
-            setvendors([])
-            setvendors((array) => [...array, ...res.data.basicInfo[0]]);
-        })
 
+            setvendors([])
+            setvendors((array) => [...array, ...Level2rejected]);
+        })
     }, [])
 
     return (
@@ -122,7 +125,7 @@ function MRTteam() {
                                         aria-controls="panelbh-content"
                                         id={"panel1bh-header"}
                                     >
-                                        <IconButton sx={{ p: 0, width: '18%' }} >
+                                        <IconButton sx={{ p: 0, width: '18%' ,justifyContent: 'flex-start' }} >
                                             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                             <Typography >&nbsp;{item.userId}</Typography>
                                         </IconButton>
