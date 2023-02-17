@@ -73,9 +73,9 @@ function ApprovalRequest() {
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <AdminHeader team="vendor"/>
+                <AdminHeader team="mrtTeam"/>
                 <Box sx={{ display: 'flex' }}>
-                    <SideBar />
+                    <SideBar MRT="MRTteam"/>
                     <Box sx={{ mt: 2, width: '100%' }}>
                         <Container>
                             <Accordion className='accordion1' sx={{ mt: 1, }}>

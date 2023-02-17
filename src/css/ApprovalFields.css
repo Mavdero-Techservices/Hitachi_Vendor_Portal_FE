@@ -13,6 +13,11 @@
   font-size: 14px;
   color: #B1000E;
 }
+.formError {
+  width: 100%;
+  color: red;
+  font-size: 12px;
+}
 .approvebtn {
   text-transform: unset !important;
   font-size: 15px;
@@ -41,6 +46,17 @@
 }
 .rejectstyle {
   display:flex;
+  justify-content: center;
+  align-items: center !important;
+}
+.delbtn{
+  margin-top: 10px;
+  background-color: #B1000E;
+  font-size: 16px;
+  padding: 10px;
+  border:none;
+  border-radius: 5px; 
+  color:white;
 }
 .swal-wide {
   width:auto !important;

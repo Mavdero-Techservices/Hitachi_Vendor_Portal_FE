@@ -79,5 +79,23 @@ class apiService {
   {
     return http.put(`/updateVdetail/${userId}`, data);
   }
+  getAllUserDetail() {
+    return http.get("/getAllUserDetail");
+  }
+  updateAllCollection(userId,data) {
+    return axios.put(`http://localhost:12707/updateAllCollection/${userId}`, data);
+  }
+  saveApproval(data) {
+    return axios.post("http://localhost:12707/saveApproval", data);
+  }
+  updateApprovalStatus(userId,data) {
+    return axios.put(`http://localhost:12707/updateApprovalStatus/${userId}`, data);
+  }
+  getApprovedStatus() {
+    return axios.get("http://localhost:12707/getApprovedStatus");
+  }
+  getRejectStatus() {
+    return axios.get("http://localhost:12707/getRejectStatus");
+  }
 }
 export default new apiService();

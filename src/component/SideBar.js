@@ -19,9 +19,6 @@ export const SideBar = (props) => {
     setOpen(!open);
   };
 
-  // useEffect(() => {
-  //   setOpen(open);
-  // },[open]);
   return (
     <Box sx={{ width: '100%', ...(open && { width: '60px' }), maxWidth: 180, minHeight: '100vh', bgcolor: '#B1000E', color: 'white' }}>
       <nav aria-label="main mailbox folders">
@@ -72,7 +69,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approvals" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding component={Link} to="/approvalReq" sx={{ color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <NoteAltIcon sx={{ color: 'white' }} />
@@ -107,14 +104,14 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approvals" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/approvalReq" sx={{ color: 'white' }}>
+            {/* <ListItem disablePadding component={Link} to="/approvalReq" sx={{ color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <NoteAltIcon sx={{ color: 'white' }} />
                 </ListItemIcon>
                 <ListItemText primary="Requests" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding component={Link} to="/approvedVendors" sx={{ color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
