@@ -40,6 +40,10 @@ export default function Statutory(props) {
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
   const [country, setcountry] = useState({});
+  const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] = useState(false);
+  const [deletePE_DeclarationUploadedFile, setdeletePE_DeclarationUploadedFile] = useState(false);
+  const [deleteTax_residencyUploadedFile, setdeleteTax_residencyUploadedFile] = useState(false);
+
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: '',
@@ -133,6 +137,7 @@ export default function Statutory(props) {
     }
     else {
       setTax_residency_Doc(e)
+      setdeleteTax_residencyUploadedFile(true);
     }
 
   }
@@ -146,6 +151,7 @@ export default function Statutory(props) {
     }
     else {
       setform_10f_Doc(e)
+      setdeleteform_10fUploadedFile(true);
     }
 
   }
@@ -171,7 +177,8 @@ export default function Statutory(props) {
       });
     }
     else {
-      setPE_Declaration_Doc(e)
+      setPE_Declaration_Doc(e);
+      setdeletePE_DeclarationUploadedFile(true);
     }
   }
   function onFileChangeTAN_Doc(e) {
@@ -222,15 +229,41 @@ export default function Statutory(props) {
     }
     return newErrors
   }
-
+  function cancel(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setValues({
+        GST_No: '',
+        GST_type: '',
+        MSME_No: '',
+        MSME_Type: '',
+        MSME_status: '',
+        PAN_No: '',
+        CIN_No: '',
+        TAN_No: '',
+        Tax_residency_No: '',
+      });
+      setFile('');
+      setPAN_Doc('');
+      setform_10f_Doc('');
+      setPE_Declaration_Doc('');
+      setMSME_Doc('')
+      setTax_residency_Doc('')
+      setdeleteTax_residencyUploadedFile(false);
+      setdeletePE_DeclarationUploadedFile(false);
+      setdeleteform_10fUploadedFile(false);
+    });
+  }
   useEffect(() => {
-
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
           var initialUrl = res.data.Statutory[0].form_10f_Doc;
           var form_10f_DocUrl = initialUrl.split('/');
-          console.log("form_10f_Doc", form_10f_DocUrl);
           setValues({
             GST_No: value.GST_No,
             GST_type: value.GST_type,
@@ -240,18 +273,7 @@ export default function Statutory(props) {
             PAN_No: value.PAN_No,
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
-            // GST_Doc: value.GST_Doc,
-            // PAN_Doc: value.PAN_Doc,
-            // TAN_Doc:value.TAN_Doc,
-            // PE_DeclarationNo:value.PE_DeclarationNo,
-            // MSME_Doc:value.MSME_Doc,
-            // form_10f:value.form_10f,
-            // MSME_status:value.MSME_status,
-            // MSME_No:value.MSME_No,
-            // MSME_Type:value.MSME_Type,
-            // TAN_No:value.TAN_No,
             Tax_residency_No: value.Tax_residency_No,
-
           })
           setFile({
             GST_Doc: value.GST_Doc,
@@ -309,23 +331,45 @@ export default function Statutory(props) {
       data.append('userId', values.userId);
       data.append('Tax_residency_No', values.Tax_residency_No);
       data.append('fileDisclosure', fileDisclosure);
-      apiService.saveStatutoryDetail(data)
-        .then(res => {
-          if (res.data.status === 'success') {
-            Swal.fire({
-              title: "Data saved",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          }
-          else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        })
+      if (params.userId) {
+        apiService.updateStatutoryDetail(params.userId, data)
+          .then(res => {
+            if (res.data.status === 'success') {
+              Swal.fire({
+                title: "Data updated",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+            else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+      }
+      else {
+        apiService.saveStatutoryDetail(data)
+          .then(res => {
+            if (res.data.status === 'success') {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+            else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+      }
+
     }
 
   }
@@ -372,7 +416,7 @@ export default function Statutory(props) {
                             </Col>
                             <Col>
                               <div className="frame-input">
-                                <label for="fileupload">Upload GST</label>
+                                <label htmlFor="fileupload">Upload GST</label>
                                 <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
                               </div>
                             </Col>
@@ -396,7 +440,7 @@ export default function Statutory(props) {
 
                                 </Row>) : (<Row>
                                   <div className="frame-input">
-                                    <label for="fileupload">Upload UnRegister Gst</label>
+                                    <label htmlFor="fileupload">Upload UnRegister Gst</label>
                                     <input type="file" id="fileupload" handleChange={onFileDisclosurechange} name="fileDisclosure" required />
                                   </div> </Row>)}
 
@@ -431,7 +475,7 @@ export default function Statutory(props) {
                         </Col>
                         <Col>
                           <div className="frame-input">
-                            <label for="fileuploadPan">Upload PAN</label>
+                            <label htmlFor="fileuploadPan">Upload PAN</label>
                             <input type="file" id="fileuploadPan" value={values.PAN_Doc} onChange={onFileChangePAN_Doc} required />
                           </div>
                         </Col>
@@ -478,6 +522,7 @@ export default function Statutory(props) {
                                 required
                                 type="file"
                                 name="fileFD"
+                                fileOrFiles={deleteform_10fUploadedFile}
                               />
                               <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
 
@@ -496,6 +541,7 @@ export default function Statutory(props) {
                                 required
                                 type="file"
                                 name="fileFD"
+                                fileOrFiles={deletePE_DeclarationUploadedFile}
                               />
                               <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span></Form.Group>
 
@@ -533,7 +579,7 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             <div className="frame-input">
-                              <label for="fileuploadMSME">Upload MSME</label>
+                              <label htmlFor="fileuploadMSME">Upload MSME</label>
                               <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} required />
                             </div>
                           </Col>
@@ -548,7 +594,7 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             <div className="frame-input">
-                              <label for="fileuploadMSME">Upload MSME</label>
+                              <label htmlFor="fileuploadMSME">Upload MSME</label>
                               <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} disabled="true" />
                             </div>
                           </Col>
@@ -583,7 +629,7 @@ export default function Statutory(props) {
                         </Col>
                         <Col>
                           <div className="frame-input">
-                            <label for="fileuploadTAN">Upload TAN</label>
+                            <label htmlFor="fileuploadTAN">Upload TAN</label>
                             <input type="file" id="fileuploadTAN" value={values.TAN_Doc} onChange={onFileChangeTAN_Doc} required />
                           </div>
                         </Col>
@@ -598,6 +644,7 @@ export default function Statutory(props) {
                                 required
                                 type="file"
                                 name="fileFD"
+                                fileOrFiles={deleteTax_residencyUploadedFile}
                               />
                               <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
                             </Form.Group>
@@ -632,7 +679,7 @@ export default function Statutory(props) {
         </Row>
         <Row className="sbtn">
           <div className="float-end mt-2" >
-            <button type="button" className="btn statutorybtn btn-primary btn-md m-1">Cancel</button>
+            <button type="button" onClick={cancel} className="btn statutorybtn btn-primary btn-md m-1">Cancel</button>
             <button type="button" onClick={saveStatutoryDetail} className="btn statutorybtn btn-primary btn-md m-1">Save</button>
             <button type="button" onClick={next} className="btn statutorybtn btn-primary btn-md m-1">Next</button>
           </div>

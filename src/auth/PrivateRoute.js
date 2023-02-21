@@ -1,29 +1,21 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import auth from './auth-helper';
+import { useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+} from "react-router-dom";
 
 const AdminRoute = ({ component: Component, ...rest }) => {
-  return (<Route
-    {...rest}
-    render={(props) => {
-      return auth?.isAuthenticated()?.user?.verifiedUser === "approved" ? (
-        <Component {...props} />
-      ) : (auth.clearJWT(() => props?.history.push('/')))
-    }
-    }
-  />)
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "Admin" ? <Outlet /> : auth.clearJWT(() => navigate('/login'))
+  )
 }
-
 const UserRoute = ({ component: Component, ...rest }) => {
-  return (<Route
-    {...rest}
-    render={(props) => {
-      return auth?.isAuthenticated()?.user?.verifiedUser === "pending" ? (
-        <Component {...props} />
-      ) : (auth.clearJWT(() => props?.history.push('/')))
-    }
-    }
-  />)
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "user" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
 }
 
 export { AdminRoute, UserRoute }

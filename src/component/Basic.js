@@ -101,7 +101,57 @@ export class Basic extends React.Component {
       this.handleSubmit(e);
       this.props.navigate(`/statutory/${this.props.params.userId}`);
     }
-
+  }
+  cancelBasicInfo = e => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      this.setState({
+        address1: '',
+        address2: '',
+        city: '',
+        state:'',
+        country:'',
+        pinCode:'',
+        companyName:'',
+        image:'',
+      })
+    });
+  }
+  cancelCommunicationInfo= e => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      this.setState({
+        financeSpoccontactName: '',
+        financeSpocdesignation: '',
+        financeSpocphoneNo: '',
+        financeSpocemail: '',
+        operationSpoccontactName: '',
+        operationSpocdesignation: '',
+        operationSpocphoneNo: '',
+        operationSpocemail: '',
+        collectionSpoccontactName: '',
+        collectionSpocdesignation: '',
+        collectionSpocphoneNo: '',
+        collectionSpocemail: '',
+        managementSpoccontactName: '',
+        managementSpocdesignation: '',
+        managementSpocphoneNo: '',
+        managementSpocemail: '',
+        contactName: '',
+        designation: '',
+        phoneNo: '',
+        email: '',
+        mastervendor_email: '',
+      })
+    });
   }
   handleChange(e) {
     this.setState({ country: e.target.value });
@@ -128,7 +178,7 @@ export class Basic extends React.Component {
       image: this.state.image,
     }
     if (this.props.params.userId) {
-      apiService.updateVendordetail(this.props.params.userId, basicInfo)
+    apiService.updateVendordetail(this.props.params.userId, basicInfo)
         .then(response => {
           if (response) {
             Swal.fire({
@@ -156,7 +206,6 @@ export class Basic extends React.Component {
               icon: "success",
               confirmButtonText: "OK",
             });
-
           }
           else {
             Swal.fire({
@@ -167,7 +216,6 @@ export class Basic extends React.Component {
           }
         })
     }
-
   }
 
   handleSubmitComDetail = e => {
@@ -196,7 +244,29 @@ export class Basic extends React.Component {
       email: this.state.email,
       mastervendor_email: this.state.mastervendor_email,
     }
-    apiService.SaveVendorCommunication(communicationDetails)
+    if (this.props.params.userId) {
+      apiService.updateCommunicationdetail(this.props.params.userId,communicationDetails)
+        .then(response => {
+          if (response) {
+            Swal.fire({
+              title: "Data Updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+    else
+    {
+      apiService.SaveVendorCommunication(communicationDetails)
       .then(response => {
         if (response.data.msg === 'success') {
           Swal.fire({
@@ -213,6 +283,8 @@ export class Basic extends React.Component {
           });
         }
       })
+    }
+   
 
   }
   convertBase64 = (file) => {
@@ -454,7 +526,7 @@ export class Basic extends React.Component {
                           <div className="d-flex justify-content-center">
                             <MDBRow className="mb-4">
                               <div className="float-end" >
-                                <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
+                                <button type="button" onClick={this.cancelBasicInfo} className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
                                 <button type="button" onClick={this.handleSubmit} className="btn basicbtn btn-primary btn-md m-3">Save</button>
                                 <button type="button" onClick={this.togglebuttonCommu} className="btn basicbtn btn-primary btn-md m-3">Next</button>
                               </div>
@@ -583,7 +655,7 @@ export class Basic extends React.Component {
                             <div className="d-flex justify-content-center">
                               <MDBRow className="mb-4">
                                 <div className="float-end" >
-                                  <button type="button" className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
+                                  <button type="button" onClick={this.cancelCommunicationInfo} className="btn basicbtn btn-primary btn-md m-3">Cancel</button>
                                   <button type="button" onClick={this.handleSubmitComDetail} className="btn basicbtn btn-primary btn-md m-3">Save</button>
                                   <button type="button" onClick={this.next} className="btn basicbtn btn-primary btn-md m-3">Next</button>
                                 </div>

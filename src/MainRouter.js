@@ -29,48 +29,56 @@ import MRTapprovedvendors from './component/MRTapprovedvendors';
 import MRTrejectedvendors from './component/MRTrejectedvendors';
 import ApprovalRequest from './component/ApprovalRequest';
 import VendorPortalHeader from './common/VendorPortalHeader';
+import MasterVendorHeader from './common/MasterVendorHeader';
+import MasterVendorSidemenu from './common/MasterVendorSidemenu';
 import Documents from './component/Documents';
 import AccountStatements from './component/AccountStatements';
-
+import UserCreation from './component/UserCreation';
+import UserAccess from './component/UserAccess';
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus)
   const [state, setState] = useState({
     userInfo: JSON.parse(window.sessionStorage.getItem("jwt")),
     userName: '',
     userRole: '',
+    verifiedUser: ''
   })
   console.log(isLoggedIn)
   const pathname = useLocation().pathname
   useEffect(() => {
     state.userInfo = JSON.parse(window.sessionStorage.getItem("jwt"));
-    state.userRole = state?.userInfo?.user?.verifiedUser;
+    state.verifiedUser = state?.userInfo?.user?.verifiedUser;
+    state.userRole = state?.userInfo?.user?.role;
   }, [pathname, isLoggedIn])
   return (
     <div>
       <Routes>
+        {/* adminroute */}
+        <Route element={< AdminRoute />}>
+          <Route path="/userCreation" element={<UserCreation />} />
+          <Route path="/UserAccess" element={<UserAccess />} />
+        </Route>
+        {/* userRoutes */}
+        <Route element={< UserRoute />}>
+          <Route path="/statutory" element={<Statutory />} />
+          <Route path="/statutory/:userId" element={<Statutory />} />
+          <Route path="/FinancialDetail" element={<FinancialDetail />} />
+          <Route path="/FinancialDetail/:userId" element={<FinancialDetail />} />
+          <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
+          <Route path="/ComplianceDetail/:userId" element={<ComplianceDetail />} />
+          <Route path="/ContactTeam" element={<ContactTeam />} />
+          <Route path="/ContactTeam/:userId" element={<ContactTeam />} />
+          <Route path="/basic" element={<Basic />} />
+          <Route path="/basic/:userId" element={<Basic />} />
+          <Route path="/bank/:userId" element={<Bank user={state.userInfo} />} />
+          <Route path="/bank" element={<Bank user={state.userInfo} />} /> </Route>
         <Route path="/" element={<NewUser />} />
-        <Route path="/Test" element={<Test />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/ImageUpload" element={<ImageUpload />} />
-        <Route path="/getImage" element={<GetImage />} />
         {/* <Route path="Test" element={<Test />} /> */}
         <Route path="/Navbar" element={<Navbar1 />} />
-        <Route path="/basic" element={<Basic />} />
-        <Route path="/basic/:userId" element={<Basic />} />
-        <Route path="/commu" element={<Commun />} />
-        <Route path="/statutory" element={<Statutory />} />
-        <Route path="/statutory/:userId" element={<Statutory />} />
-        <Route path="/bank/:userId" element={<Bank user={state.userInfo} />} />
-        <Route path="/bank" element={<Bank user={state.userInfo} />} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route path="/passwordGeneration/:emailId/:mailConfirmationCode" element={<Password />} />
-        <Route path="/FinancialDetail" element={<FinancialDetail />} />
-        <Route path="/FinancialDetail/:userId" element={<FinancialDetail />} />
-        <Route path="/ComplianceDetail" element={<ComplianceDetail />} />
-        <Route path="/ComplianceDetail/:userId" element={<ComplianceDetail />} />
-        <Route path="/ContactTeam" element={<ContactTeam />} />
-        <Route path="/ContactTeam/:userId" element={<ContactTeam />} />
         <Route path="/approval" element={<AdminPage />} />
         <Route path="/approvedVendors" element={<ApprovedVendors />} />
         <Route path="/rejectedVendors" element={<RejectedVendors />} />
@@ -82,6 +90,8 @@ const MainRouter = () => {
         <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors />} />
         <Route path="/approvalReq" element={<ApprovalRequest />} />
         <Route path="/vendorPortal" element={<VendorPortalHeader />} />
+        <Route path="/MasterVendorHeader" element={<MasterVendorHeader />} />
+        <Route path="/MasterVendorSidemenu" element={<MasterVendorSidemenu />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/acStatement" element={<AccountStatements />} />
       </Routes>

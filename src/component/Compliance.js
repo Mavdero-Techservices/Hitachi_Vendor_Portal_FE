@@ -25,6 +25,9 @@ const ComplianceDetails = () => {
   const [fileCOC, setfileCOC] = useState();
   const [fileNDA, setfileNDA] = useState();
   const [financialYearEnd, setfinancialYearEnd] = useState();
+  const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
+  const [deleteCocFile, setdeleteCocFile] = useState(false);
+  const [deleteNdaFile, setdeleteNdaFile] = useState(false);
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName,
     userName: JSON.parse(window.sessionStorage.getItem("jwt")).result.userName,
@@ -46,8 +49,8 @@ const ComplianceDetails = () => {
     }
     else {
       setfileRPD(e);
+      setdeleteUploadedFile(true);
     }
-
   }
   function onFileChangeCOC(e) {
     if (e.size > 5000000) {
@@ -59,6 +62,7 @@ const ComplianceDetails = () => {
     }
     else {
       setfileCOC(e);
+      setdeleteCocFile(true);
     }
 
   }
@@ -72,8 +76,24 @@ const ComplianceDetails = () => {
     }
     else {
       setfileNDA(e);
+      setdeleteNdaFile(true);
     }
 
+  }
+  function cancel(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setfileRPD('');
+      setfileCOC('');
+      setfileNDA('');
+      setdeleteUploadedFile(false);
+      setdeleteCocFile(false);
+      setdeleteNdaFile(false);
+    });
   }
   const downloadPdf = (e) => {
     const user = {
@@ -142,22 +162,44 @@ const ComplianceDetails = () => {
     data.append('userId', values.userId);
     var initial_url = 'uploads/RPD_Doc-1675924508613.pdf';
     var url = initial_url.split('/');
-    apiService.saveComplianceDetail(data).then(res => {
-      if (res.data.status === 'success') {
-        Swal.fire({
-          title: "Data saved",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      }
-      else {
-        Swal.fire({
-          title: "Error While Fetching",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-    })
+    if (params.userId) {
+      apiService.updateComplianceDetail(params.userId, data).then(res => {
+        if (res.data.status === 'success') {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      })
+
+    }
+    else {
+      apiService.saveComplianceDetail(data).then(res => {
+        if (res.data.status === 'success') {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      })
+    }
+
 
   }
   return (
@@ -190,9 +232,10 @@ const ComplianceDetails = () => {
                           required
                           type="file"
                           name="fileRPD"
+                          fileOrFiles={deleteUploadedFile}
                         />
                         {EditCompliance ? (
-                          <span>{fileRPD ? `File name:${fileRPD}` : "No File Chosen"}</span>
+                          <span>{fileRPD ? `File name:${fileRPD.name}` : "No File Chosen"}</span>
                         ) : (
                           <span>{fileRPD ? `File name:${fileRPD.name}` : "No File Chosen"}</span>
                         )}
@@ -223,6 +266,7 @@ const ComplianceDetails = () => {
                           required
                           type="file"
                           name="fileCOC"
+                          fileOrFiles={deleteCocFile}
                         />
                         {EditCompliance ? (
                           <span>{fileCOC ? `File name:${fileCOC}` : "No File Chosen"}</span>
@@ -260,6 +304,7 @@ const ComplianceDetails = () => {
                           required
                           type="file"
                           name="fileNDA"
+                          fileOrFiles={deleteNdaFile}
                         />
                         {EditCompliance ? (
                           <span>{fileNDA ? `File name:${fileNDA}` : "No File Chosen"}</span>
@@ -294,7 +339,7 @@ const ComplianceDetails = () => {
           </Row>
           <Row className="sbtn">
             <div className="float-end mt-2" >
-              <button type="button" className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
+              <button type="button" onClick={cancel} className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
               <button type="button" onClick={saveComplianceDetail} className="btn bankbtn btn-primary btn-md m-1">Save</button>
               <button type="button" onClick={next} className="btn bankbtn btn-primary btn-md m-1">Next</button>
             </div>

@@ -11,6 +11,8 @@ const FinancialDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [EditfinancialDetail, setEditfinancialDetail] = useState(true);
+  const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
+  const [deleteUploadedFile2, setdeleteUploadedFile2] = useState(false);
   const [errors, setErrors] = useState({})
   const [fileFD, setfileFD] = useState();
   const [fileFD2, setfileFD2] = useState();
@@ -33,6 +35,7 @@ const FinancialDetails = () => {
     }
     else {
       setfileFD(e);
+      setdeleteUploadedFile(true)
     }
 
   }
@@ -46,7 +49,29 @@ const FinancialDetails = () => {
     }
     else {
       setfileFD2(e);
+      setdeleteUploadedFile2(true)
     }
+  }
+  function cancel(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setValues({
+        yearOfAuditedFinancial: '',
+        Revenue: '',
+        Profit: '',
+        netWorth: '',
+        currentAssets: '',
+        directorDetails: '',
+      })
+      setfileFD2('')
+      setfileFD('');
+      setdeleteUploadedFile(false)
+      setdeleteUploadedFile2(false)
+    });
 
   }
   function next(e) {
@@ -85,25 +110,45 @@ const FinancialDetails = () => {
     data.append('currentAssets', values.currentAssets);
     data.append('directorDetails', values.directorDetails);
     data.append('userId', values.userId);
+    if (params.userId) {
+      apiService.updateFinacialDetail(params.userId, data)
+        .then(res => {
+          if (res.data.status === 'success') {
+            Swal.fire({
+              title: "Data updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
 
-    apiService.saveFinacialDetail(data)
-      .then(res => {
-        if (res.data.status === 'success') {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
-
+    }
+    else {
+      apiService.saveFinacialDetail(data)
+        .then(res => {
+          if (res.data.status === 'success') {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
   }
   useEffect(() => {
 
@@ -169,6 +214,7 @@ const FinancialDetails = () => {
                   required
                   type="file"
                   name="fileFD"
+                  fileOrFiles={deleteUploadedFile}
                 />
                 {EditfinancialDetail ? (
                   <span>{fileFD ? `File name: ${fileFD}` : "No File Chosen"}</span>
@@ -197,6 +243,7 @@ const FinancialDetails = () => {
                   required
                   type="file"
                   name="fileFD2"
+                  fileOrFiles={deleteUploadedFile2}
                 />
                 {EditfinancialDetail ? (
                   <span>{fileFD2 ? `File name: ${fileFD2}` : "No File Chosen"}</span>
@@ -216,7 +263,7 @@ const FinancialDetails = () => {
               </div>
             </div>
             <div className="float-end" >
-              <button type="button" className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
+              <button type="button" onClick={cancel} className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
               <button type="submit" onClick={saveFinancialDetail} className="btn financialbtn btn-primary btn-md m-3">Save</button>
               <button type="button" onClick={next} className="btn financialbtn btn-primary btn-md m-3">Next</button>
             </div>

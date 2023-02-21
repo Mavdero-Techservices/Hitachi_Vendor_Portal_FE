@@ -19,7 +19,7 @@ const BankDetails = (props) => {
   const [micr, setMicr] = useState("");
   const [branchAdd, setbranchAdd] = useState("");
   const [fileBank, setfileBank] = useState();
-
+  const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const onFileChange = (file) => {
     if (file.size > 5000000) {
       Swal.fire({
@@ -30,8 +30,26 @@ const BankDetails = (props) => {
     }
     else {
       setfileBank(file);
+      setdeleteUploadedFile(true);
     }
 
+  }
+  function cancel(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setAcName('');
+      setBankname('');
+      setAcno('');
+      setIfsc('');
+      setMicr('');
+      setbranchAdd('');
+      setfileBank('');
+      setdeleteUploadedFile(false);
+    });
   }
   function next(e) {
     handleSubmit(e);
@@ -48,23 +66,45 @@ const BankDetails = (props) => {
     data.append('MICRcode', micr);
     data.append('branchAddress', branchAdd);
     data.append('bankdetailDoc', fileBank);
-    apiService.savebankdetail(data)
-      .then(response => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
+    if (params.userId) {
+      apiService.updateBankDetail(params.userId, data)
+        .then(response => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+    else {
+      apiService.savebankdetail(data)
+        .then(response => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+
   }
   useEffect(() => {
 
@@ -137,6 +177,7 @@ const BankDetails = (props) => {
                   required
                   type="file"
                   name="fileBank"
+                  fileOrFiles={deleteUploadedFile}
                 />
                 {EditBank ? (
                   <span>{fileBank ? `File name: ${fileBank}` : "No File Chosen"}</span>
@@ -155,7 +196,7 @@ const BankDetails = (props) => {
               </div>
             </div>
             <div className="float-end mt-2" >
-              <button type="button" className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
+              <button type="button" onClick={cancel} className="btn bankbtn btn-primary btn-md m-1">Cancel</button>
               <button type="submit" className="btn bankbtn btn-primary btn-md m-1">Save</button>
               <button type="button" onClick={next} className="btn bankbtn btn-primary btn-md m-1">Next</button>
             </div>

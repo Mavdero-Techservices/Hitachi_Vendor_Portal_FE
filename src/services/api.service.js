@@ -57,7 +57,6 @@ class apiService {
   }
   downloadPdf(data) {
     return axios.post("http://localhost:12707/downloadPdf", data);
-
   }
   readPdf() {
     return http.get("/readPdf");
@@ -71,12 +70,10 @@ class apiService {
   getvendorDetail(userId) {
     return http.get(`/getvendorDetail/${userId}`);
   }
-  getFinancialDate()
-  {
+  getFinancialDate() {
     return http.get("/getfinacialYear");
   }
-  updateVendordetail(userId,data)
-  {
+  updateVendordetail(userId, data) {
     return http.put(`/updateVdetail/${userId}`, data);
   }
   getAllUserDetail() {
@@ -98,7 +95,39 @@ class apiService {
     return axios.get("http://localhost:12707/getRejectStatus");
   }
   getApprovalList() {
-    return axios.get("http://localhost:12707/getApprovalList");
-  }
+    return axios.get("http://localhost:12707/getApprovalList"); 
+}
+updateCommunicationdetail(userId, data) {
+  return http.put(`/updateCommunication/${userId}`, data);
+}
+updateStatutoryDetail(userId, data) {
+  return http.put(`/updateStatutoryDetail/${userId}`, data);
+}
+updateComplianceDetail(userId, data) {
+  return http.put(`/updateComplianceDetail/${userId}`, data);
+}
+updateBankDetail(userId, data) {
+  return http.put(`/updateBankDetail/${userId}`, data);
+}
+updateFinacialDetail(userId, data) {
+  return http.put(`/updateFinacialDetail/${userId}`, data);
+}
+updateContactTeam(userId, data) {
+  return http.put(`/updateContactTeam/${userId}`, data);
+}
+
+saveMasterVendor(data) {
+  return http.post("/saveMasterVendorSubUser", data);
+}
+getMasterVendorSubUserById(data) {
+  return http.post("/getMasterVendorSubUserById", data);
+}
+UpdateMasterVendorSubUserById(data) {
+  return http.post("/UpdateMasterVendorSubUserById", data);
+}
+
+getAllMasterVendorSubUser() {
+  return http.get("/getAllMasterVendorSubUser");
+}
 }
 export default new apiService();

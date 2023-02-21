@@ -31,7 +31,8 @@ export default function Signin(props) {
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [verifiedUser, setRole] = useState();
+  const [role, setRole] = useState();
+  const [verifiedUser, setverifiedUser] = useState();
   const [userId, setuserId] = useState();
   const [Validation, setValidation] = useState();
   const [submit, setSubmit] = useState(null);
@@ -117,7 +118,8 @@ export default function Signin(props) {
         }
         const details = data?.result
         setValidation(data)
-        setRole(data?.result?.verifiedUser);
+        setRole(data?.result?.role);
+        setverifiedUser(data?.result?.verifiedUser);
         if (data === "invalid user") {
           setSubmit(false)
           textFieldForPasswordRef.current.blur();
@@ -193,9 +195,11 @@ export default function Signin(props) {
   }
 
   const { redirectToReferrer } = values
-
   if (redirectToReferrer) {
-    if (verifiedUser && verifiedUser === 'approved') {
+    if (role === 'Admin' && verifiedUser === 'approved') {
+      return (<Navigate to={'/userCreation'} />)
+    }
+    if (role === 'user' && verifiedUser === 'approved') {
       if (editUser.length <= 0) {
         return (<Navigate to={'/basic'} />)
       }
@@ -203,7 +207,8 @@ export default function Signin(props) {
         return (<Navigate to={`/basic/${userId}`} />)
       }
 
-    } else if (verifiedUser && verifiedUser === 'pending') {
+    }
+    else if (verifiedUser && verifiedUser === 'pending') {
       return (<Navigate to={'/'} />)
     }
   }

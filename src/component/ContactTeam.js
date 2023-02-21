@@ -33,7 +33,28 @@ const ContactTeam = () => {
     emailId3: '',
     contactNumber3: '',
   });
+  function cancel(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setValues({
+        contactName1: '',
+        emailId1: '',
+        contactNumber1: '',
+        contactName2: '',
+        emailId2: '',
+        contactNumber2: '',
+        contactName3: '',
+        emailId3: '',
+        contactNumber3: '',
+      })
 
+    });
+
+  }
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
     let e = { ...errors }
@@ -275,35 +296,69 @@ const ContactTeam = () => {
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
     }
-    apiService.saveContactTeam(user)
-      .then(response => {
-        if (response.data.status === 'success') {
-          Swal.fire({
-            title: 'please complete this field.',
-            html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+    if (params.userId) {
+      apiService.updateContactTeam(params.userId, user)
+        .then(response => {
+          if (response.data.status === 'success') {
+            Swal.fire({
+              title: 'please complete this field.',
+              html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
          <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
          <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
          <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
          <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
          <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
-            padding: '3px',
-            icon: 'warning',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'ok'
-          }).then((result) => {
-            // Swal.fire(
-            //   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
-            // )
-          })
-        }
-        else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
+              padding: '3px',
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'ok'
+            }).then((result) => {
+              // Swal.fire(
+              //   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
+              // )
+            })
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+    else {
+      apiService.saveContactTeam(user)
+        .then(response => {
+          if (response.data.status === 'success') {
+            Swal.fire({
+              title: 'please complete this field.',
+              html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+         <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
+         <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+         <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
+         <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
+         <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
+              padding: '3px',
+              icon: 'warning',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'ok'
+            }).then((result) => {
+              // Swal.fire(
+              //   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
+              // )
+            })
+          }
+          else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+    }
+
 
   }
   useEffect(() => {
@@ -378,10 +433,10 @@ const ContactTeam = () => {
                 <label htmlFor="contactNumber3">Contact Number</label>
                 <input type="number" className="mb-4 Contactinputbox" name="contactNumber3" value={values.contactNumber3} onChange={handleChange('contactNumber3')} />
               </div>
-
             </div>
           </div>
           <div className="float-end">
+            <button type="button" onClick={cancel} className="btn financialbtn btn-primary btn-md m-3">Cancel</button>
             <button type="button" onClick={saveContactTeam} className="btn Contactbtn btn-primary btn-md m-3">Submit</button>
           </div>
         </form>
