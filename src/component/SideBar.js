@@ -19,7 +19,7 @@ export const SideBar = (props) => {
   const sidemenuOpen = () => {
     setOpen(!open);
   };
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <Box sx={{ width: '100%', ...(open && { width: '60px' }), maxWidth: 180, minHeight: '100vh', bgcolor: '#B1000E', color: 'white' }}>
@@ -35,8 +35,8 @@ export const SideBar = (props) => {
           </IconButton>
         </List>
         {props.japan === 'JapanTeam' ? <>
-          <List sx={{my:3}}>
-            <ListItem disablePadding component={Link} to="/japanTeam" sx={{ color: 'white' }}>
+          <List sx={{ my: 3 }}>
+            <ListItem disablePadding component={Link} to="/japanTeam" sx={{ backgroundColor: pathname === '/japanTeam' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <GppGoodIcon sx={{ color: 'white' }} />
@@ -44,15 +44,15 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approvals" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/japanapprovedVendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/japanapprovedVendors" sx={{ backgroundColor: pathname === '/japanapprovedVendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
-                  <AssignmentTurnedInIcon sx={{ color: 'white' }}/>
+                  <AssignmentTurnedInIcon sx={{ color: 'white' }} />
                 </ListItemIcon>
                 <ListItemText primary="Approved" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/japanrejectedVendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/japanrejectedVendors" sx={{ backgroundColor: pathname === '/japanrejectedVendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <EventBusyIcon sx={{ color: 'white' }} />
@@ -63,7 +63,7 @@ export const SideBar = (props) => {
           </List>
         </> : props.MRT === 'MRTteam' ? <>
           <List>
-            <ListItem disablePadding component={Link} to="/MRTteam" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/MRTteam" sx={{ backgroundColor: pathname === '/MRTteam' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <GppGoodIcon sx={{ color: 'white' }} />
@@ -71,7 +71,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approvals" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/approvalReq" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/approvalReq" sx={{ backgroundColor: pathname === '/approvalReq' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <NoteAltIcon sx={{ color: 'white' }} />
@@ -79,7 +79,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Requests" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/MRTapprovedvendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/MRTapprovedvendors" sx={{ backgroundColor: pathname === '/MRTapprovedvendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <AssignmentTurnedInIcon sx={{ color: 'white' }} />
@@ -87,7 +87,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approved" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/MRTrejectedvendors" sx={{ color: 'white' }}>
+            <ListItem disablePadding component={Link} to="/MRTrejectedvendors" sx={{ backgroundColor: pathname === '/MRTrejectedvendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }}>
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <EventBusyIcon sx={{ color: 'white' }} />
@@ -98,7 +98,7 @@ export const SideBar = (props) => {
           </List>
         </> : <>
           <List>
-            <ListItem sx={{ backgroundColor: pathname === '/approval' ?  'gray' :"" ,  borderRadius: '20px',color: 'white'}}  disablePadding component={Link} to="/approval" >
+            <ListItem sx={{ backgroundColor: pathname === '/approval' ? 'gray' : "", borderRadius: '20px', color: 'white' }} disablePadding component={Link} to="/approval" >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <GppGoodIcon sx={{ color: 'white' }} />
@@ -114,7 +114,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Requests" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem> */}
-            <ListItem disablePadding component={Link} to="/approvedVendors" sx={{ backgroundColor: pathname === '/approvedVendors' ?  'gray' :"" , borderRadius: '20px', color: 'white'}} >
+            <ListItem disablePadding component={Link} to="/approvedVendors" sx={{ backgroundColor: pathname === '/approvedVendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }} >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <AssignmentTurnedInIcon sx={{ color: 'white' }} />
@@ -122,7 +122,7 @@ export const SideBar = (props) => {
                 <ListItemText primary="Approved" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding component={Link} to="/RejectedVendors" sx={{ backgroundColor: pathname === '/RejectedVendors' ?  'gray' :"" , borderRadius: '20px', color: 'white'}} >
+            <ListItem disablePadding component={Link} to="/RejectedVendors" sx={{ backgroundColor: pathname === '/RejectedVendors' ? 'gray' : "", borderRadius: '20px', color: 'white' }} >
               <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                 <ListItemIcon>
                   <EventBusyIcon sx={{ color: 'white' }} />

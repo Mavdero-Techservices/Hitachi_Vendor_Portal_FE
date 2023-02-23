@@ -47,7 +47,11 @@ function JapanTeam() {
                 item.createdAt = s
             })
             setvendors([])
-            setvendors((array) => [...array, ...res.data.result]);
+            var newArray = res.data.result.filter(function(item)
+ {
+  return ((item.level2Status !== "approved") && (item.level2Status !== "rejected"));
+ });
+            setvendors((array) => [...array, ...newArray]);
         })
     }, [])
     return (

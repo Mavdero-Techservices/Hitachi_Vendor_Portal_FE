@@ -37,7 +37,7 @@ function MRTteam() {
         const Level2rejected = []
         apiService.getApprovalList().then(res => {
             res.data.result.forEach((item) => {
-                if (item.level2Status === 'rejected') {
+                if (item.level2Status === 'rejected' && (item.level3Status !== "approved") && (item.level3Status !== "rejected")) {
                     var date1 = new Date();
                     var date01 = new Date(item.createdAt);
                     var date2 = new Date();
@@ -99,33 +99,15 @@ function MRTteam() {
                                     <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
                                 </AccordionSummary>
                             </Accordion>
-                            {/* <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
-                                >
-                                    <IconButton sx={{ p: 0 }}>
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                                        <Typography>&nbsp;Sekar</Typography>
-                                    </IconButton>
-                                    <Typography textAlign="center" sx={{ width: '67%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
-                                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Dec 30</Typography>
-                                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>2 Days</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <ApprovalFields MRT="MRTteam" />
-                                </AccordionDetails>
-                            </Accordion> */}
+
                             {vendors?.map((item, key) => <>
-                                {/* onClick={(e) => handleAccordion(item.userId)} */}
                                 <Accordion expanded={expanded === 'panel' + item.id} key={key} onChange={handleChange('panel' + item.id)} >
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls="panelbh-content"
                                         id={"panel1bh-header"}
                                     >
-                                        <IconButton sx={{ p: 0, width: '18%' ,justifyContent: 'flex-start' }} >
+                                        <IconButton sx={{ p: 0, width: '18%', justifyContent: 'flex-start' }} >
                                             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                             <Typography >&nbsp;{item.userId}</Typography>
                                         </IconButton>

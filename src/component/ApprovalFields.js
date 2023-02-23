@@ -8,26 +8,20 @@ function ApprovalFields(props) {
     const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
     const numberValidation = /^-?(0|[1-9]\d*)?$/
     const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-    // console.log("propssssssssssssssssssss", props.vendordata)
-    // const [values, setValues] = useState({
-    //     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
-    // });
-    // const basicInfo =[];
 
-    // apiService.getAllCollection(values.userId)
-    //     .then(res => {
-    //         basicInfo.push(res.data.basicInfo[0])
-    //         console.log("res===============AL collection data11111====>>>", res)
-    //     })
-    // console.log("basicInfo=================>>>", props?.vendordata[0]?.basicInfo[0]?.companyName)
-    // const [company_logo, setcompany_logo] = useState("");
-    // let basicdata=props.vendordata?.basicInfo?props.vendordata.basicInfo:[];
-    // const [alldata, setalldata] = useState("");
-    // const [vendorDetail, setvendorDetail] = useState([]);
+    const [editData, seteditData] = useState([]);
+    const [editCommmData, seteditCommmData] = useState([]);
+    const [editStatData, seteditStatData] = useState([]);
+    const [editFinanceData, seteditFinanceData] = useState([]);
+    const [editContactData, seteditContactData] = useState([]);
+
     useEffect(() => {
         apiService.getAllCollection(props.userid)
             .then(res => {
                 if ((res.data.basicInfo[0] !== "null") && (res.data.basicInfo.length > 0)) {
+                    var abc = res.data.basicInfo
+                    seteditData([])
+                    seteditData((prevState) => ([...prevState, ...abc]))
                     setaddress1(res.data.basicInfo[0].address1);
                     setaddress2(res.data.basicInfo[0].address2)
                     setcompanyName(res.data.basicInfo[0].companyName)
@@ -45,55 +39,59 @@ function ApprovalFields(props) {
                     setpinCode("")
                 }
 
-                if (res.data.CommunicationDetails) {
-                    if ((res.data.CommunicationDetails[0] !== "null") && (res.data.CommunicationDetails.length > 0)) {
-                        setfs_ContactName(res.data.CommunicationDetails[0].financeSpoccontactName);
-                        setfs_Designation(res.data.CommunicationDetails[0].financeSpocdesignation)
-                        setfs_PhoneNo(res.data.CommunicationDetails[0].financeSpocphoneNo)
-                        setfs_Email(res.data.CommunicationDetails[0].financeSpocemail)
-                        setops_ContactName(res.data.CommunicationDetails[0].operationSpoccontactName)
-                        setops_Designation(res.data.CommunicationDetails[0].operationSpocdesignation)
-                        setops_PhoneNo(res.data.CommunicationDetails[0].operationSpocphoneNo)
-                        setops_Email(res.data.CommunicationDetails[0].operationSpocemail);
-                        setcolls_ContactName(res.data.CommunicationDetails[0].collectionSpoccontactName)
-                        setcolls_Designation(res.data.CommunicationDetails[0].collectionSpocdesignation)
-                        setcolls_PhoneNo(res.data.CommunicationDetails[0].collectionSpocphoneNo)
-                        setcolls_Email(res.data.CommunicationDetails[0].collectionSpocemail)
-                        setmngs_ContactName(res.data.CommunicationDetails[0].managementSpoccontactName)
-                        setmngs_Designation(res.data.CommunicationDetails[0].managementSpocdesignation)
-                        setmngs_PhoneNo(res.data.CommunicationDetails[0].managementSpocphoneNo);
-                        setmngs_Email(res.data.CommunicationDetails[0].managementSpocemail)
-                        setothers_ContactName(res.data.CommunicationDetails[0].contactName)
-                        setothers_Designation(res.data.CommunicationDetails[0].designation)
-                        setothers_PhoneNo(res.data.CommunicationDetails[0].phoneNo)
-                        setothers_Email(res.data.CommunicationDetails[0].email)
-                        setmastervendor_email(res.data.CommunicationDetails[0].mastervendor_email)
-                    } else {
-                        setfs_ContactName("");
-                        setfs_Designation("")
-                        setfs_PhoneNo("")
-                        setfs_Email("")
-                        setops_ContactName("")
-                        setops_Designation("")
-                        setops_PhoneNo("")
-                        setops_Email("");
-                        setcolls_ContactName("")
-                        setcolls_Designation("")
-                        setcolls_PhoneNo("")
-                        setcolls_Email("")
-                        setmngs_ContactName("")
-                        setmngs_Designation("")
-                        setmngs_PhoneNo("");
-                        setmngs_Email("")
-                        setothers_ContactName("")
-                        setothers_Designation("")
-                        setothers_PhoneNo("")
-                        setothers_Email("")
-                        setmastervendor_email("")
-                    }
+                if ((res.data.CommunicationDetails[0] !== "null") && (res.data.CommunicationDetails.length > 0)) {
+                    var communicate = res.data.CommunicationDetails
+                    seteditCommmData([])
+                    seteditCommmData((prevState) => ([...prevState, ...communicate]))
+                    setfs_ContactName(res.data.CommunicationDetails[0].financeSpoccontactName);
+                    setfs_Designation(res.data.CommunicationDetails[0].financeSpocdesignation)
+                    setfs_PhoneNo(res.data.CommunicationDetails[0].financeSpocphoneNo)
+                    setfs_Email(res.data.CommunicationDetails[0].financeSpocemail)
+                    setops_ContactName(res.data.CommunicationDetails[0].operationSpoccontactName)
+                    setops_Designation(res.data.CommunicationDetails[0].operationSpocdesignation)
+                    setops_PhoneNo(res.data.CommunicationDetails[0].operationSpocphoneNo)
+                    setops_Email(res.data.CommunicationDetails[0].operationSpocemail);
+                    setcolls_ContactName(res.data.CommunicationDetails[0].collectionSpoccontactName)
+                    setcolls_Designation(res.data.CommunicationDetails[0].collectionSpocdesignation)
+                    setcolls_PhoneNo(res.data.CommunicationDetails[0].collectionSpocphoneNo)
+                    setcolls_Email(res.data.CommunicationDetails[0].collectionSpocemail)
+                    setmngs_ContactName(res.data.CommunicationDetails[0].managementSpoccontactName)
+                    setmngs_Designation(res.data.CommunicationDetails[0].managementSpocdesignation)
+                    setmngs_PhoneNo(res.data.CommunicationDetails[0].managementSpocphoneNo);
+                    setmngs_Email(res.data.CommunicationDetails[0].managementSpocemail)
+                    setothers_ContactName(res.data.CommunicationDetails[0].contactName)
+                    setothers_Designation(res.data.CommunicationDetails[0].designation)
+                    setothers_PhoneNo(res.data.CommunicationDetails[0].phoneNo)
+                    setothers_Email(res.data.CommunicationDetails[0].email)
+                    setmastervendor_email(res.data.CommunicationDetails[0].mastervendor_email)
+                } else {
+                    setfs_ContactName("");
+                    setfs_Designation("")
+                    setfs_PhoneNo("")
+                    setfs_Email("")
+                    setops_ContactName("")
+                    setops_Designation("")
+                    setops_PhoneNo("")
+                    setops_Email("");
+                    setcolls_ContactName("")
+                    setcolls_Designation("")
+                    setcolls_PhoneNo("")
+                    setcolls_Email("")
+                    setmngs_ContactName("")
+                    setmngs_Designation("")
+                    setmngs_PhoneNo("");
+                    setmngs_Email("")
+                    setothers_ContactName("")
+                    setothers_Designation("")
+                    setothers_PhoneNo("")
+                    setothers_Email("")
+                    setmastervendor_email("")
                 }
 
                 if ((res.data.Statutory[0] !== "null") && (res.data.Statutory.length > 0)) {
+                    var statarr = res.data.Statutory
+                    seteditStatData([])
+                    seteditStatData((prevState) => ([...prevState, ...statarr]))
                     setGST_type(res.data.Statutory[0].GST_type);
                     setGST_No(res.data.Statutory[0].GST_No)
                     setGST_Doc(res.data.Statutory[0].GST_Doc)
@@ -127,8 +125,6 @@ function ApprovalFields(props) {
                     setTax_residency("")
                 }
 
-
-
                 if ((res.data.ComplianceDetail[0] !== "null") && (res.data.ComplianceDetail.length > 0)) {
                     setRPD_Doc(res.data.ComplianceDetail[0].RPD_Doc);
                     setCOC_Doc(res.data.ComplianceDetail[0].COC_Doc)
@@ -140,6 +136,9 @@ function ApprovalFields(props) {
                 }
 
                 if ((res.data.FinancialDetail[0] !== "null") && (res.data.FinancialDetail.length > 0)) {
+                    var fD = res.data.FinancialDetail
+                    seteditFinanceData([])
+                    seteditFinanceData((prevState) => ([...prevState, ...fD]))
                     setyearOfAuditedFinancial(res.data.FinancialDetail[0].yearOfAuditedFinancial)
                     setRevenue(res.data.FinancialDetail[0].Revenue)
                     setProfit(res.data.FinancialDetail[0].Profit)
@@ -158,8 +157,6 @@ function ApprovalFields(props) {
                     setfinancial_data("")
                     setfinancial_data2("")
                 }
-
-
 
                 if ((res.data.Bankdetail[0] !== "null") && (res.data.Bankdetail.length > 0)) {
                     setbankAccountName(res.data.Bankdetail[0].bankAccountName)
@@ -180,6 +177,9 @@ function ApprovalFields(props) {
                 }
 
                 if ((res.data.contactDetail[0] !== "null") && (res.data.contactDetail.length > 0)) {
+                    var contactarr = res.data.contactDetail
+                    seteditContactData([])
+                    seteditContactData((prevState) => ([...prevState, ...contactarr]))
                     setname(res.data.contactDetail[0].contactName1)
                     setcontactNumber(res.data.contactDetail[0].contactNumber1)
                     setemail(res.data.contactDetail[0].emailId1)
@@ -201,7 +201,6 @@ function ApprovalFields(props) {
                     setemail3("")
                 }
             })
-        // }
     }, [])
 
 
@@ -272,7 +271,6 @@ function ApprovalFields(props) {
     const [MICRcode, setMICRcode] = useState("");
     const [branchAddress, setbranchAddress] = useState("");
     const [bankdetailDoc, setbankdetailDoc] = useState("");
-    // hello
     const [name, setname] = useState("");
     const [contactNumber, setcontactNumber] = useState("");
     const [email, setemail] = useState("");
@@ -288,8 +286,6 @@ function ApprovalFields(props) {
     const [mkcheck, setmkcheck] = useState(false);
     const [approverFile, setapproverFile] = useState("");
     const [style, setStyle] = useState("approvalsform");
-
-
 
     // Error states start
     const [address1Err, setaddress1Err] = useState("");
@@ -349,8 +345,6 @@ function ApprovalFields(props) {
     const [acManagerErr, setacManagerErr] = useState("");
     const [mkcheckErr, setmkcheckErr] = useState("");
     const [approverFileErr, setapproverFileErr] = useState("");
-
-    // const [urlGST, seturlGST] = useState("");
     // Error states end 
 
     // states update start
@@ -765,7 +759,6 @@ function ApprovalFields(props) {
         setapproverFile(event.target.files[0])
     }
 
-
     const handleEdit = (event) => {
         setStyle("cont2");
     }
@@ -782,17 +775,10 @@ function ApprovalFields(props) {
         fetch(`http://localhost:12707/downloadPdfUploads/NDA_Doc-1675160386209.pdf`)
 
             .then((response) => {
-                // setTimeout(()=>{
                 response.blob().then((blob) => {
-                    // var file = new File([blob], "filename.pdf", { type: "application/pdf" });
-                    // const newBlob = new Blob([blob], {type: "application/pdf"});
-                    // console.log("blobbbbbbbbbbbnewBlob", newBlob);
                     let url = URL.createObjectURL(blob, "application/pdf");
-
                     window.open(url, '_blank')
-                    // URL.revokeObjectURL(url);
                 });
-                // },100)
             });
         // } else {
         //       Swal.fire({
@@ -803,16 +789,32 @@ function ApprovalFields(props) {
         // }
     }
     const handleEditPopup = (event) => {
-        // event.preventDefault(); hello
-        // console.log("event------------------------------>>>>", event)
-        if (bankdetailDoc) {
+
+        // event.preventDefault(); bankdetailDoc
+        if (
+            (event === "logo" && logo) ||
+            (event === "GST_Doc" && GST_Doc) ||
+            (event === "PAN_Doc" && PAN_Doc) ||
+            (event === "form_10f" && form_10f) ||
+            (event === "pe_declaration" && pe_declaration) ||
+            (event === "Tax_residency" && Tax_residency) ||
+            (event === "MSME_Doc" && MSME_Doc) ||
+            (event === "TAN_Doc" && TAN_Doc) ||
+            (event === "RPD_Doc" && RPD_Doc) ||
+            (event === "COC_Doc" && COC_Doc) ||
+            (event === "NDA_Doc" && NDA_Doc) ||
+            (event === "financial_data" && financial_data) ||
+            (event === "financial_data2" && financial_data2) ||
+            (event === "bankdetailDoc" && bankdetailDoc)
+
+        ) {
             let bankDocument = "Copy of cancel Cheque.pdf";
             let title = event
             Swal.fire({
                 heightAuto: true,
                 title: 'Delete Existing File',
                 html: `<div class="rejectstyle">
-           <div> <lablel>File Name : ${bankDocument}</label>
+           <div> <lablel> ${title}</label>
        
          </div>
           `,
@@ -824,47 +826,6 @@ function ApprovalFields(props) {
                 // didOpen: () => {
                 //     const yes = document.querySelector('#delete')
                 //     yes.addEventListener('click', () => {
-
-
-
-                // if (event === "GST") {
-                //     console.log(' GST Deleted Successfully')
-                // }
-                // else if (event === "MSME") {
-                //     console.log(' MSME Deleted Successfully')
-                // }
-                // else if (event === "PAN") {
-                //     console.log(' PAN Deleted Successfully')
-                // }
-                // else if (event === "TAN") {
-                //     console.log(' TAN Deleted Successfully')
-                // }
-                // else if (event === "Form 10F") {
-                //     console.log('Form 10F Deleted Successfully')
-                // }
-                // else if (event === "Tax Residency") {
-                //     console.log(' Tax Residency Deleted Successfully')
-                // }
-                // else if (event === "No PE declaration") {
-                //     console.log('No PE declaration Deleted Successfully')
-                // }
-                // else if (event === "RPD") {
-                //     console.log('RPD Deleted Successfully')
-                // }
-                // else if (event === "COC") {
-                //     console.log(' COC Deleted Successfully')
-                // }
-                // else if (event === "NDA") {
-                //     console.log(' NDA Deleted Successfully')
-                // } else if (event === "bank Details") {
-                //     console.log(' bank Details Deleted Successfully')
-                // }
-                // else if (event === "Financials Data1") {
-                //     console.log(' Financials Data1 Deleted Successfully')
-                // }
-                // else if (event === "Financials Data2") {
-                //     console.log('Financials Data2 Deleted Successfully')
-                // }
                 // })
                 // },
 
@@ -885,6 +846,64 @@ function ApprovalFields(props) {
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            if (event === 'GST_Doc') {
+                                setGST_Doc("")
+                                setGST_DocErr("GST document is required")
+                            }
+                            else if (event === 'logo') {
+                                setlogo("")
+                                setlogoErr("Logo is required")
+                            }
+                            else if (event === 'PAN_Doc') {
+                                setPAN_Doc("")
+                                setPAN_DocErr("PAN document is required")
+                            }
+                            else if (event === 'form_10f') {
+                                setform_10f("");
+                                setform_10fErr("form_10f document is required")
+                            }
+                            else if (event === 'pe_declaration') {
+                                setpe_declaration("")
+                                setpe_declarationErr("Pe_declaration document is required")
+                            }
+                            else if (event === 'MSME_Doc') {
+                                setMSME_Doc("")
+                                setMSME_DocErr("MSME document is required")
+                            }
+                            else if (event === 'TAN_Doc') {
+                                setTAN_Doc("")
+                                setTAN_DocErr("TAN document is required")
+                            }
+                            else if (event === 'Tax_residency') {
+                                setTax_residency("")
+                                setTax_residencyErr("TAX document is required")
+                            }
+
+
+                            else if (event === 'RPD_Doc') {
+                                setRPD_Doc("")
+                                setRPD_DocErr("RPD document is required")
+                            }
+                            else if (event === 'COC_Doc') {
+                                setCOC_Doc("")
+                                setCOC_DocErr("COC document is required")
+                            }
+                            else if (event === 'NDA_Doc') {
+                                setNDA_Doc("")
+                                setNDA_DocErr("NDA document is required")
+                            }
+
+                            else if (event === 'financial_data') {
+                                setfinancial_data("")
+                            }
+                            else if (event === 'financial_data2') {
+                                setfinancial_data2("")
+                            }
+
+                            else if (event === "bankdetailDoc") {
+                                setbankdetailDoc("")
+                                setbankdetailDocErr("Bank document is required")
+                            }
                             Swal.fire('Deleted!', '', 'success')
                         } else if (result.isDenied) {
                             Swal.fire('File not deleted', '', 'info')
@@ -918,34 +937,108 @@ function ApprovalFields(props) {
         } else {
             // let bankDocument = "Copy of cancel Cheque.pdf";
             // let title = event
-            const { value: file } = Swal.fire({
+            Swal.fire({
                 title: 'Select File',
                 input: 'file',
-                inputAttributes: {
-                    'accept': 'image/*',
-                    'aria-label': 'Upload your profile picture'
-                },
+                // inputAttributes: {
+                //     'accept': 'image/*',
+                //     'aria-label': 'Upload your profile picture'
+                // },
                 confirmButtonText: 'Upload',
                 confirmButtonColor: "#B1000E",
                 showCancelButton: true,
-            })
 
-            if (file) {
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    Swal.fire({
-                        title: 'Your uploaded picture',
-                        imageUrl: e.target.result,
-                        imageAlt: 'The uploaded picture'
-                    })
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to upload a file!'
+                    }
                 }
-                reader.readAsDataURL(file)
-            }
+            }).then((result) => {
+                // const reader = new FileReader()
+                // reader.onload = (e) => {
+                //     Swal.fire({
+                //         title: 'Your uploaded picture',
+                //         imageUrl: e.target.result,
+                //         imageAlt: 'The uploaded picture'
+                //     })
+                // }
+                // reader.readAsDataURL(result.value)
+
+                if (result.isConfirmed) {
+                    if (event === 'GST_Doc') {
+                        setGST_Doc(result.value)
+                        setGST_DocErr("")
+                    }
+                    else if (event === 'logo') {
+                        setlogo(result.value)
+                        setlogoErr("")
+                    }
+                    else if (event === 'PAN_Doc') {
+                        setPAN_Doc(result.value)
+                        setPAN_DocErr("")
+                    }
+                    else if (event === 'form_10f') {
+                        setform_10f(result.value);
+                        setform_10fErr("")
+                    }
+                    else if (event === 'pe_declaration') {
+                        setpe_declaration(result.value)
+                        setpe_declarationErr("")
+                    }
+                    else if (event === 'MSME_Doc') {
+                        setMSME_Doc(result.value)
+                        setMSME_DocErr("")
+                    }
+                    else if (event === 'TAN_Doc') {
+                        setTAN_Doc(result.value)
+                        setTAN_DocErr("")
+                    }
+                    else if (event === 'Tax_residency') {
+                        setTax_residency(result.value)
+                        setTax_residencyErr("")
+                    }
+                    else if (event === 'RPD_Doc') {
+                        setRPD_Doc(result.value)
+                        setRPD_DocErr("")
+                    }
+                    else if (event === 'COC_Doc') {
+                        setCOC_Doc(result.value)
+                        setCOC_DocErr("")
+                    }
+                    else if (event === 'NDA_Doc') {
+                        setNDA_Doc(result.value)
+                        setNDA_DocErr("")
+                    }
+
+                    else if (event === 'financial_data') {
+                        setfinancial_data(result.value)
+                    }
+                    else if (event === 'financial_data2') {
+                        setfinancial_data2(result.value)
+                    }
+
+                    else if (event === "bankdetailDoc") {
+                        setbankdetailDoc(result.value)
+                        setbankdetailDocErr("")
+                    }
+                    Swal.fire('File Selected!', '', 'success')
+                }
+            })
+            //     console.log("file-------------->>>>>",file)
+            //     const reader = new FileReader()
+            //     reader.onload = (e) => {
+            //         Swal.fire({
+            //             title: 'Your uploaded picture',
+            //             imageUrl: e.target.result,
+            //             imageAlt: 'The uploaded picture'
+            //         })
+            //     }
+            //     reader.readAsDataURL(file)
+
         }
     }
 
     const handleNoConcernFound = (event) => {
-  
         const userId = event;
         const data = new FormData();
         // data.append('level1Status', "approved");
@@ -974,8 +1067,6 @@ function ApprovalFields(props) {
             })
     }
     const handleConcernFound = (event) => {
-        console.log("handleConcernFound",event)
-     
         Swal.fire({
             heightAuto: true,
             title: 'Review vendor details',
@@ -995,7 +1086,6 @@ function ApprovalFields(props) {
                 if (!comment || !rejectdoc) {
                     Swal.showValidationMessage(`Please enter comments and file`)
                 } else {
-                    console.log("dataaa",rejectdoc)
                     const data = new FormData();
                     data.append('userId', event);
                     data.append('level2Status', "rejected");
@@ -1024,16 +1114,83 @@ function ApprovalFields(props) {
         })
     }
 
+    const handleMRTApprove = (event) => {
+        const userId = event;
+        const data = new FormData();
+        data.append('userId', event);
+        data.append('level3Status', "approved");
+
+        apiService.updateApprovalStatus(userId, data)
+            .then(response => {
+                if (response) {
+                    Swal.fire({
+                        title: "Data saved",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error While Fetching",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
+            })
+    }
+
+    const handleMRTRegject = (event) => {
+        Swal.fire({
+            heightAuto: true,
+            title: 'Review vendor details',
+            html: `<div class="rejectstyle">
+            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+       </div> `,
+            confirmButtonText: 'Reject',
+            confirmButtonColor: "#B1000E",
+            showCancelButton: true,
+            focusConfirm: false,
+            customClass: 'swal-wide',
+            preConfirm: () => {
+
+                const comment = Swal.getPopup().querySelector('#comment').value
+                const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0]
+                if (!comment || !rejectdoc) {
+                    Swal.showValidationMessage(`Please enter comments and file`)
+                } else {
+                    const data = new FormData();
+                    data.append('userId', event);
+                    data.append('level3Status', "rejected");
+                    data.append('level3RejectComment', comment);
+                    data.append('level3rejectFileDoc', rejectdoc);
+                    const userId = event;
+                    apiService.updateApprovalStatus(userId, data)
+                        .then(response => {
+                            if (response) {
+                                Swal.fire({
+                                    title: "Data saved",
+                                    icon: "success",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    title: "Error While Fetching",
+                                    icon: "error",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                        })
+                }
+            }
+        })
+    }
+
     const handleApprove = (event) => {
-        console.log("handleApprove",event)
         const data = new FormData();
         data.append('level1Status', "approved");
         data.append('userId', event);
-        // data.append('level1RejectComment', "");
-        // data.append('level1rejectFileDoc', "");
-        // data.append('level2Status', "");
-        // data.append('level2RejectComment', "");
-        // data.append('level2rejectFileDoc', "");
         apiService.saveApproval(data)
             .then(response => {
                 if (response) {
@@ -1054,7 +1211,6 @@ function ApprovalFields(props) {
     }
 
     const handleRegject = (event) => {
-
         Swal.fire({
             heightAuto: true,
             title: 'Review vendor details',
@@ -1068,7 +1224,6 @@ function ApprovalFields(props) {
             focusConfirm: false,
             customClass: 'swal-wide',
             preConfirm: () => {
-
                 const comment = Swal.getPopup().querySelector('#comment').value
                 const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0]
                 if (!comment || !rejectdoc) {
@@ -1101,11 +1256,13 @@ function ApprovalFields(props) {
             }
         })
     }
+
     const submitHandler = (e) => {
         e.preventDefault();
         if (companyName.length === 0) {
             setcompanyNameErr("Company name is required");
         } if (address1.length === 0) {
+            console.log("hello2222")
             setaddress1Err("Address 1 is required");
         } if (country.length === 0) {
             setcountryErr("Country is required");
@@ -1117,9 +1274,10 @@ function ApprovalFields(props) {
             setpinCodeErr("Pincode is required");
         }
         if (!logo) {
-            setlogoErr("Logo is required");
-        }
 
+            setlogoErr("Logo is required");
+            console.log("hellossssssss", logoErr)
+        }
         if (fs_ContactName.length === 0) {
             setfs_ContactNameErr("Contact name is required");
         } if (fs_Designation.length === 0) {
@@ -1128,7 +1286,15 @@ function ApprovalFields(props) {
             setfs_PhoneNoErr("Phone number is required");
         } if (fs_Email.length === 0) {
             setfs_EmailErr("Email is required");
-        } if (mngs_ContactName.length === 0) {
+        }
+        // console.log("fs_Email",fs_Email);
+        // console.log("mngs_ContactName",mngs_ContactName);
+        // console.log("mngs_Designation",mngs_Designation);
+        // console.log("mngs_PhoneNo",mngs_PhoneNo);
+        // console.log("mngs_Email",mngs_Email);
+        // console.log("mastervendor_email",mastervendor_email);
+
+        if (mngs_ContactName.length === 0) {
             setmngs_ContactNameErr("Contact name is required");
         } if (mngs_Designation.length === 0) {
             setmngs_DesignationErr("Designation is required");
@@ -1229,198 +1395,176 @@ function ApprovalFields(props) {
             setpe_declarationErr("PE declaration is required");
         }
 
-        e.preventDefault();
-        // apiService.savebankdetail(data)
-        // .then(response => {
-        // })
+        const userId = props.userid;
+        console.log("companyNameErr", companyName)
+        console.log("address1Err", address1)
+        console.log("countryErr", country)
+        console.log("stateErr", state)
+        console.log("cityErr", city)
+        console.log("pinCodeErr", pinCode)
+        console.log("logoErr", logo)
+        console.log("fs_ContactNameErr", fs_ContactName)
+        console.log("fs_DesignationErr", fs_Designation)
+        console.log("fs_PhoneNoErr", fs_PhoneNo)
+        console.log("fs_EmailErr", fs_Email)
+        console.log("mngs_ContactNameErr", mngs_ContactName)
+        console.log("mngs_DesignationErr", mngs_Designation)
+        console.log("mngs_PhoneNoErr", mngs_PhoneNo)
+        console.log("mngs_EmailErr", mngs_Email)
+        console.log("mastervendor_emailErr", mastervendor_email)
+        console.log("bankAccountNameErr", bankAccountName)
+        console.log("bankNameErr", bankName)
+        console.log("bankAccountNumberErr", bankAccountNumber)
+        console.log("ifscCodeErr", ifscCode)
+        console.log("MICRcodeErr", MICRcode)
+        console.log("branchAddressErr", branchAddress)
+        console.log("bankdetailDocErr", bankdetailDoc)
+        console.log("nameErr", name)
+        console.log("contactNumberErr", contactNumber)
+        console.log("emailErr", email)
+        console.log("vendorTypeErr", vendorType)
+        console.log("acManagerErr", acManager)
+        console.log("mkcheckErr", mkcheck)
+        console.log("GST_typeErr", GST_type)
+        console.log("GST_NoErr", GST_No)
+        console.log("PAN_NoErr", PAN_No)
+        console.log("CIN_NoErr", CIN_No)
+        console.log("form_10fErr", form_10f)
+        console.log("MSME_statusErr", MSME_status)
+        console.log("MSME_NoErr", MSME_No)
+        console.log("MSME_TypeErr", MSME_Type)
+        console.log("TAN_NoErr", TAN_No)
+        console.log("GST_DocErr", GST_Doc)
+        console.log("PAN_DocErr", PAN_Doc)
+        console.log("MSME_DocErr", MSME_Doc)
+        console.log("TAN_DocErr", TAN_Doc)
+        console.log("Tax_residencyErr", Tax_residency)
+        console.log("pe_declarationErr", pe_declaration)
+        console.log("RPD_DocErr", RPD_Doc)
+        console.log("COC_DocErr", COC_Doc)
+        console.log("NDA_DocErr", NDA_Doc)
 
-        const basicDetails =
-        {
-            "userid": 1,
-            // "company_logo": "comapny.png",
-            "address1": address1,
-            "address2": address2,
-            "companyName": companyName,
-            "country": country,
-            "state": state,
-            "city": city,
-            "pinCode": pinCode,
-            "image": logo,
 
-            "vendorType": vendorType,
-            "vendorManager": acManager,
-            "mkDenialCheque": mkcheck,
-            // "approverFile": approverFile
+        if (
+            (companyName) && (address1) && (country) && (state) && (city) && (pinCode) &&
+            (fs_ContactName) && (fs_Designation) && (fs_PhoneNo) && (fs_Email) && (mngs_ContactName) && (mngs_Designation) && (mngs_PhoneNo) && (mngs_Email) && (mastervendor_email) &&
+            (bankAccountName) && (bankName) && (bankAccountNumber) && (ifscCode) && (MICRcode) && (branchAddress) && (bankdetailDoc) &&
+            (name) && (contactNumber) && (email) &&
+            (vendorType) && (acManager) && (mkcheck) &&
+            (GST_type) && (GST_No) && (PAN_No) && (CIN_No) && (MSME_status) && (MSME_No) && (MSME_Type) && (TAN_No) &&
+            (GST_Doc) && (PAN_Doc) && (MSME_Doc) && (TAN_Doc) && (RPD_Doc) && (COC_Doc) && (NDA_Doc)
+        ) {
+            const data = new FormData();
+            data.append('userId', props.userid);
+            data.append("address1", address1);
+            data.append("address2", address2);
+            data.append("companyName", companyName);
+            data.append("country", country);
+            data.append("state", state);
+            data.append("city", city);
+            data.append("pinCode", pinCode);
+            data.append("image", "logo");
+            data.append("vendorType", vendorType);
+            data.append("vendorManager", acManager);
+            data.append("mkDenialCheque", mkcheck);
+            data.append("financeSpoccontactName", fs_ContactName);
+            data.append("financeSpocdesignation", fs_Designation);
+            data.append("financeSpocphoneNo", fs_PhoneNo);
+            data.append("financeSpocemail", fs_Email);
+            data.append("operationSpoccontactName", ops_ContactName);
+            data.append("operationSpocdesignation", ops_Designation);
+            data.append("operationSpocphoneNo", ops_PhoneNo);
+            data.append("operationSpocemail", ops_Email);
+            data.append("collectionSpoccontactName", colls_ContactName);
+            data.append("collectionSpocdesignation", colls_Designation);
+            data.append("collectionSpocphoneNo", colls_PhoneNo);
+            data.append("collectionSpocemail", colls_Email);
+            data.append("managementSpoccontactName", mngs_ContactName);
+            data.append("managementSpocdesignation", mngs_Designation);
+            data.append("managementSpocphoneNo", mngs_PhoneNo);
+            data.append("managementSpocemail", mngs_Email);
+            data.append("contactName", others_ContactName);
+            data.append("designation", others_Designation);
+            data.append("phoneNo", others_PhoneNo);
+            data.append("others_Email", others_Email);
+            data.append("mastervendor_email", mastervendor_email);
+            data.append('RPD_Doc', RPD_Doc);
+            data.append('NDA_Doc', COC_Doc);
+            data.append('COC_Doc', NDA_Doc);
+            data.append('GST_Doc', GST_Doc);
+            data.append('GST_type', GST_type);
+            data.append('GST_No', GST_No);
+            data.append('PAN_No', PAN_No);
+            data.append('PAN_Doc', PAN_Doc);
+            data.append('form_10f_Doc', form_10f);
+            data.append('TAN_Doc', TAN_Doc);
+            data.append('PE_Declaration_Doc', pe_declaration);
+            data.append('MSME_Doc', MSME_Doc);
+            data.append('Tax_residency_Doc', Tax_residency);
+            data.append('CIN_No', CIN_No);
+            data.append('MSME_status', MSME_status);
+            data.append('MSME_No', MSME_No);
+            data.append('MSME_Type', MSME_Type);
+            data.append('TAN_No', TAN_No);
+            data.append('financial_data', financial_data);
+            data.append('financial_data2', financial_data2);
+            data.append('yearOfAuditedFinancial', yearOfAuditedFinancial);
+            data.append('Revenue', Revenue);
+            data.append('Profit', Profit);
+            data.append('netWorth', netWorth);
+            data.append('currentAssets', currentAssets);
+            data.append('directorDetails', directorDetails);
+            data.append('bankAccountName', bankAccountName);
+            data.append('bankName', bankName);
+            data.append('bankAccountNumber', bankAccountNumber);
+            data.append('ifscCode', ifscCode);
+            data.append('MICRcode', MICRcode);
+            data.append('branchAddress', branchAddress);
+            data.append('bankdetailDoc', bankdetailDoc);
+            data.append("name", name);
+            data.append("contactNumber", contactNumber);
+            data.append("email", email);
+            data.append("name2", name2);
+            data.append("contactNumber2", contactNumber2);
+            data.append("email2", email2);
+            data.append("name3", name3);
+            data.append("contactNumber3", contactNumber3);
+            data.append("email3", email3);
+            console.log("Form Submitted", data)
+
+
+            apiService.updateAllCollection(userId, data)
+                .then(response => {
+                    console.log("res=============>>>>>>>", response)
+                    if (response) {
+                        Swal.fire({
+                            title: "Data saved",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: "Error While Fetching",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                    }
+                })
+        } else {
+            Swal.fire({
+                title: "Please fill the mandatory fields",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         }
-        console.log("basicDetails", basicDetails)
-        const communicationDetails =
-        {
-            "userId": 1,
-            "financeSpoccontactName": fs_ContactName,
-            "financeSpocdesignation": fs_Designation,
-            "financeSpocphoneNo": fs_PhoneNo,
-            "financeSpocemail": fs_Email,
-            "operationSpoccontactName": ops_ContactName,
-            "operationSpocdesignation": ops_Designation,
-            "operationSpocphoneNo": ops_PhoneNo,
-            "operationSpocemail": ops_Email,
-            // "collectionSpoccontactName": colls_ContactName,
-            // "collectionSpocdesignation": ops_Designation,
-            // "collectionSpocphoneNo": setcolls_PhoneNo,
-            // "collectionSpocemail": setcolls_Email,
-            "managementSpoccontactName": mngs_ContactName,
-            "managementSpocdesignation": mngs_Designation,
-            "managementSpocphoneNo": mngs_PhoneNo,
-            "managementSpocemail": mngs_Email,
-            "contactName": others_ContactName,
-            "designation": others_Designation,
-            "phoneNo": others_PhoneNo,
-            "email": others_Email,
-            // "mastervendor_email": mastervendor_email
-        }
-        console.log("communicationDetails", communicationDetails)
-        const statutoryDetails = new FormData();
-        statutoryDetails.append('GST_Doc', GST_Doc);
-        statutoryDetails.append('GST_type', GST_type);
-        statutoryDetails.append('GST_No', GST_No);
-        statutoryDetails.append('PAN_No', PAN_No);
-        statutoryDetails.append('PAN_Doc', PAN_Doc);
-        statutoryDetails.append('form_10f_Doc', form_10f);
-        statutoryDetails.append('TAN_Doc', TAN_Doc);
-        // statutoryDetails.append('PE_DeclarationNo', pe_declaration);
-        statutoryDetails.append('PE_Declaration_Doc', pe_declaration);
-        statutoryDetails.append('MSME_Doc', MSME_Doc);
-        statutoryDetails.append('Tax_residency_Doc', Tax_residency);
-        statutoryDetails.append('CIN_No', CIN_No);
-        // statutoryDetails.append('form_10f', form_10f);
-        statutoryDetails.append('MSME_status', MSME_status);
-        statutoryDetails.append('MSME_No', MSME_No);
-        statutoryDetails.append('MSME_Type', MSME_Type);
-        statutoryDetails.append('TAN_No', TAN_No);
-        statutoryDetails.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
-        // statutoryDetails.append('Tax_residency_No', Tax_residency);
-        // statutoryDetails.append('fileDisclosure', fileDisclosure);
-        // {
-        //     "userid": 1,
-        //     "GST_type": GST_type,
-        //     "GST_No": GST_No,
-        //     "GST_Doc": GST_Doc,
-        //     "PAN_No": PAN_No,
-        //     "PAN_Doc": PAN_Doc,
-        //     "CIN_No": CIN_No,
-        //     "form_10f": form_10f,
-        //     "pe_declaration": pe_declaration,
-        //     "MSME_status": MSME_status,
-        //     "MSME_No": MSME_No,
-        //     "MSME_Doc": MSME_Doc,
-        //     "MSME_Type": MSME_Type,
-        //     "TAN_No": TAN_No,
-        //     "TAN_Doc": TAN_Doc,
-        //     "Tax_residency": Tax_residency
-        // }
-        console.log("statutoryDetails", statutoryDetails)
-        const complianceDetails = new FormData();
-        complianceDetails.append('RPD_Doc', RPD_Doc);
-        complianceDetails.append('NDA_Doc', COC_Doc);
-        complianceDetails.append('COC_Doc', NDA_Doc);
-        complianceDetails.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
-        // console.log("complianceDetails", complianceDetails)
-
-        const financeDetails = new FormData();
-        financeDetails.append('financial_data', financial_data);
-        financeDetails.append('financial_data2', financial_data2);
-        financeDetails.append('yearOfAuditedFinancial', yearOfAuditedFinancial);
-        financeDetails.append('Revenue', Revenue);
-        financeDetails.append('Profit', Profit);
-        financeDetails.append('netWorth', netWorth);
-        financeDetails.append('currentAssets', currentAssets);
-        financeDetails.append('directorDetails', directorDetails);
-        financeDetails.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
-        // console.log("financeDetails", financeDetails)
-
-        const bankDetails = new FormData();
-        bankDetails.append('userId', JSON.parse(window.sessionStorage.getItem("jwt")).result.userId);
-        bankDetails.append('bankAccountName', bankAccountName);
-        bankDetails.append('bankName', bankName);
-        bankDetails.append('bankAccountNumber', bankAccountNumber);
-        bankDetails.append('ifscCode', ifscCode);
-        bankDetails.append('MICRcode', MICRcode);
-        bankDetails.append('branchAddress', branchAddress);
-        bankDetails.append('bankdetailDoc', bankdetailDoc);
-        // console.log("bankDetails", bankDetails)
-
-        const contactDetails =
-        {
-            "userid": JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
-            "name": name,
-            "contactNumber": contactNumber,
-            "email": email,
-            "name2": name2,
-            "contactNumber2": contactNumber2,
-            "email2": email2,
-            "name3": name3,
-            "contactNumber3": contactNumber3,
-            "email3": email3
-        }
-        // console.log("contactDetails", contactDetails)
-        // const ApproverDetails = {
-        //     "vendorType": vendorType,
-        //     "acManager": acManager,
-        //     "mkcheck": mkcheck,
-        //     "approverFile": approverFile
-        // }
-        // console.log("ApproverDetails", ApproverDetails)
-        const allData = {
-            'vendorDetail': basicDetails,
-            'Statutory': statutoryDetails,
-            'CommunicationDetails': communicationDetails,
-            'ComplianceDetail': complianceDetails,
-            'FinancialDetail': financeDetails,
-            'Bankdetail': bankDetails,
-            'contactDetail': contactDetails,
-        }
-        console.log("AAALLL Files", allData)
-
-        const userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
-        console.log("userId", userId)
-        // if (
-        //     !companyNameErr && !address1Err && !countryErr && !stateErr && !cityErr && !pinCodeErr && !logoErr &&
-        //     !fs_ContactNameErr && !fs_DesignationErr && !fs_PhoneNoErr && !fs_EmailErr && !mngs_ContactNameErr && !mngs_DesignationErr && !mngs_PhoneNoErr && !mngs_EmailErr && !mastervendor_emailErr &&
-        //     !bankAccountNameErr && !bankNameErr && !bankAccountNumberErr && !ifscCodeErr && !MICRcodeErr && !branchAddressErr &&
-        //     !nameErr && !contactNumberErr && !emailErr &&
-        //     !vendorTypeErr && !acManagerErr && !mkcheckErr &&
-        //     !GST_typeErr && !GST_NoErr && !PAN_NoErr && !CIN_NoErr && !form_10fErr && !MSME_statusErr && !MSME_NoErr && !MSME_TypeErr && !TAN_NoErr && !Tax_residencyErr && !pe_declarationErr
-        // ) {
-        console.log("Form Submitted")
-
-
-        apiService.updateAllCollection(userId, allData)
-            .then(response => {
-                console.log("res=============>>>>>>>", response)
-                if (response) {
-                    Swal.fire({
-                        title: "Data saved",
-                        icon: "success",
-                        confirmButtonText: "OK",
-                    });
-                }
-                else {
-                    Swal.fire({
-                        title: "Error While Fetching",
-                        icon: "error",
-                        confirmButtonText: "OK",
-                    });
-                }
-            })
-        // }
     }
-
 
     return (
         <Box>
             <div className="container-fluid  py-2" style={{ backgroundColor: '#f3f4f7' }}>
-                <form className={style} style={{ marginBottom: '3em' }} onSubmit={submitHandler} >
-                    {/* <div > */}
+                <form className={style} style={{ marginBottom: '3em' }} >
+                    {/* <div >onSubmit={submitHandler} */}
                     <div className={style}>
                         <div style={{ overflowY: 'scroll', height: '300px' }}>
 
@@ -1464,7 +1608,7 @@ function ApprovalFields(props) {
                                 </div>
                                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12 mb-0">
                                     {style === "cont2" ? <>
-                                        <button type="button" onClick={(e) => handleEditPopup(logo)} className="btn bankbtn btn-primary btn-md mt-3">View Logo</button>
+                                        <button type="button" onClick={(e) => handleEditPopup('logo')} className="btn bankbtn btn-primary btn-md mt-3">View Logo</button>
                                     </>
                                         : <button type="button" onClick={(e) => handleView(logo)} className="btn bankbtn btn-primary btn-md mt-3">View Logo</button>}
                                     <p className="formError">{logoErr}</p>
@@ -1516,7 +1660,7 @@ function ApprovalFields(props) {
                                         <span className="formError">{fs_EmailErr}</span>
                                     </div>
                                 </div>
-                                {ops_ContactName && ops_Designation && ops_PhoneNo && ops_Email ? <>
+                                {editCommmData[0]?.operationSpoccontactName && editCommmData[0]?.operationSpocdesignation && editCommmData[0]?.operationSpocphoneNo && editCommmData[0]?.operationSpocemail ? <>
                                     <p><b>Operation Spoc</b></p>
                                     <div className="row" >
                                         <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
@@ -1536,27 +1680,27 @@ function ApprovalFields(props) {
                                             <input type="text" className="mb-2 inputbox" name="ops_Email" value={ops_Email} onChange={(e) => setops_Email(e.target.value)} />
                                         </div>
                                     </div></> : ""}
-                                {colls_ContactName && colls_Designation && colls_PhoneNo && colls_Email ? <>
-                                    <p><b>Collection Spoc</b></p>
-                                    <div className="row" >
-                                        <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                                            <label htmlFor="country">Contact Name</label>
-                                            <input type="text" className="mb-2 inputbox" name="colls_ContactName" value={colls_ContactName} onChange={(e) => setcolls_ContactName(e.target.value)} />
-                                        </div>
-                                        <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                                            <label htmlFor="country">Designation</label>
-                                            <input type="text" className="mb-2 inputbox" name="colls_Designation" value={colls_Designation} onChange={(e) => setcolls_Designation(e.target.value)} />
-                                        </div>
-                                        <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                                            <label htmlFor="country">Phone no</label>
-                                            <input type="text" className="mb-2 inputbox" name="colls_PhoneNo" value={colls_PhoneNo} onChange={(e) => setcolls_PhoneNo(e.target.value)} />
-                                        </div>
-                                        <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                                            <label htmlFor="country">Email</label>
-                                            <input type="text" className="mb-2 inputbox" name="colls_Email" value={colls_Email} onChange={(e) => setcolls_Email(e.target.value)} />
-                                        </div>
-                                    </div></> : ""}
-
+                                {editCommmData[0]?.collectionSpoccontactName && editCommmData[0]?.collectionSpocdesignation && editCommmData[0]?.collectionSpocphoneNo && editCommmData[0]?.collectionSpocemail ?
+                                    <>
+                                        <p><b>Collection Spoc</b></p>
+                                        <div className="row" >
+                                            <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                                                <label htmlFor="country">Contact Name</label>
+                                                <input type="text" className="mb-2 inputbox" name="colls_ContactName" value={colls_ContactName} onChange={(e) => setcolls_ContactName(e.target.value)} />
+                                            </div>
+                                            <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                                                <label htmlFor="country">Designation</label>
+                                                <input type="text" className="mb-2 inputbox" name="colls_Designation" value={colls_Designation} onChange={(e) => setcolls_Designation(e.target.value)} />
+                                            </div>
+                                            <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                                                <label htmlFor="country">Phone no</label>
+                                                <input type="text" className="mb-2 inputbox" name="colls_PhoneNo" value={colls_PhoneNo} onChange={(e) => setcolls_PhoneNo(e.target.value)} />
+                                            </div>
+                                            <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                                                <label htmlFor="country">Email</label>
+                                                <input type="text" className="mb-2 inputbox" name="colls_Email" value={colls_Email} onChange={(e) => setcolls_Email(e.target.value)} />
+                                            </div>
+                                        </div></> : ""}
 
                                 <p><b>Management Spoc</b></p>
                                 <div className="row" >
@@ -1581,7 +1725,7 @@ function ApprovalFields(props) {
                                         <span className="formError">{mngs_EmailErr}</span>
                                     </div>
                                 </div>
-                                {others_ContactName && others_Designation && others_PhoneNo && others_Email ? <>
+                                {editCommmData[0]?.contactName && editCommmData[0]?.designation && editCommmData[0]?.phoneNo && editCommmData[0]?.email ? <>
                                     <p><b>Others</b></p>
                                     <div className="row" >
                                         <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
@@ -1673,7 +1817,7 @@ function ApprovalFields(props) {
 
                                             <div className="col-sm-12 col-lg-4 m-auto">
                                                 {style === "cont2" ? <>
-                                                    <button type="button" onClick={(e) => handleEditPopup("GST")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('GST_Doc')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                 </>
                                                     : <button type="button" onClick={(e) => handleView(GST_Doc)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 <p className="formError">{GST_DocErr}</p>
@@ -1689,7 +1833,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-sm-12 col-lg-4 m-auto">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("MSME")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('MSME_Doc')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(MSME_Doc)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 <p className="formError">{MSME_DocErr}</p>
                                             </div>
@@ -1704,7 +1848,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-sm-12 col-lg-4 m-auto">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("PAN")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('PAN_Doc')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(PAN_Doc)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 <p className="formError">{PAN_DocErr}</p>
                                             </div>
@@ -1758,13 +1902,13 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-sm-12 col-lg-4 m-auto ">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("TAN")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('TAN_Doc')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(TAN_Doc)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 <p className="formError">{TAN_DocErr}</p>
                                             </div>
                                         </div>
-                                    </div>
-                                    {form_10f ? <>
+                                    </div><>{console.log("editStatDataeditStatData", editStatData)}</>
+                                    {editStatData[0]?.form_10f_Doc ? <>
                                         <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                                             <div className="row text-center" >
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
@@ -1772,7 +1916,7 @@ function ApprovalFields(props) {
                                                 </div>
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                                                     {style === "cont2" ?
-                                                        <button type="button" onClick={(e) => handleEditPopup("Form 10F")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                        <button type="button" onClick={(e) => handleEditPopup('form_10f')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                         : <button type="button" onClick={(e) => handleView(form_10f)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 </div>
                                             </div>
@@ -1782,7 +1926,7 @@ function ApprovalFields(props) {
 
                                             <span className="formError">{form_10fErr}</span>
                                         </div></> : <></>}
-                                    {Tax_residency ? <>
+                                    {editStatData[0]?.Tax_residency_Doc ? <>
                                         <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                                             <div className="row text-center" >
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
@@ -1790,7 +1934,7 @@ function ApprovalFields(props) {
                                                 </div>
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                                                     {style === "cont2" ?
-                                                        <button type="button" onClick={(e) => handleEditPopup("Tax Residency")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                        <button type="button" onClick={(e) => handleEditPopup('Tax_residency')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                         : <button type="button" onClick={(e) => handleView(Tax_residency)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 </div>
                                             </div>
@@ -1799,7 +1943,7 @@ function ApprovalFields(props) {
                                             <span className="formError">{Tax_residencyErr}</span>
 
                                         </div></> : <></>}
-                                    {pe_declaration ? <>
+                                    {editStatData[0]?.PE_Declaration_Doc ? <>
                                         <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                                             <div className="row text-center" >
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
@@ -1807,7 +1951,7 @@ function ApprovalFields(props) {
                                                 </div>
                                                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                                                     {style === "cont2" ?
-                                                        <button type="button" onClick={(e) => handleEditPopup("No PE declaration")} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
+                                                        <button type="button" onClick={(e) => handleEditPopup('pe_declaration')} className="btn bankbtn btn-primary btn-md mt-3">View File</button>
                                                         : <button type="button" onClick={(e) => handleView(pe_declaration)} className="btn bankbtn btn-primary btn-md mt-3">View File</button>}
                                                 </div>
                                             </div>
@@ -1828,7 +1972,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("RPD")} className="btn bankbtn btn-primary btn-md  m-1">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('RPD_Doc')} className="btn bankbtn btn-primary btn-md  m-1">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(RPD_Doc)} className="btn bankbtn btn-primary btn-md mt-1">View File</button>}
                                                 {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                                             </div>
@@ -1842,7 +1986,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("COC")} className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('COC_Doc')} className="btn bankbtn btn-primary btn-md m-1">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(COC_Doc)} className="btn bankbtn btn-primary btn-md mt-1">View File</button>}
                                                 {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                                             </div>
@@ -1856,7 +2000,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("NDA")} className="btn bankbtn btn-primary btn-md m-1">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup('NDA_Doc')} className="btn bankbtn btn-primary btn-md m-1">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(NDA_Doc)} className="btn bankbtn btn-primary btn-md mt-1">View File</button>}
                                                 {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                                             </div>
@@ -1905,7 +2049,7 @@ function ApprovalFields(props) {
                                             </div>
                                             <div className="p-2 justify-content-start my-auto">
                                                 {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("bank Details")} className="btn bankbtn btn-primary btn-md ">View File</button>
+                                                    <button type="button" onClick={(e) => handleEditPopup("bankdetailDoc",)} className="btn bankbtn btn-primary btn-md ">View File</button>
                                                     : <button type="button" onClick={(e) => handleView(bankdetailDoc)} className="btn bankbtn btn-primary btn-md ">View File</button>}
                                                 <p className="formError">{bankdetailDocErr}</p>
                                             </div>
@@ -1918,58 +2062,61 @@ function ApprovalFields(props) {
                                     </div>
                                 </div>
                             </div>
-                            {yearOfAuditedFinancial || Revenue || Profit || netWorth || currentAssets || directorDetails || financial_data || financial_data2 ? <>
-                                <div className="row px-3 pt-2" style={{ backgroundColor: '#fff' }}>
-                                    <h5 className="headlines"><b>Financial Details</b></h5>
-                                    <div className="row" >
-                                        {yearOfAuditedFinancial ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Year of audited financials</label>
-                                                <input type="text" className="mb-2 inputbox" name="yearOfAuditedFinancial" value={yearOfAuditedFinancial} onChange={(e) => setyearOfAuditedFinancial(e.target.value)} />
-                                            </div> : ""}
-                                        {Revenue ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Revenue</label>
-                                                <input type="text" className="mb-2 inputbox" name="Revenue" value={Revenue} onChange={(e) => setRevenue(e.target.value)} />
-                                            </div> : ""}
-                                        {Profit ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Profit</label>
-                                                <input type="text" className="mb-2 inputbox" name="Profit" value={Profit} onChange={(e) => setProfit(e.target.value)} />
-                                            </div> : ""}
-                                        {netWorth ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Networth</label>
-                                                <input type="text" className="mb-2 inputbox" name="netWorth" value={netWorth} onChange={(e) => setnetWorth(e.target.value)} />
-                                            </div> : ""}
-                                        {currentAssets ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Current Assets</label>
-                                                <input type="text" className="mb-2 inputbox" name="currentAssets" value={currentAssets} onChange={(e) => setcurrentAssets(e.target.value)} />
-                                            </div> : ""}
-                                        {directorDetails ?
-                                            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                                <label className="banklabel">Director detail</label>
-                                                <input type="text" className="mb-2 inputbox" name="directorDetails" value={directorDetails} onChange={(e) => setdirectorDetails(e.target.value)} />
-                                            </div> : ""}
-                                        {financial_data ?
-                                            <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+                            {/* { editFinanceData[0] ?<> */}
+                            {/* { editFinanceData[0]?.yearOfAuditedFinancial || editFinanceData[0]?.Revenue || editFinanceData[0]?.Profit || editFinanceData[0]?.netWorth || editFinanceData[0]?.currentAssets || editFinanceData[0]?.directorDetails || editFinanceData[0]?.financial_data || editFinanceData[0]?.financial_data2 ? <> */}
+                            <div className="row px-3 pt-2" style={{ backgroundColor: '#fff' }}>
+                                <h5 className="headlines"><b>Financial Details</b></h5>
+                                <div className="row" >
+                                    {editFinanceData[0]?.yearOfAuditedFinancial ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Year of audited financials</label>
+                                            <input type="text" className="mb-2 inputbox" name="yearOfAuditedFinancial" value={yearOfAuditedFinancial} onChange={(e) => setyearOfAuditedFinancial(e.target.value)} />
+                                        </div>
+                                        : ""}
+                                    {editFinanceData[0]?.Revenue ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Revenue</label>
+                                            <input type="text" className="mb-2 inputbox" name="Revenue" value={Revenue} onChange={(e) => setRevenue(e.target.value)} />
+                                        </div> : ""}
+                                    {editFinanceData[0]?.Profit ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Profit</label>
+                                            <input type="text" className="mb-2 inputbox" name="Profit" value={Profit} onChange={(e) => setProfit(e.target.value)} />
+                                        </div> : ""}
+                                    {editFinanceData[0]?.netWorth ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Networth</label>
+                                            <input type="text" className="mb-2 inputbox" name="netWorth" value={netWorth} onChange={(e) => setnetWorth(e.target.value)} />
+                                        </div> : ""}
+                                    {editFinanceData[0]?.currentAssets ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Current Assets</label>
+                                            <input type="text" className="mb-2 inputbox" name="currentAssets" value={currentAssets} onChange={(e) => setcurrentAssets(e.target.value)} />
+                                        </div> : ""}
+                                    {editFinanceData[0]?.directorDetails ?
+                                        <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                            <label className="banklabel">Director detail</label>
+                                            <input type="text" className="mb-2 inputbox" name="directorDetails" value={directorDetails} onChange={(e) => setdirectorDetails(e.target.value)} />
+                                        </div> : ""}
+                                    {editFinanceData[0]?.financial_data ?
+                                        <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
 
-                                                {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("Financials Data1")} className="btn bankbtn btn-primary btn-md m-1">Financials data</button>
-                                                    : <button type="button" onClick={(e) => handleView(financial_data)} className="btn bankbtn btn-primary btn-md mt-1">Financials data</button>}
-                                                {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data</button> */}
-                                            </div> : ""}
-                                        {financial_data2 ?
-                                            <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                                                {style === "cont2" ?
-                                                    <button type="button" onClick={(e) => handleEditPopup("Financials Data2")} className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button>
-                                                    : <button type="button" onClick={(e) => handleView(financial_data2)} className="btn bankbtn btn-primary btn-md mt-1">Financials data 2</button>}
-                                                {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button> */}
-                                            </div> : ""}
-                                    </div>
-                                </div></> : ""}
-
+                                            {style === "cont2" ?
+                                                <button type="button" onClick={(e) => handleEditPopup('financial_data')} className="btn bankbtn btn-primary btn-md m-1">Financials data</button>
+                                                : <button type="button" onClick={(e) => handleView(financial_data)} className="btn bankbtn btn-primary btn-md mt-1">Financials data</button>}
+                                            {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data</button> */}
+                                        </div> : ""}
+                                    {editFinanceData[0]?.financial_data2 ?
+                                        <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+                                            {style === "cont2" ?
+                                                <button type="button" onClick={(e) => handleEditPopup('financial_data2')} className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button>
+                                                : <button type="button" onClick={(e) => handleView(financial_data2)} className="btn bankbtn btn-primary btn-md mt-1">Financials data 2</button>}
+                                            {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button> */}
+                                        </div> : ""}
+                                </div>
+                            </div>
+                            {/* </> : ""} */}
+                            {/* </>:<></>} */}
                             <div className="row px-3 pt-2" style={{ backgroundColor: '#fff' }}>
                                 <h5 className="headlines"><b>Hitachi Contact Team</b></h5>
                                 <div className="row" >
@@ -1989,7 +2136,8 @@ function ApprovalFields(props) {
                                         <span className="formError">{contactNumberErr}</span>
                                     </div>
                                 </div>
-                                {name2 && email2 && contactNumber2 ? <>
+                                {editContactData[0]?.contactName2 && editContactData[0]?.emailId2 && editContactData[0]?.contactNumber2 ? <>
+
                                     <div className="row" >
                                         <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                                             <label className="banklabel">Name*</label>
@@ -2004,7 +2152,7 @@ function ApprovalFields(props) {
                                             <input type="text" className="mb-2 inputbox" name="contactNumber2" value={contactNumber2} onChange={(e) => setcontactNumber2(e.target.value)} />
                                         </div>
                                     </div></> : ""}
-                                {name3 && email3 && contactNumber3 ? <>
+                                {editContactData[0]?.contactName3 && editContactData[0]?.emailId3 && editContactData[0]?.contactNumber3 ? <>
                                     <div className="row" >
                                         <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                                             <label className="banklabel">Name*</label>
@@ -2089,13 +2237,13 @@ function ApprovalFields(props) {
                             <>
                                 <div className="float-end" >
                                     <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
-                                    <button type="button" className="btn bankbtn btn-primary btn-md m-2">Save</button>
-                                    <button type="button" onClick={handleRegject} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
-                                    <button type="button" className="btn bankbtn btn-primary btn-md m-2">Approve</button>
+                                    <button type="button" onClick={submitHandler} className="btn bankbtn btn-primary btn-md m-2">Save</button>
+                                    <button type="button" onClick={(e) => handleMRTRegject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
+                                    <button type="button" onClick={(e) => handleMRTApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
                                 </div></> : <>
                                 <div className="float-end" >
                                     <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
-                                    <button type="submit" className="btn bankbtn btn-primary btn-md m-2">Save</button>
+                                    <button type="button" onClick={submitHandler} className="btn bankbtn btn-primary btn-md m-2">Save</button>
                                     <button type="button" onClick={(e) => handleRegject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
                                     <button type="button" onClick={(e) => handleApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
                                 </div></>

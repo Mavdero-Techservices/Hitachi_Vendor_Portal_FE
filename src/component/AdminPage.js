@@ -22,6 +22,7 @@ import moment from 'moment'
 function AdminPage() {
   const [expanded, setExpanded] = useState(false);
   const [vendors, setvendors] = useState([]);
+  const [approvalarr, setapprovalarr] = useState([]);
   const handleChange =
     (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
@@ -34,6 +35,15 @@ function AdminPage() {
   });
 
   useEffect(() => {
+    let applist = []
+    apiService.getApprovedStatus().then(res => {
+      applist = res.data.result
+    })
+
+    apiService.getApprovedStatus().then(res => {
+      setapprovalarr((array) => [...array, ...res.data.result]);
+    })
+
     apiService.getAllUserDetail().then(res => {
       res.data.basicInfo[0].forEach((item) => {
         var date1 = new Date();
@@ -47,7 +57,10 @@ function AdminPage() {
         item.createdAt = s
       })
       setvendors([])
-      setvendors((array) => [...array, ...res.data.basicInfo[0]]);
+      const arr = res.data.basicInfo[0]?.filter((vend) => {
+        return !applist?.find((item1) => (item1.userId === vend.userId))
+      })
+      setvendors((array) => [...array, ...arr]);
     })
   }, [])
 
@@ -98,7 +111,7 @@ function AdminPage() {
                     aria-controls="panelbh-content"
                     id={"panel1bh-header"}
                   >
-                    <IconButton sx={{ p: 0, width: '18%',justifyContent: 'flex-start' }} >
+                    <IconButton sx={{ p: 0, width: '18%', justifyContent: 'flex-start' }} >
                       <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                       <Typography >&nbsp;{item.userId}</Typography>
                     </IconButton>
