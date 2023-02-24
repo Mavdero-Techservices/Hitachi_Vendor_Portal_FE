@@ -18,6 +18,9 @@ const ComplianceDetails = () => {
   const [EditCompliance, setEditCompliance] = useState(true);
   const [showEditUploadsField, setshowEditUploadsField] = useState(true);
   const [fileRPD, setfileRPD] = useState();
+  const [editVlauefileRPD, seteditVlauefileRPD] = useState();
+  const [editVlauefileCOC, seteditVlauefileCOC] = useState();
+  const [editVlauefileNDA, seteditVlauefileNDA] = useState();
   const [editfileRPD, seteditfileRPD] = useState();
   const [urlRPD, seturlRPD] = useState();
   const [urlCoc, seturlCoc] = useState();
@@ -84,6 +87,7 @@ const ComplianceDetails = () => {
       confirmButtonText: "OK",
     }).then((ClearData) => {
       setfileRPD("");
+      seteditVlauefileRPD("");
       setdeleteUploadedFile(false);
     });
   }
@@ -95,6 +99,7 @@ const ComplianceDetails = () => {
       confirmButtonText: "OK",
     }).then((ClearData) => {
       setfileCOC("");
+      seteditVlauefileCOC("");
       setdeleteCocFile(false);
     });
   }
@@ -106,6 +111,7 @@ const ComplianceDetails = () => {
       confirmButtonText: "OK",
     }).then((ClearData) => {
       setfileNDA("");
+      seteditVlauefileNDA("");
       setdeleteNdaFile(false);
     });
   }
@@ -122,6 +128,7 @@ const ComplianceDetails = () => {
       setdeleteUploadedFile(false);
       setdeleteCocFile(false);
       setdeleteNdaFile(false);
+      seteditVlauefileRPD("");
     });
   }
   const downloadPdf = (e) => {
@@ -141,14 +148,17 @@ const ComplianceDetails = () => {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
           var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
-          var RPD_Doc = initialUrlRPD_Doc.split("/");
+          var RPD_Doc = initialUrlRPD_Doc.replace("uploads/", "");
           var initialUrlCOC_Doc = res.data.ComplianceDetail[0].COC_Doc;
-          var COC_Doc = initialUrlCOC_Doc.split("/");
+          var COC_Doc = initialUrlCOC_Doc.replace("uploads/", "");
           var initialUrlNDA_Doc = res.data.ComplianceDetail[0].NDA_Doc;
-          var NDA_Doc = initialUrlNDA_Doc.split("/");
+          var NDA_Doc = initialUrlNDA_Doc.replace("uploads/", "");
           setfileRPD(initialUrlRPD_Doc);
+          seteditVlauefileRPD(RPD_Doc);
           setfileCOC(initialUrlCOC_Doc);
+          seteditVlauefileCOC(COC_Doc);
           setfileNDA(initialUrlNDA_Doc);
+          seteditVlauefileNDA(NDA_Doc);
           setEditCompliance(true);
         });
       });
@@ -183,7 +193,10 @@ const ComplianceDetails = () => {
     data.append("RPD_Doc", fileRPD);
     data.append("NDA_Doc", fileNDA);
     data.append("COC_Doc", fileCOC);
-    data.append("userId", values.userId);
+    data.append(
+      "userId",
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    );
     if (params.userId) {
       apiService.updateComplianceDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
@@ -248,9 +261,9 @@ const ComplianceDetails = () => {
                       <Col sm={6}>
                         {EditCompliance ? (
                           <div>
-                            {fileRPD != "" ? (
+                            {editVlauefileRPD != "" ? (
                               <div>
-                                <span>File name:{fileRPD}</span>
+                                <span>File name:{editVlauefileRPD}</span>
                               </div>
                             ) : (
                               <div>
@@ -314,8 +327,8 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && fileCOC != "" ? (
-                          <span>File name:{fileCOC}</span>
+                        {EditCompliance && editVlauefileCOC != "" ? (
+                          <span>File name:{editVlauefileCOC}</span>
                         ) : (
                           <div>
                             <FileUploader
@@ -359,8 +372,8 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && fileNDA != "" ? (
-                          <span>File name:{fileNDA}</span>
+                        {EditCompliance && editVlauefileNDA != "" ? (
+                          <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>
                             <FileUploader

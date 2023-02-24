@@ -36,9 +36,11 @@ export default function Statutory(props) {
   const [PE_Declaration_Doc, setPE_Declaration_Doc] = useState();
   const [EditPE_Declaration_Doc, setEditPE_Declaration_Doc] = useState();
   const [form_10f_Doc, setform_10f_Doc] = useState();
+  const [Editform_10f_Doc, setEditform_10f_Doc] = useState();
   const [TAN_Doc, setTAN_Doc] = useState();
   const [MSME_Doc, setMSME_Doc] = useState();
   const [Tax_residency_Doc, setTax_residency_Doc] = useState();
+  const [editTax_residency_Doc, seteditTax_residency_Doc] = useState();
   const [submit, setSubmit] = useState(null);
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
@@ -227,6 +229,7 @@ export default function Statutory(props) {
     }).then((ClearData) => {
       setform_10f_Doc("");
       setdeleteform_10fUploadedFile(false);
+      setEditform_10f_Doc("");
     });
   }
   function DeletePEDeclaration(e) {
@@ -238,6 +241,7 @@ export default function Statutory(props) {
     }).then((ClearData) => {
       setPE_Declaration_Doc("");
       setdeletePE_DeclarationUploadedFile(false);
+      setEditPE_Declaration_Doc("");
     });
   }
   function DeleteTax_residency(e) {
@@ -249,6 +253,7 @@ export default function Statutory(props) {
     }).then((ClearData) => {
       setTax_residency_Doc("");
       setdeleteTax_residencyUploadedFile(false);
+      seteditTax_residency_Doc("");
     });
   }
   function cancel(e) {
@@ -278,15 +283,27 @@ export default function Statutory(props) {
       setdeleteTax_residencyUploadedFile(false);
       setdeletePE_DeclarationUploadedFile(false);
       setdeleteform_10fUploadedFile(false);
+      seteditTax_residency_Doc("");
+      setEditform_10f_Doc("");
+      setEditPE_Declaration_Doc("");
     });
   }
   useEffect(() => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
-          var initialUrl = res.data.Statutory[0].form_10f_Doc;
-          var ret = initialUrl.replace("uploads", "");
-          var str = ret.replace(/\\/g, "");
+          var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
+          var replaceform10fValue = form_10fUrl.replace("uploads/", "");
+          var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
+          var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
+            "uploads/",
+            ""
+          );
+          var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
+          var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
+            "uploads/",
+            ""
+          );
           setValues({
             GST_No: value.GST_No,
             GST_type: value.GST_type,
@@ -300,14 +317,15 @@ export default function Statutory(props) {
           });
 
           setform_10f_Doc(value.form_10f_Doc);
+
           setFile(value.GST_Doc);
           setPAN_Doc(value.PAN_Doc);
-          // setform_10f_Doc({
-          //   form_10f_Doc: value.form_10f_Doc
-          // })
           setPE_Declaration_Doc(value.PE_Declaration_Doc);
           setMSME_Doc(value.MSME_Doc);
           setTax_residency_Doc(value.Tax_residency_Doc);
+          seteditTax_residency_Doc(replaceTax_residency_DocValue);
+          setEditform_10f_Doc(replaceform10fValue);
+          setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
         });
       });
     }
@@ -340,14 +358,17 @@ export default function Statutory(props) {
     data.append("MSME_No", values.MSME_No);
     data.append("MSME_Type", MSME);
     data.append("TAN_No", values.TAN_No);
-    data.append("userId", values.userId);
+    data.append(
+      "userId",
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    );
     data.append("Tax_residency_No", values.Tax_residency_No);
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
-            title: "Data updated",
+            title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
           });
@@ -614,12 +635,14 @@ export default function Statutory(props) {
                               <br />
                               {params.userId ? (
                                 <div>
-                                  {form_10f_Doc != "" || undefined || null ? (
+                                  {Editform_10f_Doc != "" ||
+                                  undefined ||
+                                  null ? (
                                     <div>
-                                      <span>File name:{form_10f_Doc}</span>
-                                      <a onClick={DeleteForm10FDoc}>
+                                      <span>File name:{Editform_10f_Doc}</span>
+                                      <button onClick={DeleteForm10FDoc}>
                                         <ClearIcon />
-                                      </a>
+                                      </button>
                                     </div>
                                   ) : (
                                     <div>
@@ -631,6 +654,11 @@ export default function Statutory(props) {
                                         name="fileFD"
                                         fileOrFiles={deleteform_10fUploadedFile}
                                       />
+                                      <span>
+                                        {form_10f_Doc
+                                          ? `File name: ${form_10f_Doc.name}`
+                                          : "No File Chosen"}
+                                      </span>
                                     </div>
                                   )}
                                 </div>
@@ -663,14 +691,17 @@ export default function Statutory(props) {
                               controlId="formBasicEmail"
                             >
                               <Form.Label>No PE declaration*</Form.Label>
-                              {(params.userId && PE_Declaration_Doc != "") ||
+                              {(params.userId &&
+                                EditPE_Declaration_Doc != "") ||
                               undefined ||
                               null ? (
                                 <div>
-                                  <span>File name:{PE_Declaration_Doc}</span>
-                                  <a onClick={DeletePEDeclaration}>
+                                  <span>
+                                    File name:{EditPE_Declaration_Doc}
+                                  </span>
+                                  <button onClick={DeletePEDeclaration}>
                                     <ClearIcon />
-                                  </a>
+                                  </button>
                                 </div>
                               ) : (
                                 <div>
@@ -880,14 +911,14 @@ export default function Statutory(props) {
                               </Form.Label>
                               {params.userId ? (
                                 <div>
-                                  {Tax_residency_Doc != "" ||
+                                  {editTax_residency_Doc != "" ||
                                   undefined ||
                                   null ? (
                                     <div>
                                       <span>File name:{Tax_residency_Doc}</span>
-                                      <a onClick={DeleteTax_residency}>
+                                      <button onClick={DeleteTax_residency}>
                                         <ClearIcon />
-                                      </a>
+                                      </button>
                                     </div>
                                   ) : (
                                     <div>
