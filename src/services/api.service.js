@@ -101,16 +101,16 @@ updateCommunicationdetail(userId, data) {
   return http.put(`/updateCommunication/${userId}`, data);
 }
 updateStatutoryDetail(userId, data) {
-  return http.put(`/updateStatutoryDetail/${userId}`, data);
+  return axios.put(`http://localhost:12707/updateStatutoryDetail/${userId}`, data);
 }
 updateComplianceDetail(userId, data) {
-  return http.put(`/updateComplianceDetail/${userId}`, data);
+  return axios.put(`http://localhost:12707/updateComplianceDetail/${userId}`, data);
 }
 updateBankDetail(userId, data) {
-  return http.put(`/updateBankDetail/${userId}`, data);
+  return axios.put(`http://localhost:12707/updateBankDetail/${userId}`, data);
 }
 updateFinacialDetail(userId, data) {
-  return http.put(`/updateFinacialDetail/${userId}`, data);
+  return axios.put(`http://localhost:12707/updateFinacialDetail/${userId}`, data);
 }
 updateContactTeam(userId, data) {
   return http.put(`/updateContactTeam/${userId}`, data);

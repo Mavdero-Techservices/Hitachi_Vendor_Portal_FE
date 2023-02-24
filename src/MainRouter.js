@@ -4,13 +4,9 @@ import { Routes } from "react-router-dom"
 import { useSelector } from 'react-redux';
 import SignUp from "./component/signUp"
 import Login from "./component/login"
-import Test from "./component/test"
-import ImageUpload from "./component/imageUpload"
-import GetImage from "./component/displayImage"
 import { AdminRoute, UserRoute } from './auth/PrivateRoute';
 import Navbar1 from "./common/navbar";
 import Basic from "./component/Basic.js";
-import Commun from "./component/commu.js";
 import Statutory from "./component/StatutoryDetails.js";
 import Bank from "./component/BankDetails.js";
 import NewUser from "./component/NewUser";

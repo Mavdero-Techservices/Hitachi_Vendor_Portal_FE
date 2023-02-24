@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback }  from 'react'
+import React, { useState, useEffect }  from 'react'
 import "../css/signUp.css"
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
@@ -7,8 +7,8 @@ import Logo from "../img/logo.png";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardHeader, MDBCheckbox, MDBCol, MDBInput, MDBListGroup, MDBListGroupItem, MDBRow, MDBTextArea, MDBTypography } from 'mdb-react-ui-kit';
-import { useHistory,useParams } from "react-router-dom";
+import {  MDBCol, MDBRow} from 'mdb-react-ui-kit';
+import {useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 export default function Password(props) {
   const {emailId, mailConfirmationCode} = useParams();
@@ -83,7 +83,6 @@ setErrors({
    
   }
   useEffect(() => {
-    console.log("test", mailConfirmationCode);
   })
     return (
       <Container>

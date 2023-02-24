@@ -1,19 +1,20 @@
 import "../css/StatutoryDetails.css";
 import pdf from "../pdf/Declaration of GST Non Enrollment Format.pdf";
 import Navbar1 from "../common/navbar.js";
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import React, { useState, useEffect } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import apiService from "../services/api.service";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
+import ClearIcon from "@mui/icons-material/Clear";
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 export default function Statutory(props) {
@@ -22,9 +23,10 @@ export default function Statutory(props) {
   const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [editTab, seteditTab] = useState(true);
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [hideMSMEunRegisteredField, sethideMSMEunRegisteredField] = useState(true);
+  const [hideMSMEunRegisteredField, sethideMSMEunRegisteredField] =
+    useState(true);
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("Micro");
@@ -32,6 +34,7 @@ export default function Statutory(props) {
   const [GST_Doc, setFile] = useState();
   const [PAN_Doc, setPAN_Doc] = useState();
   const [PE_Declaration_Doc, setPE_Declaration_Doc] = useState();
+  const [EditPE_Declaration_Doc, setEditPE_Declaration_Doc] = useState();
   const [form_10f_Doc, setform_10f_Doc] = useState();
   const [TAN_Doc, setTAN_Doc] = useState();
   const [MSME_Doc, setMSME_Doc] = useState();
@@ -40,40 +43,43 @@ export default function Statutory(props) {
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
   const [country, setcountry] = useState({});
-  const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] = useState(false);
-  const [deletePE_DeclarationUploadedFile, setdeletePE_DeclarationUploadedFile] = useState(false);
-  const [deleteTax_residencyUploadedFile, setdeleteTax_residencyUploadedFile] = useState(false);
+  const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] =
+    useState(false);
+  const [
+    deletePE_DeclarationUploadedFile,
+    setdeletePE_DeclarationUploadedFile,
+  ] = useState(false);
+  const [deleteTax_residencyUploadedFile, setdeleteTax_residencyUploadedFile] =
+    useState(false);
 
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
-    GST_type: '',
-    GST_No: '',
-    GST_Doc: '',
-    PAN_No: '',
-    PAN_Doc: '',
-    TAN_Doc: '',
-    PE_DeclarationNo: '',
-    MSME_Doc: '',
-    CIN_No: '',
-    form_10f: '',
-    MSME_status: '',
-    MSME_No: '',
-    MSME_Type: '',
-    TAN_No: '',
-    Tax_residency_No: '',
+    GST_type: "",
+    GST_No: "",
+    GST_Doc: "",
+    PAN_No: "",
+    PAN_Doc: "",
+    TAN_Doc: "",
+    PE_DeclarationNo: "",
+    MSME_Doc: "",
+    CIN_No: "",
+    form_10f: "",
+    MSME_status: "",
+    MSME_No: "",
+    MSME_Type: "",
+    TAN_No: "",
+    Tax_residency_No: "",
   });
   function onChangeValue(event) {
     setGST_type(event.target.value);
-    if (event.target.value === 'UnRegistered') {
+    if (event.target.value === "UnRegistered") {
       sethideunRegisteredField(false);
-    }
-    else {
+    } else {
       sethideunRegisteredField(true);
     }
-    if (event.target.value === 'Import') {
+    if (event.target.value === "Import") {
       setHideImport(false);
-    }
-    else {
+    } else {
       setHideImport(true);
     }
   }
@@ -84,34 +90,31 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } else {
+      setfileDisclosure(e);
     }
-    else {
-      setfileDisclosure(e)
-    }
-
   }
   function onChangeValueMSME(event) {
     setMSME(event.target.value);
   }
   function onChangeValueMSME_status(event) {
     setMSME_status(event.target.value);
-    if (event.target.value === 'UnRegistered') {
+    if (event.target.value === "UnRegistered") {
       sethideMSMEunRegisteredField(false);
-    }
-    else {
+    } else {
       sethideMSMEunRegisteredField(true);
     }
   }
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value })
-    setErrors(event)
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+    setErrors(event);
     if (!!errors[name])
       setErrors({
         ...errors,
-        [name]: null
-      })
-    setSubmit(true)
-  }
+        [name]: null,
+      });
+    setSubmit(true);
+  };
   const onFileChange = (event) => {
     event.preventDefault();
     if (event.target.files[0].size > 5000000) {
@@ -120,12 +123,10 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } else {
+      setFile(event.target.files[0]);
     }
-    else {
-      setFile(event.target.files[0])
-    }
-
-  }
+  };
 
   function onFileChangeTax_residency_Doc(e) {
     if (e.size > 5000000) {
@@ -134,12 +135,10 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
-    }
-    else {
-      setTax_residency_Doc(e)
+    } else {
+      setTax_residency_Doc(e);
       setdeleteTax_residencyUploadedFile(true);
     }
-
   }
   function onFileChangeform_10f_Doc(e) {
     if (e.size > 5000000) {
@@ -148,12 +147,10 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
-    }
-    else {
-      setform_10f_Doc(e)
+    } else {
+      setform_10f_Doc(e);
       setdeleteform_10fUploadedFile(true);
     }
-
   }
   function onFileChangePAN_Doc(e) {
     if (e.target.files[0].size > 5000000) {
@@ -162,11 +159,9 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } else {
+      setPAN_Doc(e.target.files[0]);
     }
-    else {
-      setPAN_Doc(e.target.files[0])
-    }
-
   }
   function onFileChangePE_Declaration_Doc(e) {
     if (e.size > 5000000) {
@@ -175,8 +170,7 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
-    }
-    else {
+    } else {
       setPE_Declaration_Doc(e);
       setdeletePE_DeclarationUploadedFile(true);
     }
@@ -188,11 +182,9 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } else {
+      setTAN_Doc(e.target.files[0]);
     }
-    else {
-      setTAN_Doc(e.target.files[0])
-    }
-
   }
   function onFileChangeMSME_Doc(e) {
     if (e.target.files[0].size > 5000000) {
@@ -201,33 +193,63 @@ export default function Statutory(props) {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } else {
+      setMSME_Doc(e.target.files[0]);
     }
-    else {
-      setMSME_Doc(e.target.files[0])
-    }
-
   }
   function next(e) {
     if (params.userId) {
       navigate(`/ComplianceDetail/${params.userId}`);
+    } else {
+      navigate("/ComplianceDetail");
     }
-    else {
-      navigate('/ComplianceDetail');
-    }
-
   }
   const validateForm = () => {
     const { GST_No, PAN_No } = values;
 
-    const newErrors = {}
+    const newErrors = {};
 
     if (!GSTValidation.test(GST_No)) {
-      newErrors.GST_No = "Please enter a valid GST No"
+      newErrors.GST_No = "Please enter a valid GST No";
     }
     if (!PANValidation.test(PAN_No)) {
-      newErrors.PAN_No = "Please enter a valid PAN No"
+      newErrors.PAN_No = "Please enter a valid PAN No";
     }
-    return newErrors
+    return newErrors;
+  };
+
+  function DeleteForm10FDoc(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to Delete?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setform_10f_Doc("");
+      setdeleteform_10fUploadedFile(false);
+    });
+  }
+  function DeletePEDeclaration(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setPE_Declaration_Doc("");
+      setdeletePE_DeclarationUploadedFile(false);
+    });
+  }
+  function DeleteTax_residency(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are You Sure,You want to reset?",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      setTax_residency_Doc("");
+      setdeleteTax_residencyUploadedFile(false);
+    });
   }
   function cancel(e) {
     e.preventDefault();
@@ -237,22 +259,22 @@ export default function Statutory(props) {
       confirmButtonText: "OK",
     }).then((ClearData) => {
       setValues({
-        GST_No: '',
-        GST_type: '',
-        MSME_No: '',
-        MSME_Type: '',
-        MSME_status: '',
-        PAN_No: '',
-        CIN_No: '',
-        TAN_No: '',
-        Tax_residency_No: '',
+        GST_No: "",
+        GST_type: "",
+        MSME_No: "",
+        MSME_Type: "",
+        MSME_status: "",
+        PAN_No: "",
+        CIN_No: "",
+        TAN_No: "",
+        Tax_residency_No: "",
       });
-      setFile('');
-      setPAN_Doc('');
-      setform_10f_Doc('');
-      setPE_Declaration_Doc('');
-      setMSME_Doc('')
-      setTax_residency_Doc('')
+      setFile("");
+      setPAN_Doc("");
+      setform_10f_Doc("");
+      setPE_Declaration_Doc("");
+      setMSME_Doc("");
+      setTax_residency_Doc("");
       setdeleteTax_residencyUploadedFile(false);
       setdeletePE_DeclarationUploadedFile(false);
       setdeleteform_10fUploadedFile(false);
@@ -263,7 +285,8 @@ export default function Statutory(props) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
           var initialUrl = res.data.Statutory[0].form_10f_Doc;
-          var form_10f_DocUrl = initialUrl.split('/');
+          var ret = initialUrl.replace("uploads", "");
+          var str = ret.replace(/\\/g, "");
           setValues({
             GST_No: value.GST_No,
             GST_type: value.GST_type,
@@ -274,105 +297,86 @@ export default function Statutory(props) {
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
             Tax_residency_No: value.Tax_residency_No,
-          })
-          setFile({
-            GST_Doc: value.GST_Doc,
-          })
-          setPAN_Doc({
-            PAN_Doc: value.PAN_Doc,
-          })
-          setform_10f_Doc({
-            form_10f_Doc: value.form_10f_Doc
-          })
-          setPE_Declaration_Doc({
-            PE_Declaration_Doc: value.PE_Declaration_Doc
-          })
-          setMSME_Doc({
-            MSME_Doc: value.MSME_Doc
-          })
-        })
+          });
+
+          setform_10f_Doc(value.form_10f_Doc);
+          setFile(value.GST_Doc);
+          setPAN_Doc(value.PAN_Doc);
+          // setform_10f_Doc({
+          //   form_10f_Doc: value.form_10f_Doc
+          // })
+          setPE_Declaration_Doc(value.PE_Declaration_Doc);
+          setMSME_Doc(value.MSME_Doc);
+          setTax_residency_Doc(value.Tax_residency_Doc);
+        });
       });
     }
-    apiService.getvendorDetail(values.userId)
-      .then(res => {
-        setcountry(res.data.country);
-        if (res.data.country === 'IN') {
-          setshowLoginTab(false);
-        }
-
-      })
+    apiService.getvendorDetail(values.userId).then((res) => {
+      setcountry(res.data.country);
+      if (res.data.country === "IN") {
+        setshowLoginTab(false);
+      }
+    });
     seturl(pdf);
-  }, [])
+  }, []);
   const saveStatutoryDetail = (e) => {
-    const formErrors = validateForm()
     e.preventDefault();
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors)
-    }
-    else {
-      const data = new FormData();
-      data.append('GST_Doc', GST_Doc.GST_Doc);
-      data.append('GST_type', GST_type);
-      data.append('GST_No', values.GST_No);
-      data.append('PAN_No', values.PAN_No);
-      data.append('PAN_Doc', PAN_Doc);
-      data.append('form_10f_Doc', form_10f_Doc);
-      data.append('TAN_Doc', TAN_Doc);
-      data.append('PE_DeclarationNo', values.PE_DeclarationNo);
-      data.append('PE_Declaration_Doc', PE_Declaration_Doc);
-      data.append('MSME_Doc', MSME_Doc);
-      data.append('Tax_residency_Doc', Tax_residency_Doc);
-      data.append('CIN_No', values.CIN_No);
-      data.append('form_10f', values.form_10f);
-      data.append('MSME_status', MSME_status);
-      data.append('MSME_No', values.MSME_No);
-      data.append('MSME_Type', MSME);
-      data.append('TAN_No', values.TAN_No);
-      data.append('userId', values.userId);
-      data.append('Tax_residency_No', values.Tax_residency_No);
-      data.append('fileDisclosure', fileDisclosure);
-      if (params.userId) {
-        apiService.updateStatutoryDetail(params.userId, data)
-          .then(res => {
-            if (res.data.status === 'success') {
-              Swal.fire({
-                title: "Data updated",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            }
-            else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-      }
-      else {
-        apiService.saveStatutoryDetail(data)
-          .then(res => {
-            if (res.data.status === 'success') {
-              Swal.fire({
-                title: "Data saved",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            }
-            else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-      }
 
+    const data = new FormData();
+    data.append("GST_Doc", GST_Doc);
+    data.append("GST_type", GST_type);
+    data.append("GST_No", values.GST_No);
+    data.append("PAN_No", values.PAN_No);
+    data.append("PAN_Doc", PAN_Doc);
+    data.append("form_10f_Doc", form_10f_Doc);
+    data.append("TAN_Doc", TAN_Doc);
+    data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+    data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+    data.append("MSME_Doc", MSME_Doc);
+    data.append("Tax_residency_Doc", Tax_residency_Doc);
+    data.append("CIN_No", values.CIN_No);
+    data.append("form_10f", values.form_10f);
+    data.append("MSME_status", MSME_status);
+    data.append("MSME_No", values.MSME_No);
+    data.append("MSME_Type", MSME);
+    data.append("TAN_No", values.TAN_No);
+    data.append("userId", values.userId);
+    data.append("Tax_residency_No", values.Tax_residency_No);
+    data.append("fileDisclosure", fileDisclosure);
+    if (params.userId) {
+      apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      apiService.saveStatutoryDetail(data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
     }
-
-  }
+  };
   return (
     <div>
       <Navbar1 />
@@ -394,13 +398,34 @@ export default function Statutory(props) {
                           <Form.Label>Vendor GST Type*</Form.Label>
                           <Row>
                             <Col sm={4}>
-                              <input onChange={onChangeValue} type="radio" value="Registered" name="GST_type" checked={GST_type === "Registered"} /> Registered
+                              <input
+                                onChange={onChangeValue}
+                                type="radio"
+                                value="Registered"
+                                name="GST_type"
+                                checked={GST_type === "Registered"}
+                              />{" "}
+                              Registered
                             </Col>
                             <Col sm={4}>
-                              <input onChange={onChangeValue} type="radio" value="UnRegistered" name="GST_type" checked={GST_type === "UnRegistered"} /> UnRegistered
+                              <input
+                                onChange={onChangeValue}
+                                type="radio"
+                                value="UnRegistered"
+                                name="GST_type"
+                                checked={GST_type === "UnRegistered"}
+                              />{" "}
+                              UnRegistered
                             </Col>
                             <Col sm={4}>
-                              <input onChange={onChangeValue} type="radio" value="Import" name="GST_type" checked={GST_type === "Import"} /> Import
+                              <input
+                                onChange={onChangeValue}
+                                type="radio"
+                                value="Import"
+                                name="GST_type"
+                                checked={GST_type === "Import"}
+                              />{" "}
+                              Import
                             </Col>
                           </Row>
                         </Form.Group>
@@ -408,42 +433,82 @@ export default function Statutory(props) {
                         {HideImport && hideunRegisteredField ? (
                           <Row>
                             <Col>
-                              <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                              >
                                 <Form.Label>GST no*</Form.Label>
-                                <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
-                                {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
+                                <Form.Control
+                                  className="statutoryInput"
+                                  type="text"
+                                  value={values.GST_No}
+                                  onChange={handleChange("GST_No")}
+                                />
+                                {errors.GST_No ? (
+                                  <p className="text text-danger small">
+                                    {errors.GST_No}
+                                  </p>
+                                ) : (
+                                  ""
+                                )}
                               </Form.Group>
                             </Col>
                             <Col>
                               <div className="frame-input">
                                 <label htmlFor="fileupload">Upload GST</label>
-                                <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
+                                <input
+                                  type="file"
+                                  id="fileupload"
+                                  value={values.GST_Doc}
+                                  onChange={onFileChange}
+                                  required
+                                />
                               </div>
                             </Col>
                           </Row>
-
-
                         ) : (
-
                           <Row>
-
                             <Col>
-                              <Form.Group className="mb-3" controlId="formBasicEmail">
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                              >
                                 <Form.Label>GST no*</Form.Label>
-                                <Form.Control className="statutoryInput" type="text" value='N/A' onChange={handleChange('GST_No')} disabled="true" />
-                                {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
+                                <Form.Control
+                                  className="statutoryInput"
+                                  type="text"
+                                  value="N/A"
+                                  onChange={handleChange("GST_No")}
+                                  disabled="true"
+                                />
+                                {errors.GST_No ? (
+                                  <p className="text text-danger small">
+                                    {errors.GST_No}
+                                  </p>
+                                ) : (
+                                  ""
+                                )}
                               </Form.Group>
                             </Col>
                             <Col>
                               {!HideImport && hideunRegisteredField ? (
+                                <Row></Row>
+                              ) : (
                                 <Row>
-
-                                </Row>) : (<Row>
                                   <div className="frame-input">
-                                    <label htmlFor="fileupload">Upload UnRegister Gst</label>
-                                    <input type="file" id="fileupload" handleChange={onFileDisclosurechange} name="fileDisclosure" required />
-                                  </div> </Row>)}
-
+                                    <label htmlFor="fileupload">
+                                      Upload UnRegister Gst
+                                    </label>
+                                    <input
+                                      type="file"
+                                      id="fileupload"
+                                      handleChange={onFileDisclosurechange}
+                                      name="fileDisclosure"
+                                      required
+                                    />
+                                  </div>{" "}
+                                </Row>
+                              )}
                             </Col>
                           </Row>
                         )}
@@ -467,29 +532,55 @@ export default function Statutory(props) {
                       </Row>
                       <Row>
                         <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
                             <Form.Label>PAN no*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.PAN_No} onChange={handleChange('PAN_No')} />
-                            {errors.PAN_No ? <p className="text text-danger small">{errors.PAN_No}</p> : ""}
+                            <Form.Control
+                              className="statutoryInput"
+                              type="text"
+                              value={values.PAN_No}
+                              onChange={handleChange("PAN_No")}
+                            />
+                            {errors.PAN_No ? (
+                              <p className="text text-danger small">
+                                {errors.PAN_No}
+                              </p>
+                            ) : (
+                              ""
+                            )}
                           </Form.Group>
                         </Col>
                         <Col>
                           <div className="frame-input">
                             <label htmlFor="fileuploadPan">Upload PAN</label>
-                            <input type="file" id="fileuploadPan" value={values.PAN_Doc} onChange={onFileChangePAN_Doc} required />
+                            <input
+                              type="file"
+                              id="fileuploadPan"
+                              value={values.PAN_Doc}
+                              onChange={onFileChangePAN_Doc}
+                              required
+                            />
                           </div>
                         </Col>
                       </Row>
                       <Row>
                         <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
                             <Form.Label>CIN no*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.CIN_No} onChange={handleChange('CIN_No')} />
+                            <Form.Control
+                              className="statutoryInput"
+                              type="text"
+                              value={values.CIN_No}
+                              onChange={handleChange("CIN_No")}
+                            />
                           </Form.Group>
                         </Col>
-                        <Col>
-
-                        </Col>
+                        <Col></Col>
                       </Row>
                       {/* {!hideunRegisteredField ?
                         <Row>
@@ -514,88 +605,194 @@ export default function Statutory(props) {
                         : null} */}
                       <Row>
                         <Col>
-                          {showLoginTab ?
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                          {showLoginTab ? (
+                            <Form.Group
+                              className="mb-3"
+                              controlId="formBasicEmail"
+                            >
                               <Form.Label>Form 10F*</Form.Label>
-                              <FileUploader className="financial_fileupload"
-                                handleChange={onFileChangeform_10f_Doc}
-                                required
-                                type="file"
-                                name="fileFD"
-                                fileOrFiles={deleteform_10fUploadedFile}
-                              />
-                              <span>{form_10f_Doc ? `File name: ${form_10f_Doc.name}` : "No File Chosen"}</span>
-
+                              <br />
+                              {params.userId ? (
+                                <div>
+                                  {form_10f_Doc != "" || undefined || null ? (
+                                    <div>
+                                      <span>File name:{form_10f_Doc}</span>
+                                      <a onClick={DeleteForm10FDoc}>
+                                        <ClearIcon />
+                                      </a>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <FileUploader
+                                        className="financial_fileupload"
+                                        handleChange={onFileChangeform_10f_Doc}
+                                        required
+                                        type="file"
+                                        name="fileFD"
+                                        fileOrFiles={deleteform_10fUploadedFile}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <div>
+                                  <FileUploader
+                                    className="financial_fileupload"
+                                    handleChange={onFileChangeform_10f_Doc}
+                                    required
+                                    type="file"
+                                    name="fileFD"
+                                    fileOrFiles={deleteform_10fUploadedFile}
+                                  />
+                                  <span>
+                                    {form_10f_Doc
+                                      ? `File name: ${form_10f_Doc.name}`
+                                      : "No File Chosen"}
+                                  </span>
+                                </div>
+                              )}
                             </Form.Group>
-                            : null}
+                          ) : null}
                         </Col>
-
                       </Row>
                       <Row>
                         <Col>
-                          {showLoginTab ?
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                          {showLoginTab ? (
+                            <Form.Group
+                              className="mb-3"
+                              controlId="formBasicEmail"
+                            >
                               <Form.Label>No PE declaration*</Form.Label>
-                              <FileUploader className="financial_fileupload"
-                                handleChange={onFileChangePE_Declaration_Doc}
-                                required
-                                type="file"
-                                name="fileFD"
-                                fileOrFiles={deletePE_DeclarationUploadedFile}
-                              />
-                              <span>{PE_Declaration_Doc ? `File name: ${PE_Declaration_Doc.name}` : "No File Chosen"}</span></Form.Group>
-
-                            : null}
+                              {(params.userId && PE_Declaration_Doc != "") ||
+                              undefined ||
+                              null ? (
+                                <div>
+                                  <span>File name:{PE_Declaration_Doc}</span>
+                                  <a onClick={DeletePEDeclaration}>
+                                    <ClearIcon />
+                                  </a>
+                                </div>
+                              ) : (
+                                <div>
+                                  <FileUploader
+                                    className="financial_fileupload"
+                                    handleChange={
+                                      onFileChangePE_Declaration_Doc
+                                    }
+                                    required
+                                    type="file"
+                                    name="fileFD"
+                                    fileOrFiles={
+                                      deletePE_DeclarationUploadedFile
+                                    }
+                                  />
+                                  <span>
+                                    {PE_Declaration_Doc
+                                      ? `File name: ${PE_Declaration_Doc.name}`
+                                      : "No File Chosen"}
+                                  </span>
+                                </div>
+                              )}
+                            </Form.Group>
+                          ) : null}
                         </Col>
-
                       </Row>
-
-                    </Form></Col>
+                    </Form>
+                  </Col>
                   <Col>
                     <Form>
-
                       <Row>
                         <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
                             <Form.Label>MSME status*</Form.Label>
                             <Row>
-                              <Col sm={4}>  <input onChange={onChangeValueMSME_status} type="radio" value="Registered" name="Registered" checked={MSME_status === "Registered"} /> Registered
+                              <Col sm={4}>
+                                {" "}
+                                <input
+                                  onChange={onChangeValueMSME_status}
+                                  type="radio"
+                                  value="Registered"
+                                  name="Registered"
+                                  checked={MSME_status === "Registered"}
+                                />{" "}
+                                Registered
                               </Col>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME_status} type="radio" value="UnRegistered" name="UnRegistered" checked={MSME_status === "UnRegistered"} /> UnRegistered
+                                <input
+                                  onChange={onChangeValueMSME_status}
+                                  type="radio"
+                                  value="UnRegistered"
+                                  name="UnRegistered"
+                                  checked={MSME_status === "UnRegistered"}
+                                />{" "}
+                                UnRegistered
                               </Col>
                             </Row>
                           </Form.Group>
                         </Col>
-
                       </Row>
                       {hideMSMEunRegisteredField ? (
                         <Row>
                           <Col>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Group
+                              className="mb-3"
+                              controlId="formBasicEmail"
+                            >
                               <Form.Label>MSME no*</Form.Label>
-                              <Form.Control className="statutoryInput" type="text" value={values.MSME_No} onChange={handleChange('MSME_No')} />
+                              <Form.Control
+                                className="statutoryInput"
+                                type="text"
+                                value={values.MSME_No}
+                                onChange={handleChange("MSME_No")}
+                              />
                             </Form.Group>
                           </Col>
                           <Col>
                             <div className="frame-input">
-                              <label htmlFor="fileuploadMSME">Upload MSME</label>
-                              <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} required />
+                              <label htmlFor="fileuploadMSME">
+                                Upload MSME
+                              </label>
+                              <input
+                                type="file"
+                                id="fileuploadMSME"
+                                value={values.MSME_Doc}
+                                onChange={onFileChangeMSME_Doc}
+                                required
+                              />
                             </div>
                           </Col>
                         </Row>
                       ) : (
                         <Row>
                           <Col>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Group
+                              className="mb-3"
+                              controlId="formBasicEmail"
+                            >
                               <Form.Label>MSME no*</Form.Label>
-                              <Form.Control className="statutoryInput" type="text" value="N/A" disabled="true" />
+                              <Form.Control
+                                className="statutoryInput"
+                                type="text"
+                                value="N/A"
+                                disabled="true"
+                              />
                             </Form.Group>
                           </Col>
                           <Col>
                             <div className="frame-input">
-                              <label htmlFor="fileuploadMSME">Upload MSME</label>
-                              <input type="file" id="fileuploadMSME" value={values.MSME_Doc} onChange={onFileChangeMSME_Doc} disabled="true" />
+                              <label htmlFor="fileuploadMSME">
+                                Upload MSME
+                              </label>
+                              <input
+                                type="file"
+                                id="fileuploadMSME"
+                                value={values.MSME_Doc}
+                                onChange={onFileChangeMSME_Doc}
+                                disabled="true"
+                              />
                             </div>
                           </Col>
                         </Row>
@@ -603,90 +800,195 @@ export default function Statutory(props) {
 
                       <Row>
                         <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
                             <Form.Label>MSME type*</Form.Label>
                             <Row>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME} type="radio" value="Micro" name="Micro" checked={MSME === "Micro"} /> Micro
+                                <input
+                                  onChange={onChangeValueMSME}
+                                  type="radio"
+                                  value="Micro"
+                                  name="Micro"
+                                  checked={MSME === "Micro"}
+                                />{" "}
+                                Micro
                               </Col>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME} type="radio" value="Small" name="Small" checked={MSME === "Small"} /> Small
+                                <input
+                                  onChange={onChangeValueMSME}
+                                  type="radio"
+                                  value="Small"
+                                  name="Small"
+                                  checked={MSME === "Small"}
+                                />{" "}
+                                Small
                               </Col>
                               <Col sm={4}>
-                                <input onChange={onChangeValueMSME} type="radio" value="Macro" name="Macro" checked={MSME === "Macro"} /> Medium
+                                <input
+                                  onChange={onChangeValueMSME}
+                                  type="radio"
+                                  value="Macro"
+                                  name="Macro"
+                                  checked={MSME === "Macro"}
+                                />{" "}
+                                Medium
                               </Col>
                             </Row>
                           </Form.Group>
                         </Col>
-
                       </Row>
                       <Row>
                         <Col>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicEmail"
+                          >
                             <Form.Label>TAN no*</Form.Label>
-                            <Form.Control className="statutoryInput" type="text" value={values.TAN_No} onChange={handleChange('TAN_No')} />
+                            <Form.Control
+                              className="statutoryInput"
+                              type="text"
+                              value={values.TAN_No}
+                              onChange={handleChange("TAN_No")}
+                            />
                           </Form.Group>
                         </Col>
                         <Col>
                           <div className="frame-input">
                             <label htmlFor="fileuploadTAN">Upload TAN</label>
-                            <input type="file" id="fileuploadTAN" value={values.TAN_Doc} onChange={onFileChangeTAN_Doc} required />
+                            <input
+                              type="file"
+                              id="fileuploadTAN"
+                              value={values.TAN_Doc}
+                              onChange={onFileChangeTAN_Doc}
+                              required
+                            />
                           </div>
                         </Col>
                       </Row>
-                      {showLoginTab ?
+                      {showLoginTab ? (
                         <Row>
                           <Col>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                              <Form.Label>Tax Residency Certificate*</Form.Label>
-                              <FileUploader className="financial_fileupload"
-                                handleChange={onFileChangeTax_residency_Doc}
-                                required
-                                type="file"
-                                name="fileFD"
-                                fileOrFiles={deleteTax_residencyUploadedFile}
-                              />
-                              <span>{Tax_residency_Doc ? `File name: ${Tax_residency_Doc.name}` : "No File Chosen"}</span>
+                            <Form.Group
+                              className="mb-3"
+                              controlId="formBasicEmail"
+                            >
+                              <Form.Label>
+                                Tax Residency Certificate*
+                              </Form.Label>
+                              {params.userId ? (
+                                <div>
+                                  {Tax_residency_Doc != "" ||
+                                  undefined ||
+                                  null ? (
+                                    <div>
+                                      <span>File name:{Tax_residency_Doc}</span>
+                                      <a onClick={DeleteTax_residency}>
+                                        <ClearIcon />
+                                      </a>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <FileUploader
+                                        className="financial_fileupload"
+                                        handleChange={
+                                          onFileChangeTax_residency_Doc
+                                        }
+                                        required
+                                        type="file"
+                                        name="fileFD"
+                                        fileOrFiles={
+                                          deleteTax_residencyUploadedFile
+                                        }
+                                      />
+                                      <span>
+                                        {Tax_residency_Doc
+                                          ? `File name: ${Tax_residency_Doc.name}`
+                                          : "No File Chosen"}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <div>
+                                  <FileUploader
+                                    className="financial_fileupload"
+                                    handleChange={onFileChangeTax_residency_Doc}
+                                    required
+                                    type="file"
+                                    name="fileFD"
+                                    fileOrFiles={
+                                      deleteTax_residencyUploadedFile
+                                    }
+                                  />
+                                  <span>
+                                    {Tax_residency_Doc
+                                      ? `File name: ${Tax_residency_Doc.name}`
+                                      : "No File Chosen"}
+                                  </span>
+                                </div>
+                              )}
                             </Form.Group>
                           </Col>
-
                         </Row>
-                        : null}
-
+                      ) : null}
                     </Form>
                   </Col>
                 </Row>
-
               </Card.Body>
             </Card>
           </Col>
         </Row>
-        {!hideunRegisteredField ?
+        {!hideunRegisteredField ? (
           <Row>
             <Col>
               <a href={url} download>
-                <Button className="DownloadDisclosure">Download Declaration under non-registered GST</Button>
+                <Button className="DownloadDisclosure">
+                  Download Declaration under non-registered GST
+                </Button>
               </a>
             </Col>
           </Row>
-          : null}
+        ) : null}
         <br />
         <Row>
-
           <Col>
-            <p className="statutory-Note">NOTE: If the vendor is not registered with the above compliance, they can mention it as “Non-Registered” in that column and they will upload the discloser for the same on the document upload option.</p>
+            <p className="statutory-Note">
+              NOTE: If the vendor is not registered with the above compliance,
+              they can mention it as “Non-Registered” in that column and they
+              will upload the discloser for the same on the document upload
+              option.
+            </p>
           </Col>
         </Row>
         <Row className="sbtn">
-          <div className="float-end mt-2" >
-            <button type="button" onClick={cancel} className="btn statutorybtn btn-primary btn-md m-1">Cancel</button>
-            <button type="button" onClick={saveStatutoryDetail} className="btn statutorybtn btn-primary btn-md m-1">Save</button>
-            <button type="button" onClick={next} className="btn statutorybtn btn-primary btn-md m-1">Next</button>
+          <div className="float-end mt-2">
+            <button
+              type="button"
+              onClick={cancel}
+              className="btn statutorybtn btn-primary btn-md m-1"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={saveStatutoryDetail}
+              className="btn statutorybtn btn-primary btn-md m-1"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              className="btn statutorybtn btn-primary btn-md m-1"
+            >
+              Next
+            </button>
           </div>
         </Row>
       </Container>
     </div>
-  )
+  );
 }
-
-
