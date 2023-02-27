@@ -308,14 +308,19 @@ const ComplianceDetails = () => {
                           <Button className="UploadBtn">Upload files</Button>
                         )}{" "}
                       </Col>
-                      {fileRPD != "" ? (
-                        <Col>
-                          <p className="ValidityofDeclaration">
-                            Validity of Declaration
-                          </p>
-                          <p className="financialYearEnd">{financialYearEnd}</p>
-                        </Col>
-                      ) : null}
+
+                      <Col>
+                        {fileRPD != "" ? (
+                          <div>
+                            <p className="ValidityofDeclaration">
+                              Validity of Declaration
+                            </p>
+                            <p className="financialYearEnd">
+                              {financialYearEnd}
+                            </p>
+                          </div>
+                        ) : null}
+                      </Col>
                     </Row>
                     <Row>
                       <Form.Label>
@@ -355,14 +360,19 @@ const ComplianceDetails = () => {
                           <Button className="UploadBtn">Upload files</Button>
                         )}
                       </Col>
-                      {fileCOC ? (
-                        <Col>
-                          <p className="ValidityofDeclaration">
-                            Validity of Declaration
-                          </p>
-                          <p className="financialYearEnd">{financialYearEnd}</p>
-                        </Col>
-                      ) : null}
+
+                      <Col>
+                        {fileCOC ? (
+                          <div>
+                            <p className="ValidityofDeclaration">
+                              Validity of Declaration
+                            </p>
+                            <p className="financialYearEnd">
+                              {financialYearEnd}
+                            </p>
+                          </div>
+                        ) : null}
+                      </Col>
                     </Row>
                     <Row>
                       <Form.Label>Non-disclosure agreement*</Form.Label>
@@ -400,14 +410,19 @@ const ComplianceDetails = () => {
                           <Button className="UploadBtn">Upload files</Button>
                         )}
                       </Col>
-                      {fileNDA ? (
-                        <Col>
-                          <p className="ValidityofDeclaration">
-                            Validity of Declaration
-                          </p>
-                          <p className="financialYearEnd">{financialYearEnd}</p>
-                        </Col>
-                      ) : null}
+
+                      <Col>
+                        {fileNDA ? (
+                          <div>
+                            <p className="ValidityofDeclaration">
+                              Validity of Declaration
+                            </p>
+                            <p className="financialYearEnd">
+                              {financialYearEnd}
+                            </p>
+                          </div>
+                        ) : null}
+                      </Col>
                     </Row>
                   </Form>
                 </Card.Body>
