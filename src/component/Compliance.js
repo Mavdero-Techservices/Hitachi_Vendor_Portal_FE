@@ -11,8 +11,9 @@ import Button from "react-bootstrap/Button";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const ComplianceDetails = () => {
+  const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
   const [EditCompliance, setEditCompliance] = useState(true);
@@ -120,15 +121,20 @@ const ComplianceDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setfileRPD("");
-      setfileCOC("");
-      setfileNDA("");
-      setdeleteUploadedFile(false);
-      setdeleteCocFile(false);
-      setdeleteNdaFile(false);
-      seteditVlauefileRPD("");
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: "No",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileRPD("");
+        setfileCOC("");
+        setfileNDA("");
+        setdeleteUploadedFile(false);
+        setdeleteCocFile(false);
+        setdeleteNdaFile(false);
+        seteditVlauefileRPD("");
+      }
     });
   }
   const downloadPdf = (e) => {
@@ -144,6 +150,7 @@ const ComplianceDetails = () => {
     navigate("/bank");
   }
   useEffect(() => {
+    console.log("location::", location.state);
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
@@ -160,6 +167,9 @@ const ComplianceDetails = () => {
           setfileNDA(initialUrlNDA_Doc);
           seteditVlauefileNDA(NDA_Doc);
           setEditCompliance(true);
+
+          console.log("coc", initialUrlCOC_Doc);
+          console.log("nda", initialUrlNDA_Doc);
         });
       });
     } else {
@@ -310,7 +320,7 @@ const ComplianceDetails = () => {
                       </Col>
 
                       <Col>
-                        {fileRPD != "" ? (
+                        {fileRPD ? (
                           <div>
                             <p className="ValidityofDeclaration">
                               Validity of Declaration

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -7,32 +7,101 @@ import Typography from '@mui/material/Typography';
 import { Box, Container } from '@mui/material';
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { MDBDataTableV5 } from 'mdbreact';
 import VendorPortalHeader from '../common/MasterVendorHeader';
 import VendorPortSidemenu from '../common/MasterVendorSidemenu';
 import Button from '@mui/material/Button';
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
+import { useTheme } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableFooter from '@mui/material/TableFooter';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-function createData(Name, designation, Department, emailId, mobileNo, loginId, password, roles) {
-  return { Name, designation, Department, emailId, mobileNo, loginId, password, roles };
-}
-const rows = [
-  createData('Rahul', "Am", "finance", "xxx@gmail.com", "9876543210", "xxxxxx", "xxx9", "financial"),
-  createData('Ankit', "Manager", "finance", "xxx@gmail.com", "9876543210", "xxxxxx", "xxx9", "financial"),
-  createData('Nitin', "CEO", "finance", "xxx@gmail.com", "9876543210", "xxxxxx", "xxx9", "financial"),
-];
+import apiService from "../services/api.service";
+import Swal from "sweetalert2";
 function UserAccess() {
-  const [total, setTotal] = useState("");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   const theme = createTheme({
     Link: {
       textTransform: "none"
     }
   });
+  // function editMasterVendor(id) {
+  //   const user = {
+  //     SubUserId: id || undefined,
+  //   }
+   
+  //   apiService.getMasterVendorSubUserById(user)
+  //     .then(response => {
+       
+  //     })
+  // }
+  // const UpdateMasterVendor = (e) => {
+  //   e.preventDefault();
+  //   const user = {
+  //     Name: values.Name || undefined,
+  //     city_vendorCode_Pincode:values.city_vendorCode_Pincode || undefined,
+  //   }
+  //   apiService.UpdateMasterVendorUserAccessById(user)
+  //     .then(response => {
+  //       apiService.getAllMasterVendorUserAccess().then((res) => {
+  //         setgetAllUser(res.data.result);
+  //       })
+  //     })
+  // }
+  // const saveMasterUserAccess = (e) => {
+  //   e.preventDefault();
+  //   const user = {
+  //     Name: values.Name || undefined,
+  //     city_vendorCode_Pincode:values.city_vendorCode_Pincode || undefined,
+  //   }
+  //   apiService.saveMasterUserAccess(user)
+  //     .then(response => {
+  //       apiService.getAllMasterVendorUserAccess().then((res) => {
+  //         setgetAllUser(res.data.result);
+  //       })
+  //     })
+  // }
+  // useEffect(() => {
+  //   apiService.getAllMasterVendorUserAccess().then((res) => {
+  //     setgetAllUser(res.data.result);
+  //   })
+  // }, [])
+  
+  // const deleteRecord = (id) => {
+  //   console.log("id::",id);
+  //   Swal.fire({
+  //     title: "Are You sure You want to delete?",
+  //     icon: "warning",
+  //     confirmButtonText: "OK",
+  //   }).then((ClearData) => {
+  //     apiService.deleteMasterVendorUserAccessById(id).then((res) => {
+  //       apiService.getAllMasterVendorUserAccess().then((res) => {
+  //         setgetAllUser(res.data.result);
+  //       })
+  //     })
+  //   });
+
+  // };
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: '#f3f4f7' }}  >
@@ -44,30 +113,7 @@ function UserAccess() {
             <Container>
               <h2 className='masterTitle'>User Access</h2>
               <Box sx={{ mt: 2, height: 350, width: '100%' }}>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableHead className='table_header'>
-                      <TableRow>
-                        <TableCell align="center">Name</TableCell>
-                        <TableCell align="center">City_VendorCode_Pincode</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow key={row.number}>
-                          <TableCell align="center">{row.Name}</TableCell>
-                          <TableCell align="center">
-                            <select className='userCreationDropdown' align="center">
-                              <option align="center">select</option>
-                              <option align="center">financial</option>
-                              <option align="center">others</option>
-                            </select>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+           
               </Box>
 
             </Container>

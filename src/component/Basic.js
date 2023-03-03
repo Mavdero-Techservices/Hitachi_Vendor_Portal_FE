@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/Basic.css";
-import uploa from "../img/camera-plus-4784676-3981194.webp";
+import uploa from "../img/camera-plus.png";
 import Navbar1 from "../common/navbar.js";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
@@ -120,18 +120,25 @@ export class Basic extends React.Component {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      this.setState({
-        address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        country: "",
-        pinCode: "",
-        companyName: "",
-        image: "",
-      });
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.setState({
+          address1: "",
+          address2: "",
+          city: "",
+          state: "",
+          country: "",
+          pinCode: "",
+          companyName: "",
+          image: "",
+        });
+      }
+
+     
     });
   };
   cancelCommunicationInfo = (e) => {

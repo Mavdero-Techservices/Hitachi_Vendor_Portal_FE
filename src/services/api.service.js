@@ -115,7 +115,6 @@ updateFinacialDetail(userId, data) {
 updateContactTeam(userId, data) {
   return http.put(`/updateContactTeam/${userId}`, data);
 }
-
 saveMasterVendor(data) {
   return http.post("/saveMasterVendorSubUser", data);
 }
@@ -123,11 +122,29 @@ getMasterVendorSubUserById(data) {
   return http.post("/getMasterVendorSubUserById", data);
 }
 UpdateMasterVendorSubUserById(data) {
-  return http.post("/UpdateMasterVendorSubUserById", data);
+  return http.put("/UpdateMasterVendorSubUserById", data);
 }
-
+deleteMasterVendorSubUserById(id) {
+  return http.delete(`/deleteMasterVendorSubUserById/${id}`);
+}
 getAllMasterVendorSubUser() {
   return http.get("/getAllMasterVendorSubUser");
+}
+
+saveMasterVendorUserAccess(data) {
+  return http.post("/saveMasterVendorUserAccess", data);
+}
+getMasterVendorUserAccessById(data) {
+  return http.post("/getMasterVendorUserAccessById", data);
+}
+UpdateMasterVendorUserAccessById(data) {
+  return http.put("/UpdateMasterVendorUserAccessById", data);
+}
+deleteMasterVendorUserAccessById(id) {
+  return http.delete(`/deleteMasterVendorUserAccessById/${id}`);
+}
+getAllMasterVendorUserAccess() {
+  return http.get("/getAllMasterVendorUserAccess");
 }
 }
 export default new apiService();

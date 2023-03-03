@@ -15,9 +15,11 @@ import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useLocation } from "react-router-dom";
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 export default function Statutory(props) {
+  const location = useLocation();
   const [HideImport, setHideImport] = useState(true);
   const [url, seturl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
@@ -200,6 +202,7 @@ export default function Statutory(props) {
     }
   }
   function next(e) {
+    e.preventDefault();
     if (params.userId) {
       navigate(`/ComplianceDetail/${params.userId}`);
     } else {
@@ -261,34 +264,40 @@ export default function Statutory(props) {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setValues({
-        GST_No: "",
-        GST_type: "",
-        MSME_No: "",
-        MSME_Type: "",
-        MSME_status: "",
-        PAN_No: "",
-        CIN_No: "",
-        TAN_No: "",
-        Tax_residency_No: "",
-      });
-      setFile("");
-      setPAN_Doc("");
-      setform_10f_Doc("");
-      setPE_Declaration_Doc("");
-      setMSME_Doc("");
-      setTax_residency_Doc("");
-      setdeleteTax_residencyUploadedFile(false);
-      setdeletePE_DeclarationUploadedFile(false);
-      setdeleteform_10fUploadedFile(false);
-      seteditTax_residency_Doc("");
-      setEditform_10f_Doc("");
-      setEditPE_Declaration_Doc("");
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: "No",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setValues({
+          GST_No: "",
+          GST_type: "",
+          MSME_No: "",
+          MSME_Type: "",
+          MSME_status: "",
+          PAN_No: "",
+          CIN_No: "",
+          TAN_No: "",
+          Tax_residency_No: "",
+        });
+        setFile(" ");
+        setPAN_Doc(" ");
+        setform_10f_Doc(" ");
+        setPE_Declaration_Doc(" ");
+        setMSME_Doc(" ");
+        setTax_residency_Doc(" ");
+        setdeleteTax_residencyUploadedFile(false);
+        setdeletePE_DeclarationUploadedFile(false);
+        setdeleteform_10fUploadedFile(false);
+        seteditTax_residency_Doc(" ");
+        setEditform_10f_Doc(" ");
+        setEditPE_Declaration_Doc(" ");
+      }
     });
   }
   useEffect(() => {
+    console.log("data", props);
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
@@ -999,21 +1008,21 @@ export default function Statutory(props) {
             <button
               type="button"
               onClick={cancel}
-              className="btn statutorybtn btn-primary btn-md m-1"
+              className="btn statutorybtn btn-md m-1"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={saveStatutoryDetail}
-              className="btn statutorybtn btn-primary btn-md m-1"
+              className="btn statutorybtn btn-md m-1"
             >
               Save
             </button>
             <button
               type="button"
               onClick={next}
-              className="btn statutorybtn btn-primary btn-md m-1"
+              className="btn statutorybtn btn-md m-1"
             >
               Next
             </button>

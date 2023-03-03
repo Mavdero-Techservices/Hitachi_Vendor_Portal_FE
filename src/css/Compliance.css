@@ -30,3 +30,10 @@
 {
     margin-bottom: 0%!important;
 }
+.compliancebtn
+{
+  text-transform: unset !important;
+  font-size: 15px;
+  background-color: #4f4f4f !important;
+  color: rgb(255, 255, 255)!important;
+}

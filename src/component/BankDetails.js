@@ -52,16 +52,22 @@ const BankDetails = (props) => {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setAcName("");
-      setBankname("");
-      setAcno("");
-      setIfsc("");
-      setMicr("");
-      setbranchAdd("");
-      setfileBank("");
-      setdeleteUploadedFile(false);
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: 'No',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setAcName("");
+        setBankname("");
+        setAcno("");
+        setIfsc("");
+        setMicr("");
+        setbranchAdd("");
+        setfileBank("");
+        setdeleteUploadedFile(false);
+      }
+    
     });
   }
   function next(e) {
@@ -117,7 +123,10 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
+
     if (params.userId) {
+      
+      console.log("props::",props.user)
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;

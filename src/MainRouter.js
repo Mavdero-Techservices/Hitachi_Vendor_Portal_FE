@@ -116,6 +116,8 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
+            <Route path="/userCreation" element={<UserCreation />} />
+          <Route path="/UserAccess" element={<UserAccess />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/acStatement" element={<AccountStatements />} />
         <Route path="/poTeam" element={<PoApproval />} />

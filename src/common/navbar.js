@@ -21,64 +21,70 @@ function App() {
           title: "are You sure?",
           text: "You Want to Logout!",
           icon: "warning",
-          confirmButtonText: "OK",
           dangerMode: true,
-        }).then((willDelete) => {
-          auth.clearJWT(() => navigate('/login'))
+          confirmButtonText: "Yes",
+          showCloseButton: true,
+          cancelButtonText: 'No',
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            auth.clearJWT(() => navigate('/login'))
+          }
+         
         });
       }
   };
   const VendorDetails = e => {
-    if (editUser.basicInfo.length > 0) {
-      navigate(`/basic/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+    if (editUser.basicInfo.length > 0) {  
+      navigate(`/basic/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/basic');
+      navigate('/basic', { state: { editUser } });
     }
   }
   const statutoryDetails = e => {
 
     if (editUser.Statutory.length > 0) {
-      navigate(`/statutory/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      navigate(`/statutory/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/statutory');
+      navigate('/statutory', { state: { editUser } });
     }
   }
   const complianceDetails = e => {
 
     if (editUser.ComplianceDetail.length > 0) {
-      navigate(`/ComplianceDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      navigate(`/ComplianceDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/ComplianceDetail');
+      navigate('/ComplianceDetail', { state: { editUser } });
     }
   }
   const bankDetails = e => {
 
     if (editUser.Bankdetail.length > 0) {
-      navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/bank');
+      navigate('/bank', { state: { editUser } });
     }
   }
   const financialDetails = e => {
 
     if (editUser.FinancialDetail.length > 0) {
-      navigate(`/FinancialDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      navigate(`/FinancialDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/FinancialDetail');
+      navigate('/FinancialDetail', { state: { editUser } });
     }
   }
   const contactDetails = e => {
 
     if (editUser.contactDetail.length > 0) {
-      navigate(`/ContactTeam/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      navigate(`/ContactTeam/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     }
     else {
-      navigate('/ContactTeam');
+      navigate('/ContactTeam', { state: { editUser } });
     }
   }
   useEffect(() => {

@@ -80,20 +80,25 @@ const FinancialDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setValues({
-        yearOfAuditedFinancial: "",
-        Revenue: "",
-        Profit: "",
-        netWorth: "",
-        currentAssets: "",
-        directorDetails: "",
-      });
-      setfileFD2("");
-      setfileFD("");
-      setdeleteUploadedFile(false);
-      setdeleteUploadedFile2(false);
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: "No",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setValues({
+          yearOfAuditedFinancial: "",
+          Revenue: "",
+          Profit: "",
+          netWorth: "",
+          currentAssets: "",
+          directorDetails: "",
+        });
+        setfileFD2("");
+        setfileFD("");
+        setdeleteUploadedFile(false);
+        setdeleteUploadedFile2(false);
+      }
     });
   }
   function next(e) {
@@ -422,21 +427,21 @@ const FinancialDetails = () => {
               <button
                 type="button"
                 onClick={cancel}
-                className="btn financialbtn btn-primary btn-md m-3"
+                className="btn financialbtn btn-md m-3"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 onClick={saveFinancialDetail}
-                className="btn financialbtn btn-primary btn-md m-3"
+                className="btn financialbtn btn-md m-3"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={next}
-                className="btn financialbtn btn-primary btn-md m-3"
+                className="btn financialbtn btn-md m-3"
               >
                 Next
               </button>

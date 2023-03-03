@@ -39,6 +39,7 @@ export default function Signin(props) {
   const textFieldForPasswordRef = useRef(null);
   const [errors, setErrors] = useState({})
   const [editUser, seteditUser] = useState();
+  const [getAllUserDetail, setgetAllUserDetail] = useState();
   const [values, setValues] = useState({
     userName: '',
     password: '',
@@ -128,6 +129,8 @@ export default function Signin(props) {
           if (data?.result?.verifiedUser === 'approved') {
             apiService.getAllCollection(data?.result?.userId)
               .then(getAllCollection => {
+                console.log("getAllData",getAllCollection.data);
+                setgetAllUserDetail(getAllCollection.data);
                 seteditUser(getAllCollection.data.basicInfo);
                 setuserId(data?.result?.userId);
                 auth.authenticate(data, () => {
@@ -201,10 +204,10 @@ export default function Signin(props) {
     }
     if (role === 'user' && verifiedUser === 'approved') {
       if (editUser.length <= 0) {
-        return (<Navigate to={'/basic'} />)
+        return (<Navigate to={'/basic'} state={{ data:getAllUserDetail }} />)
       }
       else {
-        return (<Navigate to={`/basic/${userId}`} />)
+        return (<Navigate to={`/basic/${userId}`} state={{ data:getAllUserDetail}} />)
       }
 
     }
