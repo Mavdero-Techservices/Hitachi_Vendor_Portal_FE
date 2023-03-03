@@ -40,53 +40,37 @@ export const MasterVendorSidemenu = (props) => {
                         </IconButton>
                     </List>
                     <List>
-                        <ListItem disablePadding sx={{ color: 'white' }}>
-                            <ListItemButton sx={{}}>
+                        <ListItem disablePadding sx={{ color: 'white' }} component={Link} to="/userCreation">
+                            <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                                 <ListItemIcon>
-                                    <PersonAddAltRoundedIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
+                                    <PersonAddAltRoundedIcon sx={{ color: 'white' }} />
                                 </ListItemIcon>
-                                <ListItemText primary="Home" sx={{ mr: 2, display: 'none' }} />
+                                <ListItemText primary="User Creation" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding sx={{ color: 'white' }} component={Link} to="/UserAccess">
+                            <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
+                                <ListItemIcon>
+                                    <VerifiedUserIcon sx={{ color: 'white' }} />
+                                </ListItemIcon>
+                                <ListItemText primary="User Access" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
                             </ListItemButton>
                         </ListItem>
 
-                        <ListItem disablePadding sx={{ color: 'white' }}>
-                            <ListItemButton >
+                        <ListItem disablePadding component={Link} to="/" sx={{ color: 'white' }}>
+                            <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                                 <ListItemIcon>
-                                    <PendingActionsIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
+                                    <PostAddIcon sx={{ color: 'white' }} />
                                 </ListItemIcon>
-                                <ListItemText primary="Estimated Delivery Date" sx={{ mr: 2, display: 'none' }} />
+                                <ListItemText primary="New Registration" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
                             </ListItemButton>
                         </ListItem>
                         <ListItem disablePadding sx={{ color: 'white' }}>
-                            <ListItemButton>
+                            <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                                 <ListItemIcon>
-                                    <GradingIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
+                                    <AppRegistrationSharpIcon sx={{ color: 'white' }} />
                                 </ListItemIcon>
-                                <ListItemText primary="Invoices" sx={{ mr: 2, display: 'none' }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding component={Link} to="/acStatement" sx={{ color: 'white' }}>
-                            <ListItemButton >
-                                <ListItemIcon>
-                                    <AccountBalanceIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Account Statement" sx={{ mr: 2, display: 'none' }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding component={Link} to="/documents" sx={{ color: 'white' }}>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <DescriptionIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Documents" sx={{ mr: 2, display: 'none' }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ color: 'white' }}>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <SignalCellularAltIcon sx={{ color: 'white', '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Reports" sx={{ mr: 2, display: 'none' }} />
+                                <ListItemText primary="Master Data" sx={{ mr: 2, ...(open && { display: 'none' }) }} />
                             </ListItemButton>
                         </ListItem>
                     </List>
@@ -122,7 +106,7 @@ export const MasterVendorSidemenu = (props) => {
                             </ListItemButton>
                         </ListItem>
 
-                        <ListItem disablePadding component={Link} to="/documents" sx={{ color: 'white' }}>
+                        <ListItem disablePadding component={Link} to="/" sx={{ color: 'white' }}>
                             <ListItemButton sx={{ '&:hover': { backgroundColor: 'gray' }, borderRadius: '20px' }}>
                                 <ListItemIcon>
                                     <PostAddIcon sx={{ color: 'white' }} />
