@@ -172,6 +172,7 @@ function UserCreation() {
     });
   };
   useEffect(() => {
+    console.log("getAllUser",getAllUser);
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
     });
@@ -364,13 +365,14 @@ function UserCreation() {
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
-                      {getAllUser
+                    {getAllUser
                         ?.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
                         ?.map((row) => (
+                    <TableBody>
+                 
                           <TableRow key={row.SubUserId}>
                             <TableCell component="th" scope="row">
                               <EditIcon
@@ -513,19 +515,26 @@ function UserCreation() {
                             <TableCell align="center">{row.password}</TableCell>
                             <TableCell align="center">{row.roles}</TableCell>
                           </TableRow>
-                        ))}
+      
+                      
                     </TableBody>
+                    
+  ))}
                   </Table>
+               
                 </TableContainer>
-                {/* <TablePagination
-        rowsPerPageOptions={[5, 10]}
-        component="div"
-        count={getAllUser.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+                {getAllUser!=null ? (
+                         <TablePagination
+                         rowsPerPageOptions={[5, 10]}
+                         component="div"
+                         count={getAllUser.length}
+                         rowsPerPage={rowsPerPage}
+                         page={page}
+                         onPageChange={handleChangePage}
+                         onRowsPerPageChange={handleChangeRowsPerPage}
+                       />
+                        ) : null}
+               
               </Box>
             </Container>
           </Box>
