@@ -4,7 +4,7 @@ import { Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SignUp from './component/signUp';
 import Login from './component/login';
-import { AdminRoute, UserRoute } from './auth/PrivateRoute';
+import { AdminRoute, UserRoute,CommonRoute } from './auth/PrivateRoute';
 import Navbar1 from './common/navbar';
 import Basic from './component/Basic.js';
 import Statutory from './component/StatutoryDetails.js';
@@ -62,7 +62,11 @@ const MainRouter = () => {
         </Route>
         {/* userRoutes */}
         <Route element={<UserRoute />}>
-          <Route path="/statutory" element={<Statutory />} />
+    
+        </Route>
+        {/* CommonRoute */}
+        <Route element={<CommonRoute />}>
+        <Route path="/statutory" element={<Statutory />} />
           <Route path="/statutory/:userId" element={<Statutory />} />
           <Route path="/FinancialDetail" element={<FinancialDetail />} />
           <Route
@@ -116,8 +120,6 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
-            <Route path="/userCreation" element={<UserCreation />} />
-          <Route path="/UserAccess" element={<UserAccess />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/acStatement" element={<AccountStatements />} />
         <Route path="/poTeam" element={<PoApproval />} />
@@ -125,6 +127,7 @@ const MainRouter = () => {
         <Route path="/poRejected" element={<PoReject />} />
         <Route path="/estimateDD" element={<EstimateDeliveryDate />} />
         <Route path="/povendor" element={<PoVendor />} />
+
       </Routes>
     </div>
   );

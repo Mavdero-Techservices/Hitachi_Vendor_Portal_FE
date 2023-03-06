@@ -41,4 +41,14 @@
     border: 1px solid black!important;
     background-color: black!important;
     color: #ffffff!important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+.modal-90w
+{
+    width: 45vw !important; 
+    max-width:45vw !important;
 }

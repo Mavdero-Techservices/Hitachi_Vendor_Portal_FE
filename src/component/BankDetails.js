@@ -29,7 +29,6 @@ const BankDetails = (props) => {
         confirmButtonText: "OK",
       });
     } else {
-      console.log("file::", file);
       setfileBank(file);
       setdeleteUploadedFile(true);
     }
@@ -54,7 +53,7 @@ const BankDetails = (props) => {
       icon: "success",
       confirmButtonText: "Yes",
       showCloseButton: true,
-      cancelButtonText: 'No',
+      cancelButtonText: "No",
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -67,7 +66,6 @@ const BankDetails = (props) => {
         setfileBank("");
         setdeleteUploadedFile(false);
       }
-    
     });
   }
   function next(e) {
@@ -123,10 +121,7 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
-
     if (params.userId) {
-      
-      console.log("props::",props.user)
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
@@ -298,20 +293,17 @@ const BankDetails = (props) => {
               <button
                 type="button"
                 onClick={cancel}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn bankbtn btn-primary btn-md m-1"
-              >
+              <button type="submit" className="btn bankbtn btn-md m-1">
                 Save
               </button>
               <button
                 type="button"
                 onClick={next}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Next
               </button>

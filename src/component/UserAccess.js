@@ -144,8 +144,11 @@ function UserAccess() {
                   </Button>
                   <Modal
                     show={modalShow}
+                    backdrop="static"
+                    keyboard={false}
                     onHide={() => setModalShow(false)}
-                    aria-labelledby="contained-modal-title-vcenter"
+                    dialogClassName="modal-90w"
+                    aria-labelledby="example-custom-modal-styling-title"
                   >
                     <Modal.Header closeButton>
                       <Modal.Title id="contained-modal-title-vcenter">
@@ -155,7 +158,7 @@ function UserAccess() {
                     <Modal.Body className="show-grid">
                       <Container>
                         <Row>
-                          <Col xs={12} md={6}>
+                          <Col  xs={6}>
                             <input
                               type="text"
                               className="swal2-input"
@@ -165,7 +168,7 @@ function UserAccess() {
                               placeholder="Username"
                             />
                           </Col>
-                          <Col xs={12} md={6}>
+                          <Col  xs={6}>
                             <input
                               type="text"
                               id="City_vendorCode_Pincode"
@@ -180,12 +183,15 @@ function UserAccess() {
                       </Container>
                     </Modal.Body>
                     <Modal.Footer>
+                      <div className="text-center">
                       <Button
-                        className="popupSave col-md-12"
+                        className="popupSave"
                         onClick={saveMasterVendor}
                       >
                         save
                       </Button>
+                      </div>
+                     
                     </Modal.Footer>
                   </Modal>
                 </div>

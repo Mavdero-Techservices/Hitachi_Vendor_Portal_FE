@@ -55,7 +55,6 @@ export default function Statutory(props) {
   ] = useState(false);
   const [deleteTax_residencyUploadedFile, setdeleteTax_residencyUploadedFile] =
     useState(false);
-
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: "",
@@ -93,6 +92,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setfileDisclosure(e);
@@ -126,8 +128,12 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
+      console.log("s")
       setFile(event.target.files[0]);
     }
   };
@@ -138,6 +144,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setTax_residency_Doc(e);
@@ -150,6 +159,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setform_10f_Doc(e);
@@ -162,6 +174,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setPAN_Doc(e.target.files[0]);
@@ -173,6 +188,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setPE_Declaration_Doc(e);
@@ -185,6 +203,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setTAN_Doc(e.target.files[0]);
@@ -196,6 +217,9 @@ export default function Statutory(props) {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
     } else {
       setMSME_Doc(e.target.files[0]);
@@ -229,6 +253,9 @@ export default function Statutory(props) {
       title: "Are You Sure,You want to Delete?",
       icon: "success",
       confirmButtonText: "OK",
+      showCloseButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false
     }).then((ClearData) => {
       setform_10f_Doc("");
       setdeleteform_10fUploadedFile(false);
@@ -241,6 +268,9 @@ export default function Statutory(props) {
       title: "Are You Sure,You want to reset?",
       icon: "success",
       confirmButtonText: "OK",
+      showCloseButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false
     }).then((ClearData) => {
       setPE_Declaration_Doc("");
       setdeletePE_DeclarationUploadedFile(false);
@@ -253,6 +283,9 @@ export default function Statutory(props) {
       title: "Are You Sure,You want to reset?",
       icon: "success",
       confirmButtonText: "OK",
+      showCloseButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false
     }).then((ClearData) => {
       setTax_residency_Doc("");
       setdeleteTax_residencyUploadedFile(false);
@@ -268,6 +301,8 @@ export default function Statutory(props) {
       showCloseButton: true,
       cancelButtonText: "No",
       showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false
     }).then((result) => {
       if (result.isConfirmed) {
         setValues({
@@ -283,24 +318,24 @@ export default function Statutory(props) {
         });
         setFile(" ");
         setPAN_Doc(" ");
-        setform_10f_Doc(" ");
         setPE_Declaration_Doc(" ");
         setMSME_Doc(" ");
         setTax_residency_Doc(" ");
         setdeleteTax_residencyUploadedFile(false);
         setdeletePE_DeclarationUploadedFile(false);
-        setdeleteform_10fUploadedFile(false);
         seteditTax_residency_Doc(" ");
-        setEditform_10f_Doc(" ");
+        setform_10f_Doc("");
+        setdeleteform_10fUploadedFile(false);
+        setEditform_10f_Doc("");
         setEditPE_Declaration_Doc(" ");
       }
     });
   }
-  useEffect(() => {
-    console.log("data", props);
+  useEffect(() => {  
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.Statutory).map(([key, value]) => {
+          console.log("GST_Doc",res.data.Statutory[0].PAN_Doc);
           var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
           var replaceform10fValue = form_10fUrl.replace("uploads/", "");
           var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
@@ -380,12 +415,18 @@ export default function Statutory(props) {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
           });
         } else {
           Swal.fire({
             title: "Error While Fetching",
             icon: "error",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
           });
         }
       });
@@ -396,12 +437,18 @@ export default function Statutory(props) {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
           });
         } else {
           Swal.fire({
             title: "Error While Fetching",
             icon: "error",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
           });
         }
       });
@@ -484,16 +531,30 @@ export default function Statutory(props) {
                               </Form.Group>
                             </Col>
                             <Col>
+                            {values.GST_Doc!='' ? (
+ <div className="frame-input">
+ <label htmlFor="fileupload">GST Uploaded</label>
+ <input
+   type="file"
+   id="fileupload"
+   value={values.GST_Doc}
+   onChange={onFileChange}
+   required
+ />
+</div>
+                            ):(
                               <div className="frame-input">
-                                <label htmlFor="fileupload">Upload GST</label>
-                                <input
-                                  type="file"
-                                  id="fileupload"
-                                  value={values.GST_Doc}
-                                  onChange={onFileChange}
-                                  required
-                                />
-                              </div>
+                              <label htmlFor="fileupload">Upload GST</label>
+                              <input
+                                type="file"
+                                id="fileupload"
+                                value={values.GST_Doc}
+                                onChange={onFileChange}
+                                required
+                              />
+                            </div>
+                            )}
+                             
                             </Col>
                           </Row>
                         ) : (
@@ -583,16 +644,30 @@ export default function Statutory(props) {
                           </Form.Group>
                         </Col>
                         <Col>
+                        {values.PAN_Doc!='' ? (
                           <div className="frame-input">
-                            <label htmlFor="fileuploadPan">Upload PAN</label>
-                            <input
-                              type="file"
-                              id="fileuploadPan"
-                              value={values.PAN_Doc}
-                              onChange={onFileChangePAN_Doc}
-                              required
-                            />
-                          </div>
+                          <label htmlFor="fileuploadPan">PAN Uploaded</label>
+                          <input
+                            type="file"
+                            id="fileuploadPan"
+                            value={values.PAN_Doc}
+                            onChange={onFileChangePAN_Doc}
+                            required
+                          />
+                        </div>
+                        ):(
+                          <div className="frame-input">
+                          <label htmlFor="fileuploadPan">Upload PAN</label>
+                          <input
+                            type="file"
+                            id="fileuploadPan"
+                            value={values.PAN_Doc}
+                            onChange={onFileChangePAN_Doc}
+                            required
+                          />
+                        </div>
+                        )}
+
                         </Col>
                       </Row>
                       <Row>
@@ -649,9 +724,9 @@ export default function Statutory(props) {
                                   null ? (
                                     <div>
                                       <span>File name:{Editform_10f_Doc}</span>
-                                      <button onClick={DeleteForm10FDoc}>
-                                        <ClearIcon />
-                                      </button>
+                                     
+                                        <ClearIcon style={{ color: 'red' }} onClick={DeleteForm10FDoc} />
+                                    
                                     </div>
                                   ) : (
                                     <div>
@@ -708,9 +783,7 @@ export default function Statutory(props) {
                                   <span>
                                     File name:{EditPE_Declaration_Doc}
                                   </span>
-                                  <button onClick={DeletePEDeclaration}>
-                                    <ClearIcon />
-                                  </button>
+                                  <ClearIcon style={{ color: 'red' }} onClick={DeletePEDeclaration} />
                                 </div>
                               ) : (
                                 <div>
@@ -791,18 +864,34 @@ export default function Statutory(props) {
                             </Form.Group>
                           </Col>
                           <Col>
+                          {values.MSME_Doc!='' ? (
+                             <div className="frame-input">
+                             <label htmlFor="fileuploadMSME">
+                               Upload MSME
+                             </label>
+                             <input
+                               type="file"
+                               id="fileuploadMSME"
+                               value={values.MSME_Doc}
+                               onChange={onFileChangeMSME_Doc}
+                               required
+                             />
+                           </div>
+                          ):(
                             <div className="frame-input">
-                              <label htmlFor="fileuploadMSME">
-                                Upload MSME
-                              </label>
-                              <input
-                                type="file"
-                                id="fileuploadMSME"
-                                value={values.MSME_Doc}
-                                onChange={onFileChangeMSME_Doc}
-                                required
-                              />
-                            </div>
+                            <label htmlFor="fileuploadMSME">
+                               MSME Uploaded
+                            </label>
+                            <input
+                              type="file"
+                              id="fileuploadMSME"
+                              value={values.MSME_Doc}
+                              onChange={onFileChangeMSME_Doc}
+                              required
+                            />
+                          </div>
+                          )}
+                           
                           </Col>
                         </Row>
                       ) : (
@@ -925,9 +1014,7 @@ export default function Statutory(props) {
                                   null ? (
                                     <div>
                                       <span>File name:{Tax_residency_Doc}</span>
-                                      <button onClick={DeleteTax_residency}>
-                                        <ClearIcon />
-                                      </button>
+                                      <ClearIcon style={{ color: 'red' }} onClick={DeleteTax_residency} />
                                     </div>
                                   ) : (
                                     <div>

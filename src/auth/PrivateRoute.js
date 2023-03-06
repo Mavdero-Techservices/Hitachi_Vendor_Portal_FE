@@ -4,7 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import {
   Outlet,
 } from "react-router-dom";
-
+const CommonRoute = ({ component: Component, ...rest }) => {
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "user"||auth?.isAuthenticated()?.result?.role === "Admin" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
+}
 const AdminRoute = ({ component: Component, ...rest }) => {
   const navigate = useNavigate();
   return (
@@ -18,4 +23,4 @@ const UserRoute = ({ component: Component, ...rest }) => {
   )
 }
 
-export { AdminRoute, UserRoute }
+export {CommonRoute, AdminRoute, UserRoute }

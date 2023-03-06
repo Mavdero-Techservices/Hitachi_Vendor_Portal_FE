@@ -150,7 +150,6 @@ const ComplianceDetails = () => {
     navigate("/bank");
   }
   useEffect(() => {
-    console.log("location::", location.state);
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
@@ -167,9 +166,6 @@ const ComplianceDetails = () => {
           setfileNDA(initialUrlNDA_Doc);
           seteditVlauefileNDA(NDA_Doc);
           setEditCompliance(true);
-
-          console.log("coc", initialUrlCOC_Doc);
-          console.log("nda", initialUrlNDA_Doc);
         });
       });
     } else {
@@ -452,21 +448,21 @@ const ComplianceDetails = () => {
               <button
                 type="button"
                 onClick={cancel}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={saveComplianceDetail}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={next}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Next
               </button>
