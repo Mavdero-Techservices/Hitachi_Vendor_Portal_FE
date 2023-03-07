@@ -26,6 +26,8 @@ function App() {
           showCloseButton: true,
           cancelButtonText: 'No',
           showCancelButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then((result) => {
           if (result.isConfirmed) {
             auth.clearJWT(() => navigate('/login'))

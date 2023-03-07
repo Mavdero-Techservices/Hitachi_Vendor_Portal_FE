@@ -37,9 +37,11 @@ const ContactTeam = () => {
       title: "Are You Sure,You want to reset?",
       icon: "success",
       confirmButtonText: "Yes",
-      showCloseButton: true,
       cancelButtonText: "No",
+      showCloseButton: true,
       showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         setValues({
