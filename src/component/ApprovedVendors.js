@@ -34,6 +34,7 @@ function ApprovedVendors() {
   });
   useEffect(() => {
     apiService.getApprovedStatus().then(res => {
+      if(res.data.result){
       res.data.result.forEach((item) => {
         var date1 = new Date();
         var date01 = new Date(item.createdAt);
@@ -47,6 +48,7 @@ function ApprovedVendors() {
       })
       setvendors([])
       setvendors((array) => [...array, ...res.data.result]);
+    }
     })
   }, [])
 
@@ -86,8 +88,8 @@ function ApprovedVendors() {
                 >
                   <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Vendor name</Typography>
                   <Typography sx={{ width: '36%', }}></Typography>
-                  <Typography sx={{ width: '12%', fontWeight: "bold" }}>Submit date</Typography>
-                  <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
+                  <Typography sx={{ width: '12%', fontWeight: "bold" }}>Approved date</Typography>
+                  {/* <Typography sx={{ fontWeight: "bold" }}>Age</Typography> */}
                 </AccordionSummary>
               </Accordion>
               {vendors?.map((item, key) => <>
@@ -103,7 +105,7 @@ function ApprovedVendors() {
                     </IconButton>
                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
                     <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>
-                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
+                    {/* <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography> */}
                   </AccordionSummary>
                   <AccordionDetails>
                     <ApprovalFields userid={item.userId} />

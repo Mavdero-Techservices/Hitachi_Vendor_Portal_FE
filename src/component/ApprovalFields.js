@@ -808,28 +808,28 @@ function ApprovalFields(props) {
   const handleView = (event) => {
     // NDA_Doc-1675160386209.pdf
     // uploads/bankdetailDoc-1675928620398
-    // if (event) {
-    //     console.log("event----event---------event------------>>>>>>", event)
-    //     let text = event
-    //     let paths = text.split("/");
-    //     console.log("path---------------->>>>>", paths[1])
-    //     let name = paths[1]
+    if (event) {
+      //     console.log("event----event---------event------------>>>>>>", event)
+      let text = event
+      let fname = text.split("/");
+      //     console.log("path---------------->>>>>", fname[1])
+      //     let name = fname[1]
 
-    fetch(
-      `http://localhost:12707/downloadPdfUploads/NDA_Doc-1675160386209.pdf`
-    ).then((response) => {
-      response.blob().then((blob) => {
-        let url = URL.createObjectURL(blob, 'application/pdf');
-        window.open(url, '_blank');
+      fetch(
+        `http://localhost:12707/downloadPdfUploads/${fname[1]}`
+      ).then((response) => {
+        response.blob().then((blob) => {
+          let url = URL.createObjectURL(blob, 'application/pdf');
+          window.open(url, '_blank');
+        });
       });
-    });
-    // } else {
-    //       Swal.fire({
-    //     title: "Error While Fetching",
-    //     icon: "error",
-    //     confirmButtonText: "OK",
-    //   });
-    // }
+    } else {
+      Swal.fire({
+        title: "Error While Fetching",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
   const handleEditPopup = (event) => {
     // event.preventDefault(); bankdetailDoc
@@ -1054,6 +1054,7 @@ function ApprovalFields(props) {
     // data.append('level1RejectComment', "");
     // data.append('level1rejectFileDoc', "");
     data.append('level2Status', 'approved');
+    data.append('level2Date', new Date());
     // data.append('level2RejectComment', "");
     // data.append('level2rejectFileDoc', "");
     apiService.updateApprovalStatus(userId, data).then((response) => {
@@ -1077,8 +1078,8 @@ function ApprovalFields(props) {
       heightAuto: true,
       title: 'Review vendor details',
       html: `<div class="rejectstyle">
-            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
-            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+            <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
       confirmButtonText: 'Reject',
       confirmButtonColor: '#B1000E',
@@ -1092,10 +1093,12 @@ function ApprovalFields(props) {
           Swal.showValidationMessage(`Please enter comments and file`);
         } else {
           const data = new FormData();
+          console.log("new date--------", new Date())
           data.append('userId', event);
           data.append('level2Status', 'rejected');
           data.append('level2RejectComment', comment);
           data.append('level2rejectFileDoc', rejectdoc);
+          data.append('level2Date', new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((response) => {
             if (response) {
@@ -1118,35 +1121,293 @@ function ApprovalFields(props) {
   };
 
   const handleMRTApprove = (event) => {
-    const userId = event;
-    const data = new FormData();
-    data.append('userId', event);
-    data.append('level3Status', 'approved');
+    if (companyName.length === 0) {
+      setcompanyNameErr('Company name is required');
+    }
+    if (address1.length === 0) {
+      console.log('hello2222');
+      setaddress1Err('Address 1 is required');
+    }
+    if (country.length === 0) {
+      setcountryErr('Country is required');
+    }
+    if (state.length === 0) {
+      setstateErr('State is required');
+    }
+    if (city.length === 0) {
+      setcityErr('City is required');
+    }
+    if (pinCode.length === 0) {
+      setpinCodeErr('Pincode is required');
+    }
+    if (!logo) {
+      setlogoErr('Logo is required');
+      console.log('hellossssssss', logoErr);
+    }
+    if (fs_ContactName.length === 0) {
+      setfs_ContactNameErr('Contact name is required');
+    }
+    if (fs_Designation.length === 0) {
+      setfs_DesignationErr('Designation is required');
+    }
+    if (fs_PhoneNo.length === 0) {
+      setfs_PhoneNoErr('Phone number is required');
+    }
+    if (fs_Email.length === 0) {
+      setfs_EmailErr('Email is required');
+    }
+    // console.log("fs_Email",fs_Email);
+    // console.log("mngs_ContactName",mngs_ContactName);
+    // console.log("mngs_Designation",mngs_Designation);
+    // console.log("mngs_PhoneNo",mngs_PhoneNo);
+    // console.log("mngs_Email",mngs_Email);
+    // console.log("mastervendor_email",mastervendor_email);
 
-    apiService.updateApprovalStatus(userId, data).then((response) => {
-      if (response) {
-        Swal.fire({
-          title: 'Data saved',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
-      } else {
-        Swal.fire({
-          title: 'Error While Fetching',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    });
+    if (mngs_ContactName.length === 0) {
+      setmngs_ContactNameErr('Contact name is required');
+    }
+    if (mngs_Designation.length === 0) {
+      setmngs_DesignationErr('Designation is required');
+    }
+    if (mngs_PhoneNo.length === 0) {
+      setmngs_PhoneNoErr('Phone number is required');
+    }
+    if (mngs_Email.length === 0) {
+      setmngs_EmailErr('Email is required');
+    }
+    if (mastervendor_email.length === 0) {
+      setmastervendor_emailErr('Email is required');
+    }
+
+    if (bankAccountName.length === 0) {
+      setbankAccountNameErr('Account name is required');
+    }
+    if (bankName.length === 0) {
+      setbankNameErr('Bank name is required');
+    }
+    if (bankAccountNumber.length === 0) {
+      setbankAccountNumberErr('Account number is required');
+    }
+    if (ifscCode.length === 0) {
+      setifscCodeErr('IFSC code is required');
+    }
+    if (MICRcode.length === 0) {
+      setMICRcodeErr('MICR code is required');
+    }
+    if (branchAddress.length === 0) {
+      setbranchAddressErr('Branch address is required');
+    }
+    if (!bankdetailDoc) {
+      setbankdetailDocErr('Bank document is required');
+    }
+
+    if (!RPD_Doc) {
+      setRPD_DocErr('RPD document is required');
+    }
+    if (!COC_Doc) {
+      setCOC_DocErr('COC document is required');
+    }
+    if (!NDA_Doc) {
+      setNDA_DocErr('NDA document is required');
+    }
+
+    if (name.length === 0) {
+      setnameErr('Name is required');
+    }
+    if (contactNumber.length === 0) {
+      setcontactNumberErr('Contact number is required');
+    }
+    if (email.length === 0) {
+      setemailErr('Email is required');
+    }
+
+    if (vendorType.length === 0) {
+      setvendorTypeErr('Vendor type is required');
+    }
+    if (acManager.length === 0) {
+      setacManagerErr('A/C manager is required');
+    }
+    if (mkcheck === false) {
+      setmkcheckErr('Check is required');
+    }
+
+    if (GST_type.length === 0) {
+      setGST_typeErr('GST type is required');
+    }
+    if (GST_No.length === 0) {
+      setGST_NoErr('GST Number is required');
+    }
+    if (!GST_Doc) {
+      setGST_DocErr('GST doc is required');
+    }
+    if (PAN_No.length === 0) {
+      setPAN_NoErr('Pan number is required');
+    }
+    if (!PAN_Doc) {
+      setPAN_DocErr('Pan doc is required');
+    }
+    if (CIN_No.length === 0) {
+      setCIN_NoErr('CIN number is required');
+    }
+    if (!form_10f) {
+      setform_10fErr('Form 10f is required');
+    }
+    if (MSME_status.length === 0) {
+      setMSME_statusErr('MSME status is required');
+    }
+    if (MSME_No.length === 0) {
+      setMSME_NoErr('MSME number is required');
+    }
+    if (!MSME_Doc) {
+      setMSME_DocErr('MSME doc is required');
+    }
+    if (MSME_Type.length === 0) {
+      setMSME_TypeErr('MSME type is required');
+    }
+    if (TAN_No.length === 0) {
+      setTAN_NoErr('TAN number is required');
+    }
+    if (!TAN_Doc) {
+      setTAN_DocErr('TAN doc is required');
+    }
+    if (!Tax_residency) {
+      setTax_residencyErr('Tax residency is required');
+    }
+    if (!pe_declaration) {
+      setpe_declarationErr('PE declaration is required');
+    }
+
+    const userId = props.userid;
+    console.log('companyNameErr', companyName);
+    console.log('address1Err', address1);
+    console.log('countryErr', country);
+    console.log('stateErr', state);
+    console.log('cityErr', city);
+    console.log('pinCodeErr', pinCode);
+    console.log('logoErr', logo);
+    console.log('fs_ContactNameErr', fs_ContactName);
+    console.log('fs_DesignationErr', fs_Designation);
+    console.log('fs_PhoneNoErr', fs_PhoneNo);
+    console.log('fs_EmailErr', fs_Email);
+    console.log('mngs_ContactNameErr', mngs_ContactName);
+    console.log('mngs_DesignationErr', mngs_Designation);
+    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
+    console.log('mngs_EmailErr', mngs_Email);
+    console.log('mastervendor_emailErr', mastervendor_email);
+    console.log('bankAccountNameErr', bankAccountName);
+    console.log('bankNameErr', bankName);
+    console.log('bankAccountNumberErr', bankAccountNumber);
+    console.log('ifscCodeErr', ifscCode);
+    console.log('MICRcodeErr', MICRcode);
+    console.log('branchAddressErr', branchAddress);
+    console.log('bankdetailDocErr', bankdetailDoc);
+    console.log('nameErr', name);
+    console.log('contactNumberErr', contactNumber);
+    console.log('emailErr', email);
+    console.log('vendorTypeErr', vendorType);
+    console.log('acManagerErr', acManager);
+    console.log('mkcheckErr', mkcheck);
+    console.log('GST_typeErr', GST_type);
+    console.log('GST_NoErr', GST_No);
+    console.log('PAN_NoErr', PAN_No);
+    console.log('CIN_NoErr', CIN_No);
+    console.log('form_10fErr', form_10f);
+    console.log('MSME_statusErr', MSME_status);
+    console.log('MSME_NoErr', MSME_No);
+    console.log('MSME_TypeErr', MSME_Type);
+    console.log('TAN_NoErr', TAN_No);
+    console.log('GST_DocErr', GST_Doc);
+    console.log('PAN_DocErr', PAN_Doc);
+    console.log('MSME_DocErr', MSME_Doc);
+    console.log('TAN_DocErr', TAN_Doc);
+    console.log('Tax_residencyErr', Tax_residency);
+    console.log('pe_declarationErr', pe_declaration);
+    console.log('RPD_DocErr', RPD_Doc);
+    console.log('COC_DocErr', COC_Doc);
+    console.log('NDA_DocErr', NDA_Doc);
+
+    if (
+      companyName &&
+      address1 &&
+      country &&
+      state &&
+      city &&
+      pinCode &&
+      fs_ContactName &&
+      fs_Designation &&
+      fs_PhoneNo &&
+      fs_Email &&
+      mngs_ContactName &&
+      mngs_Designation &&
+      mngs_PhoneNo &&
+      mngs_Email &&
+      mastervendor_email &&
+      bankAccountName &&
+      bankName &&
+      bankAccountNumber &&
+      ifscCode &&
+      MICRcode &&
+      branchAddress &&
+      bankdetailDoc &&
+      name &&
+      contactNumber &&
+      email &&
+      // vendorType &&
+      // acManager &&
+      // mkcheck &&
+      GST_type &&
+      GST_No &&
+      PAN_No &&
+      CIN_No &&
+      MSME_status &&
+      MSME_No &&
+      MSME_Type &&
+      TAN_No &&
+      // GST_Doc &&
+      PAN_Doc &&
+      // MSME_Doc &&
+      TAN_Doc &&
+      RPD_Doc &&
+      COC_Doc &&
+      NDA_Doc
+    ) {
+      const userId = event;
+      const data = new FormData();
+      data.append('userId', event);
+      data.append('level3Status', 'approved');
+      data.append('level3Date', new Date());
+
+      apiService.updateApprovalStatus(userId, data).then((response) => {
+        if (response) {
+          Swal.fire({
+            title: 'Data saved',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+        } else {
+          Swal.fire({
+            title: 'Error While Fetching',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Please fill the mandatory fields',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
   };
 
-  const handleMRTRegject = (event) => {
+  const handleMRTReject = (event) => {
     Swal.fire({
       heightAuto: true,
       title: 'Review vendor details',
       html: `<div class="rejectstyle">
-            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
-            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+            <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
       confirmButtonText: 'Reject',
       confirmButtonColor: '#B1000E',
@@ -1164,6 +1425,7 @@ function ApprovalFields(props) {
           data.append('level3Status', 'rejected');
           data.append('level3RejectComment', comment);
           data.append('level3rejectFileDoc', rejectdoc);
+          data.append('level3Date', new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((response) => {
             if (response) {
@@ -1186,24 +1448,283 @@ function ApprovalFields(props) {
   };
 
   const handleApprove = (event) => {
-    const data = new FormData();
-    data.append('level1Status', 'approved');
-    data.append('userId', event);
-    apiService.saveApproval(data).then((response) => {
-      if (response) {
-        Swal.fire({
-          title: 'Data saved',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
-      } else {
-        Swal.fire({
-          title: 'Error While Fetching',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    });
+    console.log("approvae click")
+    // event.preventDefault();
+    if (companyName.length === 0) {
+      setcompanyNameErr('Company name is required');
+    }
+    if (address1.length === 0) {
+      console.log('hello2222');
+      setaddress1Err('Address 1 is required');
+    }
+    if (country.length === 0) {
+      setcountryErr('Country is required');
+    }
+    if (state.length === 0) {
+      setstateErr('State is required');
+    }
+    if (city.length === 0) {
+      setcityErr('City is required');
+    }
+    if (pinCode.length === 0) {
+      setpinCodeErr('Pincode is required');
+    }
+    if (!logo) {
+      setlogoErr('Logo is required');
+      console.log('hellossssssss', logoErr);
+    }
+    if (fs_ContactName.length === 0) {
+      setfs_ContactNameErr('Contact name is required');
+    }
+    if (fs_Designation.length === 0) {
+      setfs_DesignationErr('Designation is required');
+    }
+    if (fs_PhoneNo.length === 0) {
+      setfs_PhoneNoErr('Phone number is required');
+    }
+    if (fs_Email.length === 0) {
+      setfs_EmailErr('Email is required');
+    }
+    // console.log("fs_Email",fs_Email);
+    // console.log("mngs_ContactName",mngs_ContactName);
+    // console.log("mngs_Designation",mngs_Designation);
+    // console.log("mngs_PhoneNo",mngs_PhoneNo);
+    // console.log("mngs_Email",mngs_Email);
+    // console.log("mastervendor_email",mastervendor_email);
+
+    if (mngs_ContactName.length === 0) {
+      setmngs_ContactNameErr('Contact name is required');
+    }
+    if (mngs_Designation.length === 0) {
+      setmngs_DesignationErr('Designation is required');
+    }
+    if (mngs_PhoneNo.length === 0) {
+      setmngs_PhoneNoErr('Phone number is required');
+    }
+    if (mngs_Email.length === 0) {
+      setmngs_EmailErr('Email is required');
+    }
+    if (mastervendor_email.length === 0) {
+      setmastervendor_emailErr('Email is required');
+    }
+
+    if (bankAccountName.length === 0) {
+      setbankAccountNameErr('Account name is required');
+    }
+    if (bankName.length === 0) {
+      setbankNameErr('Bank name is required');
+    }
+    if (bankAccountNumber.length === 0) {
+      setbankAccountNumberErr('Account number is required');
+    }
+    if (ifscCode.length === 0) {
+      setifscCodeErr('IFSC code is required');
+    }
+    if (MICRcode.length === 0) {
+      setMICRcodeErr('MICR code is required');
+    }
+    if (branchAddress.length === 0) {
+      setbranchAddressErr('Branch address is required');
+    }
+    if (!bankdetailDoc) {
+      setbankdetailDocErr('Bank document is required');
+    }
+
+    if (!RPD_Doc) {
+      setRPD_DocErr('RPD document is required');
+    }
+    if (!COC_Doc) {
+      setCOC_DocErr('COC document is required');
+    }
+    if (!NDA_Doc) {
+      setNDA_DocErr('NDA document is required');
+    }
+
+    if (name.length === 0) {
+      setnameErr('Name is required');
+    }
+    if (contactNumber.length === 0) {
+      setcontactNumberErr('Contact number is required');
+    }
+    if (email.length === 0) {
+      setemailErr('Email is required');
+    }
+
+    if (vendorType.length === 0) {
+      setvendorTypeErr('Vendor type is required');
+    }
+    if (acManager.length === 0) {
+      setacManagerErr('A/C manager is required');
+    }
+    if (mkcheck === false) {
+      setmkcheckErr('Check is required');
+    }
+
+    if (GST_type.length === 0) {
+      setGST_typeErr('GST type is required');
+    }
+    if (GST_No.length === 0) {
+      setGST_NoErr('GST Number is required');
+    }
+    if (!GST_Doc) {
+      setGST_DocErr('GST doc is required');
+    }
+    if (PAN_No.length === 0) {
+      setPAN_NoErr('Pan number is required');
+    }
+    if (!PAN_Doc) {
+      setPAN_DocErr('Pan doc is required');
+    }
+    if (CIN_No.length === 0) {
+      setCIN_NoErr('CIN number is required');
+    }
+    if (!form_10f) {
+      setform_10fErr('Form 10f is required');
+    }
+    if (MSME_status.length === 0) {
+      setMSME_statusErr('MSME status is required');
+    }
+    if (MSME_No.length === 0) {
+      setMSME_NoErr('MSME number is required');
+    }
+    if (!MSME_Doc) {
+      setMSME_DocErr('MSME doc is required');
+    }
+    if (MSME_Type.length === 0) {
+      setMSME_TypeErr('MSME type is required');
+    }
+    if (TAN_No.length === 0) {
+      setTAN_NoErr('TAN number is required');
+    }
+    if (!TAN_Doc) {
+      setTAN_DocErr('TAN doc is required');
+    }
+    if (!Tax_residency) {
+      setTax_residencyErr('Tax residency is required');
+    }
+    if (!pe_declaration) {
+      setpe_declarationErr('PE declaration is required');
+    }
+
+    const userId = props.userid;
+    console.log('companyNameErr', companyName);
+    console.log('address1Err', address1);
+    console.log('countryErr', country);
+    console.log('stateErr', state);
+    console.log('cityErr', city);
+    console.log('pinCodeErr', pinCode);
+    console.log('logoErr', logo);
+    console.log('fs_ContactNameErr', fs_ContactName);
+    console.log('fs_DesignationErr', fs_Designation);
+    console.log('fs_PhoneNoErr', fs_PhoneNo);
+    console.log('fs_EmailErr', fs_Email);
+    console.log('mngs_ContactNameErr', mngs_ContactName);
+    console.log('mngs_DesignationErr', mngs_Designation);
+    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
+    console.log('mngs_EmailErr', mngs_Email);
+    console.log('mastervendor_emailErr', mastervendor_email);
+    console.log('bankAccountNameErr', bankAccountName);
+    console.log('bankNameErr', bankName);
+    console.log('bankAccountNumberErr', bankAccountNumber);
+    console.log('ifscCodeErr', ifscCode);
+    console.log('MICRcodeErr', MICRcode);
+    console.log('branchAddressErr', branchAddress);
+    console.log('bankdetailDocErr', bankdetailDoc);
+    console.log('nameErr', name);
+    console.log('contactNumberErr', contactNumber);
+    console.log('emailErr', email);
+    console.log('vendorTypeErr', vendorType);
+    console.log('acManagerErr', acManager);
+    console.log('mkcheckErr', mkcheck);
+    console.log('GST_typeErr', GST_type);
+    console.log('GST_NoErr', GST_No);
+    console.log('PAN_NoErr', PAN_No);
+    console.log('CIN_NoErr', CIN_No);
+    console.log('form_10fErr', form_10f);
+    console.log('MSME_statusErr', MSME_status);
+    console.log('MSME_NoErr', MSME_No);
+    console.log('MSME_TypeErr', MSME_Type);
+    console.log('TAN_NoErr', TAN_No);
+    console.log('GST_DocErr', GST_Doc);
+    console.log('PAN_DocErr', PAN_Doc);
+    console.log('MSME_DocErr', MSME_Doc);
+    console.log('TAN_DocErr', TAN_Doc);
+    console.log('Tax_residencyErr', Tax_residency);
+    console.log('pe_declarationErr', pe_declaration);
+    console.log('RPD_DocErr', RPD_Doc);
+    console.log('COC_DocErr', COC_Doc);
+    console.log('NDA_DocErr', NDA_Doc);
+
+    if (
+      companyName &&
+      address1 &&
+      country &&
+      state &&
+      city &&
+      pinCode &&
+      fs_ContactName &&
+      fs_Designation &&
+      fs_PhoneNo &&
+      fs_Email &&
+      mngs_ContactName &&
+      mngs_Designation &&
+      mngs_PhoneNo &&
+      mngs_Email &&
+      mastervendor_email &&
+      bankAccountName &&
+      bankName &&
+      bankAccountNumber &&
+      ifscCode &&
+      MICRcode &&
+      branchAddress &&
+      bankdetailDoc &&
+      name &&
+      contactNumber &&
+      email &&
+      vendorType &&
+      acManager &&
+      mkcheck &&
+      GST_type &&
+      GST_No &&
+      PAN_No &&
+      CIN_No &&
+      MSME_status &&
+      MSME_No &&
+      MSME_Type &&
+      TAN_No &&
+      // GST_Doc &&
+      PAN_Doc &&
+      // MSME_Doc &&
+      TAN_Doc &&
+      RPD_Doc &&
+      COC_Doc &&
+      NDA_Doc
+    ) {
+      const data = new FormData();
+      data.append('level1Status', 'approved');
+      data.append('userId', event);
+      apiService.saveApproval(data).then((response) => {
+        if (response) {
+          Swal.fire({
+            title: 'Data saved',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+        } else {
+          Swal.fire({
+            title: 'Error While Fetching',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Please fill the mandatory fields',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
   };
 
   const handleRegject = (event) => {
@@ -1211,8 +1732,8 @@ function ApprovalFields(props) {
       heightAuto: true,
       title: 'Review vendor details',
       html: `<div class="rejectstyle">
-            <textarea rows="10" cols="30" id="comment" class="swal2-input" placeholder="Comments "></textarea>
-            <input type="file" id="rejectdoc" class="swal2-input" placeholder="Select file">
+            <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
       confirmButtonText: 'Reject',
       confirmButtonColor: '#B1000E',
@@ -1251,7 +1772,7 @@ function ApprovalFields(props) {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e, team) => {
     e.preventDefault();
     if (companyName.length === 0) {
       setcompanyNameErr('Company name is required');
@@ -1495,9 +2016,364 @@ function ApprovalFields(props) {
       MSME_No &&
       MSME_Type &&
       TAN_No &&
-      GST_Doc &&
+      // GST_Doc &&
       PAN_Doc &&
-      MSME_Doc &&
+      // MSME_Doc &&
+      TAN_Doc &&
+      RPD_Doc &&
+      COC_Doc &&
+      NDA_Doc
+    ) {
+      const data = new FormData();
+      data.append('userId', props.userid);
+      data.append('address1', address1);
+      data.append('address2', address2);
+      data.append('companyName', companyName);
+      data.append('country', country);
+      data.append('state', state);
+      data.append('city', city);
+      data.append('pinCode', pinCode);
+      data.append('image', 'logo');
+      data.append('vendorType', vendorType);
+      data.append('vendorManager', acManager);
+      data.append('mkDenialCheque', mkcheck);
+      data.append('financeSpoccontactName', fs_ContactName);
+      data.append('financeSpocdesignation', fs_Designation);
+      data.append('financeSpocphoneNo', fs_PhoneNo);
+      data.append('financeSpocemail', fs_Email);
+      data.append('operationSpoccontactName', ops_ContactName);
+      data.append('operationSpocdesignation', ops_Designation);
+      data.append('operationSpocphoneNo', ops_PhoneNo);
+      data.append('operationSpocemail', ops_Email);
+      data.append('collectionSpoccontactName', colls_ContactName);
+      data.append('collectionSpocdesignation', colls_Designation);
+      data.append('collectionSpocphoneNo', colls_PhoneNo);
+      data.append('collectionSpocemail', colls_Email);
+      data.append('managementSpoccontactName', mngs_ContactName);
+      data.append('managementSpocdesignation', mngs_Designation);
+      data.append('managementSpocphoneNo', mngs_PhoneNo);
+      data.append('managementSpocemail', mngs_Email);
+      data.append('contactName', others_ContactName);
+      data.append('designation', others_Designation);
+      data.append('phoneNo', others_PhoneNo);
+      data.append('others_Email', others_Email);
+      data.append('mastervendor_email', mastervendor_email);
+      data.append('RPD_Doc', RPD_Doc);
+      data.append('NDA_Doc', COC_Doc);
+      data.append('COC_Doc', NDA_Doc);
+      data.append('GST_Doc', GST_Doc);
+      data.append('GST_type', GST_type);
+      data.append('GST_No', GST_No);
+      data.append('PAN_No', PAN_No);
+      data.append('PAN_Doc', PAN_Doc);
+      data.append('form_10f_Doc', form_10f);
+      data.append('TAN_Doc', TAN_Doc);
+      data.append('PE_Declaration_Doc', pe_declaration);
+      data.append('MSME_Doc', MSME_Doc);
+      data.append('Tax_residency_Doc', Tax_residency);
+      data.append('CIN_No', CIN_No);
+      data.append('MSME_status', MSME_status);
+      data.append('MSME_No', MSME_No);
+      data.append('MSME_Type', MSME_Type);
+      data.append('TAN_No', TAN_No);
+      data.append('financial_data', financial_data);
+      data.append('financial_data2', financial_data2);
+      data.append('yearOfAuditedFinancial', yearOfAuditedFinancial);
+      data.append('Revenue', Revenue);
+      data.append('Profit', Profit);
+      data.append('netWorth', netWorth);
+      data.append('currentAssets', currentAssets);
+      data.append('directorDetails', directorDetails);
+      data.append('bankAccountName', bankAccountName);
+      data.append('bankName', bankName);
+      data.append('bankAccountNumber', bankAccountNumber);
+      data.append('ifscCode', ifscCode);
+      data.append('MICRcode', MICRcode);
+      data.append('branchAddress', branchAddress);
+      data.append('bankdetailDoc', bankdetailDoc);
+      data.append('name', name);
+      data.append('contactNumber', contactNumber);
+      data.append('email', email);
+      data.append('name2', name2);
+      data.append('contactNumber2', contactNumber2);
+      data.append('email2', email2);
+      data.append('name3', name3);
+      data.append('contactNumber3', contactNumber3);
+      data.append('email3', email3);
+      console.log('Form Submitted', data);
+
+      apiService.updateAllCollection(userId, data).then((response) => {
+        console.log('res=============>>>>>>>', response);
+        if (response) {
+          Swal.fire({
+            title: 'Data saved',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+        } else {
+          Swal.fire({
+            title: 'Error While Fetching',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Please fill the mandatory fields',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+  };
+
+  const submitMRTHandler = (e, team) => {
+    e.preventDefault();
+    if (companyName.length === 0) {
+      setcompanyNameErr('Company name is required');
+    }
+    if (address1.length === 0) {
+      console.log('hello2222');
+      setaddress1Err('Address 1 is required');
+    }
+    if (country.length === 0) {
+      setcountryErr('Country is required');
+    }
+    if (state.length === 0) {
+      setstateErr('State is required');
+    }
+    if (city.length === 0) {
+      setcityErr('City is required');
+    }
+    if (pinCode.length === 0) {
+      setpinCodeErr('Pincode is required');
+    }
+    if (!logo) {
+      setlogoErr('Logo is required');
+      console.log('hellossssssss', logoErr);
+    }
+    if (fs_ContactName.length === 0) {
+      setfs_ContactNameErr('Contact name is required');
+    }
+    if (fs_Designation.length === 0) {
+      setfs_DesignationErr('Designation is required');
+    }
+    if (fs_PhoneNo.length === 0) {
+      setfs_PhoneNoErr('Phone number is required');
+    }
+    if (fs_Email.length === 0) {
+      setfs_EmailErr('Email is required');
+    }
+    // console.log("fs_Email",fs_Email);
+    // console.log("mngs_ContactName",mngs_ContactName);
+    // console.log("mngs_Designation",mngs_Designation);
+    // console.log("mngs_PhoneNo",mngs_PhoneNo);
+    // console.log("mngs_Email",mngs_Email);
+    // console.log("mastervendor_email",mastervendor_email);
+
+    if (mngs_ContactName.length === 0) {
+      setmngs_ContactNameErr('Contact name is required');
+    }
+    if (mngs_Designation.length === 0) {
+      setmngs_DesignationErr('Designation is required');
+    }
+    if (mngs_PhoneNo.length === 0) {
+      setmngs_PhoneNoErr('Phone number is required');
+    }
+    if (mngs_Email.length === 0) {
+      setmngs_EmailErr('Email is required');
+    }
+    if (mastervendor_email.length === 0) {
+      setmastervendor_emailErr('Email is required');
+    }
+
+    if (bankAccountName.length === 0) {
+      setbankAccountNameErr('Account name is required');
+    }
+    if (bankName.length === 0) {
+      setbankNameErr('Bank name is required');
+    }
+    if (bankAccountNumber.length === 0) {
+      setbankAccountNumberErr('Account number is required');
+    }
+    if (ifscCode.length === 0) {
+      setifscCodeErr('IFSC code is required');
+    }
+    if (MICRcode.length === 0) {
+      setMICRcodeErr('MICR code is required');
+    }
+    if (branchAddress.length === 0) {
+      setbranchAddressErr('Branch address is required');
+    }
+    if (!bankdetailDoc) {
+      setbankdetailDocErr('Bank document is required');
+    }
+
+    if (!RPD_Doc) {
+      setRPD_DocErr('RPD document is required');
+    }
+    if (!COC_Doc) {
+      setCOC_DocErr('COC document is required');
+    }
+    if (!NDA_Doc) {
+      setNDA_DocErr('NDA document is required');
+    }
+
+    if (name.length === 0) {
+      setnameErr('Name is required');
+    }
+    if (contactNumber.length === 0) {
+      setcontactNumberErr('Contact number is required');
+    }
+    if (email.length === 0) {
+      setemailErr('Email is required');
+    }
+
+    if (vendorType.length === 0) {
+      setvendorTypeErr('Vendor type is required');
+    }
+    if (acManager.length === 0) {
+      setacManagerErr('A/C manager is required');
+    }
+    if (mkcheck === false) {
+      setmkcheckErr('Check is required');
+    }
+
+    if (GST_type.length === 0) {
+      setGST_typeErr('GST type is required');
+    }
+    if (GST_No.length === 0) {
+      setGST_NoErr('GST Number is required');
+    }
+    if (!GST_Doc) {
+      setGST_DocErr('GST doc is required');
+    }
+    if (PAN_No.length === 0) {
+      setPAN_NoErr('Pan number is required');
+    }
+    if (!PAN_Doc) {
+      setPAN_DocErr('Pan doc is required');
+    }
+    if (CIN_No.length === 0) {
+      setCIN_NoErr('CIN number is required');
+    }
+    if (!form_10f) {
+      setform_10fErr('Form 10f is required');
+    }
+    if (MSME_status.length === 0) {
+      setMSME_statusErr('MSME status is required');
+    }
+    if (MSME_No.length === 0) {
+      setMSME_NoErr('MSME number is required');
+    }
+    if (!MSME_Doc) {
+      setMSME_DocErr('MSME doc is required');
+    }
+    if (MSME_Type.length === 0) {
+      setMSME_TypeErr('MSME type is required');
+    }
+    if (TAN_No.length === 0) {
+      setTAN_NoErr('TAN number is required');
+    }
+    if (!TAN_Doc) {
+      setTAN_DocErr('TAN doc is required');
+    }
+    if (!Tax_residency) {
+      setTax_residencyErr('Tax residency is required');
+    }
+    if (!pe_declaration) {
+      setpe_declarationErr('PE declaration is required');
+    }
+
+    const userId = props.userid;
+    console.log('companyNameErr', companyName);
+    console.log('address1Err', address1);
+    console.log('countryErr', country);
+    console.log('stateErr', state);
+    console.log('cityErr', city);
+    console.log('pinCodeErr', pinCode);
+    console.log('logoErr', logo);
+    console.log('fs_ContactNameErr', fs_ContactName);
+    console.log('fs_DesignationErr', fs_Designation);
+    console.log('fs_PhoneNoErr', fs_PhoneNo);
+    console.log('fs_EmailErr', fs_Email);
+    console.log('mngs_ContactNameErr', mngs_ContactName);
+    console.log('mngs_DesignationErr', mngs_Designation);
+    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
+    console.log('mngs_EmailErr', mngs_Email);
+    console.log('mastervendor_emailErr', mastervendor_email);
+    console.log('bankAccountNameErr', bankAccountName);
+    console.log('bankNameErr', bankName);
+    console.log('bankAccountNumberErr', bankAccountNumber);
+    console.log('ifscCodeErr', ifscCode);
+    console.log('MICRcodeErr', MICRcode);
+    console.log('branchAddressErr', branchAddress);
+    console.log('bankdetailDocErr', bankdetailDoc);
+    console.log('nameErr', name);
+    console.log('contactNumberErr', contactNumber);
+    console.log('emailErr', email);
+    console.log('vendorTypeErr', vendorType);
+    console.log('acManagerErr', acManager);
+    console.log('mkcheckErr', mkcheck);
+    console.log('GST_typeErr', GST_type);
+    console.log('GST_NoErr', GST_No);
+    console.log('PAN_NoErr', PAN_No);
+    console.log('CIN_NoErr', CIN_No);
+    console.log('form_10fErr', form_10f);
+    console.log('MSME_statusErr', MSME_status);
+    console.log('MSME_NoErr', MSME_No);
+    console.log('MSME_TypeErr', MSME_Type);
+    console.log('TAN_NoErr', TAN_No);
+    console.log('GST_DocErr', GST_Doc);
+    console.log('PAN_DocErr', PAN_Doc);
+    console.log('MSME_DocErr', MSME_Doc);
+    console.log('TAN_DocErr', TAN_Doc);
+    console.log('Tax_residencyErr', Tax_residency);
+    console.log('pe_declarationErr', pe_declaration);
+    console.log('RPD_DocErr', RPD_Doc);
+    console.log('COC_DocErr', COC_Doc);
+    console.log('NDA_DocErr', NDA_Doc);
+
+    if (
+      companyName &&
+      address1 &&
+      country &&
+      state &&
+      city &&
+      pinCode &&
+      fs_ContactName &&
+      fs_Designation &&
+      fs_PhoneNo &&
+      fs_Email &&
+      mngs_ContactName &&
+      mngs_Designation &&
+      mngs_PhoneNo &&
+      mngs_Email &&
+      mastervendor_email &&
+      bankAccountName &&
+      bankName &&
+      bankAccountNumber &&
+      ifscCode &&
+      MICRcode &&
+      branchAddress &&
+      bankdetailDoc &&
+      name &&
+      contactNumber &&
+      email &&
+      // vendorType &&
+      // acManager &&
+      // mkcheck &&
+      GST_type &&
+      GST_No &&
+      PAN_No &&
+      CIN_No &&
+      MSME_status &&
+      MSME_No &&
+      MSME_Type &&
+      TAN_No &&
+      // GST_Doc &&
+      PAN_Doc &&
+      // MSME_Doc &&
       TAN_Doc &&
       RPD_Doc &&
       COC_Doc &&
@@ -1645,17 +2521,20 @@ function ApprovalFields(props) {
                   />
                   <span className="formError">{address1Err}</span>
                 </div>
-                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="address2">Address 2</label>
-                  <input
-                    type="text"
-                    className="mb-2 inputbox"
-                    name="address2"
-                    value={address2}
-                    onChange={(e) => validateaddress2(e)}
-                  />
-                  {/* <span className="formError">{address2Err}</span> */}
-                </div>
+
+                {((editData[0]?.address2 !== 'null') && editData[0]?.address2) ? (
+                  <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                    <label htmlFor="address2">Address 2</label>
+                    <input
+                      type="text"
+                      className="mb-2 inputbox"
+                      name="address2"
+                      value={address2}
+                      onChange={(e) => validateaddress2(e)}
+                    />
+                    {/* <span className="formError">{address2Err}</span> */}
+                  </div>
+                ) : ""}
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="country">Country</label>
                   <input
@@ -1796,10 +2675,14 @@ function ApprovalFields(props) {
                     <span className="formError">{fs_EmailErr}</span>
                   </div>
                 </div>
-                {editCommmData[0]?.operationSpoccontactName &&
-                editCommmData[0]?.operationSpocdesignation &&
-                editCommmData[0]?.operationSpocphoneNo &&
-                editCommmData[0]?.operationSpocemail ? (
+                {/* {editCommmData[0]?.operationSpoccontactName &&
+                  editCommmData[0]?.operationSpocdesignation &&
+                  editCommmData[0]?.operationSpocphoneNo &&
+                  editCommmData[0]?.operationSpocemail ? ( */}
+                {(((editCommmData[0]?.operationSpoccontactName !== 'null') && editCommmData[0]?.operationSpoccontactName) &&
+                  ((editCommmData[0]?.operationSpocdesignation !== 'null') && editCommmData[0]?.operationSpocdesignation) &&
+                  ((editCommmData[0]?.operationSpocphoneNo !== 'null') && editCommmData[0]?.operationSpocphoneNo) &&
+                  ((editCommmData[0]?.operationSpocemail !== 'null') && editCommmData[0]?.operationSpocemail)) ? (
                   <>
                     <p>
                       <b>Operation Spoc</b>
@@ -1850,10 +2733,14 @@ function ApprovalFields(props) {
                 ) : (
                   ''
                 )}
-                {editCommmData[0]?.collectionSpoccontactName &&
-                editCommmData[0]?.collectionSpocdesignation &&
-                editCommmData[0]?.collectionSpocphoneNo &&
-                editCommmData[0]?.collectionSpocemail ? (
+                {/* {editCommmData[0]?.collectionSpoccontactName &&
+                  editCommmData[0]?.collectionSpocdesignation &&
+                  editCommmData[0]?.collectionSpocphoneNo &&
+                  editCommmData[0]?.collectionSpocemail ? ( */}
+                {(((editCommmData[0]?.collectionSpoccontactName !== 'null') && editCommmData[0]?.collectionSpoccontactName) &&
+                  ((editCommmData[0]?.collectionSpocdesignation !== 'null') && editCommmData[0]?.collectionSpocdesignation) &&
+                  ((editCommmData[0]?.collectionSpocphoneNo !== 'null') && editCommmData[0]?.collectionSpocphoneNo) &&
+                  ((editCommmData[0]?.collectionSpocemail !== 'null') && editCommmData[0]?.collectionSpocemail)) ? (
                   <>
                     <p>
                       <b>Collection Spoc</b>
@@ -1954,10 +2841,14 @@ function ApprovalFields(props) {
                     <span className="formError">{mngs_EmailErr}</span>
                   </div>
                 </div>
-                {editCommmData[0]?.contactName &&
-                editCommmData[0]?.designation &&
-                editCommmData[0]?.phoneNo &&
-                editCommmData[0]?.email ? (
+                {/* {editCommmData[0]?.contactName &&
+                  editCommmData[0]?.designation &&
+                  editCommmData[0]?.phoneNo &&
+                  editCommmData[0]?.email ? ( */}
+                {(((editCommmData[0]?.contactName !== 'null') && editCommmData[0]?.contactName) &&
+                  ((editCommmData[0]?.designation !== 'null') && editCommmData[0]?.designation) &&
+                  ((editCommmData[0]?.phoneNo !== 'null') && editCommmData[0]?.phoneNo) &&
+                  ((editCommmData[0]?.email !== 'null') && editCommmData[0]?.email)) ? (
                   <>
                     <p>
                       <b>Others</b>
@@ -2150,29 +3041,32 @@ function ApprovalFields(props) {
                         />
                         <span className="formError">{GST_NoErr}</span>
                       </div>
-
-                      <div className="col-sm-12 col-lg-4 m-auto">
-                        {style === 'cont2' ? (
-                          <>
+                      {editStatData[0]?.MSME_Doc ? (
+                        <div className="col-sm-12 col-lg-4 m-auto">
+                          {style === 'cont2' ? (
+                            <>
+                              <button
+                                type="button"
+                                onClick={(e) => handleEditPopup('GST_Doc')}
+                                className="btn bankbtn btn-primary btn-md mt-3"
+                              >
+                                View File
+                              </button>
+                            </>
+                          ) : (
                             <button
                               type="button"
-                              onClick={(e) => handleEditPopup('GST_Doc')}
+                              onClick={(e) => handleView(GST_Doc)}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
                               View File
                             </button>
-                          </>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => handleView(GST_Doc)}
-                            className="btn bankbtn btn-primary btn-md mt-3"
-                          >
-                            View File
-                          </button>
-                        )}
-                        <p className="formError">{GST_DocErr}</p>
-                      </div>
+                          )}
+                          <p className="formError">{GST_DocErr}</p>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-2">
@@ -2188,26 +3082,31 @@ function ApprovalFields(props) {
                         />
                         <span className="formError">{MSME_NoErr}</span>
                       </div>
-                      <div className="col-sm-12 col-lg-4 m-auto">
-                        {style === 'cont2' ? (
-                          <button
-                            type="button"
-                            onClick={(e) => handleEditPopup('MSME_Doc')}
-                            className="btn bankbtn btn-primary btn-md mt-3"
-                          >
-                            View File
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => handleView(MSME_Doc)}
-                            className="btn bankbtn btn-primary btn-md mt-3"
-                          >
-                            View File
-                          </button>
-                        )}
-                        <p className="formError">{MSME_DocErr}</p>
-                      </div>
+                      {editStatData[0]?.MSME_Doc ? (
+                        <div className="col-sm-12 col-lg-4 m-auto">
+                          {style === 'cont2' ? (
+                            <button
+                              type="button"
+                              onClick={(e) => handleEditPopup('MSME_Doc')}
+                              className="btn bankbtn btn-primary btn-md mt-3"
+                            >
+                              View File
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => handleView(MSME_Doc)}
+                              className="btn bankbtn btn-primary btn-md mt-3"
+                            >
+                              View File
+                            </button>
+                          )}
+                          <p className="formError">{MSME_DocErr}</p>
+                        </div>
+
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
@@ -2358,7 +3257,7 @@ function ApprovalFields(props) {
                       </div>
                     </div>
                   </div>
-                  <>{console.log('editStatDataeditStatData', editStatData)}</>
+
                   {editStatData[0]?.form_10f_Doc ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
@@ -2696,7 +3595,8 @@ function ApprovalFields(props) {
                   <b>Financial Details</b>
                 </h5>
                 <div className="row">
-                  {editFinanceData[0]?.yearOfAuditedFinancial ? (
+                  {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
+                  {((editFinanceData[0]?.yearOfAuditedFinancial !== 'null') && editFinanceData[0]?.yearOfAuditedFinancial) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">
                         Year of audited financials
@@ -2714,7 +3614,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.Revenue ? (
+                  {/* {editFinanceData[0]?.Revenue ? ( */}
+                  {((editFinanceData[0]?.Revenue !== 'null') && editFinanceData[0]?.Revenue) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
@@ -2728,7 +3629,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.Profit ? (
+                  {/* {editFinanceData[0]?.Profit ? ( */}
+                  {((editFinanceData[0]?.Profit !== 'null') && editFinanceData[0]?.Profit) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
@@ -2742,7 +3644,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.netWorth ? (
+                  {/* {editFinanceData[0]?.netWorth ? ( */}
+                  {((editFinanceData[0]?.netWorth !== 'null') && editFinanceData[0]?.netWorth) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
@@ -2756,7 +3659,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.currentAssets ? (
+                  {/* {editFinanceData[0]?.currentAssets ? ( */}
+                  {((editFinanceData[0]?.currentAssets !== 'null') && editFinanceData[0]?.currentAssets) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Current Assets</label>
                       <input
@@ -2770,7 +3674,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.directorDetails ? (
+                  {/* {editFinanceData[0]?.directorDetails ? ( */}
+                  {((editFinanceData[0]?.directorDetails !== 'null') && editFinanceData[0]?.directorDetails) ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Director detail</label>
                       <input
@@ -2784,7 +3689,9 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.financial_data ? (
+                  {/* {editFinanceData[0]?.financial_data ? ( */}
+
+                  {((editFinanceData[0]?.financial_data !== 'null') && editFinanceData[0]?.financial_data) ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                       {style === 'cont2' ? (
                         <button
@@ -2808,7 +3715,8 @@ function ApprovalFields(props) {
                   ) : (
                     ''
                   )}
-                  {editFinanceData[0]?.financial_data2 ? (
+                  {/* {editFinanceData[0]?.financial_data2 ? ( */}
+                  {((editFinanceData[0]?.financial_data2 !== 'null') && editFinanceData[0]?.financial_data2) ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                       {style === 'cont2' ? (
                         <button
@@ -2878,9 +3786,12 @@ function ApprovalFields(props) {
                     <span className="formError">{contactNumberErr}</span>
                   </div>
                 </div>
-                {editContactData[0]?.contactName2 &&
-                editContactData[0]?.emailId2 &&
-                editContactData[0]?.contactNumber2 ? (
+                {/* {editContactData[0]?.contactName2 &&
+                  editContactData[0]?.emailId2 &&
+                  editContactData[0]?.contactNumber2 ? ( */}
+                {(((editContactData[0]?.name2 !== 'null') && editContactData[0]?.name2) &&
+                  ((editContactData[0]?.emailId2 !== 'null') && editContactData[0]?.emailId2) &&
+                  ((editContactData[0]?.contactNumber2 !== 'null') && editContactData[0]?.contactNumber2)) ? (
                   <>
                     <div className="row">
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -2918,9 +3829,9 @@ function ApprovalFields(props) {
                 ) : (
                   ''
                 )}
-                {editContactData[0]?.contactName3 &&
-                editContactData[0]?.emailId3 &&
-                editContactData[0]?.contactNumber3 ? (
+                {(((editContactData[0]?.name3 !== 'null') && editContactData[0]?.name3) &&
+                  ((editContactData[0]?.emailId3 !== 'null') && editContactData[0]?.emailId3) &&
+                  ((editContactData[0]?.contactNumber3 !== 'null') && editContactData[0]?.contactNumber3)) ? (
                   <>
                     <div className="row">
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -2961,202 +3872,91 @@ function ApprovalFields(props) {
               </div>
             </div>
 
-            {props.japan === 'JapanTeam' || props.MRT === 'MRTteam' ? (
-              <></>
-            ) : (
-              <>
-                <div className="section2">
-                  <div className="row px-3 pt-2">
-                    <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
-                      <label htmlFor="Distributors">Vendor Type</label>
-                      <select
-                        className="form-select"
-                        id="Distributors"
-                        name="vendorType"
-                        aria-label="Disabled select example"
-                        value={vendorType}
-                        onChange={(e) => validatevendorType(e)}
-                      >
-                        {/* <option selected>Open this select menu</option> */}
-                        <option value="Distributor">Distributor</option>
-                        <option value="import">import</option>
-                        <option value="OEM">OEM</option>
-                        <option value="local vendor">local vendor</option>
-                        <option value="others">others</option>
-                      </select>
-                      <span className="formError">{vendorTypeErr}</span>
-                    </div>
-                    <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
-                      <span>Vendor A/C Manager</span>
-                      <div className="row">
-                        <div className="col-lg-3 col-sm-12 col-xs-12">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="radio"
-                              name="acManager"
-                              id="acManager1"
-                              value={'Rajender San'}
-                              checked={acManager === 'Rajender San'}
-                              onChange={(e) => validateacManager(e)}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor="acManager1"
-                            >
-                              Rajender San
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-sm-12 col-xs-12">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="radio"
-                              name="acManager"
-                              id="acManager2"
-                              value={'Keshav San'}
-                              checked={acManager === 'Keshav San'}
-                              onChange={(e) => validateacManager(e)}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor="acManager2"
-                            >
-                              Keshav San
-                            </label>
-                          </div>
-                          <span className="formError">{acManagerErr}</span>
-                        </div>
-                        <div className="col-lg-3 col-sm-12 col-xs-12">
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              id="mkcheck1"
-                              name="mkcheck"
-                              checked={mkcheck}
-                              onChange={(e) => validatemkcheck(e)}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor="mkcheck1"
-                            >
-                              MK Denial Check
-                            </label>
-                          </div>
-                          <span className="formError">{mkcheckErr}</span>
+            {props.approvedV === 'approvalTeam' ? <>
+              <div className="section2" >
+                <div className="row px-3 pt-2" >
+                  <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
+                    <label htmlFor="Distributors">Vendor Type</label>
+                    <select className="form-select" id="Distributors" name="vendorType" aria-label="Disabled select example" value={vendorType} onChange={(e) => validatevendorType(e)}>
+                      {/* <option selected>Open this select menu</option> */}
+                      <option value="Distributor">Distributor</option>
+                      <option value="import">import</option>
+                      <option value="OEM">OEM</option>
+                      <option value="local vendor">local vendor</option>
+                      <option value="others">others</option>
+                    </select>
+                    <span className="formError">{vendorTypeErr}</span>
+                  </div>
+                  <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
+                    <span>Vendor A/C Manager</span>
+                    <div className="row">
+                      <div className="col-lg-3 col-sm-12 col-xs-12">
+                        <div className="form-check">
+                          <input className="form-check-input" type="radio" name="acManager" id="acManager1" value={"Rajender San"} checked={acManager === "Rajender San"} onChange={(e) => validateacManager(e)} />
+                          <label className="form-check-label" htmlFor="acManager1">
+                            Rajender San
+                          </label>
                         </div>
 
-                        <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
-                          <label htmlFor="approverFile1">Select File</label>
-                          <input
-                            type="file"
-                            id="approverFile1"
-                            name="approverFile"
-                            onChange={onApproverFileChange}
-                          />
+                      </div>
+                      <div className="col-lg-3 col-sm-12 col-xs-12">
+                        <div className="form-check">
+                          <input className="form-check-input" type="radio" name="acManager" id="acManager2" value={"Keshav San"} checked={acManager === "Keshav San"} onChange={(e) => validateacManager(e)} />
+                          <label className="form-check-label" htmlFor="acManager2">
+                            Keshav San
+                          </label>
                         </div>
+                        <span className="formError">{acManagerErr}</span>
+                      </div>
+                      <div className="col-lg-3 col-sm-12 col-xs-12">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="mkcheck1" name="mkcheck" checked={mkcheck} onChange={(e) => validatemkcheck(e)} />
+                          <label className="form-check-label" htmlFor="mkcheck1">
+                            MK Denial Check
+                          </label>
+                        </div>
+                        <span className="formError">{mkcheckErr}</span>
+                      </div>
+
+                      <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
+                        <label htmlFor="approverFile1">Select File</label>
+                        <input type="file" id="approverFile1" name="approverFile" onChange={onApproverFileChange} />
                       </div>
                     </div>
                   </div>
                 </div>
-              </>
-            )}
+              </div></> : <></>}
+
           </div>
 
-          {props.japan ? (
-            <>
-              <div className="float-end my-2">
-                <button
-                  type="button"
-                  onClick={(e) => handleConcernFound(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Concern found
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleNoConcernFound(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  No Concern found
-                </button>
-              </div>
-            </>
-          ) : props.MRT ? (
-            <>
-              <div className="float-end">
-                <button
-                  type="button"
-                  onClick={handleEdit}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={submitHandler}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleMRTRegject(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Reject
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleMRTApprove(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Approve
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="float-end">
-                <button
-                  type="button"
-                  onClick={handleEdit}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={submitHandler}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleRegject(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Reject
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleApprove(props.userid)}
-                  className="btn bankbtn btn-primary btn-md m-2"
-                >
-                  Approve
-                </button>
-              </div>
-            </>
-          )}
+          {props.japan ? <>
+            <div className="float-end my-2" >
+              <button type="button" onClick={(e) => handleConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Concern found</button>
+              <button type="button" onClick={(e) => handleNoConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">No Concern found</button>
+            </div>
+          </> :
+            props.MRT ?
+              <>
+                <div className="float-end" >
+                  <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
+                  <button type="button" onClick={(e) => submitMRTHandler(e, "MRTsubmit")} className="btn bankbtn btn-primary btn-md m-2">Save</button>
+                  <button type="button" onClick={(e) => handleMRTReject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
+                  <button type="button" onClick={(e) => handleMRTApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
+                </div></>
+              : props.approvedV ? <>
+                <div className="float-end" >
+                  <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
+                  <button type="button" onClick={(e) => submitHandler(e, "VCTsubmit")} className="btn bankbtn btn-primary btn-md m-2">Save</button>
+                  <button type="button" onClick={(e) => handleRegject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
+                  <button type="button" onClick={(e) => handleApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
+                </div></> : <></>
+          }
 
           {/* </div> */}
         </form>
-      </div>
-    </Box>
-  );
+      </div >
+    </Box >
+  )
 }
 
 export default ApprovalFields;

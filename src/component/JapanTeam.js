@@ -35,24 +35,25 @@ function JapanTeam() {
 
     useEffect(() => {
         apiService.getApprovedStatus().then(res => {
-            res.data.result.forEach((item) => {
-                var date1 = new Date();
-                var date01 = new Date(item.createdAt);
-                var date2 = new Date();
-                date2.setDate(date01.getDate() + 3);
-                var Difference_In_Time = date2.getTime() - date1.getTime();
-                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                item.updatedAt = Difference_In_Days
-                const s = moment(item.createdAt).format('MMM DD');
-                item.createdAt = s
+            if (res.data.result) {
+                res.data.result.forEach((item) => {
+                    var date1 = new Date();
+                    var date01 = new Date(item.level1Date);
+                    var date2 = new Date();
+                    date2.setDate(date01.getDate() + 3);
+                    var Difference_In_Time = date2.getTime() - date1.getTime();
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    item.updatedAt = Difference_In_Days
+                    const s = moment(item.level1Date).format('MMM DD');
+                    item.level1Date = s
+                })
+                setvendors([])
+                var newArray = res.data.result.filter(function (item) {
+                    return ((item.level2Status !== "approved") && (item.level2Status !== "rejected"));
+                });
+                setvendors((array) => [...array, ...newArray]);
+            }
             })
-            setvendors([])
-            var newArray = res.data.result.filter(function(item)
- {
-  return ((item.level2Status !== "approved") && (item.level2Status !== "rejected"));
- });
-            setvendors((array) => [...array, ...newArray]);
-        })
     }, [])
     return (
         <ThemeProvider theme={theme}>
@@ -104,12 +105,12 @@ function JapanTeam() {
                                         aria-controls="panelbh-content"
                                         id={"panel1bh-header"}
                                     >
-                                        <IconButton sx={{ p: 0, width: '18%',justifyContent: 'flex-start'  }} >
+                                        <IconButton sx={{ p: 0, width: '18%', justifyContent: 'flex-start' }} >
                                             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                             <Typography >&nbsp;{item.userId}</Typography>
                                         </IconButton>
                                         <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
-                                        <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>
+                                        <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.level1Date}</Typography>
                                         <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>

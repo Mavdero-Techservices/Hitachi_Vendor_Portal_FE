@@ -10,8 +10,10 @@ import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import VendorPortalHeader from '../common/VendorPortalHeader';
 import VendorPortSidemenu from '../common/VendorPortSidemenu';
+import { useParams } from 'react-router-dom';
 
 function Documents() {
+    const param = useParams();
     const theme = createTheme({
         Link: {
             textTransform: "none"
@@ -78,7 +80,7 @@ function Documents() {
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <VendorPortalHeader />
+                <VendorPortalHeader vCode={param?.vId}/>
                 <Box sx={{ display: 'flex' }}>
                     <VendorPortSidemenu />
                     <Box sx={{ mt: 2, width: '100%' }}>

@@ -146,5 +146,32 @@ deleteMasterVendorUserAccessById(id) {
 getAllMasterVendorUserAccess() {
   return http.get("/getAllMasterVendorUserAccess");
 }
+savePeriodicReq(data) {
+  return axios.post("http://localhost:12707/savePeriodicReq", data);
+}
+getPeriodicReq() {
+  return axios.get("http://localhost:12707/getPeriodicReq"); 
+}
+deletePeriodicReq(id) {
+  return axios.delete(`http://localhost:12707/deletePeriodicReq/${id}`); 
+}
+updatePeriodicReq(userId,data) {
+ return axios.put(`http://localhost:12707/updatePeriodicReq/${userId}`, data);
+}
+saveVendorApproval(data) {
+  return axios.post("http://localhost:12707/accountStatementApproval", data);
+}
+updatevendorApprovalStatus(userId,data) {
+  return axios.put(`http://localhost:12707/accountStatementApproval/update/${userId}`, data);
+}
+vendorApprovalList() {
+  return axios.get("http://localhost:12707/accountStatementApproval/findAll"); 
+}
+downloadVendorApprovalList(vendorCode) {
+  return axios.get(`http://localhost:12707/accountStatementApproval/exportExcel/${vendorCode}`,{ responseType: 'blob'}); 
+}
+VendorregList() {
+  return axios.get(`http://localhost:12707/vendorCodeDetail/findAll`); 
+}
 }
 export default new apiService();

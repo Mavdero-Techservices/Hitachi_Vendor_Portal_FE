@@ -27,25 +27,25 @@ function MRTapprovedvendors() {
     useEffect(() => {
         const Level3approved = []
         apiService.getApprovalList().then(res => {
-            console.log("resresres", res)
+            if (res.data.result) {
+                res.data.result.forEach((item) => {
+                    if (item.level3Status === 'approved') {
+                        var date1 = new Date();
+                        var date01 = new Date(item.createdAt);
+                        var date2 = new Date();
+                        date2.setDate(date01.getDate() + 3);
+                        var Difference_In_Time = date2.getTime() - date1.getTime();
+                        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                        item.updatedAt = Difference_In_Days
+                        const s = moment(item.level3Date).format('MMM DD');
+                        item.level3Date = s
+                        Level3approved.push(item)
+                    }
+                })
 
-            res.data.result.forEach((item) => {
-                if (item.level3Status === 'approved') {
-                    var date1 = new Date();
-                    var date01 = new Date(item.createdAt);
-                    var date2 = new Date();
-                    date2.setDate(date01.getDate() + 3);
-                    var Difference_In_Time = date2.getTime() - date1.getTime();
-                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                    item.updatedAt = Difference_In_Days
-                    const s = moment(item.createdAt).format('MMM DD');
-                    item.createdAt = s
-                    Level3approved.push(item)
-                }
-            })
-
-            setvendors([])
-            setvendors((array) => [...array, ...Level3approved]);
+                setvendors([])
+                setvendors((array) => [...array, ...Level3approved]);
+            }
         })
     }, [])
     return (
@@ -83,8 +83,8 @@ function MRTapprovedvendors() {
                             >
                                 <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Vendor name</Typography>
                                 <Typography sx={{ width: '36%', }}></Typography>
-                                <Typography sx={{ width: '12%', fontWeight: "bold" }}>Submit date</Typography>
-                                <Typography sx={{ fontWeight: "bold" }}>Due date</Typography>
+                                <Typography sx={{ width: '12%', fontWeight: "bold" }}>Approved date</Typography>
+                                {/* <Typography sx={{ fontWeight: "bold" }}>Due date</Typography> */}
                             </AccordionSummary>
                         </Accordion>
                         {vendors?.map((item, key) => <>
@@ -99,11 +99,11 @@ function MRTapprovedvendors() {
                                         <Typography >&nbsp;{item.userId}</Typography>
                                     </IconButton>
                                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
-                                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>
-                                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
+                                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.level3Date}</Typography>
+                                    {/* <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography> */}
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <ApprovalFields userid={item.userId} MRT="MRTteam" />
+                                    <ApprovalFields userid={item.userId} />
                                 </AccordionDetails>
                             </Accordion>
                         </>)}

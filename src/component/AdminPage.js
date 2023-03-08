@@ -36,29 +36,36 @@ function AdminPage() {
 
   useEffect(() => {
     let applist = []
-    apiService.getApprovedStatus().then(res => {
+    apiService.getApprovalList().then(res => {
       applist = res.data.result
     })
+  
 
-    apiService.getApprovedStatus().then(res => {
-      setapprovalarr((array) => [...array, ...res.data.result]);
-    })
+    // apiService.getApprovedStatus().then(res => {
+    //  if(res.data.result){
+    //   setapprovalarr((array) => [...array, ...res.data.result]);
+    // }
+    // })
 
     apiService.getAllUserDetail().then(res => {
       res.data.basicInfo[0].forEach((item) => {
         var date1 = new Date();
-        var date01 = new Date(item.createdAt);
+        var date01 = new Date(item.submitDate);
         var date2 = new Date();
         date2.setDate(date01.getDate() + 3);
         var Difference_In_Time = date2.getTime() - date1.getTime();
         var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
         item.updatedAt = Difference_In_Days
-        const s = moment(item.createdAt).format('MMM DD');
-        item.createdAt = s
+        const s = moment(date01).format('MMM DD');
+        item.submitDate = s
       })
       setvendors([])
+      
       const arr = res.data.basicInfo[0]?.filter((vend) => {
-        return !applist?.find((item1) => (item1.userId === vend.userId))
+        console.log("applist-----------",applist)
+        if(vend.submitStatus === 'Submitted'){
+          return !applist?.find((item1) => (item1.userId === vend.userId))
+        }
       })
       setvendors((array) => [...array, ...arr]);
     })
@@ -116,11 +123,11 @@ function AdminPage() {
                       <Typography >&nbsp;{item.userId}</Typography>
                     </IconButton>
                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
-                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>
+                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.submitDate}</Typography>
                     <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <ApprovalFields userid={item.userId} />
+                    <ApprovalFields userid={item.userId} approvedV="approvalTeam"/>
                   </AccordionDetails>
                 </Accordion>
               </>)}

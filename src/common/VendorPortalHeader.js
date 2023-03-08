@@ -17,7 +17,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
 const pages = ['Home', 'Admin', 'Master'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-function VendorPortalHeader() {
+function VendorPortalHeader(props) {
+  const vcode = props.vCode;
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenNavMenu = (event) => {
@@ -151,7 +152,7 @@ function VendorPortalHeader() {
                   display: 'block',
                 }}
               >
-                City vendor code
+              {vcode?vcode:"City vendor code"}
               </Button>
               <Tooltip title="Mail">
                 <IconButton onClick={handleOpenUserMenu}>
