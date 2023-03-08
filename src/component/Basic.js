@@ -97,16 +97,14 @@ export class Basic extends React.Component {
       commu: false,
     });
   }
-  togglebuttonCommu = (e) => {
-    e.preventDefault();
-    this.handleSubmit(e);
+  togglebuttonCommu() {
     const { commu } = this.state;
     this.setState({
       open: false,
       commu: true,
     });
     this.handleSubmitComDetail();
-  };
+  }
   next = (e) => {
     e.preventDefault();
     if (this.state.editStatutory.length <= 0 || "" || undefined) {
@@ -123,11 +121,9 @@ export class Basic extends React.Component {
       title: "Are You Sure,You want to reset?",
       icon: "success",
       confirmButtonText: "Yes",
-      cancelButtonText: "No",
       showCloseButton: true,
+      cancelButtonText: 'Cancel',
       showCancelButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
@@ -141,6 +137,8 @@ export class Basic extends React.Component {
           image: "",
         });
       }
+
+     
     });
   };
   cancelCommunicationInfo = (e) => {
@@ -148,38 +146,31 @@ export class Basic extends React.Component {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      showCloseButton: true,
-      showCancelButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.setState({
-          financeSpoccontactName: "",
-          financeSpocdesignation: "",
-          financeSpocphoneNo: "",
-          financeSpocemail: "",
-          operationSpoccontactName: "",
-          operationSpocdesignation: "",
-          operationSpocphoneNo: "",
-          operationSpocemail: "",
-          collectionSpoccontactName: "",
-          collectionSpocdesignation: "",
-          collectionSpocphoneNo: "",
-          collectionSpocemail: "",
-          managementSpoccontactName: "",
-          managementSpocdesignation: "",
-          managementSpocphoneNo: "",
-          managementSpocemail: "",
-          contactName: "",
-          designation: "",
-          phoneNo: "",
-          email: "",
-          mastervendor_email: "",
-        });
-      }
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      this.setState({
+        financeSpoccontactName: "",
+        financeSpocdesignation: "",
+        financeSpocphoneNo: "",
+        financeSpocemail: "",
+        operationSpoccontactName: "",
+        operationSpocdesignation: "",
+        operationSpocphoneNo: "",
+        operationSpocemail: "",
+        collectionSpoccontactName: "",
+        collectionSpocdesignation: "",
+        collectionSpocphoneNo: "",
+        collectionSpocemail: "",
+        managementSpoccontactName: "",
+        managementSpocdesignation: "",
+        managementSpocphoneNo: "",
+        managementSpocemail: "",
+        contactName: "",
+        designation: "",
+        phoneNo: "",
+        email: "",
+        mastervendor_email: "",
+      });
     });
   };
   handleChange(e) {
@@ -215,18 +206,12 @@ export class Basic extends React.Component {
               title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
           }
         });
@@ -237,20 +222,12 @@ export class Basic extends React.Component {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((Data) => {
-            this.props.navigate(`/basic/${basicInfo.userId}`);
           });
         } else {
           Swal.fire({
             title: "Error While Fetching",
             icon: "error",
             confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
           });
         }
       });
@@ -295,18 +272,12 @@ export class Basic extends React.Component {
               title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
           }
         });
@@ -319,20 +290,12 @@ export class Basic extends React.Component {
               title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            }).then((Data) => {
-              this.props.navigate(`/basic/${communicationDetails.userId}`);
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
           }
         });
@@ -352,18 +315,8 @@ export class Basic extends React.Component {
   };
   handleFileRead = async (event) => {
     const file = event.target.files[0];
-
     const base64 = await this.convertBase64(file);
-    if (file.size > 50000) {
-      Swal.fire({
-        title: "file size should be less than 50kb",
-        icon: "error",
-        confirmButtonText: "OK",
-        showCloseButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      }).then((ClearData) => {});
-    } else {
+    if (file) {
       const reader = new FileReader();
       reader.onload = this.onreaderLoad.bind(this);
       reader.readAsBinaryString(file);
@@ -676,10 +629,6 @@ export class Basic extends React.Component {
                                   )}
                                   {/* <img className="camera-img" alt="" src={uploa} /> */}
                                 </MDBCol>
-                                {/* <label className="ImageUpload btn btn-default btn-sm center-block btn-file">
-  <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
-  <input type="file"    label="Image"  name="image"  accept=".jpeg, .png, .jpg" onChange={(e) => this.handleFileRead(e)}     id="image" value={this.base64} className="mb-4 VendorInput" style={{ display: 'none' }} />
-</label> */}
                                 <input
                                   type="file"
                                   label="Image"
@@ -704,21 +653,21 @@ export class Basic extends React.Component {
                                 <button
                                   type="button"
                                   onClick={this.cancelBasicInfo}
-                                  className="btn basicbtn  btn-md m-3"
+                                  className="btn basicbtn btn-primary btn-md m-3"
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   type="button"
                                   onClick={this.handleSubmit}
-                                  className="btn basicbtn btn-md m-3"
+                                  className="btn basicbtn btn-primary btn-md m-3"
                                 >
                                   Save
                                 </button>
                                 <button
                                   type="button"
                                   onClick={this.togglebuttonCommu}
-                                  className="btn basicbtn btn-md m-3"
+                                  className="btn basicbtn btn-primary btn-md m-3"
                                 >
                                   Next
                                 </button>
@@ -1011,21 +960,21 @@ export class Basic extends React.Component {
                                   <button
                                     type="button"
                                     onClick={this.cancelCommunicationInfo}
-                                    className="btn basicbtn btn-md m-3"
+                                    className="btn basicbtn btn-primary btn-md m-3"
                                   >
                                     Cancel
                                   </button>
                                   <button
                                     type="button"
                                     onClick={this.handleSubmitComDetail}
-                                    className="btn basicbtn btn-md m-3"
+                                    className="btn basicbtn btn-primary btn-md m-3"
                                   >
                                     Save
                                   </button>
                                   <button
                                     type="button"
                                     onClick={this.next}
-                                    className="btn basicbtn btn-md m-3"
+                                    className="btn basicbtn btn-primary btn-md m-3"
                                   >
                                     Next
                                   </button>

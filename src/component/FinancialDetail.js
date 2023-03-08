@@ -33,6 +33,9 @@ const FinancialDetails = () => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileFD(e);
@@ -45,6 +48,9 @@ const FinancialDetails = () => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileFD2(e);
@@ -56,7 +62,12 @@ const FinancialDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileFD("");
       setdeleteUploadedFile(false);
@@ -68,7 +79,12 @@ const FinancialDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileFD2("");
       setdeleteUploadedFile2(false);
@@ -149,12 +165,18 @@ const FinancialDetails = () => {
             title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
         } else {
           Swal.fire({
             title: "Error While Fetching",
             icon: "error",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
         }
       });
@@ -165,7 +187,12 @@ const FinancialDetails = () => {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
-          });
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            navigate(`/FinancialDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -347,13 +374,14 @@ const FinancialDetails = () => {
                     Delete files
                   </button>
                 ) : (
-                  <button
-                    type="button"
-                    className="btn  m-2 uploadFile"
-                    style={{ fontSize: "12px" }}
-                  >
-                    Upload files
-                  </button>
+                  <div></div>
+                  // <button
+                  //   type="button"
+                  //   className="btn  m-2 uploadFile"
+                  //   style={{ fontSize: "12px" }}
+                  // >
+                  //   Upload files
+                  // </button>
                 )}
               </div>
               <div className="col-sm-2 col-xs-12"></div>
@@ -414,13 +442,14 @@ const FinancialDetails = () => {
                     Delete files
                   </button>
                 ) : (
-                  <button
-                    type="button"
-                    className="btn  m-2 uploadFile"
-                    style={{ fontSize: "12px" }}
-                  >
-                    Upload files
-                  </button>
+                  <div></div>
+                  // <button
+                  //   type="button"
+                  //   className="btn  m-2 uploadFile"
+                  //   style={{ fontSize: "12px" }}
+                  // >
+                  //   Upload files
+                  // </button>
                 )}{" "}
               </div>
               <div className="col-sm-2 col-xs-12"></div>

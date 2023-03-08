@@ -27,6 +27,9 @@ const BankDetails = (props) => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileBank(file);
@@ -39,7 +42,12 @@ const BankDetails = (props) => {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileBank("");
       seteditValuefileBank("");
@@ -95,7 +103,12 @@ const BankDetails = (props) => {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
-          });
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -111,6 +124,9 @@ const BankDetails = (props) => {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
         } else {
           Swal.fire({

@@ -50,6 +50,9 @@ const ComplianceDetails = () => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileRPD(e);
@@ -62,6 +65,9 @@ const ComplianceDetails = () => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileCOC(e);
@@ -74,6 +80,10 @@ const ComplianceDetails = () => {
         title: "file size should be less than 5mb",
         icon: "error",
         confirmButtonText: "OK",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       });
     } else {
       setfileNDA(e);
@@ -85,7 +95,12 @@ const ComplianceDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileRPD("");
       seteditVlauefileRPD("");
@@ -97,7 +112,12 @@ const ComplianceDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileCOC("");
       seteditVlauefileCOC("");
@@ -109,7 +129,12 @@ const ComplianceDetails = () => {
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
       setfileNDA("");
       seteditVlauefileNDA("");
@@ -212,6 +237,9 @@ const ComplianceDetails = () => {
             title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
         } else {
           Swal.fire({
@@ -228,7 +256,12 @@ const ComplianceDetails = () => {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
-          });
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            navigate(`/ComplianceDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",

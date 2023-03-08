@@ -310,6 +310,7 @@ const ContactTeam = () => {
             confirmButtonColor: "#3085d6",
             confirmButtonText: "ok",
           }).then((result) => {
+            navigate(`/ContactTeam/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
             // Swal.fire(
             //   'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
             // )
