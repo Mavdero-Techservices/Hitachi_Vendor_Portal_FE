@@ -2059,8 +2059,8 @@ function ApprovalFields(props) {
       data.append('others_Email', others_Email);
       data.append('mastervendor_email', mastervendor_email);
       data.append('RPD_Doc', RPD_Doc);
-      data.append('NDA_Doc', COC_Doc);
-      data.append('COC_Doc', NDA_Doc);
+      data.append('NDA_Doc', NDA_Doc);
+      data.append('COC_Doc', COC_Doc);
       data.append('GST_Doc', GST_Doc);
       data.append('GST_type', GST_type);
       data.append('GST_No', GST_No);
