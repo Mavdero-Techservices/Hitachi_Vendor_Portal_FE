@@ -233,6 +233,45 @@ export class Basic extends React.Component {
       });
     }
   };
+   handleSubmit1 = (e) => {
+    e.preventDefault();
+    const basicInfo = {
+      userId: JSON.parse(window.sessionStorage.getItem('jwt')).result.userId,
+      address1: this.state.address1,
+      address2: this.state.address2,
+      city: this.state.city,
+      state: this.state.state,
+      country: this.state.country,
+      pinCode: this.state.pinCode,
+      companyName: this.state.companyName,
+      image: this.state.image,
+    };
+    if (this.props.params.userId) {
+      apiService
+        .updateVendordetail(this.props.params.userId, basicInfo)
+        .then((response) => {
+          if (response) {
+            Swal.fire({
+              title: 'Data Updated',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: 'Error While Fetching',
+              icon: 'error',
+              confirmButtonText: 'OK',
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        });
+    }
+  };
 
   handleSubmitComDetail = (e) => {
     e.preventDefault();
@@ -333,6 +372,11 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => {});
   }
   componentDidMount() {
+    let userid = JSON.parse(window.sessionStorage.getItem('jwt')).result.userId;
+    apiService.getAllCollection(userid).then((res) => {
+      this.setState({ companyName: res.data.basicInfo[0].companyName });
+    });
+
     if (this.props.params.userId) {
       this.edit = true;
       apiService.getAllCollection(this.props.params.userId).then((res) => {
@@ -657,6 +701,21 @@ export class Basic extends React.Component {
                                 >
                                   Cancel
                                 </button>
+                                {this.props.params.userId ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={this.handleSubmit1}
+                                      className="btn basicbtn btn-md m-3"
+                                    >
+                                      {' '}
+                                      Edit
+                                    </button>
+                                  </>
+                                ) : (
+                                  ''
+                                )}
+
                                 <button
                                   type="button"
                                   onClick={this.handleSubmit}

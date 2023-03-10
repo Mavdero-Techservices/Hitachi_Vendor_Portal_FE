@@ -14,20 +14,20 @@ export default function PurchaseOrder(props) {
       html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
       <div class="approvestyle">
       <form>
-      <label  >Email:</label>
-      <select  class="select" style="max-width:70%;" id="email" required>
+      <label style="margin-left:0.5rem;" >Email:</label>
+      <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
       <option value="" hidden>Select EmailId</option>
         <option value="hitachi">hitachi@gmail.com</option>
         <option value="hitachy">hitachi@yahoo.com</option>
       </select><br>
       <label >User Name:</label>
-      <select  class="select" style="max-width:70%;margin-top:1rem;"  id="username" >
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
       <option value="" hidden>Select User Name</option>
         <option value="Hello" >Hello</option>
         <option value="Hello1">Hello1</option>
       </select><br>
-      <label>Location:</label>
-      <select  class="select" style="max-width:70%;margin-top:1rem"  id="location" >
+      <label >Location:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
       <option value="" hidden>Select Location</option>
         <option value="chennai" >Chennai</option>
         <option value="trichy" >trichy</option>
@@ -48,12 +48,20 @@ export default function PurchaseOrder(props) {
           Swal.showValidationMessage(
             `Please choose EmailId,User Name and Location`
           );
+        } else if (!location && !username) {
+          Swal.showValidationMessage(`Please choose  User Name and Location.`);
+        } else if (!location && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
+        } else if (!username && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
         } else if (!email) {
           Swal.showValidationMessage(`Please choose EmailId.`);
         } else if (!username) {
           Swal.showValidationMessage(`Please choose User Name.`);
         } else if (!location) {
           Swal.showValidationMessage(`Please choose Location.`);
+        } else {
+          Swal.showValidationMessage(`Approved Successfully.`);
         }
       },
     });

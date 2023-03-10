@@ -266,7 +266,7 @@ export const SideBar = (props) => {
                 component={Link}
                 to="/poApproved"
                 sx={{
-                  backgroundColor: pathname === 'poApproved' ? 'gray' : '',
+                  backgroundColor: pathname === '/poApproved' ? 'gray' : '',
                   borderRadius: '20px',
                   color: 'white',
                 }}

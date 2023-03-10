@@ -65,7 +65,7 @@ export default function PoApproved() {
                     variant="h5"
                     sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
                   >
-                    Approvels
+                    Po Approved
                   </Typography>
                   <Typography sx={{ width: '36%' }}></Typography>
                   <TextField

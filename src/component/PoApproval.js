@@ -11,15 +11,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-// import moment from 'moment';
+
 import { React, useEffect, useState } from 'react';
 import AdminHeader from '../common/AdminHeader';
-// import apiService from '../services/api.service';
+
 import PurchaseOrder from './PurchaseOrder';
 import SideBar from './SideBar';
 export default function PoApproval() {
   const [expanded, setExpanded] = useState(false);
-  //   const [vendors, setvendors] = useState([]);
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -29,21 +29,7 @@ export default function PoApproval() {
       textTransform: 'none',
     },
   });
-  useEffect(() => {
-    // apiService.getApprovedStatus().then((res) => {
-    //   res.data.result.forEach((item) => {
-    //     var date1 = new Date();
-    //     var date01 = new Date(item.createdAt);
-    //     var date2 = new Date();
-    //     date2.setDate(date01.getDate() + 3);
-    //     var Difference_In_Time = date2.getTime() - date1.getTime();
-    //     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    //     item.updatedAt = Difference_In_Days;
-    //     const s = moment(item.createdAt).format('MMM DD');
-    //     item.createdAt = s;
-    //   });
-    // });
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -63,7 +49,7 @@ export default function PoApproval() {
                     variant="h5"
                     sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
                   >
-                    Approvels
+                    Approvals
                   </Typography>
                   <Typography sx={{ width: '36%' }}></Typography>
                   <TextField
@@ -98,11 +84,10 @@ export default function PoApproval() {
                   <Typography sx={{ fontWeight: 'bold' }}>Age</Typography>
                 </AccordionSummary>
               </Accordion>
-              {/* {vendors?.map((item, key) => ( */}
+
               <>
                 <Accordion
                   expanded={expanded === 'panel'}
-                  // key={key}
                   onChange={handleChange('panel')}
                 >
                   <AccordionSummary

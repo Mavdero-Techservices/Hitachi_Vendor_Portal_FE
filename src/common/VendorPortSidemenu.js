@@ -15,172 +15,19 @@ import GradingIcon from '@mui/icons-material/Grading';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DescriptionIcon from '@mui/icons-material/Description';
+import { useLocation } from 'react-router-dom';
 export const VendorPortSidemenu = (props) => {
   const [open, setOpen] = useState(false);
   const sidemenuOpen = () => {
     setOpen(!open);
   };
+  const { pathname } = useLocation();
+
   // useEffect(() => {
   //   setOpen(open);
   // },[open]);
   return (
     <>
-      {/* <Box
-        sx={{
-          flexGrow: 1,
-          display: { xs: 'block', sm: 'none' },
-          maxWidth: 60,
-          minHeight: '100%',
-          bgcolor: '#B1000E',
-          color: 'white',
-        }}
-      >
-        <nav aria-label="main mailbox folders">
-          <List>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={sidemenuOpen}
-              sx={{ ml: 1 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </List>
-          <List>
-            <ListItem disablePadding sx={{ color: 'white' }}>
-              <ListItemButton sx={{}}>
-                <ListItemIcon>
-                  <WindowIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText primary="Home" sx={{ mr: 2, display: 'none' }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ListAltIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Purchase Order"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem
-              disablePadding
-              sx={{ color: 'white' }}
-              component={Link}
-              to="/estimateDD"
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <PendingActionsIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Estimated Delivery Date"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <GradingIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Invoices"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem
-              disablePadding
-              component={Link}
-              to="/acStatement"
-              sx={{ color: 'white' }}
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <AccountBalanceIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Account Statement"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem
-              disablePadding
-              component={Link}
-              to="/documents"
-              sx={{ color: 'white' }}
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <DescriptionIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Documents"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <SignalCellularAltIcon
-                    sx={{
-                      color: 'white',
-                      '&:hover': { backgroundColor: 'gray' },
-                      borderRadius: '20px',
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Reports"
-                  sx={{ mr: 2, display: 'none' }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </nav>
-      </Box> */}
       <Box
         sx={{
           display: { xs: 'none', sm: 'block' },
@@ -225,7 +72,11 @@ export const VendorPortSidemenu = (props) => {
               disablePadding
               component={Link}
               to="/povendor"
-              sx={{ color: 'white' }}
+              sx={{
+                color: 'white',
+                backgroundColor: pathname === '/povendor' ? 'gray' : '',
+                borderRadius: '20px',
+              }}
             >
               <ListItemButton
                 sx={{
@@ -246,7 +97,11 @@ export const VendorPortSidemenu = (props) => {
               disablePadding
               component={Link}
               to="/estimateDD"
-              sx={{ color: 'white' }}
+              sx={{
+                color: 'white',
+                backgroundColor: pathname === '/estimateDD' ? 'gray' : '',
+                borderRadius: '20px',
+              }}
             >
               <ListItemButton
                 sx={{
@@ -289,7 +144,11 @@ export const VendorPortSidemenu = (props) => {
               disablePadding
               component={Link}
               to="/acStatement"
-              sx={{ color: 'white' }}
+              sx={{
+                color: 'white',
+                backgroundColor: pathname === '/acStatement' ? 'gray' : '',
+                borderRadius: '20px',
+              }}
             >
               <ListItemButton
                 sx={{
@@ -310,7 +169,11 @@ export const VendorPortSidemenu = (props) => {
               disablePadding
               component={Link}
               to="/documents"
-              sx={{ color: 'white' }}
+              sx={{
+                color: 'white',
+                backgroundColor: pathname === '/documents' ? 'gray' : '',
+                borderRadius: '20px',
+              }}
             >
               <ListItemButton
                 sx={{

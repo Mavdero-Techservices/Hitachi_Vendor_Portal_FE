@@ -19,7 +19,7 @@ import PurchaseOrder from './PurchaseOrder';
 import SideBar from './SideBar';
 export default function PoReject() {
   const [expanded, setExpanded] = useState(false);
-  //   const [vendors, setvendors] = useState([]);
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -42,8 +42,6 @@ export default function PoReject() {
         const s = moment(item.createdAt).format('MMM DD');
         item.createdAt = s;
       });
-      //   setvendors([]);
-      //   setvendors((array) => [...array, ...res.data.result]);
     });
   }, []);
 
@@ -65,7 +63,7 @@ export default function PoReject() {
                     variant="h5"
                     sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
                   >
-                    Approvels
+                    Po Reject
                   </Typography>
                   <Typography sx={{ width: '36%' }}></Typography>
                   <TextField
@@ -104,7 +102,6 @@ export default function PoReject() {
               <>
                 <Accordion
                   expanded={expanded === 'panel'}
-                  // key={key}
                   onChange={handleChange('panel')}
                 >
                   <AccordionSummary

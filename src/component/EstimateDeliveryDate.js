@@ -20,7 +20,7 @@ import * as React from 'react';
 import VendorPortalHeader from '../common/VendorPortalHeader';
 import VendorPortSidemenu from '../common/VendorPortSidemenu';
 import Button from '@mui/material/Button';
-
+import '../css/ApprovalFields.css';
 function createData(
   id,
   paymentterms,
@@ -54,12 +54,17 @@ function createData(
     other,
     history: [
       {
-        ItemCodewithDescription: 'MR44',
+        ItemCodewithDescription: 'MR44-HW Meraki ',
         qty: 11,
         amount: 5000,
       },
       {
-        ItemCodewithDescription: 'wifi6',
+        ItemCodewithDescription: 'Meraki MR Enterprise License',
+        qty: 11,
+        amount: 5000,
+      },
+      {
+        ItemCodewithDescription: 'MS225-24P-HW Meraki MS225-24P ',
         qty: 11,
         amount: 5000,
       },
@@ -83,51 +88,245 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell
+          component="th"
+          scope="row"
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
           {row.id}
         </TableCell>
 
-        <TableCell align="right">{row.paymentterms}</TableCell>
-        <TableCell align="right">{row.poDate}</TableCell>
-        <TableCell align="right">{row.address}</TableCell>
-        <TableCell align="right">{row.custom}</TableCell>
-        <TableCell align="right">{row.billto}</TableCell>
-        <TableCell align="right">{row.shipto}</TableCell>
-        <TableCell align="right">{row.totalpo}</TableCell>
-        <TableCell align="right">{row.billedamt}</TableCell>
-        <TableCell align="right">{row.unbilledamt}</TableCell>
-        <TableCell align="right">{row.mfgcode}</TableCell>
-        <TableCell align="right">{row.quoteno}</TableCell>
-        <TableCell align="right">{row.purspoc}</TableCell>
-        <TableCell align="right">{row.other}</TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.paymentterms}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.poDate}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.address}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.custom}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.billto}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.shipto}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.totalpo}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.billedamt}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.unbilledamt}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.mfgcode}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.quoteno}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.purspoc}
+        </TableCell>
+        <TableCell
+          sx={{
+            width: 200,
+            textAlign: 'center',
+          }}
+        >
+          {row.other}
+        </TableCell>
+        <TextField type="date" sx={{ width: '8.5rem' }}></TextField>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Details
+            <Box>
+              <Typography
+                variant="h6"
+                gutterBottom
+                component="div"
+                sx={{ width: 200, fontWeight: 'bold', color: '#B1000E' }}
+              >
+                Details:
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Item Code with Description</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="center">EstimateDeliveryDate</TableCell>
-                    <TableCell align="center">StartDate</TableCell>
-                    <TableCell align="center">EndDate</TableCell>
+                    <TableCell
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      Item Code with Description
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      Quantity
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      Amount
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      EDD
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      Start Period
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        width: 200,
+                        fontWeight: 'bold',
+                        color: '#B1000E',
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}
+                    >
+                      End Period
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.history.map((historyRow) => (
                     <TableRow key={historyRow.ItemCodewithDescription}>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
                         {historyRow.ItemCodewithDescription}
                       </TableCell>
-                      <TableCell>{historyRow.qty}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {historyRow.qty}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {historyRow.amount}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
                         <Box>
                           <TextField
                             id="outlined-basic"
@@ -136,7 +335,12 @@ function Row(props) {
                           />
                         </Box>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
                         <Box>
                           <TextField
                             id="outlined-basic"
@@ -145,7 +349,12 @@ function Row(props) {
                           />
                         </Box>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          textAlign: 'center',
+                        }}
+                      >
                         <Box>
                           <TextField
                             id="outlined-basic"
@@ -235,35 +444,193 @@ export default function EstimateDeliveryDate() {
           <Box sx={{ mt: 2, width: '100%', overflowX: 'auto' }}>
             {' '}
             <Box>
-              <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+              <TableContainer
+                stickyHeader
+                component={Paper}
+                sx={{ overflowX: 'auto', width: '100%' }}
+              >
                 <Table aria-label="collapsible table">
                   <TableHead>
                     <TableRow>
                       <TableCell />
-                      <TableCell>PO Number</TableCell>
-                      <TableCell style={{ width: 200 }}>
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        PO Number
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
                         Payment Terms
                       </TableCell>
-                      <TableCell style={{ width: 200 }}>PO Date</TableCell>
-                      <TableCell style={{ width: 200 }}>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        PO Date
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
                         Vendor Address
                       </TableCell>
-                      <TableCell style={{ width: 200 }}>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
                         Customer Name
                       </TableCell>
-                      <TableCell style={{ width: 200 }}>Bill to</TableCell>
-                      <TableCell style={{ width: 200 }}>Ship to</TableCell>
-                      <TableCell style={{ width: 200 }}>Total Po Amt</TableCell>
-                      <TableCell style={{ width: 200 }}>Billed amt</TableCell>
-                      <TableCell style={{ width: 200 }}>Unbilled amt</TableCell>
-                      <TableCell style={{ width: 200 }}>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Bill To
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Ship To
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Total PoAmt
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Billed Amt
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Unbilled Amt
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
                         Manufacturing code
                       </TableCell>
-                      <TableCell style={{ width: 200 }}>Quote No</TableCell>
-                      <TableCell style={{ width: 200 }}>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Quote No
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
                         Purchase spoc
                       </TableCell>
-                      <TableCell style={{ width: 200 }}>Others</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        Others
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          width: 200,
+                          fontWeight: 'bold',
+                          color: '#B1000E',
+                          textAlign: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        EDD
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -274,9 +641,11 @@ export default function EstimateDeliveryDate() {
                 </Table>
               </TableContainer>
             </Box>
-            <Button variant="contained" sx={{ ml: 110, mt: 10 }}>
-              Save
-            </Button>
+            <Box sx={{ display: 'flex' }}>
+              <Button variant="contained" sx={{ ml: 110, mt: 5 }} size="large">
+                Save
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Box>
