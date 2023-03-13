@@ -49,9 +49,12 @@ const BankDetails = (props) => {
       allowOutsideClick: false,
       allowEscapeKey: false,
     }).then((ClearData) => {
-      setfileBank("");
-      seteditValuefileBank("");
-      setdeleteUploadedFile(false);
+      if (ClearData.isConfirmed) {
+        setfileBank("");
+        seteditValuefileBank("");
+        setdeleteUploadedFile(false);
+      }
+      
     });
   }
   function cancel(e) {
@@ -79,8 +82,67 @@ const BankDetails = (props) => {
     });
   }
   function next(e) {
-    handleSubmit(e);
-    navigate("/FinancialDetail");
+    e.preventDefault();
+    const data = new FormData();
+    data.append(
+      "userId",
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    );
+    data.append("bankAccountName", acName);
+    data.append("bankName", bankname);
+    data.append("bankAccountNumber", acno);
+    data.append("ifscCode", ifsc);
+    data.append("MICRcode", micr);
+    data.append("branchAddress", branchAdd);
+    data.append("bankdetailDoc", fileBank);
+    if (params.userId) {
+      apiService.updateBankDetail(params.userId, data).then((response) => {
+        if (response) {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate("/FinancialDetail");
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      apiService.savebankdetail(data).then((response) => {
+        if (response) {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate("/FinancialDetail");
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+   
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -107,7 +169,7 @@ const BankDetails = (props) => {
             allowOutsideClick: false,
             allowEscapeKey: false,
           }).then((res) => {
-            navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+            // navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
           })
         } else {
           Swal.fire({
