@@ -32,6 +32,7 @@ const ComplianceDetails = () => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
+  const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
       .companyName,
@@ -179,6 +180,9 @@ const ComplianceDetails = () => {
   useEffect(() => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          setStyle('notEditable');
+        }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
           var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
           var RPD_Doc = initialUrlRPD_Doc.replace("uploads/", "");
@@ -279,7 +283,7 @@ const ComplianceDetails = () => {
         className="container-fluid  py-5"
         style={{ backgroundColor: "#f3f4f7" }}
       >
-        <Container fluid="md">
+        <Container fluid="md" className={style}>
           <Row>
             <Col>
               <div className="container">
@@ -314,6 +318,7 @@ const ComplianceDetails = () => {
                                   type="file"
                                   name="fileRPD"
                                   fileOrFiles={deleteUploadedFile}
+                                  disabled={this.setStyle==='notEditable'? true:false}
                                 />
                                 <span>
                                   {fileRPD
@@ -331,6 +336,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileRPD"
                               fileOrFiles={deleteUploadedFile}
+                              disabled={this.setStyle==='notEditable'? true:false}
                             />
                             <span>
                               {fileRPD
@@ -383,6 +389,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileCOC"
                               fileOrFiles={deleteCocFile}
+                              disabled={this.setStyle==='notEditable'? true:false}
                             />
                             <span>
                               {fileCOC
@@ -433,6 +440,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileNDA"
                               fileOrFiles={deleteNdaFile}
+                              disabled={this.setStyle==='notEditable'? true:false}
                             />
                             <span>
                               {fileNDA
@@ -479,6 +487,7 @@ const ComplianceDetails = () => {
             </Col>
           </Row>
           <Row className="sbtn">
+            <div className={style}>
             <div className="float-end mt-2">
               <button
                 type="button"
@@ -501,6 +510,7 @@ const ComplianceDetails = () => {
               >
                 Next
               </button>
+            </div>
             </div>
           </Row>
         </Container>

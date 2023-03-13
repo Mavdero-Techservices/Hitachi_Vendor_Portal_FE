@@ -422,3 +422,22 @@ background-color: #575757!important;
   background-color: transparent !important;
   color: #B1000E !important;
 }
+
+.notEditable label {
+  color: black;
+}
+.notEditable input {
+  pointer-events: none;
+}
+.notEditable button {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.editable input{
+  pointer-events: auto !important;
+  color: black;
+}
+.editable input {
+  background-color: white;
+}

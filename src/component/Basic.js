@@ -60,6 +60,7 @@ export class Basic extends React.Component {
       commu: false,
       edit: true,
       editStatutory: "",
+      setStyle: 'editable',
     };
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -138,7 +139,7 @@ export class Basic extends React.Component {
         });
       }
 
-     
+
     });
   };
   cancelCommunicationInfo = (e) => {
@@ -170,6 +171,7 @@ export class Basic extends React.Component {
         phoneNo: "",
         email: "",
         mastervendor_email: "",
+
       });
     });
   };
@@ -380,6 +382,9 @@ export class Basic extends React.Component {
     if (this.props.params.userId) {
       this.edit = true;
       apiService.getAllCollection(this.props.params.userId).then((res) => {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          this.setStyle = 'notEditable';
+        }
         this.setState({
           editStatutory: res.data.Statutory,
         });
@@ -516,7 +521,7 @@ export class Basic extends React.Component {
                             <MDBCol md="8" className="mb-4">
                               <MDBCard className="mb-4 basic">
                                 <MDBCardBody>
-                                  <form>
+                                  <form className={this.setStyle}>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div>
@@ -552,6 +557,7 @@ export class Basic extends React.Component {
                                             id="address1"
                                             onChange={this.formValChange}
                                             value={address1}
+                                            disabled={this.setStyle==='notEditable'? true:false}
                                           ></textarea>
                                         </div>
                                       </MDBCol>
@@ -569,6 +575,7 @@ export class Basic extends React.Component {
                                         id="address2"
                                         onChange={this.formValChange}
                                         value={address2}
+                                        disabled={this.setStyle==='notEditable'? true:false}
                                       ></textarea>
                                     </div>
                                     <MDBRow className="mb-4">
@@ -585,6 +592,7 @@ export class Basic extends React.Component {
                                             id="country"
                                             value={this.state.country}
                                             onChange={this.handleChange}
+                                            disabled={this.setStyle==='notEditable'? true:false}
                                           >
                                             {countriesList}
                                           </select>
@@ -682,6 +690,7 @@ export class Basic extends React.Component {
                                   id="image"
                                   value={this.base64}
                                   className="mb-4 VendorInput"
+                                  disabled={this.setStyle==='notEditable'? true:false}
                                 />
                                 <MDBCardHeader className="py-3">
                                   <MDBTypography tag="h5" className="mb-0">
@@ -693,7 +702,7 @@ export class Basic extends React.Component {
                           </MDBRow>
                           <div className="d-flex justify-content-center">
                             <MDBRow className="mb-4">
-                              <div className="float-end">
+                              <div className={this.setStyle}>
                                 <button
                                   type="button"
                                   onClick={this.cancelBasicInfo}
@@ -749,7 +758,7 @@ export class Basic extends React.Component {
                     <MDBCol md="12" className="mb-12">
                       <MDBCard className="mb-12">
                         <div class="container-fluid">
-                          <form>
+                          <form className={this.setStyle}>
                             <label className="fieldHeader">
                               Finance Spoc
                               <span className="mandatoryField">*</span>
@@ -1015,7 +1024,7 @@ export class Basic extends React.Component {
                             </MDBRow>
                             <div className="d-flex justify-content-center">
                               <MDBRow className="mb-4">
-                                <div className="float-end">
+                                <div  className={this.setStyle}>
                                   <button
                                     type="button"
                                     onClick={this.cancelCommunicationInfo}

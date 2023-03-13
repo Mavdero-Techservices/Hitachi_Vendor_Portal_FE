@@ -52,3 +52,21 @@
   background-color: #fff !important;
   margin: 0px -2px !important;
 }
+
+.notEditable label {
+  color: black;
+}
+.notEditable input {
+  pointer-events: none;
+}
+.notEditable button {
+  pointer-events: none;
+}
+
+.editable input{
+  pointer-events: auto !important;
+  color: black;
+}
+.editable input {
+  background-color: white;
+}

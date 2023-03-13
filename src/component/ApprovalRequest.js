@@ -30,6 +30,7 @@ function ApprovalRequest() {
   
     // const [dropdownShow, setDropDownShow] = useState(false);
     const [reqData, setreqData] = useState([]);
+    console.log("reqData----------------->>>>",reqData)
     // const [optionSelected, setoptionSelected] = useState(null);
     const [documentFileDoc, setdocumentFileDoc] = useState();
     const [documentFileDocErr, setdocumentFileDocErr] = useState();
@@ -72,7 +73,6 @@ function ApprovalRequest() {
         } else {
             setdocumentFileDocErr("File is required")
         }
-
     }
 
     const submitHandler = (e) => {
@@ -328,6 +328,7 @@ function ApprovalRequest() {
             setvendorList(response.data.result);
         })
         apiService.getPeriodicReq().then(response => {
+            // console.log("response.data.result------------req-->>>",response)
             setreqData(response.data.result);
         })
     }, [])
@@ -358,25 +359,25 @@ function ApprovalRequest() {
             // }
 
             let userId = reqinfo[0].userId
-            // apiService.updatePeriodicReq(userId, reqinfo)
-            //     .then(response => {
-            //         if (response) {
-            //             setModalShow(false)
-            //             Swal.fire({
-            //                 title: "Data saved",
-            //                 icon: "success",
-            //                 confirmButtonText: "OK",
-            //             });
-            //             getReqData();
-            //         }
-            //         else {
-            //             Swal.fire({
-            //                 title: "Error While Fetching",
-            //                 icon: "error",
-            //                 confirmButtonText: "OK",
-            //             });
-            //         }
-            //     })
+            apiService.updatePeriodicReq(userId, reqinfo)
+                .then(response => {
+                    if (response) {
+                        setModalShow(false)
+                        Swal.fire({
+                            title: "Data saved",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        });
+                        getReqData();
+                    }
+                    else {
+                        Swal.fire({
+                            title: "Error While Fetching",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                    }
+                })
         }
     }
 // console.log("vendorList---------------------->>>>>",vendorList);

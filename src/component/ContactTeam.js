@@ -19,6 +19,7 @@ const ContactTeam = () => {
   const [compaliance, setcompaliance] = useState({});
   const [financialDetail, setfinancialDetail] = useState({});
   const [bankDetail, setbankDetail] = useState({});
+  const [style, setStyle] = useState("editable");
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     contactName1: "",
@@ -364,6 +365,9 @@ const ContactTeam = () => {
   useEffect(() => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          setStyle('notEditable');
+        }
         Object.entries(res.data.contactDetail).map(([key, value]) => {
           setValues({
             contactName1: value.contactName1,
@@ -392,7 +396,7 @@ const ContactTeam = () => {
     <div className="Contact-details">
       <Navbar1 />
       <div className="container-fluid  py-5">
-        <form>
+        <form className={style}>
           <div className="container">
             <span className="Contact_title">Contact Team</span>
             <div className="row p-5" style={{ backgroundColor: "#fff" }}>

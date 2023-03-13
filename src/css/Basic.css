@@ -425,6 +425,24 @@ select {
     margin-left: -44%;
     position: relative;
   }
+
+  .notEditable label {
+    color: black;
+  }
+  .notEditable input {
+    pointer-events: none;
+  }
+  .notEditable button {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+  }
+  .editable input{
+    pointer-events: auto !important;
+    color: black;
+  }
+  .editable input {
+    background-color: white;
+  }
 }
 
 @media only screen and (min-device-width: 801px) and (max-device-width:991px) {}

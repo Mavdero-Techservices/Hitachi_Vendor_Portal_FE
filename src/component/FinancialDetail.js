@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 const FinancialDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [style, setStyle] = useState("editable");
   const [EditfinancialDetail, setEditfinancialDetail] = useState(true);
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteUploadedFile2, setdeleteUploadedFile2] = useState(false);
@@ -159,6 +160,7 @@ const FinancialDetails = () => {
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
     if (params.userId) {
+      if (style !== 'notEditable') {
       apiService.updateFinacialDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
@@ -180,6 +182,13 @@ const FinancialDetails = () => {
           });
         }
       });
+    } else {
+      Swal.fire({
+        title: "Vendor Data Already Submitted",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
     } else {
       apiService.saveFinacialDetail(data).then((res) => {
         if (res.data.status === "success") {
@@ -207,6 +216,9 @@ const FinancialDetails = () => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
+          if (res.data.basicInfo[0].submitStatus === "Submitted") {
+            setStyle('notEditable');
+          }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
           var replaceUrlFinancialData1 = initialUrlfinancial_data.replace(
@@ -245,7 +257,7 @@ const FinancialDetails = () => {
         className="container-fluid  py-5"
         style={{ backgroundColor: "#f3f4f7" }}
       >
-        <form>
+        <form className={style}>
           <div className="container">
             <span className="financial_title">Financial Detail</span>
             <div className="row p-5" style={{ backgroundColor: "#fff" }}>
@@ -338,6 +350,7 @@ const FinancialDetails = () => {
                           type="file"
                           name="fileFD"
                           fileOrFiles={deleteUploadedFile}
+                          disabled={style==='notEditable'? true:false}
                         />
                         <span>
                           {fileFD
@@ -356,6 +369,7 @@ const FinancialDetails = () => {
                       type="file"
                       name="fileFD"
                       fileOrFiles={deleteUploadedFile}
+                      disabled={style==='notEditable'? true:false}
                     />
                     <span>
                       {fileFD ? `File name: ${fileFD.name}` : "No File Chosen"}
@@ -404,6 +418,8 @@ const FinancialDetails = () => {
                           type="file"
                           name="fileFD2"
                           fileOrFiles={deleteUploadedFile2}
+                          disabled={style==='notEditable'? true:false}
+
                         />
                         <span>
                           {fileFD2
@@ -422,6 +438,8 @@ const FinancialDetails = () => {
                       type="file"
                       name="fileFD2"
                       fileOrFiles={deleteUploadedFile2}
+                      disabled={style==='notEditable'? true:false}
+
                     />
                     <span>
                       {fileFD2

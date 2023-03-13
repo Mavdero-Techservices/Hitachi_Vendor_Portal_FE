@@ -21,6 +21,7 @@ const BankDetails = (props) => {
   const [fileBank, setfileBank] = useState();
   const [editValuefileBank, seteditValuefileBank] = useState("");
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
+  const [style, setStyle] = useState("editable");
   const onFileChange = (file) => {
     if (file.size > 5000000) {
       Swal.fire({
@@ -203,6 +204,10 @@ const BankDetails = (props) => {
   useEffect(() => {
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
+        console.log("res.data.basicInfo[0].submitStatus----------->>>>>>", res.data.basicInfo[0].submitStatus)
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          setStyle('notEditable');
+        }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
           var ret = initialUrlbankDoc.replace("uploads/", "");
@@ -225,7 +230,7 @@ const BankDetails = (props) => {
     <div className="bank-details">
       <Navbar1 />
       <div className="container-fluid  py-5 pagebg">
-        <form onSubmit={handleSubmit} className="mb-5">
+        <form onSubmit={handleSubmit} style={{mt:5}} className={style}>
           <div className="container">
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
@@ -325,6 +330,7 @@ const BankDetails = (props) => {
                           type="file"
                           name="fileBank"
                           fileOrFiles={deleteUploadedFile}
+                          disabled={style==='notEditable'? true:false}
                         />
                         <span>
                           {fileBank

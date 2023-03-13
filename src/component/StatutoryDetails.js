@@ -47,6 +47,7 @@ export default function Statutory(props) {
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
   const [country, setcountry] = useState({});
+  const [style, setStyle] = useState("editable");
   const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] =
     useState(false);
   const [
@@ -334,6 +335,9 @@ export default function Statutory(props) {
   useEffect(() => {  
     if (params.userId) {
       apiService.getAllCollection(params.userId).then((res) => {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          setStyle('notEditable');
+        }
         Object.entries(res.data.Statutory).map(([key, value]) => {
           console.log("GST_Doc",res.data.Statutory[0].PAN_Doc);
           var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
@@ -457,7 +461,7 @@ export default function Statutory(props) {
   return (
     <div>
       <Navbar1 />
-      <Container fluid="md">
+      <Container fluid="md" className={style}>
         <Row>
           <Col>
             <h2 className="statutory-details-name">Statutory Details</h2>
@@ -540,7 +544,9 @@ export default function Statutory(props) {
    value={values.GST_Doc}
    onChange={onFileChange}
    required
+   disabled={style==='notEditable'? true:false}
  />
+ 
 </div>
                             ):(
                               <div className="frame-input">
@@ -653,6 +659,7 @@ export default function Statutory(props) {
                             value={values.PAN_Doc}
                             onChange={onFileChangePAN_Doc}
                             required
+                            disabled={style==='notEditable'? true:false}
                           />
                         </div>
                         ):(
@@ -875,6 +882,7 @@ export default function Statutory(props) {
                                value={values.MSME_Doc}
                                onChange={onFileChangeMSME_Doc}
                                required
+                               disabled={style==='notEditable'? true:false}
                              />
                            </div>
                           ):(
@@ -993,6 +1001,7 @@ export default function Statutory(props) {
                               value={values.TAN_Doc}
                               onChange={onFileChangeTAN_Doc}
                               required
+                              disabled={style==='notEditable'? true:false}
                             />
                           </div>
                         </Col>
