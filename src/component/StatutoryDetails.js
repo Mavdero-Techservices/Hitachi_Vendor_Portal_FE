@@ -136,6 +136,9 @@ export default function Statutory(props) {
     } else {
       console.log("s")
       setFile(event.target.files[0]);
+      setValues({
+        GST_Doc:event.target.files[0]
+      });
     }
   };
 
@@ -181,6 +184,9 @@ export default function Statutory(props) {
       });
     } else {
       setPAN_Doc(e.target.files[0]);
+      setValues({
+        PAN_Doc:e.target.files[0]
+      })
     }
   }
   function onFileChangePE_Declaration_Doc(e) {
@@ -210,6 +216,9 @@ export default function Statutory(props) {
       });
     } else {
       setTAN_Doc(e.target.files[0]);
+      setValues({
+        TAN_Doc:e.target.files[0]
+      })
     }
   }
   function onFileChangeMSME_Doc(e) {
@@ -224,6 +233,9 @@ export default function Statutory(props) {
       });
     } else {
       setMSME_Doc(e.target.files[0]);
+      setValues({
+        MSME_Doc:e.target.files[0]
+      })
     }
   }
   function next(e) {
@@ -362,12 +374,18 @@ export default function Statutory(props) {
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
             Tax_residency_No: value.Tax_residency_No,
+            GST_Doc: value.GST_Doc,
+            PAN_Doc: value.PAN_Doc,
+            TAN_Doc: value.TAN_Doc,
+            MSME_Doc: value.MSME_Doc,
+            Tax_residency_Doc: value.Tax_residency_Doc,
           });
 
           setform_10f_Doc(value.form_10f_Doc);
 
           setFile(value.GST_Doc);
           setPAN_Doc(value.PAN_Doc);
+          setTAN_Doc(value.TAN_Doc);
           setPE_Declaration_Doc(value.PE_Declaration_Doc);
           setMSME_Doc(value.MSME_Doc);
           setTax_residency_Doc(value.Tax_residency_Doc);
@@ -458,6 +476,76 @@ export default function Statutory(props) {
       });
     }
   };
+
+  const deleteFile = (event) => {
+    if ((event === 'GST_Doc' && GST_Doc) || (event === 'PAN_Doc' && PAN_Doc) || 
+        (event === 'MSME_Doc' && MSME_Doc) || (event === 'TAN_Doc' && TAN_Doc))
+      {
+        let title = event;
+        Swal.fire({
+          heightAuto: true,
+          title: 'Delete Existing File',
+          html: `<div class="rejectstyle">
+            <div> <lablel> ${title}</label>
+        
+          </div>
+            `,
+          confirmButtonText: 'Delete',
+          confirmButtonColor: '#B1000E',
+          showCancelButton: true,
+          focusConfirm: false,
+          customClass: 'swal-wide',
+
+          preConfirm: () => {
+            Swal.fire({
+              title: 'Do you want to save the changes?',
+              showDenyButton: true,
+              // showCancelButton: true,
+              confirmButtonText: 'Yes',
+              confirmButtonColor: '#B1000E',
+              denyButtonText: 'No',
+              denyButtonColor: 'gray',
+              customClass: {
+                actions: 'my-actions',
+                cancelButton: 'order-1 right-gap',
+                confirmButton: 'order-2',
+                denyButton: 'order-3',
+              },
+            }).then((result) => {
+              if (result.isConfirmed) {
+                if (event === 'GST_Doc') {
+                  setFile("");
+                  setValues({
+                    GST_Doc:""
+                  });
+                } else if (event === 'PAN_Doc') {
+                  setPAN_Doc("");
+                  setValues({
+                    PAN_Doc:""
+                  });
+                }else if (event === 'MSME_Doc') {
+                  setMSME_Doc("");
+                  setValues({
+                    MSME_Doc:""
+                  });
+                }else if (event === 'TAN_Doc') {
+                  setTAN_Doc("");
+                  setValues({
+                    TAN_Doc:""
+                  });
+                }
+                Swal.fire('Deleted!', '', 'success');
+              } else if (result.isDenied) {
+                Swal.fire('File not deleted', '', 'info');
+              }
+            });
+          },
+        });
+    }else{
+      Swal.fire('File not deleted', '', 'info');
+    }
+  }
+
   return (
     <div>
       <Navbar1 />
@@ -535,19 +623,36 @@ export default function Statutory(props) {
                               </Form.Group>
                             </Col>
                             <Col>
-                            {values.GST_Doc!='' ? (
- <div className="frame-input">
- <label htmlFor="fileupload">GST Uploaded</label>
- <input
-   type="file"
-   id="fileupload"
-   value={values.GST_Doc}
-   onChange={onFileChange}
-   required
-   disabled={style==='notEditable'? true:false}
- />
- 
-</div>
+                            {/* {values.GST_Doc!='' ? (
+                                <div className="frame-input">
+                                <label htmlFor="fileupload">GST Uploaded</label>
+                                <input
+                                  type="file"
+                                  id="fileupload"
+                                  value={values.GST_Doc}
+                                  onChange={onFileChange}
+                                  required
+                                  disabled={style==='notEditable'? true:false}
+                                />
+                                
+                                </div>
+                            ):(
+                              <div className="frame-input">
+                              <label htmlFor="fileupload">Upload GST</label>
+                              <input
+                                type="file"
+                                id="fileupload"
+                                value={values.GST_Doc}
+                                onChange={onFileChange}
+                                required
+                              />
+                            </div>
+                            )} */}
+
+                            {((GST_Doc !=='') || ((values.GST_Doc !=='') && (values.GST_Doc !=='null') && (values.GST_Doc !== undefined))) ? (
+                              <div className="frame-input">
+                                <button type="button" className="deleteFile" onClick={()=>{deleteFile('GST_Doc')}}>Delete GST</button>
+                              </div>
                             ):(
                               <div className="frame-input">
                               <label htmlFor="fileupload">Upload GST</label>
@@ -592,7 +697,7 @@ export default function Statutory(props) {
                                 <Row></Row>
                               ) : (
                                 <Row>
-                                  <div className="frame-input">
+                                  {/* <div className="frame-input">
                                     <label htmlFor="fileupload">
                                       Upload UnRegister Gst
                                     </label>
@@ -603,7 +708,27 @@ export default function Statutory(props) {
                                       name="fileDisclosure"
                                       required
                                     />
-                                  </div>{" "}
+                                  </div>{" "} */}
+
+                                {((GST_Doc !=='') || ((values.GST_Doc !=='') && (values.GST_Doc !=='null') && (values.GST_Doc !== undefined))) ? (
+                                  <div className="frame-input">
+                                    <button type="button" className="deleteFile" onClick={()=>{deleteFile('GST_Doc')}}>Delete UnRegister Gst</button>
+                                  </div>
+                                  ):(
+                                    <div className="frame-input">
+                                    <label htmlFor="fileupload">
+                                      Upload UnRegister Gst
+                                    </label>
+                                    <input
+                                      type="file"
+                                      id="fileupload"
+                                      handleChange={onFileDisclosurechange}
+                                      name="fileDisclosure"
+                                      required
+                                    />
+                                  </div>
+                                  )}
+
                                 </Row>
                               )}
                             </Col>
@@ -650,7 +775,7 @@ export default function Statutory(props) {
                           </Form.Group>
                         </Col>
                         <Col>
-                        {values.PAN_Doc!='' ? (
+                        {/* {values.PAN_Doc!='' ? (
                           <div className="frame-input">
                           <label htmlFor="fileuploadPan">PAN Uploaded</label>
                           <input
@@ -662,6 +787,23 @@ export default function Statutory(props) {
                             disabled={style==='notEditable'? true:false}
                           />
                         </div>
+                        ):(
+                          <div className="frame-input">
+                          <label htmlFor="fileuploadPan">Upload PAN</label>
+                          <input
+                            type="file"
+                            id="fileuploadPan"
+                            value={values.PAN_Doc}
+                            onChange={onFileChangePAN_Doc}
+                            required
+                          />
+                        </div>
+                        )} */}
+
+                        {((PAN_Doc !=='') || ((values.PAN_Doc !=='') && (values.PAN_Doc !=='null') && (values.PAN_Doc !== undefined))) ? (
+                          <div className="frame-input">
+                            <button type="button" className="deleteFile" onClick={()=>{deleteFile('PAN_Doc')}}>Delete PAN</button>
+                          </div>
                         ):(
                           <div className="frame-input">
                           <label htmlFor="fileuploadPan">Upload PAN</label>
@@ -871,7 +1013,7 @@ export default function Statutory(props) {
                             </Form.Group>
                           </Col>
                           <Col>
-                          {values.MSME_Doc!='' ? (
+                          {/* {values.MSME_Doc!='' ? (
                              <div className="frame-input">
                              <label htmlFor="fileuploadMSME">
                                Upload MSME
@@ -898,6 +1040,25 @@ export default function Statutory(props) {
                               required
                             />
                           </div>
+                          )} */}
+
+                        {((MSME_Doc !=='') || ((values.MSME_Doc !=='') && (values.MSME_Doc !=='null') && (values.MSME_Doc !== undefined))) ? (
+                              <div className="frame-input">
+                                <button type="button" className="deleteFile" onClick={()=>{deleteFile('MSME_Doc')}}>Delete MSME</button>
+                              </div>
+                          ):(
+                            <div className="frame-input">
+                            <label htmlFor="fileuploadMSME">
+                            Upload MSME
+                            </label>
+                            <input
+                              type="file"
+                              id="fileuploadMSME"
+                              // value={values.MSME_Doc}
+                              onChange={onFileChangeMSME_Doc}
+                              required
+                            />
+                          </div>
                           )}
                            
                           </Col>
@@ -919,6 +1080,11 @@ export default function Statutory(props) {
                             </Form.Group>
                           </Col>
                           <Col>
+                          {((MSME_Doc !=='') || ((values.MSME_Doc !=='') && (values.MSME_Doc !=='null') && (values.MSME_Doc !== undefined))) ? (
+                              <div className="frame-input">
+                                <button type="button" className="deleteFile" onClick={()=>{deleteFile('MSME_Doc')}}>Delete MSME</button>
+                              </div>
+                          ):(
                             <div className="frame-input">
                               <label htmlFor="fileuploadMSME">
                                 Upload MSME
@@ -931,6 +1097,7 @@ export default function Statutory(props) {
                                 disabled="true"
                               />
                             </div>
+                          )}
                           </Col>
                         </Row>
                       )}
@@ -993,7 +1160,7 @@ export default function Statutory(props) {
                           </Form.Group>
                         </Col>
                         <Col>
-                          <div className="frame-input">
+                          {/* <div className="frame-input">
                             <label htmlFor="fileuploadTAN">Upload TAN</label>
                             <input
                               type="file"
@@ -1003,7 +1170,24 @@ export default function Statutory(props) {
                               required
                               disabled={style==='notEditable'? true:false}
                             />
+                          </div> */}
+
+                            {((TAN_Doc !=='') || ((values.TAN_Doc !=='') && (values.TAN_Doc !=='null') && (values.TAN_Doc !== undefined))) ? (
+                              <div className="frame-input">
+                                <button type="button" className="deleteFile" onClick={()=>{deleteFile('TAN_Doc')}}>Delete TAN</button>
+                              </div>
+                        ):(
+                          <div className="frame-input">
+                            <label htmlFor="fileuploadTAN">Upload TAN</label>
+                            <input
+                              type="file"
+                              id="fileuploadTAN"
+                              value={values.TAN_Doc}
+                              onChange={onFileChangeTAN_Doc}
+                              required
+                            />
                           </div>
+                        )}
                         </Col>
                       </Row>
                       {showLoginTab ? (

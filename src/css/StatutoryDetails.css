@@ -244,6 +244,25 @@ color: #000;
   color:#B1000E;
 }
 
+.frame-input .deleteFile:focus {
+  outline: none !important;
+}
+.frame-input .deleteFile {
+  cursor: pointer;
+  text-transform: unset !important;
+  background-color: #B1000E !important;
+  color: white !important;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 2% 10%;
+  text-align: center;
+  border: 1px solid #B1000E;
+  font-size: 16px;
+  position: relative;
+  top: 32px;
+  outline: none !important;
+}
+
 .frame-input2 input[type="file"] {
   display: none;
 
