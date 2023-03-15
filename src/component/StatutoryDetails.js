@@ -134,7 +134,6 @@ export default function Statutory(props) {
         allowEscapeKey: false
       });
     } else {
-      console.log("s")
       setFile(event.target.files[0]);
       setValues({
         GST_Doc:event.target.files[0]
@@ -346,12 +345,15 @@ export default function Statutory(props) {
   }
   useEffect(() => {  
     if (params.userId) {
+      let finalstatus = ""
+      apiService.signupFindByUserId(params.userId).then((res) => {
+        finalstatus = res.data.result.finalStatus
+      })
       apiService.getAllCollection(params.userId).then((res) => {
-        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+        if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
           setStyle('notEditable');
         }
         Object.entries(res.data.Statutory).map(([key, value]) => {
-          console.log("GST_Doc",res.data.Statutory[0].PAN_Doc);
           var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
           var replaceform10fValue = form_10fUrl.replace("uploads/", "");
           var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
@@ -662,6 +664,7 @@ export default function Statutory(props) {
                                 value={values.GST_Doc}
                                 onChange={onFileChange}
                                 required
+                                disabled={style === 'notEditable' ? true : false}
                               />
                             </div>
                             )}
@@ -1057,6 +1060,7 @@ export default function Statutory(props) {
                               // value={values.MSME_Doc}
                               onChange={onFileChangeMSME_Doc}
                               required
+                              disabled={style === 'notEditable' ? true : false}
                             />
                           </div>
                           )}

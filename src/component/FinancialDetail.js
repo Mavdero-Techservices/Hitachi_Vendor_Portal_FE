@@ -221,9 +221,13 @@ const FinancialDetails = () => {
   };
   useEffect(() => {
     if (params.userId) {
+      let finalstatus = ""
+      apiService.signupFindByUserId(params.userId).then((res) => {
+        finalstatus = res.data.result.finalStatus
+      })
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
             setStyle('notEditable');
           }
           var initialUrlfinancial_data =

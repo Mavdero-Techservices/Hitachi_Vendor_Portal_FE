@@ -203,9 +203,12 @@ const BankDetails = (props) => {
   };
   useEffect(() => {
     if (params.userId) {
+      let finalstatus=""
+      apiService.signupFindByUserId(params.userId).then((res) => {
+        finalstatus = res.data.result.finalStatus
+      })
       apiService.getAllCollection(params.userId).then((res) => {
-        console.log("res.data.basicInfo[0].submitStatus----------->>>>>>", res.data.basicInfo[0].submitStatus)
-        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+        if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
           setStyle('notEditable');
         }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
@@ -219,7 +222,7 @@ const BankDetails = (props) => {
           setMicr(value.MICRcode);
           setbranchAdd(value.branchAddress);
           setfileBank(initialUrlbankDoc);
-          seteditValuefileBank(bankdetailDoc);
+          seteditValuefileBank(bankdetailDoc); 
         });
       });
     } else {
