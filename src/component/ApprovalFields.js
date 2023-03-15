@@ -28,6 +28,7 @@ function ApprovalFields(props) {
         setstate(res.data.basicInfo[0].state);
         setcity(res.data.basicInfo[0].city);
         setpinCode(res.data.basicInfo[0].pinCode);
+        setlogo(res.data.basicInfo[0].image);
       } else {
         setaddress1('');
         setaddress2('');
@@ -805,16 +806,19 @@ function ApprovalFields(props) {
   const handleEdit = (event) => {
     setStyle('cont2');
   };
+  const handleLogoView = (event) => {
+    Swal.fire({
+      title: 'Company Logo',
+      html:
+        ` <img className="camera-img" src=${event} alt="image" width='100px' width='100px'/> `,
+      focusConfirm: false,
+    })
+  }
+
   const handleView = (event) => {
-    // NDA_Doc-1675160386209.pdf
-    // uploads/bankdetailDoc-1675928620398
     if (event) {
-      //     console.log("event----event---------event------------>>>>>>", event)
       let text = event
       let fname = text.split("/");
-      //     console.log("path---------------->>>>>", fname[1])
-      //     let name = fname[1]
-
       fetch(
         `http://localhost:12707/downloadPdfUploads/${fname[1]}`
       ).then((response) => {
@@ -993,7 +997,13 @@ function ApprovalFields(props) {
             setGST_Doc(result.value);
             setGST_DocErr('');
           } else if (event === 'logo') {
-            setlogo(result.value);
+            var filereader = new FileReader();
+            filereader.readAsDataURL(result.value);
+            filereader.onload = function (evt) {
+              var base64 = evt.target.result;
+              setlogo(btoa(base64));
+            }
+           
             setlogoErr('');
           } else if (event === 'PAN_Doc') {
             setPAN_Doc(result.value);
@@ -2033,7 +2043,7 @@ function ApprovalFields(props) {
       data.append('state', state);
       data.append('city', city);
       data.append('pinCode', pinCode);
-      data.append('image', 'logo');
+      data.append('image', logo);
       data.append('vendorType', vendorType);
       data.append('vendorManager', acManager);
       data.append('mkDenialCheque', mkcheck);
@@ -2388,7 +2398,7 @@ function ApprovalFields(props) {
       data.append('state', state);
       data.append('city', city);
       data.append('pinCode', pinCode);
-      data.append('image', 'logo');
+      data.append('image', logo);
       data.append('vendorType', vendorType);
       data.append('vendorManager', acManager);
       data.append('mkDenialCheque', mkcheck);
@@ -2593,7 +2603,7 @@ function ApprovalFields(props) {
                   ) : (
                     <button
                       type="button"
-                      onClick={(e) => handleView(logo)}
+                      onClick={(e) => handleLogoView(logo)}
                       className="btn bankbtn btn-primary btn-md mt-3"
                     >
                       View Logo

@@ -62,7 +62,6 @@ function AdminPage() {
       setvendors([])
       
       const arr = res.data.basicInfo[0]?.filter((vend) => {
-        console.log("applist-----------",applist)
         if(vend.submitStatus === 'Submitted'){
           return !applist?.find((item1) => (item1.userId === vend.userId))
         }
