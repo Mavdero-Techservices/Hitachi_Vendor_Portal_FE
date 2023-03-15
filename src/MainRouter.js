@@ -6,6 +6,7 @@ import SignUp from './component/signUp';
 import Login from './component/login';
 import { AdminRoute, UserRoute, CommonRoute } from './auth/PrivateRoute';
 import Navbar1 from './common/navbar';
+import Spinner from './common/spinner';
 import Basic from './component/Basic.js';
 import Statutory from './component/StatutoryDetails.js';
 import Bank from './component/BankDetails.js';
@@ -91,6 +92,7 @@ const MainRouter = () => {
         <Route path="/login" element={<Login />} />
         {/* <Route path="Test" element={<Test />} /> */}
         <Route path="/Navbar" element={<Navbar1 />} />
+        <Route path="/Spinner" element={<Spinner />} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route
           path="/passwordGeneration/:emailId/:mailConfirmationCode"

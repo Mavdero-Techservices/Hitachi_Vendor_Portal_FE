@@ -21,7 +21,7 @@ const NewUser = () => {
 
     <div >
       <Image className="userBackground" src={template} fluid />
-      <div class="content">
+      <div className="content">
         <img className="hitachi-logo-icon center" alt="" src={Logo} />
         <h3 className="userTitle">Already Registered with HSI?</h3>
         <div className="agreebtn">

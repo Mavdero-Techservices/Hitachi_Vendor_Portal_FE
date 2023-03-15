@@ -15,26 +15,23 @@ function App() {
   const navigate = useNavigate();
   const params = useParams();
   const handleClickOpen = () => {
-    document.getElementById('b3')
-      .onclick = function () {
-        Swal.fire({
-          title: "are You sure?",
-          text: "You Want to Logout!",
-          icon: "warning",
-          dangerMode: true,
-          confirmButtonText: "Yes",
-          showCloseButton: true,
-          cancelButtonText: 'No',
-          showCancelButton: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            auth.clearJWT(() => navigate('/login'))
-          }
-         
-        });
+    Swal.fire({
+      title: "are You sure?",
+      text: "You Want to Logout!",
+      icon: "warning",
+      dangerMode: true,
+      confirmButtonText: "Yes",
+      showCloseButton: true,
+      cancelButtonText: 'No',
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        auth.clearJWT(() => navigate('/login'))
       }
+     
+    });
   };
   const VendorDetails = e => {
     if (editUser.basicInfo.length > 0) {  

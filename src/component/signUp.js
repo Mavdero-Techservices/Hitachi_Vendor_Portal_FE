@@ -146,7 +146,7 @@ setErrors({
                   <label htmlFor="phoneNumber">Phone number*</label>
                 </div>
                 <div>
-                  <input type="text" className="mb-4 signupInput" name="phoneNumber" id="phoneNumber" onChange={formValChange('phoneNumber')} value={values.phoneNumber} />
+                  <input type="number" className="mb-4 signupInput" name="phoneNumber" id="phoneNumber" onChange={formValChange('phoneNumber')} value={values.phoneNumber} />
                   {errors.phoneNumber ? <p className="text text-danger small">{errors.phoneNumber}</p> : ""}
                 </div>
               </MDBCol>

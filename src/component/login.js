@@ -16,6 +16,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../css/Login.css";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   MDBBtn,
   MDBCard,
@@ -31,7 +32,7 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
-
+const passwordValidation=RegExp(/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/)
 const useStyles = makeStyles((theme) => ({
   error: {
     verticalAlign: "middle",
@@ -50,6 +51,8 @@ export default function Signin(props) {
   const [errors, setErrors] = useState({});
   const [editUser, seteditUser] = useState();
   const [getAllUserDetail, setgetAllUserDetail] = useState();
+  const [passwordType, setPasswordType] = useState("password");
+  const [passwordInput, setPasswordInput] = useState("");
   const [values, setValues] = useState({
     userName: "",
     password: "",
@@ -64,6 +67,16 @@ export default function Signin(props) {
     resetCode: "",
     redirectToReferrer: false,
   });
+  const handlePasswordChange = (evnt) => {
+    setPasswordInput(evnt.target.value);
+  };
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      return;
+    }
+    setPasswordType("password");
+  };
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
     let e = { ...errors };
@@ -278,11 +291,19 @@ export default function Signin(props) {
                       <label>password*</label>
                       <input
                         className="mb-4 loginInput"
-                        type="password"
+                        type={passwordType}
                         label="Password"
                         variant="outlined"
                         value={values.password}
                         onChange={handleChange("password")}
+                      />
+                      <VisibilityIcon
+                        style={{
+                          position: "absolute",
+                          right: "10%",
+                          marginTop: "1%",
+                        }}
+                        onClick={togglePassword}
                       />
                       {errors.password ? (
                         <p className="text text-danger small">

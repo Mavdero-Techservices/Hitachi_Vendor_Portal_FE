@@ -176,6 +176,8 @@ select {
   background: #efefef;
   padding-left: 4%; 
   padding-top: 1%; 
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 

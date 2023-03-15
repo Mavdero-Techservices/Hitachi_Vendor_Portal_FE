@@ -69,10 +69,12 @@ const FinancialDetails = () => {
       showCancelButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-    }).then((ClearData) => {
-      setfileFD("");
-      setdeleteUploadedFile(false);
-      seteditfileFD("");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileFD("");
+        setdeleteUploadedFile(false);
+        seteditfileFD("");
+      } 
     });
   }
   function deleteFile2(e) {
@@ -86,10 +88,13 @@ const FinancialDetails = () => {
       showCancelButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-    }).then((ClearData) => {
-      setfileFD2("");
-      setdeleteUploadedFile2(false);
-      seteditfileFD2("");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileFD2("");
+        setdeleteUploadedFile2(false);
+        seteditfileFD2("");
+      }
+  
     });
   }
   function cancel(e) {
@@ -113,10 +118,12 @@ const FinancialDetails = () => {
           currentAssets: "",
           directorDetails: "",
         });
-        setfileFD2("");
         setfileFD("");
         setdeleteUploadedFile(false);
+        seteditfileFD("");
+        setfileFD2("");
         setdeleteUploadedFile2(false);
+        seteditfileFD2("");
       }
     });
   }

@@ -80,8 +80,7 @@ const ComplianceDetails = () => {
       Swal.fire({
         title: "file size should be less than 5mb",
         icon: "error",
-        confirmButtonText: "OK",
-        cancelButtonText: "No",
+        confirmButtonText: "ok",
         showCloseButton: true,
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -102,10 +101,12 @@ const ComplianceDetails = () => {
       showCancelButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-    }).then((ClearData) => {
-      setfileRPD("");
-      seteditVlauefileRPD("");
-      setdeleteUploadedFile(false);
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileRPD("");
+        seteditVlauefileRPD("");
+        setdeleteUploadedFile(false);
+      }
     });
   }
   function deleteCOC(e) {
@@ -119,10 +120,13 @@ const ComplianceDetails = () => {
       showCancelButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-    }).then((ClearData) => {
-      setfileCOC("");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileCOC("");
       seteditVlauefileCOC("");
       setdeleteCocFile(false);
+      }
+      
     });
   }
   function deleteNDA(e) {
@@ -136,10 +140,13 @@ const ComplianceDetails = () => {
       showCancelButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-    }).then((ClearData) => {
-      setfileNDA("");
-      seteditVlauefileNDA("");
-      setdeleteNdaFile(false);
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileNDA("");
+        seteditVlauefileNDA("");
+        setdeleteNdaFile(false);
+      }
+     
     });
   }
   function cancel(e) {
@@ -155,13 +162,15 @@ const ComplianceDetails = () => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        setfileRPD("");
-        setfileCOC("");
         setfileNDA("");
-        setdeleteUploadedFile(false);
-        setdeleteCocFile(false);
+        seteditVlauefileNDA("");
         setdeleteNdaFile(false);
+        setfileCOC("");
+        seteditVlauefileCOC("");
+        setdeleteCocFile(false);
+        setfileRPD("");
         seteditVlauefileRPD("");
+        setdeleteUploadedFile(false);
       }
     });
   }
