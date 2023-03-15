@@ -327,7 +327,7 @@ const ComplianceDetails = () => {
                                   type="file"
                                   name="fileRPD"
                                   fileOrFiles={deleteUploadedFile}
-                                  disabled={this.setStyle==='notEditable'? true:false}
+                                  disabled={style ==='notEditable'? true:false}
                                 />
                                 <span>
                                   {fileRPD
@@ -345,7 +345,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileRPD"
                               fileOrFiles={deleteUploadedFile}
-                              disabled={this.setStyle==='notEditable'? true:false}
+                              disabled={style ==='notEditable'? true:false}
                             />
                             <span>
                               {fileRPD
@@ -398,7 +398,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileCOC"
                               fileOrFiles={deleteCocFile}
-                              disabled={this.setStyle==='notEditable'? true:false}
+                              disabled={style ==='notEditable'? true:false}
                             />
                             <span>
                               {fileCOC
@@ -449,7 +449,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileNDA"
                               fileOrFiles={deleteNdaFile}
-                              disabled={this.setStyle==='notEditable'? true:false}
+                              disabled={style ==='notEditable'? true:false}
                             />
                             <span>
                               {fileNDA
