@@ -239,12 +239,86 @@ export default function Statutory(props) {
   }
   function next(e) {
     e.preventDefault();
+
+    const data = new FormData();
+    data.append("GST_Doc", GST_Doc);
+    data.append("GST_type", GST_type);
+    data.append("GST_No", values.GST_No);
+    data.append("PAN_No", values.PAN_No);
+    data.append("PAN_Doc", PAN_Doc);
+    data.append("form_10f_Doc", form_10f_Doc);
+    data.append("TAN_Doc", TAN_Doc);
+    data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+    data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+    data.append("MSME_Doc", MSME_Doc);
+    data.append("Tax_residency_Doc", Tax_residency_Doc);
+    data.append("CIN_No", values.CIN_No);
+    data.append("form_10f", values.form_10f);
+    data.append("MSME_status", MSME_status);
+    data.append("MSME_No", values.MSME_No);
+    data.append("MSME_Type", MSME);
+    data.append("TAN_No", values.TAN_No);
+    data.append(
+      "userId",
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    );
+    data.append("Tax_residency_No", values.Tax_residency_No);
+    data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
-      navigate(`/ComplianceDetail/${params.userId}`);
+      apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate(`/ComplianceDetail/${params.userId}`);
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          });
+        }
+      });
     } else {
-      navigate("/ComplianceDetail");
+      apiService.saveStatutoryDetail(data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate("/ComplianceDetail");
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          });
+        }
+      });
     }
   }
+  
   const validateForm = () => {
     const { GST_No, PAN_No } = values;
 
