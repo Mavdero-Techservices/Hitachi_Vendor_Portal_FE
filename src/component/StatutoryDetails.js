@@ -651,7 +651,7 @@ export default function Statutory(props) {
                             </div>
                             )} */}
 
-                            {((GST_Doc !=='') || ((values.GST_Doc !=='') && (values.GST_Doc !=='null') && (values.GST_Doc !== undefined))) ? (
+                            {(((GST_Doc !=='') && (GST_Doc !=='null') && (GST_Doc !== undefined))) ? (
                               <div className="frame-input">
                                 <button type="button" className="deleteFile" onClick={()=>{deleteFile('GST_Doc')}}>Delete GST</button>
                               </div>
@@ -713,7 +713,7 @@ export default function Statutory(props) {
                                     />
                                   </div>{" "} */}
 
-                                {((GST_Doc !=='') || ((values.GST_Doc !=='') && (values.GST_Doc !=='null') && (values.GST_Doc !== undefined))) ? (
+                                {(((GST_Doc !=='') && (GST_Doc !=='null') && (GST_Doc !== undefined))) ? (
                                   <div className="frame-input">
                                     <button type="button" className="deleteFile" onClick={()=>{deleteFile('GST_Doc')}}>Delete UnRegister Gst</button>
                                   </div>
@@ -803,7 +803,7 @@ export default function Statutory(props) {
                         </div>
                         )} */}
 
-                        {((PAN_Doc !=='') || ((values.PAN_Doc !=='') && (values.PAN_Doc !=='null') && (values.PAN_Doc !== undefined))) ? (
+                        {(((PAN_Doc !=='') && (PAN_Doc !=='null') && (PAN_Doc !== undefined))) ? (
                           <div className="frame-input">
                             <button type="button" className="deleteFile" onClick={()=>{deleteFile('PAN_Doc')}}>Delete PAN</button>
                           </div>
@@ -1045,7 +1045,7 @@ export default function Statutory(props) {
                           </div>
                           )} */}
 
-                        {((MSME_Doc !=='') || ((values.MSME_Doc !=='') && (values.MSME_Doc !=='null') && (values.MSME_Doc !== undefined))) ? (
+                        {(((MSME_Doc !=='') && (MSME_Doc !=='null') && (MSME_Doc !== undefined))) ? (
                               <div className="frame-input">
                                 <button type="button" className="deleteFile" onClick={()=>{deleteFile('MSME_Doc')}}>Delete MSME</button>
                               </div>
@@ -1057,7 +1057,7 @@ export default function Statutory(props) {
                             <input
                               type="file"
                               id="fileuploadMSME"
-                              // value={values.MSME_Doc}
+                              value={values.MSME_Doc}
                               onChange={onFileChangeMSME_Doc}
                               required
                               disabled={style === 'notEditable' ? true : false}
@@ -1084,7 +1084,7 @@ export default function Statutory(props) {
                             </Form.Group>
                           </Col>
                           <Col>
-                          {((MSME_Doc !=='') || ((values.MSME_Doc !=='') && (values.MSME_Doc !=='null') && (values.MSME_Doc !== undefined))) ? (
+                          {(((MSME_Doc !=='') && (MSME_Doc !=='null') && (MSME_Doc !== undefined))) ? (
                               <div className="frame-input">
                                 <button type="button" className="deleteFile" onClick={()=>{deleteFile('MSME_Doc')}}>Delete MSME</button>
                               </div>
@@ -1121,8 +1121,9 @@ export default function Statutory(props) {
                                   value="Micro"
                                   name="Micro"
                                   checked={MSME === "Micro"}
+                                  disabled={MSME_status === "UnRegistered" ? true : false}
                                 />{" "}
-                                Micro
+                                Micro1
                               </Col>
                               <Col sm={4}>
                                 <input
@@ -1131,6 +1132,7 @@ export default function Statutory(props) {
                                   value="Small"
                                   name="Small"
                                   checked={MSME === "Small"}
+                                  disabled={MSME_status === "UnRegistered" ? true : false}
                                 />{" "}
                                 Small
                               </Col>
@@ -1141,6 +1143,7 @@ export default function Statutory(props) {
                                   value="Macro"
                                   name="Macro"
                                   checked={MSME === "Macro"}
+                                  disabled={MSME_status === "UnRegistered" ? true : false}
                                 />{" "}
                                 Medium
                               </Col>
@@ -1176,7 +1179,7 @@ export default function Statutory(props) {
                             />
                           </div> */}
 
-                            {((TAN_Doc !=='') || ((values.TAN_Doc !=='') && (values.TAN_Doc !=='null') && (values.TAN_Doc !== undefined))) ? (
+                            {(((TAN_Doc !=='') && (TAN_Doc !=='null') && (TAN_Doc !== undefined))) ? (
                               <div className="frame-input">
                                 <button type="button" className="deleteFile" onClick={()=>{deleteFile('TAN_Doc')}}>Delete TAN</button>
                               </div>
