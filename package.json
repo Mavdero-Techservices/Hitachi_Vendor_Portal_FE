@@ -33,7 +33,7 @@
     "react-bootstrap": "^2.7.0",
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^18.2.0",
-    "react-drag-drop-files": "^2.3.8",
+    "react-drag-drop-files": "2.3.8",
     "react-hot-loader": "^4.13.1",
     "react-loading": "^2.0.3",
     "react-native-web": "^0.18.10",
