@@ -8,6 +8,10 @@ import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+const numberValidation = /^-?(0|[1-9]\d*)?$/;
+const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
+const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 const ContactTeam = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -70,19 +74,30 @@ const ContactTeam = () => {
       });
   };
   const validateForm = () => {
+    console.log("values--------->", values);
     const { contactName1, emailId1, contactNumber1 } = values;
 
     const newErrors = {};
     if (!contactName1 || contactName1 === "") {
       newErrors.contactName1 = "contactName";
     }
+
     if (!emailId1 || emailId1 === "") {
+      console.log("111111");
       newErrors.emailId1 = "EmailId";
-    } else if (!mailValReg.test(emailId1))
-      newErrors.emailId1 = "Please enter a valid email";
+    } 
+
+    if(!emailValidation.test(emailId1)) {
+      console.log("2222");
+      newErrors.emailId1 = "Please enter a valid Email";
+    }
 
     if (!contactNumber1 || contactNumber1 === "") {
       newErrors.contactNumber1 = "contactNumber";
+    }
+
+    if(!numberValidation.test(contactNumber1) || contactNumber1.length !== 10) {
+      newErrors.contactNumber1 = "Please enter a valid Phone Number";
     }
 
     return newErrors;
@@ -106,7 +121,7 @@ const ContactTeam = () => {
       basicInfoArray.push("state");
     } else {
       Object.entries(basicInfo[0]).map(([key, value]) => {
-        if (value === "" || null) {
+        if (value === "" || value === null) {
           if (key === "address1") {
             basicInfoArray.push("Address Line-1");
           }
@@ -125,6 +140,10 @@ const ContactTeam = () => {
           if (key === "state") {
             basicInfoArray.push("state");
           }
+        }
+        if (value && key === "pinCode") {
+          if (!numberValidation.test(value) || value.length !== 6)
+            basicInfoArray.push("Pincode is invalid");
         }
       });
     }
@@ -171,6 +190,28 @@ const ContactTeam = () => {
             communicationArray.push("mastervendor EmailId");
           }
         }
+
+        if (value && key === "financeSpocphoneNo") {
+          if (!numberValidation.test(value) || value.length !== 10)
+            communicationArray.push("financeSpocphoneNo is invalid");
+        }
+        if (value && key === "managementSpocphoneNo") {
+          if (!numberValidation.test(value) || value.length !== 10)
+            communicationArray.push("managementSpocphoneNo is invalid");
+        }
+
+        if (value && key === "financeSpocemail") {
+          if (!emailValidation.test(value))
+            communicationArray.push("financeSpocemail Email is invalid");
+        }
+        if (value && key === "managementSpocemail") {
+          if (!emailValidation.test(value))
+            communicationArray.push("managementSpocemail Email is invalid");
+        }
+        if (value && key === "mastervendor_email") {
+          if (!emailValidation.test(value))
+            communicationArray.push("mastervendor_email Email is invalid");
+        }
       });
     }
     if (statutory.length <= 0) {
@@ -181,6 +222,7 @@ const ContactTeam = () => {
       statutoryArray.push("TAN No");
     } else {
       Object.entries(statutory[0]).map(([key, value]) => {
+
         if (value === "" || null) {
           if (key === "GST_No") {
             statutoryArray.push("GST No");
@@ -197,6 +239,15 @@ const ContactTeam = () => {
           if (key === "TAN_No") {
             statutoryArray.push("TAN No");
           }
+        }
+
+        if (value && key === "GST_No") {
+          if (!GSTValidation.test(value))
+            statutoryArray.push("GST No is invalid");
+        }
+        if (value && key === "PAN_No") {
+          if (!PANValidation.test(value))
+            statutoryArray.push("PAN NO is invalid");
         }
       });
     }
@@ -298,22 +349,42 @@ const ContactTeam = () => {
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
         if (response.data.status === "success") {
-          console.log("basicInfoArray[0]",basicInfoArray[0])
-          console.log("basicInfoArray[0]",communicationArray[0])
-          console.log("basicInfoArray[0]",statutoryArray[0])
-          console.log("basicInfoArray[0]",complianceArray[0])
-          console.log("basicInfoArray[0]",bankDetailArray[0])
-          console.log("basicInfoArray[0]",contactDetailArray[0])
-          navigate(`/ContactTeam/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
-          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-          if ((basicInfoArray[0] === 'There are no blank or incomplete required fields') && (communicationArray[0] === 'There are no blank or incomplete required fields') && (statutoryArray[0] === 'There are no blank or incomplete required fields') && (complianceArray[0] === 'There are no blank or incomplete required fields') && (bankDetailArray[0] === 'There are no blank or incomplete required fields') && (contactDetailArray[0] === 'There are no blank or incomplete required fields')) {
-            basicInfo[0].submitStatus = "Submitted"
+          console.log("basicInfoArray[0]", basicInfoArray[0]);
+          console.log("basicInfoArray[0]", communicationArray[0]);
+          console.log("basicInfoArray[0]", statutoryArray[0]);
+          console.log("basicInfoArray[0]", complianceArray[0]);
+          console.log("basicInfoArray[0]", bankDetailArray[0]);
+          console.log("basicInfoArray[0]", contactDetailArray[0]);
+          navigate(
+            `/ContactTeam/${
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+            }`
+          );
+          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
+            .userId;
+          if (
+            basicInfoArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            communicationArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            statutoryArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            complianceArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            bankDetailArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            contactDetailArray[0] ===
+              "There are no blank or incomplete required fields"
+          ) {
+            basicInfo[0].submitStatus = "Submitted";
             basicInfo[0].submitDate = Date.now();
-            apiService.updateVendordetail(userkey, basicInfo[0]).then((response) => {
-              Swal.fire(
-                'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
-              )
-            });
+            apiService
+              .updateVendordetail(userkey, basicInfo[0])
+              .then((response) => {
+                Swal.fire(
+                  "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+                );
+              });
           } else {
             Swal.fire({
               title: "please complete this field.",
@@ -327,22 +398,38 @@ const ContactTeam = () => {
               icon: "warning",
               confirmButtonColor: "#3085d6",
               confirmButtonText: "ok",
-            })
+            });
           }
         }
       });
     } else {
       apiService.saveContactTeam(user).then((response) => {
         if (response.data.status === "success") {
-          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-          if ((basicInfoArray[0] === 'There are no blank or incomplete required fields') && (communicationArray[0] === 'There are no blank or incomplete required fields') && (statutoryArray[0] === 'There are no blank or incomplete required fields') && (complianceArray[0] === 'There are no blank or incomplete required fields') && (bankDetailArray[0] === 'There are no blank or incomplete required fields') && (contactDetailArray[0] === 'There are no blank or incomplete required fields')) {
-            basicInfo[0].submitStatus = "Submitted"
+          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
+            .userId;
+          if (
+            basicInfoArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            communicationArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            statutoryArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            complianceArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            bankDetailArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            contactDetailArray[0] ===
+              "There are no blank or incomplete required fields"
+          ) {
+            basicInfo[0].submitStatus = "Submitted";
             basicInfo[0].submitDate = Date.now();
-            apiService.updateVendordetail(userkey, basicInfo[0]).then((response) => {
-              Swal.fire(
-                'Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.',
-              )
-            });
+            apiService
+              .updateVendordetail(userkey, basicInfo[0])
+              .then((response) => {
+                Swal.fire(
+                  "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+                );
+              });
           } else {
             Swal.fire({
               title: "please complete this field.",
@@ -356,7 +443,7 @@ const ContactTeam = () => {
               icon: "warning",
               confirmButtonColor: "#3085d6",
               confirmButtonText: "ok",
-            })
+            });
           }
         }
       });
@@ -364,13 +451,16 @@ const ContactTeam = () => {
   };
   useEffect(() => {
     if (params.userId) {
-      let finalstatus = ""
+      let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus
-      })
+        finalstatus = res.data.result.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
-        if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
-          setStyle('notEditable');
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
         }
         Object.entries(res.data.contactDetail).map(([key, value]) => {
           setValues({
