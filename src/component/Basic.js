@@ -64,6 +64,8 @@ export class Basic extends React.Component {
       editCommunicationDetail:"",
       editBaiscInfo:"",
       setStyle: 'editable',
+      regCmyName:"",
+      cmpyErr:""
     };
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -196,9 +198,23 @@ export class Basic extends React.Component {
       [name]: value,
     });
     this.setState({ [e.target.id]: e.target.value });
+    if (name === 'companyName'){
+      if (value === this.state.regCmyName) {
+        this.setState({ cmpyErr: "" })
+      }else{
+        this.setState({ cmpyErr: "Company name is invalid" })
+      }
+    }
+  
   };
   handleSubmit = (e) => {
     e.preventDefault();
+    if (this.state.companyName !== this.state.regCmyName){
+      this.setState({
+        cmpyErr: "Company name is invalid",
+      });
+    }else{
+  
     const basicInfo = {
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       address1: this.state.address1,
@@ -291,7 +307,7 @@ export class Basic extends React.Component {
       });
     }
      
-    
+  }
   };
    handleSubmit1 = (e) => {
     e.preventDefault();
@@ -453,7 +469,9 @@ export class Basic extends React.Component {
     let userid = JSON.parse(window.sessionStorage.getItem('jwt')).result.userId;
     let finalstatus = ""
     apiService.signupFindByUserId(userid).then((res) => {
-      finalstatus = res.data.result.finalStatus
+      finalstatus = res.data.result.finalStatus  
+      this.setState({ companyName: res.data.result.companyName })
+      this.setState({ regCmyName: res.data.result.companyName })
     })
     apiService.getAllCollection(userid).then((res) => {
       if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
@@ -663,6 +681,7 @@ export class Basic extends React.Component {
                                           />
                                         </div>
                                       </MDBCol>
+                                      <span className="formError">{this.state.cmpyErr}</span>
                                     </MDBRow>
                                     <MDBRow className="mb-4">
                                       <MDBCol>

@@ -37,6 +37,10 @@ import PoApproved from './component/PoApproved';
 import PoReject from './component/PoReject';
 import EstimateDeliveryDate from './component/EstimateDeliveryDate';
 import PoVendor from './component/PoVendor';
+import InvoiceTeam from './component/InvoiceTeam';
+import InvoiceApproved from './component/InvoiceApproved';
+import InvoiceRejected from './component/InvoiceRejected';
+import InvoicePortal from './component/InvoicePortal';
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus);
@@ -128,6 +132,10 @@ const MainRouter = () => {
         <Route path="/poRejected" element={<PoReject />} />
         <Route path="/estimateDD" element={<EstimateDeliveryDate />} />
         <Route path="/povendor" element={<PoVendor />} />
+        <Route path="/invoiceTeam" element={<InvoiceTeam />} />
+        <Route path="/invoiceApproved" element={<InvoiceApproved />} />
+        <Route path="/invoiceRejected" element={<InvoiceRejected />} />
+        <Route path="/invoicePortal" element={<InvoicePortal />} />
       </Routes>
     </div>
   );

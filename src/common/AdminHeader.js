@@ -213,6 +213,30 @@ function AdminHeader(props) {
               ''
             )}
 
+            {props.team === 'InvoiceTeam' ? (
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}
+              >
+                <Button
+                  style={{ textTransform: 'capitalize' }}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 3,
+                    mr: 2,
+                    color: '#B1000E',
+                    fontWeight: '700',
+                    display: 'block',
+                  }}
+                >
+                  Invoice Team
+                </Button>
+              </Box>
+            ) : (
+              ''
+            )}
+
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

@@ -124,7 +124,14 @@ export const VendorPortSidemenu = (props) => {
                 />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItem disablePadding
+              component={Link}
+              to="/invoicePortal"
+              sx={{
+                color: 'white',
+                backgroundColor: pathname === '/invoicePortal' ? 'gray' : '',
+                borderRadius: '20px',
+              }}>
               <ListItemButton
                 sx={{
                   '&:hover': { backgroundColor: 'gray' },

@@ -313,7 +313,87 @@ export const SideBar = (props) => {
               </ListItem>
             </List>
           </>
-        ) : (
+            ) : props.invoiceTeam ? (
+              <>
+                <List sx={{ my: 3 }}>
+                  <ListItem
+                    disablePadding
+                    component={Link}
+                    to="/invoiceTeam"
+                    sx={{
+                      backgroundColor: pathname === '/poTeam' ? 'gray' : '',
+                      borderRadius: '20px',
+                      color: 'white',
+                    }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        '&:hover': { backgroundColor: 'gray' },
+                        borderRadius: '20px',
+                      }}
+                    >
+                      <ListItemIcon>
+                        <HourglassBottomIcon sx={{ color: 'white' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Inprogress"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem
+                    disablePadding
+                    component={Link}
+                    to="/invoiceApproved"
+                    sx={{
+                      backgroundColor: pathname === '/poApproved' ? 'gray' : '',
+                      borderRadius: '20px',
+                      color: 'white',
+                    }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        '&:hover': { backgroundColor: 'gray' },
+                        borderRadius: '20px',
+                      }}
+                    >
+                      <ListItemIcon>
+                        <AssignmentTurnedInIcon sx={{ color: 'white' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Approved"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem
+                    disablePadding
+                    component={Link}
+                      to="/invoiceRejected"
+                    sx={{
+                      backgroundColor: pathname === '/poRejected' ? 'gray' : '',
+                      borderRadius: '20px',
+                      color: 'white',
+                    }}
+                  >
+                    <ListItemButton
+                      sx={{
+                        '&:hover': { backgroundColor: 'gray' },
+                        borderRadius: '20px',
+                      }}
+                    >
+                      <ListItemIcon>
+                        <EventBusyIcon sx={{ color: 'white' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Rejected"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </>
+            ) : (
           <>
             <List>
               <ListItem
