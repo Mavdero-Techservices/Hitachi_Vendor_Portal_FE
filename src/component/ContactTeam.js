@@ -74,7 +74,6 @@ const ContactTeam = () => {
       });
   };
   const validateForm = () => {
-    console.log("values--------->", values);
     const { contactName1, emailId1, contactNumber1 } = values;
 
     const newErrors = {};
@@ -83,12 +82,10 @@ const ContactTeam = () => {
     }
 
     if (!emailId1 || emailId1 === "") {
-      console.log("111111");
       newErrors.emailId1 = "EmailId";
-    } 
+    }
 
-    if(!emailValidation.test(emailId1)) {
-      console.log("2222");
+    if (!emailValidation.test(emailId1)) {
       newErrors.emailId1 = "Please enter a valid Email";
     }
 
@@ -96,7 +93,10 @@ const ContactTeam = () => {
       newErrors.contactNumber1 = "contactNumber";
     }
 
-    if(!numberValidation.test(contactNumber1) || contactNumber1.length !== 10) {
+    if (
+      !numberValidation.test(contactNumber1) ||
+      contactNumber1.length !== 10
+    ) {
       newErrors.contactNumber1 = "Please enter a valid Phone Number";
     }
 
@@ -222,7 +222,6 @@ const ContactTeam = () => {
       statutoryArray.push("TAN No");
     } else {
       Object.entries(statutory[0]).map(([key, value]) => {
-
         if (value === "" || null) {
           if (key === "GST_No") {
             statutoryArray.push("GST No");
@@ -349,12 +348,6 @@ const ContactTeam = () => {
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
         if (response.data.status === "success") {
-          console.log("basicInfoArray[0]", basicInfoArray[0]);
-          console.log("basicInfoArray[0]", communicationArray[0]);
-          console.log("basicInfoArray[0]", statutoryArray[0]);
-          console.log("basicInfoArray[0]", complianceArray[0]);
-          console.log("basicInfoArray[0]", bankDetailArray[0]);
-          console.log("basicInfoArray[0]", contactDetailArray[0]);
           navigate(
             `/ContactTeam/${
               JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
@@ -430,6 +423,259 @@ const ContactTeam = () => {
                   "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
                 );
               });
+          } else {
+            Swal.fire({
+              title: "please complete this field.",
+              html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+                 <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
+                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
+                 <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
+                 <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
+              padding: "3px",
+              icon: "warning",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "ok",
+            });
+          }
+        }
+      });
+    }
+  };
+  const updateContactTeam = (e) => {
+    e.preventDefault();
+    const formErrors = validateForm();
+    var basicInfoArray = [];
+    var basicInfoMandtatory = "";
+    var communicationArray = [];
+    var complianceArray = [];
+    var statutoryArray = [];
+    var bankDetailArray = [];
+    var contactDetailArray = [];
+    if (basicInfo.length <= 0) {
+      basicInfoArray.push("Address Line-1");
+      basicInfoArray.push("city");
+      basicInfoArray.push("companyName");
+      basicInfoArray.push("country");
+      basicInfoArray.push("pinCode");
+      basicInfoArray.push("state");
+    } else {
+      Object.entries(basicInfo[0]).map(([key, value]) => {
+        if (value === "" || null) {
+          if (key === "address1") {
+            basicInfoArray.push("Address Line-1");
+          }
+          if (key === "city") {
+            basicInfoArray.push("city");
+          }
+          if (key === "companyName") {
+            basicInfoArray.push("companyName");
+          }
+          if (key === "country") {
+            basicInfoArray.push("country");
+          }
+          if (key === "pinCode") {
+            basicInfoArray.push("pinCode");
+          }
+          if (key === "state") {
+            basicInfoArray.push("state");
+          }
+        }
+      });
+    }
+
+    if (communicationDetail.length <= 0) {
+      communicationArray.push("financeSpoc-contactName");
+      communicationArray.push("financeSpoc-designation");
+      communicationArray.push("financeSpoc-phoneNo");
+      communicationArray.push("financeSpoc-Email");
+      communicationArray.push("managementSpoc-contactName");
+      communicationArray.push("managementSpoc-designation");
+      communicationArray.push("managementSpoc-phoneNo");
+      communicationArray.push("managementSpoc-Email");
+    } else {
+      Object.entries(communicationDetail[0]).map(([key, value]) => {
+        if (value === "" || null) {
+          if (key === "financeSpoccontactName") {
+            communicationArray.push("financeSpoc-contactName");
+          }
+          if (key === "financeSpocdesignation") {
+            communicationArray.push("financeSpoc-designation");
+          }
+          if (key === "financeSpocphoneNo") {
+            communicationArray.push("financeSpoc-phoneNo");
+          }
+          if (key === "financeSpocemail") {
+            communicationArray.push("financeSpoc-Email");
+          }
+
+          if (key === "managementSpoccontactName") {
+            communicationArray.push("managementSpoc-contactName");
+          }
+          if (key === "managementSpocdesignation") {
+            communicationArray.push("managementSpoc-designation");
+          }
+          if (key === "managementSpocphoneNo") {
+            communicationArray.push("managementSpoc-phoneNo");
+          }
+          if (key === "managementSpocemail") {
+            communicationArray.push("managementSpoc-Email");
+          }
+        }
+      });
+    }
+    if (statutory.length <= 0) {
+      statutoryArray.push("GST No");
+      statutoryArray.push("PAN No");
+      statutoryArray.push("CIN No");
+      statutoryArray.push("MSME No");
+      statutoryArray.push("TAN No");
+    } else {
+      Object.entries(statutory[0]).map(([key, value]) => {
+        if (value === "" || null) {
+          if (key === "GST_No") {
+            statutoryArray.push("GST No");
+          }
+          if (key === "PAN_No") {
+            statutoryArray.push("PAN No");
+          }
+          if (key === "CIN_No") {
+            statutoryArray.push("CIN No");
+          }
+          if (key === "MSME No") {
+            statutoryArray.push("MSME No");
+          }
+          if (key === "TAN_No") {
+            statutoryArray.push("TAN No");
+          }
+        }
+      });
+    }
+    if (compaliance.length <= 0) {
+      complianceArray.push("Related Party Disclosure");
+      complianceArray.push("COC for services support/installation");
+      complianceArray.push("Non-disclosure agreement");
+    } else {
+      Object.entries(compaliance[0]).map(([key, value]) => {
+        if (value === "" || null) {
+          if (key === "RPD_Doc") {
+            complianceArray.push("Related Party Disclosure");
+          }
+          if (key === "COC_Doc") {
+            complianceArray.push("COC support/installation");
+          }
+          if (key === "NDA_Doc") {
+            complianceArray.push("Non-disclosure agreement");
+          }
+        }
+      });
+    }
+    if (bankDetail.length <= 0) {
+      bankDetailArray.push("Bank Account Name");
+      bankDetailArray.push("Bank Name");
+      bankDetailArray.push("Bank AccountNumber");
+      bankDetailArray.push("IFSC Code");
+      bankDetailArray.push("MICR Code");
+      bankDetailArray.push("Bank Detail Document");
+    } else {
+      Object.entries(bankDetail[0]).map(([key, value]) => {
+        if (value === "" || null) {
+          if (key === "bankAccountName") {
+            bankDetailArray.push("Bank Account Name");
+          }
+          if (key === "bankName") {
+            bankDetailArray.push("Bank Name");
+          }
+          if (key === "bankAccountNumber") {
+            bankDetailArray.push("Bank AccountNumber");
+          }
+          if (key === "ifscCode") {
+            bankDetailArray.push("IFSC Code");
+          }
+          if (key === "MICRcode") {
+            bankDetailArray.push("MICR Code");
+          }
+          if (key === "bankdetailDoc") {
+            bankDetailArray.push("Bank Detail Document");
+          }
+        }
+      });
+    }
+    if (formErrors.length <= 0) {
+      contactDetailArray.push("Name");
+      contactDetailArray.push("Email");
+      contactDetailArray.push("phoneNumber");
+    } else {
+      Object.entries(formErrors).map(([key, value]) => {
+        contactDetailArray.push(value);
+      });
+    }
+
+    if (basicInfoArray.length <= 0) {
+      basicInfoArray.push("There are no blank or incomplete required fields");
+    }
+    if (communicationArray.length <= 0) {
+      communicationArray.push(
+        "There are no blank or incomplete required fields"
+      );
+    }
+    if (statutoryArray.length <= 0) {
+      statutoryArray.push("There are no blank or incomplete required fields");
+    }
+    if (complianceArray.length <= 0) {
+      complianceArray.push("There are no blank or incomplete required fields");
+    }
+    if (bankDetailArray.length <= 0) {
+      bankDetailArray.push("There are no blank or incomplete required fields");
+    }
+    if (contactDetailArray.length <= 0) {
+      contactDetailArray.push(
+        "There are no blank or incomplete required fields"
+      );
+    }
+
+    const user = {
+      userId: values.userId || undefined,
+      contactName1: values.contactName1 || undefined,
+      emailId1: values.emailId1 || undefined,
+      contactNumber1: values.contactNumber1 || undefined,
+      contactName2: values.contactName2 || undefined,
+      emailId2: values.emailId2 || undefined,
+      contactNumber2: values.contactNumber2 || undefined,
+      contactName3: values.contactName3 || undefined,
+      emailId3: values.emailId3 || undefined,
+      contactNumber3: values.contactNumber3 || undefined,
+    };
+    if (params.userId) {
+      apiService.updateContactTeam(params.userId, user).then((response) => {
+        if (response.data.status === "success") {
+          navigate(`/ContactTeam/${params.userId}`);
+          let userkey = params.userId;
+          if (
+            basicInfoArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            communicationArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            statutoryArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            complianceArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            bankDetailArray[0] ===
+              "There are no blank or incomplete required fields" &&
+            contactDetailArray[0] ===
+              "There are no blank or incomplete required fields"
+          ) {
+            basicInfo[0].submitStatus = "Submitted";
+            basicInfo[0].submitDate = Date.now();
+
+            Swal.fire(
+              "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+            );
+            let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
+              .userId;
+            apiService.signupFindByUserId(userid).then((res) => {
+              this.setState({ approval: res.data.result.role });
+            });
           } else {
             Swal.fire({
               title: "please complete this field.",
@@ -594,13 +840,27 @@ const ContactTeam = () => {
             >
               Cancel
             </button>
-            <button
-              type="button"
-              onClick={saveContactTeam}
-              className="btn Contactbtn btn-md m-3"
-            >
-              Submit
-            </button>
+            {params.userId ? (
+              <>
+                <button
+                  type="button"
+                  onClick={updateContactTeam}
+                  className="btn Contactbtn btn-md m-3"
+                >
+                  Update & Submit
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={saveContactTeam}
+                  className="btn Contactbtn btn-md m-3"
+                >
+                  Submit
+                </button>
+              </>
+            )}
           </div>
         </form>
       </div>

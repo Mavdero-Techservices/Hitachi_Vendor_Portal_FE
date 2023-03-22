@@ -123,10 +123,9 @@ const ComplianceDetails = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setfileCOC("");
-      seteditVlauefileCOC("");
-      setdeleteCocFile(false);
+        seteditVlauefileCOC("");
+        setdeleteCocFile(false);
       }
-      
     });
   }
   function deleteNDA(e) {
@@ -146,7 +145,6 @@ const ComplianceDetails = () => {
         seteditVlauefileNDA("");
         setdeleteNdaFile(false);
       }
-     
     });
   }
   function cancel(e) {
@@ -183,18 +181,25 @@ const ComplianceDetails = () => {
     apiService.downloadPdf(user).then((response) => {});
   };
   function next(e) {
-    saveComplianceDetail(e);
-    navigate("/bank");
+    // saveComplianceDetail(e);
+    if (params.userId) {
+      navigate(`/bank/${params.userId}`);
+    } else {
+      navigate("/bank");
+    }
   }
   useEffect(() => {
     if (params.userId) {
-      let finalstatus = ""
+      let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus
-      })
+        finalstatus = res.data.result.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
-        if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
-          setStyle('notEditable');
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
         }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
           var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
@@ -237,6 +242,7 @@ const ComplianceDetails = () => {
       `http://localhost:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
+
   const saveComplianceDetail = (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -277,8 +283,37 @@ const ComplianceDetails = () => {
             allowOutsideClick: false,
             allowEscapeKey: false,
           }).then((res) => {
-            navigate(`/ComplianceDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
-          })
+            navigate(`/ComplianceDetail`);
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+  };
+
+  const updateComplianceDetail = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("RPD_Doc", fileRPD);
+    data.append("NDA_Doc", fileNDA);
+    data.append("COC_Doc", fileCOC);
+    data.append("userId", params.userId);
+    if (params.userId) {
+      apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -331,7 +366,9 @@ const ComplianceDetails = () => {
                                   type="file"
                                   name="fileRPD"
                                   fileOrFiles={deleteUploadedFile}
-                                  disabled={style ==='notEditable'? true:false}
+                                  disabled={
+                                    style === "notEditable" ? true : false
+                                  }
                                 />
                                 <span>
                                   {fileRPD
@@ -349,7 +386,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileRPD"
                               fileOrFiles={deleteUploadedFile}
-                              disabled={style ==='notEditable'? true:false}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileRPD
@@ -402,7 +439,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileCOC"
                               fileOrFiles={deleteCocFile}
-                              disabled={style ==='notEditable'? true:false}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileCOC
@@ -453,7 +490,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileNDA"
                               fileOrFiles={deleteNdaFile}
-                              disabled={style ==='notEditable'? true:false}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileNDA
@@ -501,29 +538,44 @@ const ComplianceDetails = () => {
           </Row>
           <Row className="sbtn">
             <div className={style}>
-            <div className="float-end mt-2">
-              <button
-                type="button"
-                onClick={cancel}
-                className="btn bankbtn btn-md m-1"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={saveComplianceDetail}
-                className="btn bankbtn btn-md m-1"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                className="btn bankbtn btn-md m-1"
-              >
-                Next
-              </button>
-            </div>
+              <div className="float-end mt-2">
+                <button
+                  type="button"
+                  onClick={cancel}
+                  className="btn bankbtn btn-md m-1"
+                >
+                  Cancel
+                </button>
+                {params.userId ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={updateComplianceDetail}
+                      className="btn bankbtn btn-md m-1"
+                    >
+                      Update
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={saveComplianceDetail}
+                      className="btn bankbtn btn-md m-1"
+                    >
+                      Save
+                    </button>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  onClick={next}
+                  className="btn bankbtn btn-md m-1"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </Row>
         </Container>

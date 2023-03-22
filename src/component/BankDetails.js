@@ -55,7 +55,6 @@ const BankDetails = (props) => {
         seteditValuefileBank("");
         setdeleteUploadedFile(false);
       }
-      
     });
   }
   function cancel(e) {
@@ -83,68 +82,13 @@ const BankDetails = (props) => {
     });
   }
   function next(e) {
-    e.preventDefault();
-    const data = new FormData();
-    data.append(
-      "userId",
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-    );
-    data.append("bankAccountName", acName);
-    data.append("bankName", bankname);
-    data.append("bankAccountNumber", acno);
-    data.append("ifscCode", ifsc);
-    data.append("MICRcode", micr);
-    data.append("branchAddress", branchAdd);
-    data.append("bankdetailDoc", fileBank);
     if (params.userId) {
-      apiService.updateBankDetail(params.userId, data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((res) => {
-            if (res.isConfirmed) {
-              navigate("/FinancialDetail");
-            }
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      navigate(`/FinancialDetail/${params.userId}`);
     } else {
-      apiService.savebankdetail(data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((res) => {
-            if (res.isConfirmed) {
-              navigate("/FinancialDetail");
-            }
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      navigate("/FinancialDetail");
     }
-   
   }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData();
@@ -163,15 +107,15 @@ const BankDetails = (props) => {
       apiService.updateBankDetail(params.userId, data).then((response) => {
         if (response) {
           Swal.fire({
-            title: "Data saved",
+            title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
           }).then((res) => {
-            // navigate(`/bank/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
-          })
+            navigate(`/FinancialDetail/${params.userId}`);
+          });
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -190,6 +134,41 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
+          }).then((res) => {
+            navigate(`/FinancialDetail`);
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+  };
+
+  const updatehandle = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("userId", params.userId);
+    data.append("bankAccountName", acName);
+    data.append("bankName", bankname);
+    data.append("bankAccountNumber", acno);
+    data.append("ifscCode", ifsc);
+    data.append("MICRcode", micr);
+    data.append("branchAddress", branchAdd);
+    data.append("bankdetailDoc", fileBank);
+    if (params.userId) {
+      apiService.updateBankDetail(params.userId, data).then((response) => {
+        if (response) {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           });
         } else {
           Swal.fire({
@@ -203,13 +182,16 @@ const BankDetails = (props) => {
   };
   useEffect(() => {
     if (params.userId) {
-      let finalstatus=""
+      let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus
-      })
+        finalstatus = res.data.result.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
-        if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
-          setStyle('notEditable');
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
         }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
@@ -222,7 +204,7 @@ const BankDetails = (props) => {
           setMicr(value.MICRcode);
           setbranchAdd(value.branchAddress);
           setfileBank(initialUrlbankDoc);
-          seteditValuefileBank(bankdetailDoc); 
+          seteditValuefileBank(bankdetailDoc);
         });
       });
     } else {
@@ -233,7 +215,7 @@ const BankDetails = (props) => {
     <div className="bank-details">
       <Navbar1 />
       <div className="container-fluid  py-5 pagebg">
-        <form onSubmit={handleSubmit} style={{mt:5}} className={style}>
+        <form onSubmit={handleSubmit} style={{ mt: 5 }} className={style}>
           <div className="container">
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
@@ -333,7 +315,7 @@ const BankDetails = (props) => {
                           type="file"
                           name="fileBank"
                           fileOrFiles={deleteUploadedFile}
-                          disabled={style==='notEditable'? true:false}
+                          disabled={style === "notEditable" ? true : false}
                         />
                         <span>
                           {fileBank
@@ -386,9 +368,24 @@ const BankDetails = (props) => {
               >
                 Cancel
               </button>
-              <button type="submit" className="btn bankbtn btn-md m-1">
-                Save
-              </button>
+              {params.userId ? (
+                <>
+                  <button
+                    type="submit"
+                    className="btn bankbtn btn-md m-1"
+                    onClick={updatehandle}
+                  >
+                    update
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button type="submit" className="btn bankbtn btn-md m-1">
+                    Save
+                  </button>
+                </>
+              )}
+
               <button
                 type="button"
                 onClick={next}

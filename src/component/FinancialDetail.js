@@ -74,7 +74,7 @@ const FinancialDetails = () => {
         setfileFD("");
         setdeleteUploadedFile(false);
         seteditfileFD("");
-      } 
+      }
     });
   }
   function deleteFile2(e) {
@@ -94,7 +94,6 @@ const FinancialDetails = () => {
         setdeleteUploadedFile2(false);
         seteditfileFD2("");
       }
-  
     });
   }
   function cancel(e) {
@@ -128,8 +127,12 @@ const FinancialDetails = () => {
     });
   }
   function next(e) {
-    saveFinancialDetail(e);
-    navigate("/ContactTeam");
+    // saveFinancialDetail(e);
+    if (params.userId) {
+      navigate(`/ContactTeam/${params.userId}`);
+    } else {
+      navigate("/ContactTeam");
+    }
   }
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -167,7 +170,73 @@ const FinancialDetails = () => {
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
     if (params.userId) {
-      if (style !== 'notEditable') {
+      if (style !== "notEditable") {
+        apiService.updateFinacialDetail(params.userId, data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data updated",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((res) => {
+              navigate(`/ContactTeam/${params.userId}`);
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Vendor Data Already Submitted",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    } else {
+      apiService.saveFinacialDetail(data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((res) => {
+            navigate(`/ContactTeam`);
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+  };
+  const updateFinancialDetail = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("financial_data", fileFD);
+    data.append("financial_data2", fileFD2);
+    data.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
+    data.append("Revenue", values.Revenue);
+    data.append("Profit", values.Profit);
+    data.append("netWorth", values.netWorth);
+    data.append("currentAssets", values.currentAssets);
+    data.append("directorDetails", values.directorDetails);
+    data.append("userId", params.userId);
+    if (params.userId) {
       apiService.updateFinacialDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
@@ -189,46 +258,21 @@ const FinancialDetails = () => {
           });
         }
       });
-    } else {
-      Swal.fire({
-        title: "Vendor Data Already Submitted",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-    } else {
-      apiService.saveFinacialDetail(data).then((res) => {
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((res) => {
-            navigate(`/FinancialDetail/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
     }
   };
   useEffect(() => {
     if (params.userId) {
-      let finalstatus = ""
+      let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus
-      })
+        finalstatus = res.data.result.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
-            setStyle('notEditable');
+          if (
+            res.data.basicInfo[0].submitStatus === "Submitted" &&
+            finalstatus !== "Approved"
+          ) {
+            setStyle("notEditable");
           }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
@@ -361,7 +405,7 @@ const FinancialDetails = () => {
                           type="file"
                           name="fileFD"
                           fileOrFiles={deleteUploadedFile}
-                          disabled={style==='notEditable'? true:false}
+                          disabled={style === "notEditable" ? true : false}
                         />
                         <span>
                           {fileFD
@@ -380,7 +424,7 @@ const FinancialDetails = () => {
                       type="file"
                       name="fileFD"
                       fileOrFiles={deleteUploadedFile}
-                      disabled={style==='notEditable'? true:false}
+                      disabled={style === "notEditable" ? true : false}
                     />
                     <span>
                       {fileFD ? `File name: ${fileFD.name}` : "No File Chosen"}
@@ -429,8 +473,7 @@ const FinancialDetails = () => {
                           type="file"
                           name="fileFD2"
                           fileOrFiles={deleteUploadedFile2}
-                          disabled={style==='notEditable'? true:false}
-
+                          disabled={style === "notEditable" ? true : false}
                         />
                         <span>
                           {fileFD2
@@ -449,8 +492,7 @@ const FinancialDetails = () => {
                       type="file"
                       name="fileFD2"
                       fileOrFiles={deleteUploadedFile2}
-                      disabled={style==='notEditable'? true:false}
-
+                      disabled={style === "notEditable" ? true : false}
                     />
                     <span>
                       {fileFD2
@@ -491,13 +533,28 @@ const FinancialDetails = () => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                onClick={saveFinancialDetail}
-                className="btn financialbtn btn-md m-3"
-              >
-                Save
-              </button>
+              {params.userId ? (
+                <>
+                  <button
+                    type="submit"
+                    onClick={updateFinancialDetail}
+                    className="btn financialbtn btn-md m-3"
+                  >
+                    Update
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="submit"
+                    onClick={saveFinancialDetail}
+                    className="btn financialbtn btn-md m-3"
+                  >
+                    Save
+                  </button>
+                </>
+              )}
+
               <button
                 type="button"
                 onClick={next}

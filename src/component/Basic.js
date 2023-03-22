@@ -6,8 +6,8 @@ import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import Container from "react-bootstrap/Container";
 import withRouter from "../component/withRouter";
-import ReactLoading from 'react-loading';
-import Spinner from "../common/spinner";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {
   MDBBtn,
   MDBCard,
@@ -58,14 +58,8 @@ export class Basic extends React.Component {
       mastervendor_email: "",
       open: true,
       commu: false,
-      setLoading:true,
       edit: true,
       editStatutory: "",
-      editCommunicationDetail:"",
-      editBaiscInfo:"",
-      setStyle: 'editable',
-      regCmyName:"",
-      cmpyErr:""
     };
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -103,21 +97,24 @@ export class Basic extends React.Component {
       commu: false,
     });
   }
-  togglebuttonCommu= (e) => {
+  togglebuttonCommu() {
     const { commu } = this.state;
     this.setState({
       open: false,
       commu: true,
     });
+    this.handleSubmitComDetail();
   }
   next = (e) => {
     e.preventDefault();
-    if (this.state.editStatutory.length <= 0 || "" || undefined) { 
+    if (this.state.editStatutory.length <= 0 || "" || undefined) {
+      this.handleSubmit(e);
       this.props.navigate("/statutory");
     } else {
-      this.props.navigate(`/statutory/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`);
+      this.props.navigate(`/statutory/${this.props.params.userId}`);
     }
   };
+
   cancelBasicInfo = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -125,11 +122,8 @@ export class Basic extends React.Component {
       icon: "success",
       confirmButtonText: "Yes",
       showCloseButton: true,
-      cancelButtonText: 'No',
+      cancelButtonText: "Cancel",
       showCancelButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
@@ -143,8 +137,6 @@ export class Basic extends React.Component {
           image: "",
         });
       }
-
-
     });
   };
   cancelCommunicationInfo = (e) => {
@@ -152,40 +144,31 @@ export class Basic extends React.Component {
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "Yes",
-      showCloseButton: true,
-      cancelButtonText: 'No',
-      showCancelButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.setState({
-          financeSpoccontactName: "",
-          financeSpocdesignation: "",
-          financeSpocphoneNo: "",
-          financeSpocemail: "",
-          operationSpoccontactName: "",
-          operationSpocdesignation: "",
-          operationSpocphoneNo: "",
-          operationSpocemail: "",
-          collectionSpoccontactName: "",
-          collectionSpocdesignation: "",
-          collectionSpocphoneNo: "",
-          collectionSpocemail: "",
-          managementSpoccontactName: "",
-          managementSpocdesignation: "",
-          managementSpocphoneNo: "",
-          managementSpocemail: "",
-          contactName: "",
-          designation: "",
-          phoneNo: "",
-          email: "",
-          mastervendor_email: "",
-
-        });
-      }
-    
+      confirmButtonText: "OK",
+    }).then((ClearData) => {
+      this.setState({
+        financeSpoccontactName: "",
+        financeSpocdesignation: "",
+        financeSpocphoneNo: "",
+        financeSpocemail: "",
+        operationSpoccontactName: "",
+        operationSpocdesignation: "",
+        operationSpocphoneNo: "",
+        operationSpocemail: "",
+        collectionSpoccontactName: "",
+        collectionSpocdesignation: "",
+        collectionSpocphoneNo: "",
+        collectionSpocemail: "",
+        managementSpoccontactName: "",
+        managementSpocdesignation: "",
+        managementSpocphoneNo: "",
+        managementSpocemail: "",
+        contactName: "",
+        designation: "",
+        phoneNo: "",
+        email: "",
+        mastervendor_email: "",
+      });
     });
   };
   handleChange(e) {
@@ -198,24 +181,11 @@ export class Basic extends React.Component {
       [name]: value,
     });
     this.setState({ [e.target.id]: e.target.value });
-    if (name === 'companyName'){
-      if (value === this.state.regCmyName) {
-        this.setState({ cmpyErr: "" })
-      }else{
-        this.setState({ cmpyErr: "Company name is invalid" })
-      }
-    }
-  
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.companyName !== this.state.regCmyName){
-      this.setState({
-        cmpyErr: "Company name is invalid",
-      });
-    }else{
-  
     const basicInfo = {
+      // id: this.state.id,
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       address1: this.state.address1,
       address2: this.state.address2,
@@ -251,10 +221,214 @@ export class Basic extends React.Component {
             title: "Data saved",
             icon: "success",
             confirmButtonText: "OK",
-          })
-          .then((result) => {
-            this.edit = true;
-      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+  };
+  updatehandleSubmit = (e) => {
+    e.preventDefault();
+    const basicInfo = {
+      // id: this.state.id,
+      userId: this.props.params.userId,
+      address1: this.state.address1,
+      address2: this.state.address2,
+      city: this.state.city,
+      state: this.state.state,
+      country: this.state.country,
+      pinCode: this.state.pinCode,
+      companyName: this.state.companyName,
+      image: this.state.image,
+    };
+    if (this.props.params.userId) {
+      apiService
+        .updateVendordetail(this.props.params.userId, basicInfo)
+        .then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data Updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+    }
+  };
+
+  handleSubmitComDetail = (e) => {
+    e.preventDefault();
+    const communicationDetails = {
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+      financeSpoccontactName: this.state.financeSpoccontactName,
+      financeSpocdesignation: this.state.financeSpocdesignation,
+      financeSpocphoneNo: this.state.financeSpocphoneNo,
+      financeSpocemail: this.state.financeSpocemail,
+      operationSpoccontactName: this.state.operationSpoccontactName,
+      operationSpocdesignation: this.state.operationSpocdesignation,
+      operationSpocphoneNo: this.state.operationSpocphoneNo,
+      operationSpocemail: this.state.operationSpocemail,
+      collectionSpoccontactName: this.state.collectionSpoccontactName,
+      collectionSpocdesignation: this.state.collectionSpocdesignation,
+      collectionSpocphoneNo: this.state.collectionSpocphoneNo,
+      collectionSpocemail: this.state.collectionSpocemail,
+      managementSpoccontactName: this.state.managementSpoccontactName,
+      managementSpocdesignation: this.state.managementSpocdesignation,
+      managementSpocphoneNo: this.state.managementSpocphoneNo,
+      managementSpocemail: this.state.managementSpocemail,
+      contactName: this.state.contactName,
+      designation: this.state.designation,
+      phoneNo: this.state.phoneNo,
+      email: this.state.email,
+      mastervendor_email: this.state.mastervendor_email,
+    };
+    if (this.props.params.userId) {
+      apiService
+        .updateCommunicationdetail(
+          this.props.params.userId,
+          communicationDetails
+        )
+        .then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data Updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+    } else {
+      apiService
+        .SaveVendorCommunication(communicationDetails)
+        .then((response) => {
+          if (response.data.msg === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+    }
+  };
+  updatehandleSubmitComDetail = (e) => {
+    e.preventDefault();
+    const communicationDetails = {
+      userId: this.props.params.userId,
+      financeSpoccontactName: this.state.financeSpoccontactName,
+      financeSpocdesignation: this.state.financeSpocdesignation,
+      financeSpocphoneNo: this.state.financeSpocphoneNo,
+      financeSpocemail: this.state.financeSpocemail,
+      operationSpoccontactName: this.state.operationSpoccontactName,
+      operationSpocdesignation: this.state.operationSpocdesignation,
+      operationSpocphoneNo: this.state.operationSpocphoneNo,
+      operationSpocemail: this.state.operationSpocemail,
+      collectionSpoccontactName: this.state.collectionSpoccontactName,
+      collectionSpocdesignation: this.state.collectionSpocdesignation,
+      collectionSpocphoneNo: this.state.collectionSpocphoneNo,
+      collectionSpocemail: this.state.collectionSpocemail,
+      managementSpoccontactName: this.state.managementSpoccontactName,
+      managementSpocdesignation: this.state.managementSpocdesignation,
+      managementSpocphoneNo: this.state.managementSpocphoneNo,
+      managementSpocemail: this.state.managementSpocemail,
+      contactName: this.state.contactName,
+      designation: this.state.designation,
+      phoneNo: this.state.phoneNo,
+      email: this.state.email,
+    };
+    if (this.props.params.userId) {
+      apiService
+        .updateCommunicationdetail(
+          this.props.params.userId,
+          communicationDetails
+        )
+        .then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data Updated",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+    }
+  };
+  convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  handleFileRead = async (event) => {
+    const file = event.target.files[0];
+    const base64 = await this.convertBase64(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = this.onreaderLoad.bind(this);
+      reader.readAsBinaryString(file);
+    }
+  };
+  onreaderLoad = (readerEvt) => {
+    let binaryString = readerEvt.target.result;
+    this.setState({
+      image: btoa(binaryString),
+    });
+  };
+
+  updateVendordetail(userId, data) {
+    apiService.updateVendordetail(userId, data).then((response) => {});
+  }
+  componentDidMount() {
+    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
+    apiService.getAllCollection(userid).then((res) => {
+      this.setState({ companyName: res.data.basicInfo[0].companyName });
+      if (this.props.params.userId) {
+        this.setState({ id: res.data.basicInfo[0].id });
+      }
+    });
+    apiService.signupFindByUserId(userid).then((res) => {
+      this.setState({ approval: res.data.result.role });
+      this.setState({ vendorId: res.data.result.vendorId });
+    });
+
+    if (this.props.params.userId) {
+      this.edit = true;
+      apiService.getAllCollection(this.props.params.userId).then((res) => {
         this.setState({
           editStatutory: res.data.Statutory,
         });
@@ -296,274 +470,17 @@ export class Basic extends React.Component {
           });
         });
       });
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+    } else {
+      this.edit = false;
     }
-     
-  }
-  };
-   handleSubmit1 = (e) => {
-    e.preventDefault();
-    const basicInfo = {
-      userId: JSON.parse(window.sessionStorage.getItem('jwt')).result.userId,
-      address1: this.state.address1,
-      address2: this.state.address2,
-      city: this.state.city,
-      state: this.state.state,
-      country: this.state.country,
-      pinCode: this.state.pinCode,
-      companyName: this.state.companyName,
-      image: this.state.image,
-    };
-    if (this.props.params.userId) {
-      apiService
-        .updateVendordetail(this.props.params.userId, basicInfo)
-        .then((response) => {
-          if (response) {
-            Swal.fire({
-              title: 'Data Updated',
-              icon: 'success',
-              confirmButtonText: 'OK',
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-          } else {
-            Swal.fire({
-              title: 'Error While Fetching',
-              icon: 'error',
-              confirmButtonText: 'OK',
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-          }
-        });
-    }
-  };
-
-  handleSubmitComDetail = (e) => {
-    e.preventDefault();
-    const communicationDetails = {
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
-      financeSpoccontactName: this.state.financeSpoccontactName,
-      financeSpocdesignation: this.state.financeSpocdesignation,
-      financeSpocphoneNo: this.state.financeSpocphoneNo,
-      financeSpocemail: this.state.financeSpocemail,
-      operationSpoccontactName: this.state.operationSpoccontactName,
-      operationSpocdesignation: this.state.operationSpocdesignation,
-      operationSpocphoneNo: this.state.operationSpocphoneNo,
-      operationSpocemail: this.state.operationSpocemail,
-      collectionSpoccontactName: this.state.collectionSpoccontactName,
-      collectionSpocdesignation: this.state.collectionSpocdesignation,
-      collectionSpocphoneNo: this.state.collectionSpocphoneNo,
-      collectionSpocemail: this.state.collectionSpocemail,
-      managementSpoccontactName: this.state.managementSpoccontactName,
-      managementSpocdesignation: this.state.managementSpocdesignation,
-      managementSpocphoneNo: this.state.managementSpocphoneNo,
-      managementSpocemail: this.state.managementSpocemail,
-      contactName: this.state.contactName,
-      designation: this.state.designation,
-      phoneNo: this.state.phoneNo,
-      email: this.state.email,
-      mastervendor_email: this.state.mastervendor_email,
-    };
-    if (this.state.editCommunicationDetail.length<=0) {
-      apiService
-      .SaveVendorCommunication(communicationDetails)
-      .then((response) => {
-        if (response.data.msg === "success") {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    } 
-    else
-     {
-      apiService
-      .updateCommunicationdetail(
-        JSON.parse(window.sessionStorage.getItem('jwt')).result.userId,
-        communicationDetails
-      )
-      .then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data Updated",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      }); 
-    }
-  };
-  convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  handleFileRead = async (event) => {
-    if(event.target.files[0].size>70000)
-    {
-      Swal.fire({
-        title: "file size should be less than or equal to 70kb",
-        icon: "error",
-        confirmButtonText: "OK",
-        showCloseButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      });
-    }
-    else
-    {
-      const file = event.target.files[0];
-      const base64 = await this.convertBase64(file);
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = this.onreaderLoad.bind(this);
-        reader.readAsBinaryString(file);
-      }
-    }
-  
-  };
-  onreaderLoad = (readerEvt) => {
-    let binaryString = readerEvt.target.result;
-    this.setState({
-      image: btoa(binaryString),
-    });
-  };
-
-  updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => {});
-  }
-  componentDidMount() {  
-    this.setLoading=true;
-    let userid = JSON.parse(window.sessionStorage.getItem('jwt')).result.userId;
-    let finalstatus = ""
-    apiService.signupFindByUserId(userid).then((res) => {
-      finalstatus = res.data.result.finalStatus  
-      this.setState({ companyName: res.data.result.companyName })
-      this.setState({ regCmyName: res.data.result.companyName })
-    })
-    apiService.getAllCollection(userid).then((res) => {
-      if (res.data.basicInfo[0].submitStatus === "Submitted" && finalstatus !== 'Approved') {
-        this.setState({ setStyle: 'notEditable' })
-      }
-      if(res.data.status==='success')
-      {
-        this.setLoading=false;
-        if(res.data.basicInfo.length>0)
-        {
-          this.setState({ companyName: res.data.basicInfo[0].companyName,
-            address1: res.data.basicInfo[0].address1,
-            address2:res.data.basicInfo[0].address2,
-            city:res.data.basicInfo[0].city,
-            state:res.data.basicInfo[0].state,
-            country:res.data.basicInfo[0].country,
-            pinCode:res.data.basicInfo[0].pinCode,
-            image:res.data.basicInfo[0].image, });
-        }
-        else
-        {
-          this.setState({ companyName: '',
-            address1:'',
-            address2:'',
-            city:'',
-            state:'',
-            country:'',
-            pinCode:'',
-            image:'' });
-        }
-        if(res.data.CommunicationDetails.length>0)
-        {
-          this.setState({
-            financeSpoccontactName:res.data.CommunicationDetails[0].financeSpoccontactName,
-            financeSpocdesignation:res.data.CommunicationDetails[0].financeSpocdesignation,
-            financeSpocphoneNo:res.data.CommunicationDetails[0].financeSpocphoneNo,
-            financeSpocemail:res.data.CommunicationDetails[0].financeSpocemail,
-            operationSpoccontactName:res.data.CommunicationDetails[0].operationSpoccontactName,
-            operationSpocdesignation:res.data.CommunicationDetails[0].operationSpocdesignation,
-            operationSpocphoneNo:res.data.CommunicationDetails[0].operationSpocphoneNo,
-            operationSpocemail:res.data.CommunicationDetails[0].operationSpocemail,
-            collectionSpoccontactName:res.data.CommunicationDetails[0].collectionSpoccontactName,
-            collectionSpocdesignation:res.data.CommunicationDetails[0].collectionSpocdesignation,
-            collectionSpocphoneNo:res.data.CommunicationDetails[0].collectionSpocphoneNo,
-            collectionSpocemail:res.data.CommunicationDetails[0].collectionSpocemail,
-            managementSpoccontactName:res.data.CommunicationDetails[0].managementSpoccontactName,
-            managementSpocdesignation:res.data.CommunicationDetails[0].managementSpocdesignation,
-            managementSpocphoneNo:res.data.CommunicationDetails[0].managementSpocphoneNo,
-            managementSpocemail:res.data.CommunicationDetails[0].managementSpocemail,
-            contactName:res.data.CommunicationDetails[0].contactName,
-            designation:res.data.CommunicationDetails[0].designation,
-            phoneNo:res.data.CommunicationDetails[0].phoneNo,
-            email:res.data.CommunicationDetails[0].email,
-            mastervendor_email:res.data.CommunicationDetails[0].mastervendor_email,
-          });
-        }
-  else
-  {
-    this.setState({
-      financeSpoccontactName:'',
-      financeSpocdesignation:'',
-      financeSpocphoneNo:'',
-      financeSpocemail:'',
-      operationSpoccontactName:'',
-      operationSpocdesignation:'',
-      operationSpocphoneNo:'',
-      operationSpocemail:'',
-      collectionSpoccontactName:'',
-      collectionSpocdesignation:'',
-      collectionSpocphoneNo:'',
-      collectionSpocemail:'',
-      managementSpoccontactName:'',
-      managementSpocdesignation:'',
-      managementSpocphoneNo:'',
-      managementSpocemail:'',
-      contactName:'',
-      designation:'',
-      phoneNo:'',
-      email:'',
-      mastervendor_email:'',
-    });
-  }
-         
-      }
-      this.setState({
-        editStatutory: res.data.Statutory,
-        editCommunicationDetail:res.data.CommunicationDetails
-      });       
-    });
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
+    apiService
+      .getStateAndcityByzipcode(this.state.country, this.state.pinCode)
+      .then((response) => {
+        this.setState({ getCityAndState: response.data.postalcodes });
+      });
   }
   render() {
     const {
@@ -613,12 +530,11 @@ export class Basic extends React.Component {
     } = this.state;
     return (
       <>
-     
         <div className="vendor-det">
           <Navbar1 />
-          <div className="container-fluid ribbonMain">
+          <div class="container-fluid ribbonMain">
             <div
-              className="ribbon basic-information-label left"
+              class="ribbon basic-information-label left"
               onClick={this.togglebutton}
             >
               {" "}
@@ -626,43 +542,30 @@ export class Basic extends React.Component {
               <label className="labelName">Basic information</label>
             </div>
             <div
-              className="ribbon basic-information-label right"
+              class="ribbon basic-information-label right"
               onClick={this.togglebuttonCommu}
             >
               <span className={commu ? "dotActive" : "dotInActive"}></span>
               <label className="labelName">communication Details</label>
             </div>
           </div>
-          <div className="container">
+          <div class="container">
             <div className="mx-auto mt-5">
               {open && (
-                <div className="container-fluid">
-                      <MDBRow className="mb-4">
-                                      <MDBCol md="2" style={{display:'inline-block'}}>
-                                      <MDBTypography tag="h5" className="mb-0 info">
+                <div class="container-fluid">
+                  <MDBTypography tag="h5" className="mb-0 info">
                     Basic information
-                  </MDBTypography>    
-                                      </MDBCol>
-                                      {this.setLoading ? (
-  <MDBCol md="6" style={{display:'inline-block'}}>
-  <ReactLoading className='spinner' type={"spinningBubbles"} delay={'10'} color="black" height={'7%'} width={'5%'} />
-  </MDBCol>
-                                      ):(
-                                        <MDBCol>
-
-                                       </MDBCol>
-                                      )}
-                                    
-                                      </MDBRow>
+                  </MDBTypography>
+                  <br />
                   <MDBRow>
                     <MDBCol md="12" className="mb-12 g">
                       <MDBCard className="mb-12">
-                        <div className="container-fluid">
+                        <div class="container-fluid">
                           <MDBRow>
                             <MDBCol md="8" className="mb-4">
                               <MDBCard className="mb-4 basic">
                                 <MDBCardBody>
-                                  <form className={this.state.setStyle}>
+                                  <form>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div>
@@ -681,7 +584,6 @@ export class Basic extends React.Component {
                                           />
                                         </div>
                                       </MDBCol>
-                                      <span className="formError">{this.state.cmpyErr}</span>
                                     </MDBRow>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
@@ -698,9 +600,7 @@ export class Basic extends React.Component {
                                             name="address1"
                                             id="address1"
                                             onChange={this.formValChange}
-                                            value={address1|| ''}
-                                            style={{resize:"none"}}
-                                            disabled={this.state.setStyle === 'notEditable' ? true : false}
+                                            value={address1}
                                           ></textarea>
                                         </div>
                                       </MDBCol>
@@ -718,7 +618,6 @@ export class Basic extends React.Component {
                                         id="address2"
                                         onChange={this.formValChange}
                                         value={address2}
-                                        disabled={this.state.setStyle === 'notEditable' ? true : false}
                                       ></textarea>
                                     </div>
                                     <MDBRow className="mb-4">
@@ -733,9 +632,8 @@ export class Basic extends React.Component {
                                             className="mb-4 VendorInput"
                                             name="country"
                                             id="country"
-                                            value={this.state.country|| ''}
+                                            value={this.state.country}
                                             onChange={this.handleChange}
-                                            disabled={this.state.setStyle ==='notEditable'? true:false}
                                           >
                                             {countriesList}
                                           </select>
@@ -753,7 +651,7 @@ export class Basic extends React.Component {
                                             className="mb-4 VendorInput"
                                             name="pinCode"
                                             id="pinCode"
-                                            value={pinCode|| ''}
+                                            value={pinCode}
                                             onMouseLeave={this.mouseOut}
                                             onChange={this.mouseEnter}
                                           />
@@ -772,7 +670,7 @@ export class Basic extends React.Component {
                                             name="state"
                                             id="state"
                                             onChange={this.formValChange}
-                                            value={this.state.state|| ''}
+                                            value={this.state.state}
                                           />
                                         </div>
                                       </MDBCol>
@@ -787,7 +685,7 @@ export class Basic extends React.Component {
                                             name="city"
                                             id="city"
                                             onChange={this.formValChange}
-                                            value={this.state.city|| ''}
+                                            value={this.state.city}
                                           />
                                         </div>
                                       </MDBCol>
@@ -799,18 +697,9 @@ export class Basic extends React.Component {
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image === null || ""||
+                                  {this.state.image != "" ||
                                   undefined ||
                                   null ? (
-                                    <div>
-                                       <img
-                                        className="camera-img"
-                                        alt=""
-                                        src={uploa}
-                                      />
-                                    
-                                    </div>
-                                  ) : (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -819,6 +708,15 @@ export class Basic extends React.Component {
                                           `${this.state.image}`
                                         }
                                         alt=""
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      {" "}
+                                      <img
+                                        className="camera-img"
+                                        alt=""
+                                        src={uploa}
                                       />
                                     </div>
                                   )}
@@ -831,9 +729,8 @@ export class Basic extends React.Component {
                                   accept=".jpeg, .png, .jpg"
                                   onChange={(e) => this.handleFileRead(e)}
                                   id="image"
-                                  value={this.base64|| ''}
+                                  value={this.base64}
                                   className="mb-4 VendorInput"
-                                  disabled={this.state.setStyle ==='notEditable'? true:false}
                                 />
                                 <MDBCardHeader className="py-3">
                                   <MDBTypography tag="h5" className="mb-0">
@@ -845,25 +742,39 @@ export class Basic extends React.Component {
                           </MDBRow>
                           <div className="d-flex justify-content-center">
                             <MDBRow className="mb-4">
-                              <div className={this.state.setStyle}>
+                              <div className="float-end">
                                 <button
                                   type="button"
                                   onClick={this.cancelBasicInfo}
-                                  className="btn basicbtn btn-md m-3"
+                                  className="btn basicbtn btn-primary btn-md m-3"
                                 >
                                   Cancel
                                 </button>
-                                <button
-                                  type="button"
-                                  onClick={this.handleSubmit}
-                                  className="btn basicbtn btn-md m-3"
-                                >
-                                  Save
-                                </button>
+                                {this.props.params.userId ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={this.updatehandleSubmit}
+                                      className="btn basicbtn btn-md m-3"
+                                    >
+                                      {" "}
+                                      Update
+                                    </button>
+                                  </>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={this.handleSubmit}
+                                    className="btn basicbtn btn-primary btn-md m-3"
+                                  >
+                                    Save
+                                  </button>
+                                )}
+
                                 <button
                                   type="button"
                                   onClick={this.togglebuttonCommu}
-                                  className="btn basicbtn btn-md m-3"
+                                  className="btn basicbtn btn-primary btn-md m-3"
                                 >
                                   Next
                                 </button>
@@ -877,27 +788,16 @@ export class Basic extends React.Component {
                 </div>
               )}
               {commu && (
-                <div className="container-fluid">
-                   <MDBCol md="2" style={{display:'inline-block'}}>
+                <div class="container-fluid">
                   <MDBTypography tag="h5" className="mb-0 info">
                     Communication Details*
                   </MDBTypography>
-                  </MDBCol>
-                  {this.setLoading ? (
-  <MDBCol md="6" style={{display:'inline-block'}}>
-  <ReactLoading className='spinner' type={"spinningBubbles"} delay={'10'} color="black" height={'7%'} width={'4%'} />
-  </MDBCol>
-                                      ):(
-                                        <MDBCol>
-                                       </MDBCol>
-                                      )}
-                  <br />
                   <br />
                   <MDBRow>
                     <MDBCol md="12" className="mb-12">
                       <MDBCard className="mb-12">
-                        <div className="container-fluid">
-                          <form className={this.state.setStyle}>
+                        <div class="container-fluid">
+                          <form>
                             <label className="fieldHeader">
                               Finance Spoc
                               <span className="mandatoryField">*</span>
@@ -911,7 +811,7 @@ export class Basic extends React.Component {
                                   name="financeSpoccontactName"
                                   id="financeSpoccontactName"
                                   onChange={this.formValChange}
-                                  value={financeSpoccontactName|| ''}
+                                  value={financeSpoccontactName}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -922,7 +822,7 @@ export class Basic extends React.Component {
                                   name="financeSpocdesignation"
                                   id="financeSpocdesignation"
                                   onChange={this.formValChange}
-                                  value={financeSpocdesignation|| ''}
+                                  value={financeSpocdesignation}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -933,7 +833,7 @@ export class Basic extends React.Component {
                                   name="financeSpocphoneNo"
                                   id="financeSpocphoneNo"
                                   onChange={this.formValChange}
-                                  value={financeSpocphoneNo|| ''}
+                                  value={financeSpocphoneNo}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -944,7 +844,7 @@ export class Basic extends React.Component {
                                   name="financeSpocemail"
                                   id="financeSpocemail"
                                   onChange={this.formValChange}
-                                  value={financeSpocemail|| ''}
+                                  value={financeSpocemail}
                                 />
                               </MDBCol>
                             </MDBRow>
@@ -960,7 +860,7 @@ export class Basic extends React.Component {
                                   name="operationSpoccontactName"
                                   id="operationSpoccontactName"
                                   onChange={this.formValChange}
-                                  value={operationSpoccontactName|| ''}
+                                  value={operationSpoccontactName}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -971,7 +871,7 @@ export class Basic extends React.Component {
                                   name="operationSpocdesignation"
                                   id="operationSpocdesignation"
                                   onChange={this.formValChange}
-                                  value={operationSpocdesignation|| ''}
+                                  value={operationSpocdesignation}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -982,7 +882,7 @@ export class Basic extends React.Component {
                                   name="operationSpocphoneNo"
                                   id="operationSpocphoneNo"
                                   onChange={this.formValChange}
-                                  value={operationSpocphoneNo|| ''}
+                                  value={operationSpocphoneNo}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -993,7 +893,7 @@ export class Basic extends React.Component {
                                   name="operationSpocemail"
                                   id="operationSpocemail"
                                   onChange={this.formValChange}
-                                  value={operationSpocemail|| ''}
+                                  value={operationSpocemail}
                                 />
                               </MDBCol>
                             </MDBRow>
@@ -1009,7 +909,7 @@ export class Basic extends React.Component {
                                   name="collectionSpoccontactName"
                                   id="collectionSpoccontactName"
                                   onChange={this.formValChange}
-                                  value={collectionSpoccontactName|| ''}
+                                  value={collectionSpoccontactName}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1020,7 +920,7 @@ export class Basic extends React.Component {
                                   name="collectionSpocdesignation"
                                   id="collectionSpocdesignation"
                                   onChange={this.formValChange}
-                                  value={collectionSpocdesignation|| ''}
+                                  value={collectionSpocdesignation}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1031,7 +931,7 @@ export class Basic extends React.Component {
                                   name="collectionSpocphoneNo"
                                   id="collectionSpocphoneNo"
                                   onChange={this.formValChange}
-                                  value={collectionSpocphoneNo|| ''}
+                                  value={collectionSpocphoneNo}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1042,7 +942,7 @@ export class Basic extends React.Component {
                                   name="collectionSpocemail"
                                   id="collectionSpocemail"
                                   onChange={this.formValChange}
-                                  value={collectionSpocemail|| ''}
+                                  value={collectionSpocemail}
                                 />
                               </MDBCol>
                             </MDBRow>
@@ -1059,7 +959,7 @@ export class Basic extends React.Component {
                                   name="managementSpoccontactName"
                                   id="managementSpoccontactName"
                                   onChange={this.formValChange}
-                                  value={managementSpoccontactName|| ''}
+                                  value={managementSpoccontactName}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1070,7 +970,7 @@ export class Basic extends React.Component {
                                   name="managementSpocdesignation"
                                   id="managementSpocdesignation"
                                   onChange={this.formValChange}
-                                  value={managementSpocdesignation|| ''}
+                                  value={managementSpocdesignation}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1081,7 +981,7 @@ export class Basic extends React.Component {
                                   name="managementSpocphoneNo"
                                   id="managementSpocphoneNo"
                                   onChange={this.formValChange}
-                                  value={managementSpocphoneNo|| ''}
+                                  value={managementSpocphoneNo}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1092,7 +992,7 @@ export class Basic extends React.Component {
                                   name="managementSpocemail"
                                   id="managementSpocemail"
                                   onChange={this.formValChange}
-                                  value={managementSpocemail|| ''}
+                                  value={managementSpocemail}
                                 />
                               </MDBCol>
                             </MDBRow>
@@ -1106,7 +1006,7 @@ export class Basic extends React.Component {
                                   name="contactName"
                                   id="contactName"
                                   onChange={this.formValChange}
-                                  value={contactName|| ''}
+                                  value={contactName}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1117,7 +1017,7 @@ export class Basic extends React.Component {
                                   name="designation"
                                   id="designation"
                                   onChange={this.formValChange}
-                                  value={designation|| ''}
+                                  value={designation}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1128,7 +1028,7 @@ export class Basic extends React.Component {
                                   name="phoneNo"
                                   id="phoneNo"
                                   onChange={this.formValChange}
-                                  value={phoneNo|| ''}
+                                  value={phoneNo}
                                 />
                               </MDBCol>
                               <MDBCol>
@@ -1139,49 +1039,69 @@ export class Basic extends React.Component {
                                   name="email"
                                   id="email"
                                   onChange={this.formValChange}
-                                  value={email|| ''}
+                                  value={email}
                                 />
                               </MDBCol>
                             </MDBRow>
-                            <MDBRow>
-                              <MDBCol>
-                                <label className="fieldHeader">
-                                  Master vendor email id
-                                  <span className="mandatoryField">*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="mb-4 VendorInput"
-                                  name="mastervendor_email"
-                                  id="mastervendor_email"
-                                  onChange={this.formValChange}
-                                  value={mastervendor_email|| ''}
-                                />
-                              </MDBCol>
-                              <MDBCol></MDBCol>
-                              <MDBCol></MDBCol>
-                            </MDBRow>
+                            {this.state.approval === "Admin" ? (
+                              ""
+                            ) : (
+                              <MDBRow>
+                                <MDBCol>
+                                  <label className="fieldHeader">
+                                    Master vendor email id
+                                    <span className="mandatoryField">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="mb-4 VendorInput"
+                                    name="mastervendor_email"
+                                    id="mastervendor_email"
+                                    onChange={this.formValChange}
+                                    value={mastervendor_email}
+                                  />
+                                </MDBCol>
+                                <MDBCol></MDBCol>
+                                <MDBCol></MDBCol>
+                              </MDBRow>
+                            )}
                             <div className="d-flex justify-content-center">
                               <MDBRow className="mb-4">
-                                <div className={this.state.setStyle}>
+                                <div className="float-end">
                                   <button
                                     type="button"
                                     onClick={this.cancelCommunicationInfo}
-                                    className="btn basicbtn btn-md m-3"
+                                    className="btn basicbtn btn-primary btn-md m-3"
                                   >
                                     Cancel
                                   </button>
-                                  <button
-                                    type="button"
-                                    onClick={this.handleSubmitComDetail}
-                                    className="btn basicbtn btn-md m-3"
-                                  >
-                                    Save
-                                  </button>
+                                  {this.props.params.userId ? (
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={
+                                          this.updatehandleSubmitComDetail
+                                        }
+                                        className="btn basicbtn btn-primary btn-md m-3"
+                                      >
+                                        Update
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={this.handleSubmitComDetail}
+                                        className="btn basicbtn btn-primary btn-md m-3"
+                                      >
+                                        Save
+                                      </button>
+                                    </>
+                                  )}
                                   <button
                                     type="button"
                                     onClick={this.next}
-                                    className="btn basicbtn btn-md m-3"
+                                    className="btn basicbtn btn-primary btn-md m-3"
                                   >
                                     Next
                                   </button>

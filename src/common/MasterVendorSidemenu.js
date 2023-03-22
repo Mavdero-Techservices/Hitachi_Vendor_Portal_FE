@@ -1,29 +1,29 @@
-import AppRegistrationSharpIcon from '@mui/icons-material/AppRegistrationSharp';
-import MenuIcon from '@mui/icons-material/Menu';
-import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { Container } from '@mui/material';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Select from '@mui/material/Select';
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import { Link } from 'react-router-dom';
-import apiService from '../services/api.service';
-import { useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
+import AppRegistrationSharpIcon from "@mui/icons-material/AppRegistrationSharp";
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { Container } from "@mui/material";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Select from "@mui/material/Select";
+import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import { Link } from "react-router-dom";
+import apiService from "../services/api.service";
+import { useNavigate } from "react-router-dom";
+
 export const MasterVendorSidemenu = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [open, setOpen] = useState(false);
@@ -33,13 +33,18 @@ export const MasterVendorSidemenu = (props) => {
   const navigate = useNavigate();
 
   const [vendorDetails, setvendorDetails] = useState([]);
-  const [UserId, setUserId] = useState('');
+  const [UserId, setUserId] = useState("");
   const [City, setCity] = useState();
   const [Pincode, setPincode] = useState();
+  const [state, setState] = useState();
 
   useEffect(() => {
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
+    });
+    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
+    apiService.signupFindByUserId(userid).then((res) => {
+      setState({ vendorId: res.data.result.vendorId });
     });
   }, []);
 
@@ -63,6 +68,21 @@ export const MasterVendorSidemenu = (props) => {
       setCity(id[0].city);
     }
   };
+  const handleUserId = (e) => {
+    setUserId(e);
+
+    if (e) {
+      const id = vendorDetails?.filter((item) => {
+        return item.userId === e;
+      });
+      setCity(id[0].city);
+
+      setPincode(id[0].pincode);
+    }
+  };
+  const handleCity = (e) => {
+    setCity(e);
+  };
 
   const openModelShow = () => {
     apiService.getAllUserDetail().then((res) => {
@@ -80,11 +100,11 @@ export const MasterVendorSidemenu = (props) => {
       <Box
         sx={{
           flexGrow: 1,
-          display: { xs: 'block', sm: 'none' },
+          display: { xs: "block", sm: "none" },
           maxWidth: 60,
-          minHeight: '100%',
-          bgcolor: '#B1000E',
-          color: 'white',
+          minHeight: "100%",
+          bgcolor: "#B1000E",
+          color: "white",
         }}
       >
         <nav aria-label="main mailbox folders">
@@ -99,43 +119,43 @@ export const MasterVendorSidemenu = (props) => {
           <List>
             <ListItem
               disablePadding
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
               component={Link}
               to="/userCreation"
             >
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <PersonAddAltRoundedIcon sx={{ color: 'white' }} />
+                  <PersonAddAltRoundedIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="User Creation"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
             <ListItem
               disablePadding
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
               component={Link}
               to="/UserAccess"
             >
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <VerifiedUserIcon sx={{ color: 'white' }} />
+                  <VerifiedUserIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="User Access"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
@@ -144,36 +164,36 @@ export const MasterVendorSidemenu = (props) => {
               disablePadding
               component={Link}
               to="/"
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
             >
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <PostAddIcon sx={{ color: 'white' }} />
+                  <PostAddIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="New Registration"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <AppRegistrationSharpIcon sx={{ color: 'white' }} />
+                  <AppRegistrationSharpIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="Master Data"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
@@ -182,13 +202,13 @@ export const MasterVendorSidemenu = (props) => {
       </Box>
       <Box
         sx={{
-          display: { xs: 'none', sm: 'block' },
-          width: '100%',
-          ...(open && { width: '60px' }),
+          display: { xs: "none", sm: "block" },
+          width: "100%",
+          ...(open && { width: "60px" }),
           maxWidth: 280,
-          minHeight: '100vh',
-          bgcolor: '#B1000E',
-          color: 'white',
+          minHeight: "100vh",
+          bgcolor: "#B1000E",
+          color: "white",
         }}
       >
         <nav aria-label="main mailbox folders">
@@ -205,78 +225,79 @@ export const MasterVendorSidemenu = (props) => {
           <List>
             <ListItem
               disablePadding
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
               component={Link}
               to="/userCreation"
             >
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <PersonAddAltRoundedIcon sx={{ color: 'white' }} />
+                  <PersonAddAltRoundedIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="User Creation"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
             <ListItem
               disablePadding
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
               component={Link}
               to="/UserAccess"
             >
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <VerifiedUserIcon sx={{ color: 'white' }} />
+                  <VerifiedUserIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="User Access"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
 
-            <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
+                value={state}
                 onClick={(e) => handleState(e.target.value)}
               >
                 <ListItemIcon>
-                  <PostAddIcon sx={{ color: 'white' }} />
+                  <PostAddIcon sx={{ color: "white" }} />
                 </ListItemIcon>
 
                 <ListItemText
                   primary="New Registration"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{
-                  '&:hover': { backgroundColor: 'gray' },
-                  borderRadius: '20px',
+                  "&:hover": { backgroundColor: "gray" },
+                  borderRadius: "20px",
                 }}
               >
                 <ListItemIcon>
-                  <AppRegistrationSharpIcon sx={{ color: 'white' }} />
+                  <AppRegistrationSharpIcon sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary="Master Data"
-                  sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  sx={{ mr: 2, ...(open && { display: "none" }) }}
                   onClick={openModelShow}
                 />
                 <Modal
@@ -292,15 +313,15 @@ export const MasterVendorSidemenu = (props) => {
                   <Container sx={{ mt: 5 }}>
                     <Row>
                       <Col>
-                        {' '}
-                        <Box sx={{ display: 'flex' }}>
-                          {' '}
+                        {" "}
+                        <Box sx={{ display: "flex" }}>
+                          {" "}
                           <InputLabel sx={{ mt: 2 }}> City:</InputLabel>
                           <FormControl sx={{ width: 200, ml: 11 }}>
                             <Select
                               native
                               value={City}
-                              onChange={(e) => setCity(e.target.value)}
+                              onChange={(e) => handleCity(e.target.value)}
                               input={
                                 <OutlinedInput
                                   label=""
@@ -323,8 +344,8 @@ export const MasterVendorSidemenu = (props) => {
                     </Row>
                     <Row>
                       <Col>
-                        {' '}
-                        <Box sx={{ mt: 5, display: 'flex' }}>
+                        {" "}
+                        <Box sx={{ mt: 5, display: "flex" }}>
                           <InputLabel sx={{ mt: 2 }}>Pin Code:</InputLabel>
                           <FormControl sx={{ width: 200, ml: 6 }}>
                             <Select
@@ -372,12 +393,13 @@ export const MasterVendorSidemenu = (props) => {
 
                     <Row>
                       <Col>
-                        <Box sx={{ mt: 5, display: 'flex' }}>
+                        <Box sx={{ mt: 5, display: "flex" }}>
                           <InputLabel sx={{ mt: 2 }}>Vendor Code:</InputLabel>
 
                           <FormControl sx={{ width: 200, ml: 2.5 }}>
-                            <TextField
+                            <Select
                               value={UserId}
+                              onChange={(e) => handleUserId(e.target.value)}
                               native
                               input={
                                 <OutlinedInput
@@ -385,13 +407,22 @@ export const MasterVendorSidemenu = (props) => {
                                   id="demo-dialog-native"
                                 />
                               }
-                            />
+                            >
+                              <option> Select Vendorcode</option>
+                              {vendorDetails?.map((item) => {
+                                return (
+                                  <option key={item.id} value={item.userId}>
+                                    {item.userId}
+                                  </option>
+                                );
+                              })}
+                            </Select>
                           </FormControl>
                         </Box>
                       </Col>
                     </Row>
                   </Container>
-                  <Box sx={{ display: 'flex', ml: 50, mb: 1 }}>
+                  <Box sx={{ display: "flex", ml: 50, mb: 1 }}>
                     <Box>
                       <Button
                         variant="contained"

@@ -85,6 +85,7 @@ const MainRouter = () => {
           <Route path="/ContactTeam/:userId" element={<ContactTeam />} />
           <Route path="/basic" element={<Basic />} />
           <Route path="/basic/:userId" element={<Basic />} />
+          <Route path="/basic/NewRegistration/:vendorId" element={<Basic />} />
           <Route
             path="/bank/:userId"
             element={<Bank user={state.userInfo} />}
