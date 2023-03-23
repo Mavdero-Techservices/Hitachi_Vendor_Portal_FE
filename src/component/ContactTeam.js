@@ -220,6 +220,10 @@ const ContactTeam = () => {
       statutoryArray.push("CIN No");
       statutoryArray.push("MSME No");
       statutoryArray.push("TAN No");
+      statutoryArray.push("GST Doc");
+      statutoryArray.push("PAN Doc");
+      statutoryArray.push("TAN Doc");
+      statutoryArray.push("MSME No");
     } else {
       Object.entries(statutory[0]).map(([key, value]) => {
         if (value === "" || null) {
@@ -238,6 +242,31 @@ const ContactTeam = () => {
           if (key === "TAN_No") {
             statutoryArray.push("TAN No");
           }
+          if (key === "GST_Doc") {
+            statutoryArray.push("GST Doc");
+          }
+          if (key === "PAN_Doc") {
+            statutoryArray.push("PAN Doc");
+          }
+          if (key === "TAN_Doc") {
+            statutoryArray.push("TAN Doc");
+          }
+          if (key === "MSME_Doc") {
+            statutoryArray.push("MSME Doc");
+          }
+        }
+
+        // if (value === "UnRegistered" && key === "MSME_status") {
+        //   if (key === "MSME_Doc") {
+        //     if (!value) {
+        //       statutoryArray.push("MSME DOC");
+        //     }
+        //   }
+        // }
+
+        if (value && key === "GST_No") {
+          if (!GSTValidation.test(value))
+            statutoryArray.push("GST No is invalid");
         }
 
         if (value && key === "GST_No") {

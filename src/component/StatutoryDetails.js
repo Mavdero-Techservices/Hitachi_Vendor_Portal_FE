@@ -16,8 +16,17 @@ import { useNavigate } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLocation } from "react-router-dom";
+import InfoIcon from "@mui/icons-material/Info";
+import InputGroup from "react-bootstrap/InputGroup";
+import Tooltip from "@material-ui/core/Tooltip";
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+const gstNo = `Goods and Service Tax`;
+const panNo = `Permanent Account Number (PAN)`;
+const cinNo = `Corporate Identification Number`;
+const msmeNo = `Ministry of Micro, small & Medium Enterprises`;
+const tanNo = `Tax Deduction Account Number`;
+
 export default function Statutory(props) {
   const location = useLocation();
   const [HideImport, setHideImport] = useState(true);
@@ -260,50 +269,156 @@ export default function Statutory(props) {
     return newErrors;
   };
 
-  function DeleteForm10FDoc(e) {
-    e.preventDefault();
-    Swal.fire({
-      title: "Are You Sure,You want to Delete?",
-      icon: "success",
-      confirmButtonText: "OK",
-      showCloseButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((ClearData) => {
-      setform_10f_Doc("");
-      setdeleteform_10fUploadedFile(false);
-      setEditform_10f_Doc("");
-    });
+  function DeleteForm10FDoc(event) {
+    if (event === "form_10f_Doc" && form_10f_Doc) {
+      let title = event;
+      Swal.fire({
+        heightAuto: true,
+        title: "Delete Existing File",
+        html: `<div class="rejectstyle">
+            <div> <lablel> ${title}</label>
+        
+          </div>
+            `,
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#B1000E",
+        showCancelButton: true,
+        focusConfirm: false,
+        customClass: "swal-wide",
+
+        preConfirm: () => {
+          Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#B1000E",
+            denyButtonText: "No",
+            denyButtonColor: "gray",
+            customClass: {
+              actions: "my-actions",
+              cancelButton: "order-1 right-gap",
+              confirmButton: "order-2",
+              denyButton: "order-3",
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (event === "form_10f_Doc") {
+                setform_10f_Doc("");
+                setdeleteform_10fUploadedFile(false);
+                setEditform_10f_Doc("");
+              }
+              Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+              Swal.fire("File not deleted", "", "info");
+            }
+          });
+        },
+      });
+    } else {
+      Swal.fire("File not deleted", "", "info");
+    }
   }
-  function DeletePEDeclaration(e) {
-    e.preventDefault();
-    Swal.fire({
-      title: "Are You Sure,You want to reset?",
-      icon: "success",
-      confirmButtonText: "OK",
-      showCloseButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((ClearData) => {
-      setPE_Declaration_Doc("");
-      setdeletePE_DeclarationUploadedFile(false);
-      setEditPE_Declaration_Doc("");
-    });
+  function DeletePEDeclaration(event) {
+    if (event === "PE_Declaration_Doc" && PE_Declaration_Doc) {
+      let title = event;
+      Swal.fire({
+        heightAuto: true,
+        title: "Delete Existing File",
+        html: `<div class="rejectstyle">
+            <div> <lablel> ${title}</label>
+        
+          </div>
+            `,
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#B1000E",
+        showCancelButton: true,
+        focusConfirm: false,
+        customClass: "swal-wide",
+
+        preConfirm: () => {
+          Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#B1000E",
+            denyButtonText: "No",
+            denyButtonColor: "gray",
+            customClass: {
+              actions: "my-actions",
+              cancelButton: "order-1 right-gap",
+              confirmButton: "order-2",
+              denyButton: "order-3",
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (event === "PE_Declaration_Doc") {
+                setPE_Declaration_Doc("");
+                setdeletePE_DeclarationUploadedFile(false);
+                setEditPE_Declaration_Doc("");
+              }
+              Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+              Swal.fire("File not deleted", "", "info");
+            }
+          });
+        },
+      });
+    } else {
+      Swal.fire("File not deleted", "", "info");
+    }
   }
-  function DeleteTax_residency(e) {
-    e.preventDefault();
-    Swal.fire({
-      title: "Are You Sure,You want to reset?",
-      icon: "success",
-      confirmButtonText: "OK",
-      showCloseButton: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((ClearData) => {
-      setTax_residency_Doc("");
-      setdeleteTax_residencyUploadedFile(false);
-      seteditTax_residency_Doc("");
-    });
+
+  function DeleteTax_residency(event) {
+    if (event === "Tax_residency_Doc" && Tax_residency_Doc) {
+      let title = event;
+      Swal.fire({
+        heightAuto: true,
+        title: "Delete Existing File",
+        html: `<div class="rejectstyle">
+            <div> <lablel> ${title}</label>
+        
+          </div>
+            `,
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#B1000E",
+        showCancelButton: true,
+        focusConfirm: false,
+        customClass: "swal-wide",
+
+        preConfirm: () => {
+          Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#B1000E",
+            denyButtonText: "No",
+            denyButtonColor: "gray",
+            customClass: {
+              actions: "my-actions",
+              cancelButton: "order-1 right-gap",
+              confirmButton: "order-2",
+              denyButton: "order-3",
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (event === "Tax_residency_Doc") {
+                setTax_residency_Doc("");
+                setdeleteTax_residencyUploadedFile(false);
+                seteditTax_residency_Doc("");
+              }
+              Swal.fire("Deleted!", "", "success");
+            } else if (result.isDenied) {
+              Swal.fire("File not deleted", "", "info");
+            }
+          });
+        },
+      });
+    } else {
+      Swal.fire("File not deleted", "", "info");
+    }
   }
   function cancel(e) {
     e.preventDefault();
@@ -662,13 +777,23 @@ export default function Statutory(props) {
                                 className="mb-3"
                                 controlId="formBasicEmail"
                               >
-                                <Form.Label>GST no*</Form.Label>
-                                <Form.Control
-                                  className="statutoryInput"
-                                  type="text"
-                                  value={values.GST_No}
-                                  onChange={handleChange("GST_No")}
-                                />
+                                <Form.Label>GST no*</Form.Label>'
+                                <InputGroup className="statutoryInput">
+                                  <Form.Control
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "25px",
+                                    }}
+                                    type="text"
+                                    value={values.GST_No}
+                                    onChange={handleChange("GST_No")}
+                                  />
+                                  <InputGroup.Text style={{ border: "none" }}>
+                                    <Tooltip title={gstNo}>
+                                      <InfoIcon />
+                                    </Tooltip>
+                                  </InputGroup.Text>
+                                </InputGroup>
                                 {errors.GST_No ? (
                                   <p className="text text-danger small">
                                     {errors.GST_No}
@@ -836,12 +961,19 @@ export default function Statutory(props) {
                             controlId="formBasicEmail"
                           >
                             <Form.Label>PAN no*</Form.Label>
-                            <Form.Control
-                              className="statutoryInput"
-                              type="text"
-                              value={values.PAN_No}
-                              onChange={handleChange("PAN_No")}
-                            />
+                            <InputGroup className="statutoryInput">
+                              <Form.Control
+                                style={{ border: "none", borderRadius: "25px" }}
+                                type="text"
+                                value={values.PAN_No}
+                                onChange={handleChange("PAN_No")}
+                              />
+                              <InputGroup.Text style={{ border: "none" }}>
+                                <Tooltip title={panNo}>
+                                  <InfoIcon />
+                                </Tooltip>
+                              </InputGroup.Text>
+                            </InputGroup>
                             {errors.PAN_No ? (
                               <p className="text text-danger small">
                                 {errors.PAN_No}
@@ -912,12 +1044,22 @@ export default function Statutory(props) {
                             controlId="formBasicEmail"
                           >
                             <Form.Label>CIN no*</Form.Label>
-                            <Form.Control
-                              className="statutoryInput"
-                              type="text"
-                              value={values.CIN_No}
-                              onChange={handleChange("CIN_No")}
-                            />
+                            <InputGroup className="statutoryInput">
+                              <Form.Control
+                                style={{
+                                  border: "none",
+                                  borderRadius: "25px",
+                                }}
+                                type="text"
+                                value={values.CIN_No}
+                                onChange={handleChange("CIN_No")}
+                              />
+                              <InputGroup.Text style={{ border: "none" }}>
+                                <Tooltip title={cinNo}>
+                                  <InfoIcon />
+                                </Tooltip>
+                              </InputGroup.Text>
+                            </InputGroup>
                           </Form.Group>
                         </Col>
                         <Col></Col>
@@ -962,7 +1104,9 @@ export default function Statutory(props) {
 
                                       <ClearIcon
                                         style={{ color: "red" }}
-                                        onClick={DeleteForm10FDoc}
+                                        onClick={() => {
+                                          DeleteForm10FDoc("form_10f_Doc");
+                                        }}
                                       />
                                     </div>
                                   ) : (
@@ -1022,7 +1166,9 @@ export default function Statutory(props) {
                                   </span>
                                   <ClearIcon
                                     style={{ color: "red" }}
-                                    onClick={DeletePEDeclaration}
+                                    onClick={() => {
+                                      DeletePEDeclaration("PE_Declaration_Doc");
+                                    }}
                                   />
                                 </div>
                               ) : (
@@ -1095,12 +1241,22 @@ export default function Statutory(props) {
                               controlId="formBasicEmail"
                             >
                               <Form.Label>MSME no*</Form.Label>
-                              <Form.Control
-                                className="statutoryInput"
-                                type="text"
-                                value={values.MSME_No}
-                                onChange={handleChange("MSME_No")}
-                              />
+                              <InputGroup className="statutoryInput">
+                                <Form.Control
+                                  style={{
+                                    border: "none",
+                                    borderRadius: "25px",
+                                  }}
+                                  type="text"
+                                  value={values.MSME_No}
+                                  onChange={handleChange("MSME_No")}
+                                />
+                                <InputGroup.Text style={{ border: "none" }}>
+                                  <Tooltip title={msmeNo}>
+                                    <InfoIcon />
+                                  </Tooltip>
+                                </InputGroup.Text>
+                              </InputGroup>
                             </Form.Group>
                           </Col>
                           <Col>
@@ -1279,12 +1435,22 @@ export default function Statutory(props) {
                             controlId="formBasicEmail"
                           >
                             <Form.Label>TAN no*</Form.Label>
-                            <Form.Control
-                              className="statutoryInput"
-                              type="text"
-                              value={values.TAN_No}
-                              onChange={handleChange("TAN_No")}
-                            />
+                            <InputGroup className="statutoryInput">
+                              <Form.Control
+                                style={{
+                                  border: "none",
+                                  borderRadius: "25px",
+                                }}
+                                type="text"
+                                value={values.TAN_No}
+                                onChange={handleChange("TAN_No")}
+                              />
+                              <InputGroup.Text style={{ border: "none" }}>
+                                <Tooltip title={tanNo}>
+                                  <InfoIcon />
+                                </Tooltip>
+                              </InputGroup.Text>
+                            </InputGroup>
                           </Form.Group>
                         </Col>
                         <Col>
@@ -1347,7 +1513,11 @@ export default function Statutory(props) {
                                       <span>File name:{Tax_residency_Doc}</span>
                                       <ClearIcon
                                         style={{ color: "red" }}
-                                        onClick={DeleteTax_residency}
+                                        onClick={() => {
+                                          DeleteTax_residency(
+                                            "Tax_residency_Doc"
+                                          );
+                                        }}
                                       />
                                     </div>
                                   ) : (
