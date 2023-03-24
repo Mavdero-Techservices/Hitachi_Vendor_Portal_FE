@@ -268,7 +268,7 @@ export class Basic extends React.Component {
   };
 
   handleSubmitComDetail = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const communicationDetails = {
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,

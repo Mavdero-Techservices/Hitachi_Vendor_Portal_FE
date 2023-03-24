@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/api.service";
 import { useParams } from "react-router-dom";
+import { TroubleshootSharp } from "@mui/icons-material";
 const FinancialDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const FinancialDetails = () => {
   const [EditfinancialDetail, setEditfinancialDetail] = useState(true);
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteUploadedFile2, setdeleteUploadedFile2] = useState(false);
+  const [saveButton, setSaveButton] = useState(true);
   const [errors, setErrors] = useState({});
   const [fileFD, setfileFD] = useState();
   const [editfileFD, seteditfileFD] = useState();
@@ -155,7 +157,7 @@ const FinancialDetails = () => {
     return newErrors;
   };
   const saveFinancialDetail = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const data = new FormData();
     data.append("financial_data", fileFD);
     data.append("financial_data2", fileFD2);
@@ -203,6 +205,7 @@ const FinancialDetails = () => {
       }
     } else {
       apiService.saveFinacialDetail(data).then((res) => {
+        setSaveButton(TroubleshootSharp)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data saved",
@@ -545,13 +548,26 @@ const FinancialDetails = () => {
                 </>
               ) : (
                 <>
-                  <button
-                    type="submit"
-                    onClick={saveFinancialDetail}
-                    className="btn financialbtn btn-md m-3"
-                  >
-                    Save
-                  </button>
+                  {saveButton === true ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveFinancialDetail();
+                        setSaveButton(false);
+                      }}
+                      className="btn financialbtn btn-md m-3"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn financialbtn btn-md m-3"
+                      disabled
+                    >
+                      Save
+                    </button>
+                  )}
                 </>
               )}
 

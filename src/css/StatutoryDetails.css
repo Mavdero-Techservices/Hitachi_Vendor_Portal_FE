@@ -263,6 +263,19 @@
   margin-left: 5px !important;
   border-radius: 25px !important;
 }
+
+Form.Control {
+  outline: none !important;
+  outline-offset: none !important;
+}
+
+.statInput:focus {
+  border: 0 !important;
+  border-radius: none !important;
+  outline: none !important;
+  outline-offset: none !important;
+  outline: none !important;
+}
 .frame-input2 label {
   position: absolute;
   cursor: pointer;

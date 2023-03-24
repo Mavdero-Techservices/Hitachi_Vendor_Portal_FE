@@ -32,6 +32,10 @@ const ComplianceDetails = () => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
+
+  const [saveButton, setSaveButton] = useState(true);
+
+
   const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -244,7 +248,7 @@ const ComplianceDetails = () => {
   }, []);
 
   const saveComplianceDetail = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const data = new FormData();
     data.append("RPD_Doc", fileRPD);
     data.append("NDA_Doc", fileNDA);
@@ -274,6 +278,7 @@ const ComplianceDetails = () => {
       });
     } else {
       apiService.saveComplianceDetail(data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data saved",
@@ -558,13 +563,26 @@ const ComplianceDetails = () => {
                   </>
                 ) : (
                   <>
-                    <button
-                      type="button"
-                      onClick={saveComplianceDetail}
-                      className="btn bankbtn btn-md m-1"
-                    >
-                      Save
-                    </button>
+                    {saveButton === true ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          saveComplianceDetail();
+                          setSaveButton(false);
+                        }}
+                        className="btn bankbtn btn-md m-1"
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn bankbtn btn-md m-1"
+                        disabled
+                      >
+                        Save
+                      </button>
+                    )}
                   </>
                 )}
 

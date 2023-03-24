@@ -22,6 +22,11 @@ const BankDetails = (props) => {
   const [editValuefileBank, seteditValuefileBank] = useState("");
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [style, setStyle] = useState("editable");
+
+  const [saveButton, setSaveButton] = useState(true);
+
+  console.log("saveButton------->", saveButton);
+
   const onFileChange = (file) => {
     if (file.size > 5000000) {
       Swal.fire({
@@ -89,8 +94,8 @@ const BankDetails = (props) => {
     }
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const saveBankDetail = (e) => {
+    // e.preventDefault();
     const data = new FormData();
     data.append(
       "userId",
@@ -126,6 +131,7 @@ const BankDetails = (props) => {
       });
     } else {
       apiService.savebankdetail(data).then((response) => {
+        setSaveButton(true);
         if (response) {
           Swal.fire({
             title: "Data saved",
@@ -215,7 +221,7 @@ const BankDetails = (props) => {
     <div className="bank-details">
       <Navbar1 />
       <div className="container-fluid  py-5 pagebg">
-        <form onSubmit={handleSubmit} style={{ mt: 5 }} className={style}>
+        <form style={{ mt: 5 }} className={style}>
           <div className="container">
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
@@ -380,9 +386,26 @@ const BankDetails = (props) => {
                 </>
               ) : (
                 <>
-                  <button type="submit" className="btn bankbtn btn-md m-1">
-                    Save
-                  </button>
+                  {saveButton === true ? (
+                    <button
+                      type="button"
+                      className="btn bankbtn btn-md m-1"
+                      onClick={() => {
+                        saveBankDetail();
+                        setSaveButton(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn bankbtn btn-md m-1"
+                      disabled
+                    >
+                      Save
+                    </button>
+                  )}
                 </>
               )}
 

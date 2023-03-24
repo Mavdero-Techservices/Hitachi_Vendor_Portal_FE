@@ -56,6 +56,7 @@ export default function Statutory(props) {
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
   const [country, setcountry] = useState({});
+  const [saveButton, setSaveButton] = useState(true);
   const [style, setStyle] = useState("editable");
   const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] =
     useState(false);
@@ -525,7 +526,7 @@ export default function Statutory(props) {
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const data = new FormData();
     data.append("GST_Doc", GST_Doc);
@@ -575,6 +576,7 @@ export default function Statutory(props) {
       });
     } else {
       apiService.saveStatutoryDetail(data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data saved",
@@ -783,7 +785,10 @@ export default function Statutory(props) {
                                     style={{
                                       border: "none",
                                       borderRadius: "25px",
+                                      outline: "none",
+                                      outlineOffset: "none",
                                     }}
+                                    className="statInput"
                                     type="text"
                                     value={values.GST_No}
                                     onChange={handleChange("GST_No")}
@@ -1615,13 +1620,27 @@ export default function Statutory(props) {
               </>
             ) : (
               <>
-                <button
-                  type="button"
-                  onClick={saveStatutoryDetail}
-                  className="btn statutorybtn btn-md m-1"
-                >
-                  Save
-                </button>
+                {saveButton === true ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      saveStatutoryDetail();
+                      setSaveButton(false);
+                    }}
+                    className="btn bankbtn btn-md m-1"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn bankbtn btn-md m-1"
+                    disabled
+                  >
+                    Save
+                  </button>
+                )}
+                
               </>
             )}
 
