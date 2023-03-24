@@ -60,13 +60,25 @@ export class Basic extends React.Component {
       commu: false,
       edit: true,
       editStatutory: "",
+      savebutton: true,
     };
+
+    console.log("saveButton", this.state.savebutton);
+
+    this.savebutton = this.savebutton.bind(this);
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
   }
+
+  savebutton() {
+    this.setState({
+      savebutton: false,
+    });
+  }
+
   mouseEnter(e) {
     e.preventDefault();
     const { name, value } = e.target;
@@ -183,7 +195,7 @@ export class Basic extends React.Component {
     this.setState({ [e.target.id]: e.target.value });
   };
   handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const basicInfo = {
       // id: this.state.id,
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
@@ -216,6 +228,9 @@ export class Basic extends React.Component {
         });
     } else {
       apiService.saveVendordetail(basicInfo).then((response) => {
+        this.setState({
+          savebutton: true,
+        });
         if (response) {
           Swal.fire({
             title: "Data saved",
@@ -318,6 +333,9 @@ export class Basic extends React.Component {
       apiService
         .SaveVendorCommunication(communicationDetails)
         .then((response) => {
+          this.setState({
+            savebutton: true,
+          });
           if (response.data.msg === "success") {
             Swal.fire({
               title: "Data saved",
@@ -762,13 +780,31 @@ export class Basic extends React.Component {
                                     </button>
                                   </>
                                 ) : (
-                                  <button
-                                    type="button"
-                                    onClick={this.handleSubmit}
-                                    className="btn basicbtn btn-primary btn-md m-3"
-                                  >
-                                    Save
-                                  </button>
+                                  <>
+                                    {" "}
+                                    {this.state.savebutton === true ? (
+                                      <>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            this.handleSubmit();
+                                            this.savebutton();
+                                          }}
+                                          className="btn basicbtn btn-primary btn-md m-3"
+                                        >
+                                          Save
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        disabled
+                                        className="btn basicbtn btn-primary btn-md m-3"
+                                      >
+                                        Save
+                                      </button>
+                                    )}
+                                  </>
                                 )}
 
                                 <button
@@ -1089,13 +1125,30 @@ export class Basic extends React.Component {
                                     </>
                                   ) : (
                                     <>
-                                      <button
-                                        type="button"
-                                        onClick={this.handleSubmitComDetail}
-                                        className="btn basicbtn btn-primary btn-md m-3"
-                                      >
-                                        Save
-                                      </button>
+                                      {this.state.savebutton === true ? (
+                                        <>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              this.handleSubmitComDetail();
+                                              this.savebutton();
+                                            }}
+                                            className="btn basicbtn btn-primary btn-md m-3"
+                                          >
+                                            Save
+                                          </button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <button
+                                            type="button"
+                                            disabled
+                                            className="btn basicbtn btn-primary btn-md m-3"
+                                          >
+                                            Save
+                                          </button>
+                                        </>
+                                      )}
                                     </>
                                   )}
                                   <button
