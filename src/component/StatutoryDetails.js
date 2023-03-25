@@ -70,12 +70,8 @@ export default function Statutory(props) {
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     GST_type: "",
     GST_No: "",
-    GST_Doc: "",
     PAN_No: "",
-    PAN_Doc: "",
-    TAN_Doc: "",
     PE_DeclarationNo: "",
-    MSME_Doc: "",
     CIN_No: "",
     form_10f: "",
     MSME_status: "",
@@ -123,6 +119,7 @@ export default function Statutory(props) {
     }
   }
   const handleChange = (name) => (event) => {
+    event.preventDefault();
     setValues({ ...values, [name]: event.target.value });
     setErrors(event);
     if (!!errors[name])
@@ -145,9 +142,9 @@ export default function Statutory(props) {
       });
     } else {
       setFile(event.target.files[0]);
-      setValues({
-        GST_Doc: event.target.files[0],
-      });
+      // setValues({
+      //   GST_Doc: event.target.files[0],
+      // });
     }
   };
 
@@ -182,6 +179,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangePAN_Doc(e) {
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -193,9 +191,9 @@ export default function Statutory(props) {
       });
     } else {
       setPAN_Doc(e.target.files[0]);
-      setValues({
-        PAN_Doc: e.target.files[0],
-      });
+      // setValues({
+      //   PAN_Doc: e.target.files[0],
+      // });
     }
   }
   function onFileChangePE_Declaration_Doc(e) {
@@ -214,6 +212,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeTAN_Doc(e) {
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -225,12 +224,13 @@ export default function Statutory(props) {
       });
     } else {
       setTAN_Doc(e.target.files[0]);
-      setValues({
-        TAN_Doc: e.target.files[0],
-      });
+      // setValues({
+      //   TAN_Doc: e.target.files[0],
+      // });
     }
   }
   function onFileChangeMSME_Doc(e) {
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -242,9 +242,9 @@ export default function Statutory(props) {
       });
     } else {
       setMSME_Doc(e.target.files[0]);
-      setValues({
-        MSME_Doc: e.target.files[0],
-      });
+      // setValues({
+      //   MSME_Doc: e.target.files[0],
+      // });
     }
   }
   function next(e) {
