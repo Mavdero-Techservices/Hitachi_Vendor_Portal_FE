@@ -35,7 +35,6 @@ const ComplianceDetails = () => {
 
   const [saveButton, setSaveButton] = useState(true);
 
-
   const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -278,7 +277,7 @@ const ComplianceDetails = () => {
       });
     } else {
       apiService.saveComplianceDetail(data).then((res) => {
-        setSaveButton(true)
+        setSaveButton(true);
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data saved",
@@ -287,8 +286,6 @@ const ComplianceDetails = () => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          }).then((res) => {
-            navigate(`/ComplianceDetail`);
           });
         } else {
           Swal.fire({

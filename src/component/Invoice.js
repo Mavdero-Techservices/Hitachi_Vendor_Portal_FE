@@ -420,7 +420,36 @@ export default function Invoice(props) {
   return (
     <Box>
       <Typography sx={{ ml: 1, fontWeight: "bold" }}>Invoice</Typography>
-      <div style={{ height: 350, width: "100%" }}>
+      <Box
+        sx={{
+          height: 300,
+          width: "100%",
+
+          "& .super-app-theme--header": {
+            backgroundColor: "#808080",
+            color: "#ffffff",
+          },
+          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+            fontSize: 15,
+            fontWeight: "bold",
+          },
+          ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+            fontSize: 13,
+          },
+          ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+            {
+              backgroundColor: "#330033",
+              color: "#ffffff",
+            },
+          ".css-h4y409-MuiList-root": {
+            display: "grid",
+          },
+          ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+            {
+              backgroundColor: "#808080",
+            },
+        }}
+      >
         <DataGrid
           sx={{
             boxShadow: 10,
@@ -435,7 +464,7 @@ export default function Invoice(props) {
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
         />
-      </div>
+      </Box>
       {!props.invoiceTeam ? (
         <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
           <MDBRow className="mb-4">

@@ -140,8 +140,6 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          }).then((res) => {
-            navigate(`/FinancialDetail`);
           });
         } else {
           Swal.fire({

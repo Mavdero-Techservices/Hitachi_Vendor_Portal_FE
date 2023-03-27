@@ -36,6 +36,7 @@ const ContactTeam = () => {
     emailId3: "",
     contactNumber3: "",
   });
+
   function cancel(e) {
     e.preventDefault();
     Swal.fire({
@@ -377,13 +378,8 @@ const ContactTeam = () => {
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
         if (response.data.status === "success") {
-          navigate(
-            `/ContactTeam/${
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-            }`
-          );
-          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
-            .userId;
+          navigate(`/ContactTeam/${params.userId}`);
+          let userkey = params.userId;
           if (
             basicInfoArray[0] ===
               "There are no blank or incomplete required fields" &&
@@ -482,6 +478,7 @@ const ContactTeam = () => {
     var bankDetailArray = [];
     var contactDetailArray = [];
     if (basicInfo.length <= 0) {
+      console.log("basicInfo", basicInfo);
       basicInfoArray.push("Address Line-1");
       basicInfoArray.push("city");
       basicInfoArray.push("companyName");
@@ -664,7 +661,7 @@ const ContactTeam = () => {
     }
 
     const user = {
-      userId: values.userId || undefined,
+      userId: params.userId || undefined,
       contactName1: values.contactName1 || undefined,
       emailId1: values.emailId1 || undefined,
       contactNumber1: values.contactNumber1 || undefined,
@@ -694,17 +691,36 @@ const ContactTeam = () => {
             contactDetailArray[0] ===
               "There are no blank or incomplete required fields"
           ) {
-            basicInfo[0].submitStatus = "Submitted";
-            basicInfo[0].submitDate = Date.now();
+            let basic;
+            apiService.getAllCollection(params.userId).then((res) => {
+              basic = res.data.basicInfo[0];
 
-            Swal.fire(
-              "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-            );
-            let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
-              .userId;
-            apiService.signupFindByUserId(userid).then((res) => {
-              this.setState({ approval: res.data.result.role });
+              if (basic) {
+                basic.submitStatus = "Submitted";
+                basic.userId = userkey;
+                basic.submitDate = Date.now();
+
+                apiService
+                  .updateVendordetail(userkey, basic)
+                  .then((response) => {
+                    Swal.fire(
+                      "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+                    );
+                  });
+              }
             });
+
+            // let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
+            //   .userId;
+            // apiService.signupFindByUserId(userid).then((res) => {
+            //   this.setState({ approval: res.data.result.role });
+            //   console.log("approval", res.data.result.role);
+            // });
+            // {
+            //   approval === Admin
+            //     ? navigate("/userCreation")
+            //     : navigate("/login");
+            // }
           } else {
             Swal.fire({
               title: "please complete this field.",
@@ -752,14 +768,27 @@ const ContactTeam = () => {
         });
       });
     }
-    apiService.getAllCollection(values.userId).then((getAllCollection) => {
-      setbasicInfo(getAllCollection.data.basicInfo);
-      setcommunicationDetail(getAllCollection.data.CommunicationDetails);
-      setstatutory(getAllCollection.data.Statutory);
-      setcompaliance(getAllCollection.data.ComplianceDetail);
-      setfinancialDetail(getAllCollection.data.FinancialDetail);
-      setbankDetail(getAllCollection.data.Bankdetail);
-    });
+    if (
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+    ) {
+      apiService.getAllCollection(params.userId).then((getAllCollection) => {
+        setbasicInfo(getAllCollection.data.basicInfo);
+        setcommunicationDetail(getAllCollection.data.CommunicationDetails);
+        setstatutory(getAllCollection.data.Statutory);
+        setcompaliance(getAllCollection.data.ComplianceDetail);
+        setfinancialDetail(getAllCollection.data.FinancialDetail);
+        setbankDetail(getAllCollection.data.Bankdetail);
+      });
+    } else {
+      apiService.getAllCollection(values.userId).then((getAllCollection) => {
+        setbasicInfo(getAllCollection.data.basicInfo);
+        setcommunicationDetail(getAllCollection.data.CommunicationDetails);
+        setstatutory(getAllCollection.data.Statutory);
+        setcompaliance(getAllCollection.data.ComplianceDetail);
+        setfinancialDetail(getAllCollection.data.FinancialDetail);
+        setbankDetail(getAllCollection.data.Bankdetail);
+      });
+    }
   }, []);
   return (
     <div className="Contact-details">

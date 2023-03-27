@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { MDBRow } from "mdb-react-ui-kit";
-import apiService from "../services/api.service";
 import React from "react";
 import Swal from "sweetalert2";
 import "../css/ApprovalFields.css";
@@ -61,7 +60,11 @@ export default function PurchaseOrder(props) {
         } else if (!location) {
           Swal.showValidationMessage(`Please choose Location.`);
         } else {
-          Swal.showValidationMessage(`Approved Successfully.`);
+          Swal.fire({
+            title: "Approved Successfully",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
         }
       },
     });
@@ -89,26 +92,10 @@ export default function PurchaseOrder(props) {
         } else if (!rejectdoc) {
           Swal.showValidationMessage(`Please Upload File`);
         } else {
-          const data = new FormData();
-          data.append("userId", event);
-          data.append("level1Status", "rejected");
-          data.append("level1RejectComment", comment);
-          data.append("level1rejectFileDoc", rejectdoc);
-
-          apiService.saveApproval(data).then((response) => {
-            if (response) {
-              Swal.fire({
-                title: "Data saved",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
+          Swal.fire({
+            title: "Rejected Successfully",
+            icon: "success",
+            confirmButtonText: "OK",
           });
         }
       },
@@ -265,7 +252,36 @@ export default function PurchaseOrder(props) {
   return (
     <Box>
       <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
-      <div style={{ height: 350, width: "100%" }}>
+      <Box
+        sx={{
+          height: 300,
+          width: "100%",
+
+          "& .super-app-theme--header": {
+            backgroundColor: "#808080",
+            color: "#ffffff",
+          },
+          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+            fontSize: 15,
+            fontWeight: "bold",
+          },
+          ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+            fontSize: 13,
+          },
+          ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+            {
+              backgroundColor: "#330033",
+              color: "#ffffff",
+            },
+          ".css-h4y409-MuiList-root": {
+            display: "grid",
+          },
+          ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+            {
+              backgroundColor: "#808080",
+            },
+        }}
+      >
         <DataGrid
           sx={{
             boxShadow: 10,
@@ -280,7 +296,7 @@ export default function PurchaseOrder(props) {
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
         />
-      </div>
+      </Box>
       {!props.poTeam ? (
         <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
           <MDBRow className="mb-4">

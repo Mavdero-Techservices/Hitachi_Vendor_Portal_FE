@@ -33,18 +33,25 @@ export const MasterVendorSidemenu = (props) => {
   const navigate = useNavigate();
 
   const [vendorDetails, setvendorDetails] = useState([]);
+  const [vendorComDetails, setvendorComDetails] = useState([]);
   const [UserId, setUserId] = useState("");
   const [City, setCity] = useState();
   const [Pincode, setPincode] = useState();
   const [state, setState] = useState();
+  const [adminEmail, setAdminEmail] = useState();
 
   useEffect(() => {
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
     });
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
+
     apiService.signupFindByUserId(userid).then((res) => {
-      setState({ vendorId: res.data.result.vendorId });
+      setAdminEmail(res.data.result.emailId);
+    });
+
+    apiService.getAllUserDetail().then((res) => {
+      setvendorComDetails(res.data.CommunicationDetails[0]);
     });
   }, []);
 
@@ -409,13 +416,18 @@ export const MasterVendorSidemenu = (props) => {
                               }
                             >
                               <option> Select Vendorcode</option>
-                              {vendorDetails?.map((item) => {
-                                return (
-                                  <option key={item.id} value={item.userId}>
-                                    {item.userId}
-                                  </option>
-                                );
-                              })}
+                              {vendorComDetails
+
+                                ?.filter((item) => {
+                                  return item.mastervendor_email === adminEmail;
+                                })
+                                ?.map((item) => {
+                                  return (
+                                    <option key={item.id} value={item.userId}>
+                                      {item.userId}
+                                    </option>
+                                  );
+                                })}
                             </Select>
                           </FormControl>
                         </Box>

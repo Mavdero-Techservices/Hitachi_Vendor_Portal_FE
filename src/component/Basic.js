@@ -115,7 +115,7 @@ export class Basic extends React.Component {
       open: false,
       commu: true,
     });
-    this.handleSubmitComDetail();
+    // this.handleSubmitComDetail();
   }
   next = (e) => {
     e.preventDefault();
