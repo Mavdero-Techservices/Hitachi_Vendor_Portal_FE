@@ -63,8 +63,6 @@ export class Basic extends React.Component {
       savebutton: true,
     };
 
-    console.log("saveButton", this.state.savebutton);
-
     this.savebutton = this.savebutton.bind(this);
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -227,24 +225,48 @@ export class Basic extends React.Component {
           }
         });
     } else {
-      apiService.saveVendordetail(basicInfo).then((response) => {
-        this.setState({
-          savebutton: true,
+      if (this.props.params.newReg) {
+        apiService.saveNewRegVendordetail(basicInfo).then((response) => {
+          this.setState({
+            savebutton: true,
+          })
+          this.setState({ newUser: response.data.result.userId })
+          let data = { newregUser: response.data.result.userId };
+          sessionStorage.setItem('newregUser', JSON.stringify(data))
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            })
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
         });
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      } else {
+        apiService.saveVendordetail(basicInfo).then((response) => {
+          this.setState({
+            savebutton: true,
+          })
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
     }
   };
   updatehandleSubmit = (e) => {
@@ -330,26 +352,52 @@ export class Basic extends React.Component {
           }
         });
     } else {
-      apiService
-        .SaveVendorCommunication(communicationDetails)
-        .then((response) => {
-          this.setState({
-            savebutton: true,
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      if (newuser) {
+        communicationDetails.userId = newuser
+        apiService
+          .SaveVendorCommunication(communicationDetails)
+          .then((response) => {
+            this.setState({
+              savebutton: true,
+            })
+            if (response.data.msg === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
           });
-          if (response.data.msg === "success") {
-            Swal.fire({
-              title: "Data saved",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        });
+      } else {
+        apiService
+          .SaveVendorCommunication(communicationDetails)
+          .then((response) => {
+            this.setState({
+              savebutton: true,
+            })
+            if (response.data.msg === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      }
+
     }
   };
   updatehandleSubmitComDetail = (e) => {
@@ -429,9 +477,13 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => {});
+    apiService.updateVendordetail(userId, data).then((response) => { });
   }
   componentDidMount() {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    if (this.props.params.newReg === 'newReg') {
+      this.setState({ companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName });
+    }
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.getAllCollection(userid).then((res) => {
       this.setState({ companyName: res.data.basicInfo[0].companyName });
@@ -441,12 +493,57 @@ export class Basic extends React.Component {
     });
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });
+      this.setState({ companyName: res.data.result.companyName });
       this.setState({ vendorId: res.data.result.vendorId });
     });
 
     if (this.props.params.userId) {
       this.edit = true;
       apiService.getAllCollection(this.props.params.userId).then((res) => {
+        this.setState({
+          editStatutory: res.data.Statutory,
+        });
+        Object.entries(res.data.basicInfo).map(([key, value]) => {
+          this.setState({
+            companyName: value.companyName,
+            address1: value.address1,
+            address2: value.address2,
+            city: value.city,
+            state: value.state,
+            country: value.country,
+            pinCode: value.pinCode,
+            image: value.image,
+          });
+        });
+        Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
+          this.setState({
+            financeSpoccontactName: value.financeSpoccontactName,
+            financeSpocdesignation: value.financeSpocdesignation,
+            financeSpocphoneNo: value.financeSpocphoneNo,
+            financeSpocemail: value.financeSpocemail,
+            operationSpoccontactName: value.operationSpoccontactName,
+            operationSpocdesignation: value.operationSpocdesignation,
+            operationSpocphoneNo: value.operationSpocphoneNo,
+            operationSpocemail: value.operationSpocemail,
+            collectionSpoccontactName: value.collectionSpoccontactName,
+            collectionSpocdesignation: value.collectionSpocdesignation,
+            collectionSpocphoneNo: value.collectionSpocphoneNo,
+            collectionSpocemail: value.collectionSpocemail,
+            managementSpoccontactName: value.managementSpoccontactName,
+            managementSpocdesignation: value.managementSpocdesignation,
+            managementSpocphoneNo: value.managementSpocphoneNo,
+            managementSpocemail: value.managementSpocemail,
+            contactName: value.contactName,
+            designation: value.designation,
+            phoneNo: value.phoneNo,
+            email: value.email,
+            mastervendor_email: value.mastervendor_email,
+          });
+        });
+      });
+    } else if (newuser) {
+      this.edit = true;
+      apiService.getAllCollection(newuser).then((res) => {
         this.setState({
           editStatutory: res.data.Statutory,
         });
@@ -716,8 +813,8 @@ export class Basic extends React.Component {
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
                                   {this.state.image != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <img
                                         className="camera-img"

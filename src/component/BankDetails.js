@@ -25,7 +25,6 @@ const BankDetails = (props) => {
 
   const [saveButton, setSaveButton] = useState(true);
 
-  console.log("saveButton------->", saveButton);
 
   const onFileChange = (file) => {
     if (file.size > 5000000) {
@@ -130,25 +129,59 @@ const BankDetails = (props) => {
         }
       });
     } else {
-      apiService.savebankdetail(data).then((response) => {
-        setSaveButton(true);
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      if (newuser) {
+        const bankdata = new FormData();
+        bankdata.append("userId", newuser);
+        bankdata.append("bankAccountName", acName);
+        bankdata.append("bankName", bankname);
+        bankdata.append("bankAccountNumber", acno);
+        bankdata.append("ifscCode", ifsc);
+        bankdata.append("MICRcode", micr);
+        bankdata.append("branchAddress", branchAdd);
+        bankdata.append("bankdetailDoc", fileBank);
+        apiService.savebankdetail(bankdata).then((response) => {
+          setSaveButton(true);
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      } else {
+        apiService.savebankdetail(data).then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((res) => {
+              navigate(`/FinancialDetail`);
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
     }
   };
 
@@ -185,6 +218,7 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -211,7 +245,34 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
         });
       });
-    } else {
+    } else if (newuser) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
+        }
+        Object.entries(res.data.Bankdetail).map(([key, value]) => {
+          var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
+          var ret = initialUrlbankDoc.replace("uploads/", "");
+          var bankdetailDoc = ret;
+          setAcName(value.bankAccountName);
+          setBankname(value.bankName);
+          setAcno(value.bankAccountNumber);
+          setIfsc(value.ifscCode);
+          setMicr(value.MICRcode);
+          setbranchAdd(value.branchAddress);
+          setfileBank(initialUrlbankDoc);
+          seteditValuefileBank(bankdetailDoc);
+        });
+      });
+    }
+    else {
       setEditBank(false);
     }
   }, []);

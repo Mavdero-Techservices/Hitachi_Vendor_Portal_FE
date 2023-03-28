@@ -23,6 +23,10 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TablePagination from "@mui/material/TablePagination";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
+
 function createData(
   Name,
   designation,
@@ -171,10 +175,21 @@ function UserCreation() {
       });
     });
   };
+  // const CustomToastWithLink = (users) => (
+  //   <div>
+  //     <Link to={`/basic/${users}`} onClick={(users) => { sessionStorage.setItem('newregUser', JSON.stringify(users)) }}  >Rejected user {users}</Link>
+  //   </div>
+  // );
+
   useEffect(() => {
-    console.log("getAllUser",getAllUser);
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
+    });
+    apiService.signupFindSubUserList(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+      // res.data.result.forEach((item) => {
+      //   toast.warn(CustomToastWithLink(item.userId));
+
+      // })
     });
   }, []);
 
@@ -192,6 +207,12 @@ function UserCreation() {
       });
     });
   };
+  // const toastInfo = () => toast.info('Clue Mediator - The way to write your code');
+  // const toastSuccess = () => toast.success('Clue Mediator - The way to write your code');
+  // const toastWarn = () => toast.warn('Clue Mediator - The way to write your code');
+  // const toastError = () => toast.error('Clue Mediator - The way to write your code');
+  // const toastDark = () => toast.dark('Clue Mediator - The way to write your code');
+
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: "#f3f4f7" }}>
@@ -332,6 +353,9 @@ function UserCreation() {
                     </Modal.Footer>
                   </Modal>
                 </div>
+                <div className="App">
+
+                </div>
               </div>
               <Box sx={{ mt: 2, height: 350, width: "100%" }}>
                 <TableContainer component={Paper}>
@@ -366,13 +390,13 @@ function UserCreation() {
                       </TableRow>
                     </TableHead>
                     {getAllUser
-                        ?.slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                        ?.map((row) => (
-                    <TableBody>
-                 
+                      ?.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      ?.map((row) => (
+                        <TableBody>
+
                           <TableRow key={row.SubUserId}>
                             <TableCell component="th" scope="row">
                               <EditIcon
@@ -515,26 +539,26 @@ function UserCreation() {
                             <TableCell align="center">{row.password}</TableCell>
                             <TableCell align="center">{row.roles}</TableCell>
                           </TableRow>
-      
-                      
-                    </TableBody>
-                    
-  ))}
+
+
+                        </TableBody>
+
+                      ))}
                   </Table>
-               
+
                 </TableContainer>
-                {getAllUser!=null ? (
-                         <TablePagination
-                         rowsPerPageOptions={[5, 10]}
-                         component="div"
-                         count={getAllUser.length}
-                         rowsPerPage={rowsPerPage}
-                         page={page}
-                         onPageChange={handleChangePage}
-                         onRowsPerPageChange={handleChangeRowsPerPage}
-                       />
-                        ) : null}
-               
+                {getAllUser != null ? (
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10]}
+                    component="div"
+                    count={getAllUser.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                ) : null}
+
               </Box>
             </Container>
           </Box>

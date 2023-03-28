@@ -204,27 +204,60 @@ const FinancialDetails = () => {
         });
       }
     } else {
-      apiService.saveFinacialDetail(data).then((res) => {
-        setSaveButton(TroubleshootSharp)
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((res) => {
-            navigate(`/ContactTeam`);
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      if (newuser) {
+        const financedata = new FormData();
+        financedata.append("financial_data", fileFD);
+        financedata.append("financial_data2", fileFD2);
+        financedata.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
+        financedata.append("Revenue", values.Revenue);
+        financedata.append("Profit", values.Profit);
+        financedata.append("netWorth", values.netWorth);
+        financedata.append("currentAssets", values.currentAssets);
+        financedata.append("directorDetails", values.directorDetails);
+        financedata.append("userId", newuser);
+        apiService.saveFinacialDetail(financedata).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((res) => {
+              navigate(`/ContactTeam`);
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      } else {
+        apiService.saveFinacialDetail(data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((res) => {
+              navigate(`/ContactTeam`);
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
     }
   };
   const updateFinancialDetail = (e) => {
@@ -264,6 +297,7 @@ const FinancialDetails = () => {
     }
   };
   useEffect(() => {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -304,7 +338,49 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    } else {
+    }
+    else if (newuser) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        Object.entries(res.data.FinancialDetail).map(([key, value]) => {
+          if (
+            res.data.basicInfo[0].submitStatus === "Submitted" &&
+            finalstatus !== "Approved"
+          ) {
+            setStyle("notEditable");
+          }
+          var initialUrlfinancial_data =
+            res.data.FinancialDetail[0].financial_data;
+          var replaceUrlFinancialData1 = initialUrlfinancial_data.replace(
+            "uploads/",
+            ""
+          );
+          var initialUrlfinancial_data2 =
+            res.data.FinancialDetail[0].financial_data2;
+          var replaceUrlFinancialData2 = initialUrlfinancial_data2.replace(
+            "uploads/",
+            ""
+          );
+          setValues({
+            yearOfAuditedFinancial: value.yearOfAuditedFinancial,
+            Revenue: value.Revenue,
+            Profit: value.Profit,
+            netWorth: value.netWorth,
+            currentAssets: value.currentAssets,
+            directorDetails: value.directorDetails,
+          });
+          setfileFD2(initialUrlfinancial_data2);
+          setfileFD(initialUrlfinancial_data);
+          seteditfileFD(replaceUrlFinancialData1);
+          seteditfileFD2(replaceUrlFinancialData2);
+          setEditfinancialDetail(true);
+        });
+      });
+    }
+    else {
       setEditfinancialDetail(false);
     }
   }, []);

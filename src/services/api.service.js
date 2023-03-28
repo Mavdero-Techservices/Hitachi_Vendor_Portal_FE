@@ -9,6 +9,9 @@ class apiService {
   signupFindByUserId(userId) {
     return http.get(`/signUp/getByUserId/${userId}`);
   }
+  signupFindSubUserList(userId) {
+    return http.get(`/signUp/signupFindSubUserList/${userId}`);
+  }
   saveUser(data) {
     return http.post('/saveUser', data);
   }
@@ -26,6 +29,9 @@ class apiService {
   }
   saveVendordetail(data) {
     return http.post('/saveVdetail', data);
+  }
+  saveNewRegVendordetail(data){
+    return http.post('/saveNewRegVendordetail', data);
   }
   SaveVendorCommunication(data) {
     return http.post('/SaveVendorCommunication', data);

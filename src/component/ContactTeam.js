@@ -382,17 +382,17 @@ const ContactTeam = () => {
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+            "There are no blank or incomplete required fields"
           ) {
             basicInfo[0].submitStatus = "Submitted";
             basicInfo[0].submitDate = Date.now();
@@ -421,52 +421,102 @@ const ContactTeam = () => {
         }
       });
     } else {
-      apiService.saveContactTeam(user).then((response) => {
-        if (response.data.status === "success") {
-          let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
-            .userId;
-          if (
-            basicInfoArray[0] ===
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      console.log("new user----------------->>>>>", newuser)
+      if (newuser) {
+        user.userId = newuser
+        apiService.saveContactTeam(user).then((response) => {
+          if (response.data.status === "success") {
+            // let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
+            //   .userId;
+            if (
+              basicInfoArray[0] ===
               "There are no blank or incomplete required fields" &&
-            communicationArray[0] ===
+              communicationArray[0] ===
               "There are no blank or incomplete required fields" &&
-            statutoryArray[0] ===
+              statutoryArray[0] ===
               "There are no blank or incomplete required fields" &&
-            complianceArray[0] ===
+              complianceArray[0] ===
               "There are no blank or incomplete required fields" &&
-            bankDetailArray[0] ===
+              bankDetailArray[0] ===
               "There are no blank or incomplete required fields" &&
-            contactDetailArray[0] ===
+              contactDetailArray[0] ===
               "There are no blank or incomplete required fields"
-          ) {
-            basicInfo[0].submitStatus = "Submitted";
-            basicInfo[0].submitDate = Date.now();
-            apiService
-              .updateVendordetail(userkey, basicInfo[0])
-              .then((response) => {
-                Swal.fire(
-                  "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                );
-              });
-          } else {
-            Swal.fire({
-              title: "please complete this field.",
-              html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+            ) {
+              basicInfo[0].submitStatus = "Submitted";
+              basicInfo[0].submitDate = Date.now();
+              apiService
+                .updateVendordetail(newuser, basicInfo[0])
+                .then((response) => {
+                  Swal.fire(
+                    "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+                  );
+                });
+            } else {
+              Swal.fire({
+                title: "please complete this field.",
+                html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
                  <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
                  <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
                  <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
                  <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
                  <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
-              padding: "3px",
-              icon: "warning",
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "ok",
-            });
+                padding: "3px",
+                icon: "warning",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "ok",
+              });
+            }
           }
-        }
-      });
-    }
-  };
+        });
+      } else {
+        apiService.saveContactTeam(user).then((response) => {
+          if (response.data.status === "success") {
+            let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
+              .userId;
+            if (
+              basicInfoArray[0] ===
+              "There are no blank or incomplete required fields" &&
+              communicationArray[0] ===
+              "There are no blank or incomplete required fields" &&
+              statutoryArray[0] ===
+              "There are no blank or incomplete required fields" &&
+              complianceArray[0] ===
+              "There are no blank or incomplete required fields" &&
+              bankDetailArray[0] ===
+              "There are no blank or incomplete required fields" &&
+              contactDetailArray[0] ===
+              "There are no blank or incomplete required fields"
+            ) {
+              basicInfo[0].submitStatus = "Submitted";
+              basicInfo[0].submitDate = Date.now();
+              apiService
+                .updateVendordetail(userkey, basicInfo[0])
+                .then((response) => {
+                  Swal.fire(
+                    "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
+                  );
+                });
+            } else {
+              Swal.fire({
+                title: "please complete this field.",
+                html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
+                 <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
+                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
+                 <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
+                 <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
+                padding: "3px",
+                icon: "warning",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "ok",
+              });
+            }
+          }
+        });
+      }
+    };
+  }
   const updateContactTeam = (e) => {
     e.preventDefault();
     const formErrors = validateForm();
@@ -679,17 +729,17 @@ const ContactTeam = () => {
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+            "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+            "There are no blank or incomplete required fields"
           ) {
             let basic;
             apiService.getAllCollection(params.userId).then((res) => {
@@ -741,6 +791,7 @@ const ContactTeam = () => {
     }
   };
   useEffect(() => {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -767,11 +818,35 @@ const ContactTeam = () => {
           });
         });
       });
+    } else if (newuser) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
+        }
+        Object.entries(res.data.contactDetail).map(([key, value]) => {
+          setValues({
+            contactName1: value.contactName1,
+            emailId1: value.emailId1,
+            contactNumber1: value.contactNumber1,
+            contactName2: value.contactName2,
+            emailId2: value.emailId2,
+            contactNumber2: value.contactNumber2,
+            contactName3: value.contactName3,
+            emailId3: value.emailId3,
+            contactNumber3: value.contactNumber3,
+          });
+        });
+      });
     }
-    if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
-    ) {
-      apiService.getAllCollection(params.userId).then((getAllCollection) => {
+    if (newuser) {
+      apiService.getAllCollection(newuser).then((getAllCollection) => {
         setbasicInfo(getAllCollection.data.basicInfo);
         setcommunicationDetail(getAllCollection.data.CommunicationDetails);
         setstatutory(getAllCollection.data.Statutory);
@@ -780,14 +855,27 @@ const ContactTeam = () => {
         setbankDetail(getAllCollection.data.Bankdetail);
       });
     } else {
-      apiService.getAllCollection(values.userId).then((getAllCollection) => {
-        setbasicInfo(getAllCollection.data.basicInfo);
-        setcommunicationDetail(getAllCollection.data.CommunicationDetails);
-        setstatutory(getAllCollection.data.Statutory);
-        setcompaliance(getAllCollection.data.ComplianceDetail);
-        setfinancialDetail(getAllCollection.data.FinancialDetail);
-        setbankDetail(getAllCollection.data.Bankdetail);
-      });
+      if (
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      ) {
+        apiService.getAllCollection(params.userId).then((getAllCollection) => {
+          setbasicInfo(getAllCollection.data.basicInfo);
+          setcommunicationDetail(getAllCollection.data.CommunicationDetails);
+          setstatutory(getAllCollection.data.Statutory);
+          setcompaliance(getAllCollection.data.ComplianceDetail);
+          setfinancialDetail(getAllCollection.data.FinancialDetail);
+          setbankDetail(getAllCollection.data.Bankdetail);
+        });
+      } else {
+        apiService.getAllCollection(values.userId).then((getAllCollection) => {
+          setbasicInfo(getAllCollection.data.basicInfo);
+          setcommunicationDetail(getAllCollection.data.CommunicationDetails);
+          setstatutory(getAllCollection.data.Statutory);
+          setcompaliance(getAllCollection.data.ComplianceDetail);
+          setfinancialDetail(getAllCollection.data.FinancialDetail);
+          setbankDetail(getAllCollection.data.Bankdetail);
+        });
+      }
     }
   }, []);
   return (

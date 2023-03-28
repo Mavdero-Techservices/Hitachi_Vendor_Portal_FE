@@ -100,7 +100,8 @@ export const MasterVendorSidemenu = (props) => {
   };
 
   const handleState = () => {
-    navigate(`/basic`);
+    let id = 'newReg'
+    navigate(`/basic/newReg/${id}`);
   };
   return (
     <>

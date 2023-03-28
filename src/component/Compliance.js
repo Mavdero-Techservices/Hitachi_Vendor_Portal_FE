@@ -181,7 +181,7 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => {});
+    apiService.downloadPdf(user).then((response) => { });
   };
   function next(e) {
     // saveComplianceDetail(e);
@@ -192,6 +192,7 @@ const ComplianceDetails = () => {
     }
   }
   useEffect(() => {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -220,6 +221,37 @@ const ComplianceDetails = () => {
           setEditCompliance(true);
         });
       });
+    } else if (newuser) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
+        }
+        if (res.data.ComplianceDetail?.length > 0) {
+          Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
+            var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
+            var RPD_Doc = initialUrlRPD_Doc.replace("uploads/", "");
+            var initialUrlCOC_Doc = res.data.ComplianceDetail[0].COC_Doc;
+            var COC_Doc = initialUrlCOC_Doc.replace("uploads/", "");
+            var initialUrlNDA_Doc = res.data.ComplianceDetail[0].NDA_Doc;
+            var NDA_Doc = initialUrlNDA_Doc.replace("uploads/", "");
+            setfileRPD(initialUrlRPD_Doc);
+            seteditVlauefileRPD(RPD_Doc);
+            setfileCOC(initialUrlCOC_Doc);
+            seteditVlauefileCOC(COC_Doc);
+            setfileNDA(initialUrlNDA_Doc);
+            seteditVlauefileNDA(NDA_Doc);
+            setEditCompliance(true);
+          });
+        }
+
+      });
     } else {
       setEditCompliance(false);
     }
@@ -229,9 +261,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => {});
-    apiService.createCocPdf(user).then((res) => {});
-    apiService.createNDAPdf(user).then((res) => {});
+    apiService.createRelatedDisclosurePdf(user).then((res) => { });
+    apiService.createCocPdf(user).then((res) => { });
+    apiService.createNDAPdf(user).then((res) => { });
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -276,25 +308,53 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      apiService.saveComplianceDetail(data).then((res) => {
-        setSaveButton(true);
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      if (newuser) {
+        const compdata = new FormData();
+        compdata.append("RPD_Doc", fileRPD);
+        compdata.append("NDA_Doc", fileNDA);
+        compdata.append("COC_Doc", fileCOC);
+        compdata.append("userId", newuser);
+        apiService.saveComplianceDetail(compdata).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      } else {
+        apiService.saveComplianceDetail(data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((res) => {
+              navigate(`/ComplianceDetail`);
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
     }
   };
 

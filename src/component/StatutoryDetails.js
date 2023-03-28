@@ -461,6 +461,7 @@ export default function Statutory(props) {
     });
   }
   useEffect(() => {
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -516,6 +517,62 @@ export default function Statutory(props) {
           setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
         });
       });
+    } else if (newuser){
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        if (
+          res.data.basicInfo[0].submitStatus === "Submitted" &&
+          finalstatus !== "Approved"
+        ) {
+          setStyle("notEditable");
+        }
+        Object.entries(res.data.Statutory).map(([key, value]) => {
+          var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
+          var replaceform10fValue = form_10fUrl.replace("uploads/", "");
+          var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
+          var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
+            "uploads/",
+            ""
+          );
+          var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
+          var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
+            "uploads/",
+            ""
+          );
+          setValues({
+            GST_No: value.GST_No,
+            GST_type: value.GST_type,
+            MSME_No: value.MSME_No,
+            MSME_Type: value.MSME_Type,
+            MSME_status: value.MSME_status,
+            PAN_No: value.PAN_No,
+            CIN_No: value.CIN_No,
+            TAN_No: value.TAN_No,
+            Tax_residency_No: value.Tax_residency_No,
+            GST_Doc: value.GST_Doc,
+            PAN_Doc: value.PAN_Doc,
+            TAN_Doc: value.TAN_Doc,
+            MSME_Doc: value.MSME_Doc,
+            Tax_residency_Doc: value.Tax_residency_Doc,
+          });
+
+          setform_10f_Doc(value.form_10f_Doc);
+
+          setFile(value.GST_Doc);
+          setPAN_Doc(value.PAN_Doc);
+          setTAN_Doc(value.TAN_Doc);
+          setPE_Declaration_Doc(value.PE_Declaration_Doc);
+          setMSME_Doc(value.MSME_Doc);
+          setTax_residency_Doc(value.Tax_residency_Doc);
+          seteditTax_residency_Doc(replaceTax_residency_DocValue);
+          setEditform_10f_Doc(replaceform10fValue);
+          setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
+        });
+      });
+
     }
     apiService.getvendorDetail(values.userId).then((res) => {
       setcountry(res.data.country);
@@ -575,8 +632,30 @@ export default function Statutory(props) {
         }
       });
     } else {
-      apiService.saveStatutoryDetail(data).then((res) => {
-        setSaveButton(true)
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      if (newuser) {
+        const statdata = new FormData();
+        statdata.append("GST_Doc", GST_Doc);
+        statdata.append("GST_type", GST_type);
+        statdata.append("GST_No", values.GST_No);
+        statdata.append("PAN_No", values.PAN_No);
+        statdata.append("PAN_Doc", PAN_Doc);
+        statdata.append("form_10f_Doc", form_10f_Doc);
+        statdata.append("TAN_Doc", TAN_Doc);
+        statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+        statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+        statdata.append("MSME_Doc", MSME_Doc);
+        statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+        statdata.append("CIN_No", values.CIN_No);
+        statdata.append("form_10f", values.form_10f);
+        statdata.append("MSME_status", MSME_status);
+        statdata.append("MSME_No", values.MSME_No);
+        statdata.append("MSME_Type", MSME);
+        statdata.append("TAN_No", values.TAN_No);
+        statdata.append("userId", newuser);
+        statdata.append("Tax_residency_No", values.Tax_residency_No);
+        statdata.append("fileDisclosure", fileDisclosure);  
+        apiService.saveStatutoryDetail(statdata).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data saved",
@@ -597,6 +676,29 @@ export default function Statutory(props) {
           });
         }
       });
+    }else{
+        apiService.saveStatutoryDetail(data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        });
+    }
     }
   };
   const updateStatutoryDetail = (e) => {
