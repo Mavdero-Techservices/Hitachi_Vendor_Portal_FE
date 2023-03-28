@@ -189,13 +189,13 @@ function ApprovalFields(props) {
         setfinancial_data2("");
       }
 
-      if (res.data.Bankdetail[0] !== "null" && res.data.Bankdetail.length > 0) {
-        setbankAccountName(res.data.Bankdetail[0].bankAccountName);
-        setbankName(res.data.Bankdetail[0].bankName);
-        setbankAccountNumber(res.data.Bankdetail[0].bankAccountNumber);
-        setifscCode(res.data.Bankdetail[0].ifscCode);
+      if (res.data.Bankdetail[0] !== 'null' && res.data.Bankdetail.length > 0) {
+        setbankAccountName(res.data.Bankdetail[0].Account_Holder_Name);
+        setbankName(res.data.Bankdetail[0].Bank_Name);
+        setbankAccountNumber(res.data.Bankdetail[0].Account_No);
+        setifscCode(res.data.Bankdetail[0].IFSC_Code);
         setMICRcode(res.data.Bankdetail[0].MICRcode);
-        setbranchAddress(res.data.Bankdetail[0].branchAddress);
+        setbranchAddress(res.data.Bankdetail[0].Bank_Address);
         setbankdetailDoc(res.data.Bankdetail[0].bankdetailDoc);
       } else {
         setbankAccountName("");
@@ -2093,12 +2093,12 @@ function ApprovalFields(props) {
       data.append("netWorth", netWorth);
       data.append("currentAssets", currentAssets);
       data.append("directorDetails", directorDetails);
-      data.append("bankAccountName", bankAccountName);
-      data.append("bankName", bankName);
-      data.append("bankAccountNumber", bankAccountNumber);
-      data.append("ifscCode", ifscCode);
-      data.append("MICRcode", MICRcode);
-      data.append("branchAddress", branchAddress);
+      data.append('Account_Holder_Name', bankAccountName);
+      data.append('Bank_Name', bankName);
+      data.append('Account_No', bankAccountNumber);
+      data.append('IFSC_Code', ifscCode);
+      data.append('MICRcode', MICRcode);
+      data.append('Bank_Address', branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -2448,12 +2448,12 @@ function ApprovalFields(props) {
       data.append("netWorth", netWorth);
       data.append("currentAssets", currentAssets);
       data.append("directorDetails", directorDetails);
-      data.append("bankAccountName", bankAccountName);
-      data.append("bankName", bankName);
-      data.append("bankAccountNumber", bankAccountNumber);
-      data.append("ifscCode", ifscCode);
-      data.append("MICRcode", MICRcode);
-      data.append("branchAddress", branchAddress);
+       data.append('Account_Holder_Name', bankAccountName);
+      data.append('Bank_Name', bankName);
+      data.append('Account_No', bankAccountNumber);
+      data.append('IFSC_Code', ifscCode);
+      data.append('MICRcode', MICRcode);
+      data.append('Bank_Address', branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -3510,7 +3510,7 @@ function ApprovalFields(props) {
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="bankAccountName"
+                      name="Account_Holder_Name"
                       value={bankAccountName}
                       onChange={(e) => validatebankAccountName(e)}
                     />
@@ -3521,7 +3521,7 @@ function ApprovalFields(props) {
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="ifscCode"
+                      name="IFSC_Code"
                       value={ifscCode}
                       onChange={(e) => validateifscCode(e)}
                     />
@@ -3532,7 +3532,7 @@ function ApprovalFields(props) {
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="bankName"
+                      name="Bank_Name"
                       value={bankName}
                       onChange={(e) => validatebankName(e)}
                     />
@@ -3554,7 +3554,7 @@ function ApprovalFields(props) {
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="bankAccountNumber"
+                      name="Account_No"
                       value={bankAccountNumber}
                       onChange={(e) => validatebankAccountNumber(e)}
                     />
@@ -3565,7 +3565,7 @@ function ApprovalFields(props) {
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="branchAddress"
+                      name="Bank_Address"
                       value={branchAddress}
                       onChange={(e) => validatebranchAddress(e)}
                     />

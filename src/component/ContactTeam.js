@@ -308,16 +308,16 @@ const ContactTeam = () => {
     } else {
       Object.entries(bankDetail[0]).map(([key, value]) => {
         if (value === "" || null) {
-          if (key === "bankAccountName") {
+          if (key === "Account_Holder_Name") {
             bankDetailArray.push("Bank Account Name");
           }
-          if (key === "bankName") {
+          if (key === "Bank_Name") {
             bankDetailArray.push("Bank Name");
           }
-          if (key === "bankAccountNumber") {
+          if (key === "Account_No") {
             bankDetailArray.push("Bank AccountNumber");
           }
-          if (key === "ifscCode") {
+          if (key === "IFSC_Code") {
             bankDetailArray.push("IFSC Code");
           }
           if (key === "MICRcode") {
@@ -657,16 +657,16 @@ const ContactTeam = () => {
     } else {
       Object.entries(bankDetail[0]).map(([key, value]) => {
         if (value === "" || null) {
-          if (key === "bankAccountName") {
+          if (key === "Account_Holder_Name") {
             bankDetailArray.push("Bank Account Name");
           }
-          if (key === "bankName") {
+          if (key === "Bank_Name") {
             bankDetailArray.push("Bank Name");
           }
-          if (key === "bankAccountNumber") {
+          if (key === "Account_No") {
             bankDetailArray.push("Bank AccountNumber");
           }
-          if (key === "ifscCode") {
+          if (key === "IFSC_Code") {
             bankDetailArray.push("IFSC Code");
           }
           if (key === "MICRcode") {

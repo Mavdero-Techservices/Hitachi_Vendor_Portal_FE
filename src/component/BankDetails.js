@@ -100,12 +100,12 @@ const BankDetails = (props) => {
       "userId",
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
-    data.append("bankAccountName", acName);
-    data.append("bankName", bankname);
-    data.append("bankAccountNumber", acno);
-    data.append("ifscCode", ifsc);
+    data.append("Account_Holder_Name", acName);
+    data.append("Bank_Name", bankname);
+    data.append("Account_No", acno);
+    data.append("IFSC_Code", ifsc);
     data.append("MICRcode", micr);
-    data.append("branchAddress", branchAdd);
+    data.append("Bank_Address", branchAdd);
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
@@ -133,12 +133,12 @@ const BankDetails = (props) => {
       if (newuser) {
         const bankdata = new FormData();
         bankdata.append("userId", newuser);
-        bankdata.append("bankAccountName", acName);
-        bankdata.append("bankName", bankname);
-        bankdata.append("bankAccountNumber", acno);
-        bankdata.append("ifscCode", ifsc);
+        bankdata.append("Account_Holder_Name", acName);
+        bankdata.append("Bank_Name", bankname);
+        bankdata.append("Account_No", acno);
+        bankdata.append("IFSC_Code", ifsc);
         bankdata.append("MICRcode", micr);
-        bankdata.append("branchAddress", branchAdd);
+        bankdata.append("Bank_Address", branchAdd);
         bankdata.append("bankdetailDoc", fileBank);
         apiService.savebankdetail(bankdata).then((response) => {
           setSaveButton(true);
@@ -189,12 +189,12 @@ const BankDetails = (props) => {
     event.preventDefault();
     const data = new FormData();
     data.append("userId", params.userId);
-    data.append("bankAccountName", acName);
-    data.append("bankName", bankname);
-    data.append("bankAccountNumber", acno);
-    data.append("ifscCode", ifsc);
+    data.append("Account_Holder_Name", acName);
+    data.append("Bank_Name", bankname);
+    data.append("Account_No", acno);
+    data.append("IFSC_Code", ifsc);
     data.append("MICRcode", micr);
-    data.append("branchAddress", branchAdd);
+    data.append("Bank_Address", branchAdd);
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
@@ -225,6 +225,7 @@ const BankDetails = (props) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
+        console.log("res.data.basicInfo[0].submitStatus----------->>>>>", res.data)
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"
@@ -235,12 +236,12 @@ const BankDetails = (props) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
           var ret = initialUrlbankDoc.replace("uploads/", "");
           var bankdetailDoc = ret;
-          setAcName(value.bankAccountName);
-          setBankname(value.bankName);
-          setAcno(value.bankAccountNumber);
-          setIfsc(value.ifscCode);
+          setAcName(value.Account_Holder_Name);
+          setBankname(value.Bank_Name);
+          setAcno(value.Account_No);
+          setIfsc(value.IFSC_Code);
           setMicr(value.MICRcode);
-          setbranchAdd(value.branchAddress);
+          setbranchAdd(value.Bank_Address);
           setfileBank(initialUrlbankDoc);
           seteditValuefileBank(bankdetailDoc);
         });
@@ -261,12 +262,12 @@ const BankDetails = (props) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
           var ret = initialUrlbankDoc.replace("uploads/", "");
           var bankdetailDoc = ret;
-          setAcName(value.bankAccountName);
-          setBankname(value.bankName);
-          setAcno(value.bankAccountNumber);
-          setIfsc(value.ifscCode);
+          setAcName(value.Account_Holder_Name);
+          setBankname(value.Bank_Name);
+          setAcno(value.Account_No);
+          setIfsc(value.IFSC_Code);
           setMicr(value.MICRcode);
-          setbranchAdd(value.branchAddress);
+          setbranchAdd(value.Bank_Address);
           setfileBank(initialUrlbankDoc);
           seteditValuefileBank(bankdetailDoc);
         });
@@ -289,7 +290,7 @@ const BankDetails = (props) => {
                 <input
                   type="text"
                   className="mb-4 inputbox"
-                  name="acName"
+                  name="Account_Holder_Name"
                   value={acName}
                   onChange={(e) => setAcName(e.target.value)}
                 />
@@ -309,7 +310,7 @@ const BankDetails = (props) => {
                 <input
                   type="text"
                   className="mb-4 inputbox"
-                  name="bankname"
+                  name="Bank_Name"
                   value={bankname}
                   onChange={(e) => setBankname(e.target.value)}
                 />
