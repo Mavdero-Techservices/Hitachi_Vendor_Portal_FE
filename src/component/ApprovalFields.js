@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
-import '../css/ApprovalFields.css';
-import apiService from '../services/api.service';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import { Box } from "@mui/material";
+import "../css/ApprovalFields.css";
+import apiService from "../services/api.service";
+import Swal from "sweetalert2";
 function ApprovalFields(props) {
   const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
   const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
@@ -17,7 +17,7 @@ function ApprovalFields(props) {
 
   useEffect(() => {
     apiService.getAllCollection(props.userid).then((res) => {
-      if (res.data.basicInfo[0] !== 'null' && res.data.basicInfo.length > 0) {
+      if (res.data.basicInfo[0] !== "null" && res.data.basicInfo.length > 0) {
         var abc = res.data.basicInfo;
         seteditData([]);
         seteditData((prevState) => [...prevState, ...abc]);
@@ -30,17 +30,17 @@ function ApprovalFields(props) {
         setpinCode(res.data.basicInfo[0].pinCode);
         setlogo(res.data.basicInfo[0].image);
       } else {
-        setaddress1('');
-        setaddress2('');
-        setcompanyName('');
-        setcountry('');
-        setstate('');
-        setcity('');
-        setpinCode('');
+        setaddress1("");
+        setaddress2("");
+        setcompanyName("");
+        setcountry("");
+        setstate("");
+        setcity("");
+        setpinCode("");
       }
 
       if (
-        res.data.CommunicationDetails[0] !== 'null' &&
+        res.data.CommunicationDetails[0] !== "null" &&
         res.data.CommunicationDetails.length > 0
       ) {
         var communicate = res.data.CommunicationDetails;
@@ -88,30 +88,30 @@ function ApprovalFields(props) {
           res.data.CommunicationDetails[0].mastervendor_email
         );
       } else {
-        setfs_ContactName('');
-        setfs_Designation('');
-        setfs_PhoneNo('');
-        setfs_Email('');
-        setops_ContactName('');
-        setops_Designation('');
-        setops_PhoneNo('');
-        setops_Email('');
-        setcolls_ContactName('');
-        setcolls_Designation('');
-        setcolls_PhoneNo('');
-        setcolls_Email('');
-        setmngs_ContactName('');
-        setmngs_Designation('');
-        setmngs_PhoneNo('');
-        setmngs_Email('');
-        setothers_ContactName('');
-        setothers_Designation('');
-        setothers_PhoneNo('');
-        setothers_Email('');
-        setmastervendor_email('');
+        setfs_ContactName("");
+        setfs_Designation("");
+        setfs_PhoneNo("");
+        setfs_Email("");
+        setops_ContactName("");
+        setops_Designation("");
+        setops_PhoneNo("");
+        setops_Email("");
+        setcolls_ContactName("");
+        setcolls_Designation("");
+        setcolls_PhoneNo("");
+        setcolls_Email("");
+        setmngs_ContactName("");
+        setmngs_Designation("");
+        setmngs_PhoneNo("");
+        setmngs_Email("");
+        setothers_ContactName("");
+        setothers_Designation("");
+        setothers_PhoneNo("");
+        setothers_Email("");
+        setmastervendor_email("");
       }
 
-      if (res.data.Statutory[0] !== 'null' && res.data.Statutory.length > 0) {
+      if (res.data.Statutory[0] !== "null" && res.data.Statutory.length > 0) {
         var statarr = res.data.Statutory;
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
@@ -131,38 +131,38 @@ function ApprovalFields(props) {
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency);
       } else {
-        setGST_type('');
-        setGST_No('');
-        setGST_Doc('');
-        setPAN_No('');
-        setPAN_Doc('');
-        setCIN_No('');
-        setform_10f('');
-        setpe_declaration('');
-        setMSME_status('');
-        setMSME_No('');
-        setMSME_Doc('');
-        setMSME_Type('');
-        setTAN_No('');
-        setTAN_Doc('');
-        setTax_residency('');
+        setGST_type("");
+        setGST_No("");
+        setGST_Doc("");
+        setPAN_No("");
+        setPAN_Doc("");
+        setCIN_No("");
+        setform_10f("");
+        setpe_declaration("");
+        setMSME_status("");
+        setMSME_No("");
+        setMSME_Doc("");
+        setMSME_Type("");
+        setTAN_No("");
+        setTAN_Doc("");
+        setTax_residency("");
       }
 
       if (
-        res.data.ComplianceDetail[0] !== 'null' &&
+        res.data.ComplianceDetail[0] !== "null" &&
         res.data.ComplianceDetail.length > 0
       ) {
         setRPD_Doc(res.data.ComplianceDetail[0].RPD_Doc);
         setCOC_Doc(res.data.ComplianceDetail[0].COC_Doc);
         setNDA_Doc(res.data.ComplianceDetail[0].NDA_Doc);
       } else {
-        setRPD_Doc('');
-        setCOC_Doc('');
-        setNDA_Doc('');
+        setRPD_Doc("");
+        setCOC_Doc("");
+        setNDA_Doc("");
       }
 
       if (
-        res.data.FinancialDetail[0] !== 'null' &&
+        res.data.FinancialDetail[0] !== "null" &&
         res.data.FinancialDetail.length > 0
       ) {
         var fD = res.data.FinancialDetail;
@@ -179,17 +179,17 @@ function ApprovalFields(props) {
         setfinancial_data(res.data.FinancialDetail[0].financial_data);
         setfinancial_data2(res.data.FinancialDetail[0].financial_data2);
       } else {
-        setyearOfAuditedFinancial('');
-        setRevenue('');
-        setProfit('');
-        setnetWorth('');
-        setcurrentAssets('');
-        setdirectorDetails('');
-        setfinancial_data('');
-        setfinancial_data2('');
+        setyearOfAuditedFinancial("");
+        setRevenue("");
+        setProfit("");
+        setnetWorth("");
+        setcurrentAssets("");
+        setdirectorDetails("");
+        setfinancial_data("");
+        setfinancial_data2("");
       }
 
-      if (res.data.Bankdetail[0] !== 'null' && res.data.Bankdetail.length > 0) {
+      if (res.data.Bankdetail[0] !== "null" && res.data.Bankdetail.length > 0) {
         setbankAccountName(res.data.Bankdetail[0].bankAccountName);
         setbankName(res.data.Bankdetail[0].bankName);
         setbankAccountNumber(res.data.Bankdetail[0].bankAccountNumber);
@@ -198,17 +198,17 @@ function ApprovalFields(props) {
         setbranchAddress(res.data.Bankdetail[0].branchAddress);
         setbankdetailDoc(res.data.Bankdetail[0].bankdetailDoc);
       } else {
-        setbankAccountName('');
-        setbankName('');
-        setbankAccountNumber('');
-        setifscCode('');
-        setMICRcode('');
-        setbranchAddress('');
-        setbankdetailDoc('');
+        setbankAccountName("");
+        setbankName("");
+        setbankAccountNumber("");
+        setifscCode("");
+        setMICRcode("");
+        setbranchAddress("");
+        setbankdetailDoc("");
       }
 
       if (
-        res.data.contactDetail[0] !== 'null' &&
+        res.data.contactDetail[0] !== "null" &&
         res.data.contactDetail.length > 0
       ) {
         var contactarr = res.data.contactDetail;
@@ -224,168 +224,168 @@ function ApprovalFields(props) {
         setcontactNumber3(res.data.contactDetail[0].contactNumber3);
         setemail3(res.data.contactDetail[0].emailId3);
       } else {
-        setname('');
-        setcontactNumber('');
-        setemail('');
-        setname2('');
-        setcontactNumber2('');
-        setemail2('');
-        setname3('');
-        setcontactNumber3('');
-        setemail3('');
+        setname("");
+        setcontactNumber("");
+        setemail("");
+        setname2("");
+        setcontactNumber2("");
+        setemail2("");
+        setname3("");
+        setcontactNumber3("");
+        setemail3("");
       }
     });
   }, []);
 
-  const [address1, setaddress1] = useState('');
-  const [address2, setaddress2] = useState('');
-  const [companyName, setcompanyName] = useState('');
-  const [country, setcountry] = useState('');
-  const [state, setstate] = useState('');
-  const [city, setcity] = useState('');
-  const [pinCode, setpinCode] = useState('');
-  const [logo, setlogo] = useState('');
+  const [address1, setaddress1] = useState("");
+  const [address2, setaddress2] = useState("");
+  const [companyName, setcompanyName] = useState("");
+  const [country, setcountry] = useState("");
+  const [state, setstate] = useState("");
+  const [city, setcity] = useState("");
+  const [pinCode, setpinCode] = useState("");
+  const [logo, setlogo] = useState("");
 
-  const [fs_ContactName, setfs_ContactName] = useState('');
-  const [fs_Designation, setfs_Designation] = useState('');
-  const [fs_PhoneNo, setfs_PhoneNo] = useState('');
-  const [fs_Email, setfs_Email] = useState('');
-  const [ops_ContactName, setops_ContactName] = useState('');
-  const [ops_Designation, setops_Designation] = useState('');
-  const [ops_PhoneNo, setops_PhoneNo] = useState('');
-  const [ops_Email, setops_Email] = useState('');
-  const [colls_ContactName, setcolls_ContactName] = useState('');
-  const [colls_Designation, setcolls_Designation] = useState('');
-  const [colls_PhoneNo, setcolls_PhoneNo] = useState('');
-  const [colls_Email, setcolls_Email] = useState('');
-  const [mngs_ContactName, setmngs_ContactName] = useState('');
-  const [mngs_Designation, setmngs_Designation] = useState('');
-  const [mngs_PhoneNo, setmngs_PhoneNo] = useState('');
-  const [mngs_Email, setmngs_Email] = useState('');
-  const [others_ContactName, setothers_ContactName] = useState('');
-  const [others_Designation, setothers_Designation] = useState('');
-  const [others_PhoneNo, setothers_PhoneNo] = useState('');
-  const [others_Email, setothers_Email] = useState('');
-  const [mastervendor_email, setmastervendor_email] = useState('');
+  const [fs_ContactName, setfs_ContactName] = useState("");
+  const [fs_Designation, setfs_Designation] = useState("");
+  const [fs_PhoneNo, setfs_PhoneNo] = useState("");
+  const [fs_Email, setfs_Email] = useState("");
+  const [ops_ContactName, setops_ContactName] = useState("");
+  const [ops_Designation, setops_Designation] = useState("");
+  const [ops_PhoneNo, setops_PhoneNo] = useState("");
+  const [ops_Email, setops_Email] = useState("");
+  const [colls_ContactName, setcolls_ContactName] = useState("");
+  const [colls_Designation, setcolls_Designation] = useState("");
+  const [colls_PhoneNo, setcolls_PhoneNo] = useState("");
+  const [colls_Email, setcolls_Email] = useState("");
+  const [mngs_ContactName, setmngs_ContactName] = useState("");
+  const [mngs_Designation, setmngs_Designation] = useState("");
+  const [mngs_PhoneNo, setmngs_PhoneNo] = useState("");
+  const [mngs_Email, setmngs_Email] = useState("");
+  const [others_ContactName, setothers_ContactName] = useState("");
+  const [others_Designation, setothers_Designation] = useState("");
+  const [others_PhoneNo, setothers_PhoneNo] = useState("");
+  const [others_Email, setothers_Email] = useState("");
+  const [mastervendor_email, setmastervendor_email] = useState("");
 
-  const [GST_type, setGST_type] = useState('');
-  const [GST_No, setGST_No] = useState('');
-  const [GST_Doc, setGST_Doc] = useState('');
-  const [PAN_No, setPAN_No] = useState('');
-  const [PAN_Doc, setPAN_Doc] = useState('');
-  const [CIN_No, setCIN_No] = useState('');
-  const [form_10f, setform_10f] = useState('');
-  const [pe_declaration, setpe_declaration] = useState('');
-  const [MSME_status, setMSME_status] = useState('');
-  const [MSME_No, setMSME_No] = useState('');
-  const [MSME_Doc, setMSME_Doc] = useState('');
-  const [MSME_Type, setMSME_Type] = useState('');
-  const [TAN_No, setTAN_No] = useState('');
-  const [TAN_Doc, setTAN_Doc] = useState('');
-  const [Tax_residency, setTax_residency] = useState('');
+  const [GST_type, setGST_type] = useState("");
+  const [GST_No, setGST_No] = useState("");
+  const [GST_Doc, setGST_Doc] = useState("");
+  const [PAN_No, setPAN_No] = useState("");
+  const [PAN_Doc, setPAN_Doc] = useState("");
+  const [CIN_No, setCIN_No] = useState("");
+  const [form_10f, setform_10f] = useState("");
+  const [pe_declaration, setpe_declaration] = useState("");
+  const [MSME_status, setMSME_status] = useState("");
+  const [MSME_No, setMSME_No] = useState("");
+  const [MSME_Doc, setMSME_Doc] = useState("");
+  const [MSME_Type, setMSME_Type] = useState("");
+  const [TAN_No, setTAN_No] = useState("");
+  const [TAN_Doc, setTAN_Doc] = useState("");
+  const [Tax_residency, setTax_residency] = useState("");
 
-  const [RPD_Doc, setRPD_Doc] = useState('');
-  const [COC_Doc, setCOC_Doc] = useState('');
-  const [NDA_Doc, setNDA_Doc] = useState('');
+  const [RPD_Doc, setRPD_Doc] = useState("");
+  const [COC_Doc, setCOC_Doc] = useState("");
+  const [NDA_Doc, setNDA_Doc] = useState("");
 
-  const [yearOfAuditedFinancial, setyearOfAuditedFinancial] = useState('');
-  const [Revenue, setRevenue] = useState('');
-  const [Profit, setProfit] = useState('');
-  const [netWorth, setnetWorth] = useState('');
-  const [currentAssets, setcurrentAssets] = useState('');
-  const [directorDetails, setdirectorDetails] = useState('');
-  const [financial_data, setfinancial_data] = useState('');
-  const [financial_data2, setfinancial_data2] = useState('');
+  const [yearOfAuditedFinancial, setyearOfAuditedFinancial] = useState("");
+  const [Revenue, setRevenue] = useState("");
+  const [Profit, setProfit] = useState("");
+  const [netWorth, setnetWorth] = useState("");
+  const [currentAssets, setcurrentAssets] = useState("");
+  const [directorDetails, setdirectorDetails] = useState("");
+  const [financial_data, setfinancial_data] = useState("");
+  const [financial_data2, setfinancial_data2] = useState("");
 
-  const [bankAccountName, setbankAccountName] = useState('');
-  const [bankName, setbankName] = useState('');
-  const [bankAccountNumber, setbankAccountNumber] = useState('');
-  const [ifscCode, setifscCode] = useState('');
-  const [MICRcode, setMICRcode] = useState('');
-  const [branchAddress, setbranchAddress] = useState('');
-  const [bankdetailDoc, setbankdetailDoc] = useState('');
-  const [name, setname] = useState('');
-  const [contactNumber, setcontactNumber] = useState('');
-  const [email, setemail] = useState('');
-  const [name2, setname2] = useState('');
-  const [contactNumber2, setcontactNumber2] = useState('');
-  const [email2, setemail2] = useState('');
-  const [name3, setname3] = useState('');
-  const [contactNumber3, setcontactNumber3] = useState('');
-  const [email3, setemail3] = useState('');
+  const [bankAccountName, setbankAccountName] = useState("");
+  const [bankName, setbankName] = useState("");
+  const [bankAccountNumber, setbankAccountNumber] = useState("");
+  const [ifscCode, setifscCode] = useState("");
+  const [MICRcode, setMICRcode] = useState("");
+  const [branchAddress, setbranchAddress] = useState("");
+  const [bankdetailDoc, setbankdetailDoc] = useState("");
+  const [name, setname] = useState("");
+  const [contactNumber, setcontactNumber] = useState("");
+  const [email, setemail] = useState("");
+  const [name2, setname2] = useState("");
+  const [contactNumber2, setcontactNumber2] = useState("");
+  const [email2, setemail2] = useState("");
+  const [name3, setname3] = useState("");
+  const [contactNumber3, setcontactNumber3] = useState("");
+  const [email3, setemail3] = useState("");
 
-  const [vendorType, setvendorType] = useState('');
-  const [acManager, setacManager] = useState('');
+  const [vendorType, setvendorType] = useState("");
+  const [acManager, setacManager] = useState("");
   const [mkcheck, setmkcheck] = useState(false);
-  const [approverFile, setapproverFile] = useState('');
-  const [style, setStyle] = useState('approvalsform');
+  const [approverFile, setapproverFile] = useState("");
+  const [style, setStyle] = useState("approvalsform");
 
   // Error states start
-  const [address1Err, setaddress1Err] = useState('');
+  const [address1Err, setaddress1Err] = useState("");
   // const [address2Err, setaddress2Err] = useState(false);
-  const [companyNameErr, setcompanyNameErr] = useState('');
-  const [countryErr, setcountryErr] = useState('');
-  const [stateErr, setstateErr] = useState('');
-  const [cityErr, setcityErr] = useState('');
-  const [pinCodeErr, setpinCodeErr] = useState('');
-  const [logoErr, setlogoErr] = useState('');
+  const [companyNameErr, setcompanyNameErr] = useState("");
+  const [countryErr, setcountryErr] = useState("");
+  const [stateErr, setstateErr] = useState("");
+  const [cityErr, setcityErr] = useState("");
+  const [pinCodeErr, setpinCodeErr] = useState("");
+  const [logoErr, setlogoErr] = useState("");
 
-  const [fs_ContactNameErr, setfs_ContactNameErr] = useState('');
-  const [fs_DesignationErr, setfs_DesignationErr] = useState('');
-  const [fs_PhoneNoErr, setfs_PhoneNoErr] = useState('');
-  const [fs_EmailErr, setfs_EmailErr] = useState('');
+  const [fs_ContactNameErr, setfs_ContactNameErr] = useState("");
+  const [fs_DesignationErr, setfs_DesignationErr] = useState("");
+  const [fs_PhoneNoErr, setfs_PhoneNoErr] = useState("");
+  const [fs_EmailErr, setfs_EmailErr] = useState("");
 
-  const [mngs_ContactNameErr, setmngs_ContactNameErr] = useState('');
-  const [mngs_DesignationErr, setmngs_DesignationErr] = useState('');
-  const [mngs_PhoneNoErr, setmngs_PhoneNoErr] = useState('');
-  const [mngs_EmailErr, setmngs_EmailErr] = useState('');
-  const [mastervendor_emailErr, setmastervendor_emailErr] = useState('');
+  const [mngs_ContactNameErr, setmngs_ContactNameErr] = useState("");
+  const [mngs_DesignationErr, setmngs_DesignationErr] = useState("");
+  const [mngs_PhoneNoErr, setmngs_PhoneNoErr] = useState("");
+  const [mngs_EmailErr, setmngs_EmailErr] = useState("");
+  const [mastervendor_emailErr, setmastervendor_emailErr] = useState("");
 
-  const [GST_typeErr, setGST_typeErr] = useState('');
-  const [GST_NoErr, setGST_NoErr] = useState('');
-  const [GST_DocErr, setGST_DocErr] = useState('');
-  const [PAN_NoErr, setPAN_NoErr] = useState('');
-  const [PAN_DocErr, setPAN_DocErr] = useState('');
-  const [CIN_NoErr, setCIN_NoErr] = useState('');
-  const [form_10fErr, setform_10fErr] = useState('');
-  const [pe_declarationErr, setpe_declarationErr] = useState('');
-  const [MSME_statusErr, setMSME_statusErr] = useState('');
-  const [MSME_NoErr, setMSME_NoErr] = useState('');
-  const [MSME_DocErr, setMSME_DocErr] = useState('');
-  const [MSME_TypeErr, setMSME_TypeErr] = useState('');
-  const [TAN_NoErr, setTAN_NoErr] = useState('');
-  const [TAN_DocErr, setTAN_DocErr] = useState('');
-  const [Tax_residencyErr, setTax_residencyErr] = useState('');
+  const [GST_typeErr, setGST_typeErr] = useState("");
+  const [GST_NoErr, setGST_NoErr] = useState("");
+  const [GST_DocErr, setGST_DocErr] = useState("");
+  const [PAN_NoErr, setPAN_NoErr] = useState("");
+  const [PAN_DocErr, setPAN_DocErr] = useState("");
+  const [CIN_NoErr, setCIN_NoErr] = useState("");
+  const [form_10fErr, setform_10fErr] = useState("");
+  const [pe_declarationErr, setpe_declarationErr] = useState("");
+  const [MSME_statusErr, setMSME_statusErr] = useState("");
+  const [MSME_NoErr, setMSME_NoErr] = useState("");
+  const [MSME_DocErr, setMSME_DocErr] = useState("");
+  const [MSME_TypeErr, setMSME_TypeErr] = useState("");
+  const [TAN_NoErr, setTAN_NoErr] = useState("");
+  const [TAN_DocErr, setTAN_DocErr] = useState("");
+  const [Tax_residencyErr, setTax_residencyErr] = useState("");
 
-  const [RPD_DocErr, setRPD_DocErr] = useState('');
-  const [COC_DocErr, setCOC_DocErr] = useState('');
-  const [NDA_DocErr, setNDA_DocErr] = useState('');
+  const [RPD_DocErr, setRPD_DocErr] = useState("");
+  const [COC_DocErr, setCOC_DocErr] = useState("");
+  const [NDA_DocErr, setNDA_DocErr] = useState("");
 
-  const [bankAccountNameErr, setbankAccountNameErr] = useState('');
-  const [bankNameErr, setbankNameErr] = useState('');
-  const [bankAccountNumberErr, setbankAccountNumberErr] = useState('');
-  const [ifscCodeErr, setifscCodeErr] = useState('');
-  const [MICRcodeErr, setMICRcodeErr] = useState('');
-  const [branchAddressErr, setbranchAddressErr] = useState('');
-  const [bankdetailDocErr, setbankdetailDocErr] = useState('');
+  const [bankAccountNameErr, setbankAccountNameErr] = useState("");
+  const [bankNameErr, setbankNameErr] = useState("");
+  const [bankAccountNumberErr, setbankAccountNumberErr] = useState("");
+  const [ifscCodeErr, setifscCodeErr] = useState("");
+  const [MICRcodeErr, setMICRcodeErr] = useState("");
+  const [branchAddressErr, setbranchAddressErr] = useState("");
+  const [bankdetailDocErr, setbankdetailDocErr] = useState("");
 
-  const [nameErr, setnameErr] = useState('');
-  const [contactNumberErr, setcontactNumberErr] = useState('');
-  const [emailErr, setemailErr] = useState('');
+  const [nameErr, setnameErr] = useState("");
+  const [contactNumberErr, setcontactNumberErr] = useState("");
+  const [emailErr, setemailErr] = useState("");
 
-  const [vendorTypeErr, setvendorTypeErr] = useState('');
-  const [acManagerErr, setacManagerErr] = useState('');
-  const [mkcheckErr, setmkcheckErr] = useState('');
-  const [approverFileErr, setapproverFileErr] = useState('');
+  const [vendorTypeErr, setvendorTypeErr] = useState("");
+  const [acManagerErr, setacManagerErr] = useState("");
+  const [mkcheckErr, setmkcheckErr] = useState("");
+  const [approverFileErr, setapproverFileErr] = useState("");
   // Error states end
 
   // states update start
   const validatecompanyName = (e) => {
     setcompanyName(e.target.value);
     if (e.target.value.length === 0) {
-      setcompanyNameErr('Company name is required');
+      setcompanyNameErr("Company name is required");
     } else {
-      setcompanyNameErr('');
+      setcompanyNameErr("");
       setcompanyName(e.target.value);
     }
   };
@@ -393,9 +393,9 @@ function ApprovalFields(props) {
   const validateaddress1 = (e) => {
     setaddress1(e.target.value);
     if (e.target.value.length === 0) {
-      setaddress1Err('Address 1 is required');
+      setaddress1Err("Address 1 is required");
     } else {
-      setaddress1Err('');
+      setaddress1Err("");
       setaddress1(e.target.value);
     }
   };
@@ -405,41 +405,41 @@ function ApprovalFields(props) {
   const validatecountry = (e) => {
     setcountry(e.target.value);
     if (e.target.value.length === 0) {
-      setcountryErr('Country is required');
+      setcountryErr("Country is required");
     } else {
-      setcountryErr('');
+      setcountryErr("");
       setcountry(e.target.value);
     }
   };
   const validatestate = (e) => {
     setstate(e.target.value);
     if (e.target.value.length === 0) {
-      setstateErr('State is required');
+      setstateErr("State is required");
     } else {
-      setstateErr('');
+      setstateErr("");
       setstate(e.target.value);
     }
   };
   const validatecity = (e) => {
     setcity(e.target.value);
     if (e.target.value.length === 0) {
-      setcityErr('City is required');
+      setcityErr("City is required");
     } else {
-      setcityErr('');
+      setcityErr("");
       setcity(e.target.value);
     }
   };
   const validatepinCode = (e) => {
     setpinCode(e.target.value);
     if (e.target.value.length === 0) {
-      setpinCodeErr('Pincode is required');
+      setpinCodeErr("Pincode is required");
     } else if (
       !numberValidation.test(e.target.value) ||
       e.target.value.length !== 6
     ) {
-      setpinCodeErr('Pincode is invalid');
+      setpinCodeErr("Pincode is invalid");
     } else {
-      setpinCodeErr('');
+      setpinCodeErr("");
       setpinCode(e.target.value);
     }
   };
@@ -447,95 +447,95 @@ function ApprovalFields(props) {
   const validatefs_ContactName = (e) => {
     setfs_ContactName(e.target.value);
     if (e.target.value.length === 0) {
-      setfs_ContactNameErr('Contact name is required');
+      setfs_ContactNameErr("Contact name is required");
     } else {
-      setfs_ContactNameErr('');
+      setfs_ContactNameErr("");
       setfs_ContactName(e.target.value);
     }
   };
   const validatefs_Designation = (e) => {
     setfs_Designation(e.target.value);
     if (e.target.value.length === 0) {
-      setfs_DesignationErr('Designation is required');
+      setfs_DesignationErr("Designation is required");
     } else {
-      setfs_DesignationErr('');
+      setfs_DesignationErr("");
       setfs_Designation(e.target.value);
     }
   };
   const validatefs_PhoneNo = (e) => {
     setfs_PhoneNo(e.target.value);
     if (e.target.value.length === 0) {
-      setfs_PhoneNoErr('Phone number is required');
+      setfs_PhoneNoErr("Phone number is required");
     } else if (
       !numberValidation.test(e.target.value) ||
       e.target.value.length !== 10
     ) {
-      setfs_PhoneNoErr('Phone number is invalid');
+      setfs_PhoneNoErr("Phone number is invalid");
     } else {
-      setfs_PhoneNoErr('');
+      setfs_PhoneNoErr("");
       setfs_PhoneNo(e.target.value);
     }
   };
   const validatefs_Email = (e) => {
     setfs_Email(e.target.value);
     if (e.target.value.length === 0) {
-      setfs_EmailErr('Email is required');
+      setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(e.target.value)) {
-      setfs_EmailErr('Email is invalid');
+      setfs_EmailErr("Email is invalid");
     } else {
-      setfs_EmailErr('');
+      setfs_EmailErr("");
       setfs_Email(e.target.value);
     }
   };
   const validatemngs_ContactName = (e) => {
     setmngs_ContactName(e.target.value);
     if (e.target.value.length === 0) {
-      setmngs_ContactNameErr('Contact name is required');
+      setmngs_ContactNameErr("Contact name is required");
     } else {
-      setmngs_ContactNameErr('');
+      setmngs_ContactNameErr("");
       setmngs_ContactName(e.target.value);
     }
   };
   const validatemngs_Designation = (e) => {
     setmngs_Designation(e.target.value);
     if (e.target.value.length === 0) {
-      setmngs_DesignationErr('Designation is required');
+      setmngs_DesignationErr("Designation is required");
     } else {
-      setmngs_DesignationErr('');
+      setmngs_DesignationErr("");
       setmngs_Designation(e.target.value);
     }
   };
   const validatemngs_PhoneNo = (e) => {
     setmngs_PhoneNo(e.target.value);
     if (e.target.value.length === 0) {
-      setmngs_PhoneNoErr('Phone number is required');
+      setmngs_PhoneNoErr("Phone number is required");
     } else if (
       !numberValidation.test(e.target.value) ||
       e.target.value.length !== 10
     ) {
-      setmngs_PhoneNoErr('Phone number is invalid');
+      setmngs_PhoneNoErr("Phone number is invalid");
     } else {
-      setmngs_PhoneNoErr('');
+      setmngs_PhoneNoErr("");
       setmngs_PhoneNo(e.target.value);
     }
   };
   const validatemngs_Email = (e) => {
     setmngs_Email(e.target.value);
     if (e.target.value.length === 0) {
-      setmngs_EmailErr('Email is required');
+      setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(e.target.value)) {
-      setmngs_EmailErr('Email is invalid');
+      setmngs_EmailErr("Email is invalid");
     } else {
-      setmngs_EmailErr('');
+      setmngs_EmailErr("");
       setmngs_Email(e.target.value);
     }
   };
   const validatemastervendor_email = (e) => {
     setmastervendor_email(e.target.value);
     if (e.target.value.length === 0) {
-      setmastervendor_emailErr('Email is required');
+      setmastervendor_emailErr("Email is required");
     } else {
-      setmastervendor_emailErr('');
+      setmastervendor_emailErr("");
       setmastervendor_email(e.target.value);
     }
   };
@@ -543,54 +543,54 @@ function ApprovalFields(props) {
   const validatebankAccountName = (e) => {
     setbankAccountName(e.target.value);
     if (e.target.value.length === 0) {
-      setbankAccountNameErr('Account name is required');
+      setbankAccountNameErr("Account name is required");
     } else {
-      setbankAccountNameErr('');
+      setbankAccountNameErr("");
       setbankAccountName(e.target.value);
     }
   };
   const validatebankName = (e) => {
     setbankName(e.target.value);
     if (e.target.value.length === 0) {
-      setbankNameErr('Bank name is required');
+      setbankNameErr("Bank name is required");
     } else {
-      setbankNameErr('');
+      setbankNameErr("");
       setbankName(e.target.value);
     }
   };
   const validatebankAccountNumber = (e) => {
     setbankAccountNumber(e.target.value);
     if (e.target.value.length === 0) {
-      setbankAccountNumberErr('Account number is required');
+      setbankAccountNumberErr("Account number is required");
     } else {
-      setbankAccountNumberErr('');
+      setbankAccountNumberErr("");
       setbankAccountNumber(e.target.value);
     }
   };
   const validateifscCode = (e) => {
     setifscCode(e.target.value);
     if (e.target.value.length === 0) {
-      setifscCodeErr('IFSC code is required');
+      setifscCodeErr("IFSC code is required");
     } else {
-      setifscCodeErr('');
+      setifscCodeErr("");
       setifscCode(e.target.value);
     }
   };
   const validateMICRcode = (e) => {
     setMICRcode(e.target.value);
     if (e.target.value.length === 0) {
-      setMICRcodeErr('MICR code is required');
+      setMICRcodeErr("MICR code is required");
     } else {
-      setMICRcodeErr('');
+      setMICRcodeErr("");
       setMICRcode(e.target.value);
     }
   };
   const validatebranchAddress = (e) => {
     setbranchAddress(e.target.value);
     if (e.target.value.length === 0) {
-      setbranchAddressErr('Branch address is required');
+      setbranchAddressErr("Branch address is required");
     } else {
-      setbranchAddressErr('');
+      setbranchAddressErr("");
       setbranchAddress(e.target.value);
     }
   };
@@ -598,34 +598,34 @@ function ApprovalFields(props) {
   const validatename = (e) => {
     setname(e.target.value);
     if (e.target.value.length === 0) {
-      setnameErr('Name is required');
+      setnameErr("Name is required");
     } else {
-      setnameErr('');
+      setnameErr("");
       setname(e.target.value);
     }
   };
   const validatecontactNumber = (e) => {
     setcontactNumber(e.target.value);
     if (e.target.value.length === 0) {
-      setcontactNumberErr('Contact number is required');
+      setcontactNumberErr("Contact number is required");
     } else if (
       !numberValidation.test(e.target.value) ||
       e.target.value.length !== 10
     ) {
-      setcontactNumberErr('Contact number is invalid');
+      setcontactNumberErr("Contact number is invalid");
     } else {
-      setcontactNumberErr('');
+      setcontactNumberErr("");
       setcontactNumber(e.target.value);
     }
   };
   const validateemail = (e) => {
     setemail(e.target.value);
     if (e.target.value.length === 0) {
-      setemailErr('Email is required');
+      setemailErr("Email is required");
     } else if (!emailValidation.test(e.target.value)) {
-      setemailErr('Email is invalid');
+      setemailErr("Email is invalid");
     } else {
-      setemailErr('');
+      setemailErr("");
       setemail(e.target.value);
     }
   };
@@ -633,48 +633,48 @@ function ApprovalFields(props) {
   const validatevendorType = (e) => {
     setvendorType(e.target.value);
     if (e.target.value.length === 0) {
-      setvendorTypeErr('Vendor type is required');
+      setvendorTypeErr("Vendor type is required");
     } else {
-      setvendorTypeErr('');
+      setvendorTypeErr("");
       setvendorType(e.target.value);
     }
   };
   const validateacManager = (e) => {
     setacManager(e.target.value);
     if (e.target.value.length === 0) {
-      setacManagerErr('A/C manager is required');
+      setacManagerErr("A/C manager is required");
     } else {
-      setacManagerErr('');
+      setacManagerErr("");
       setacManager(e.target.value);
     }
   };
   const validatemkcheck = (e) => {
-    setmkcheck(e.target.value);
-    if (e.target.value.length === 0) {
-      setmkcheckErr('Check is required');
+    setmkcheck(e.target.checked);
+    if (e.target.checked.length === 0) {
+      setmkcheckErr("Check is required");
     } else {
-      setmkcheckErr('');
-      setmkcheck(e.target.value);
+      setmkcheckErr("");
+      setmkcheck(e.target.checked);
     }
   };
   // satutory Details
   const validateGST_type = (e) => {
     setGST_type(e.target.value);
     if (e.target.value.length === 0) {
-      setGST_typeErr('GST type is required');
+      setGST_typeErr("GST type is required");
     } else {
-      setGST_typeErr('');
+      setGST_typeErr("");
       setGST_type(e.target.value);
     }
   };
   const validateGST_No = (e) => {
     setGST_No(e.target.value);
     if (e.target.value.length === 0) {
-      setGST_NoErr('GST Number is required');
+      setGST_NoErr("GST Number is required");
     } else if (!GSTValidation.test(e.target.value)) {
-      setGST_NoErr('GST Number is not valid');
+      setGST_NoErr("GST Number is not valid");
     } else {
-      setGST_NoErr('');
+      setGST_NoErr("");
       setGST_No(e.target.value);
     }
   };
@@ -690,11 +690,11 @@ function ApprovalFields(props) {
   const validatePAN_No = (e) => {
     setPAN_No(e.target.value);
     if (e.target.value.length === 0) {
-      setPAN_NoErr('Pan number is required');
+      setPAN_NoErr("Pan number is required");
     } else if (!PANValidation.test(e.target.value)) {
-      setPAN_NoErr('Pan number is not valid');
+      setPAN_NoErr("Pan number is not valid");
     } else {
-      setPAN_NoErr('');
+      setPAN_NoErr("");
       setPAN_No(e.target.value);
     }
   };
@@ -710,9 +710,9 @@ function ApprovalFields(props) {
   const validateCIN_No = (e) => {
     setCIN_No(e.target.value);
     if (e.target.value.length === 0) {
-      setCIN_NoErr('CIN number is required');
+      setCIN_NoErr("CIN number is required");
     } else {
-      setCIN_NoErr('');
+      setCIN_NoErr("");
       setCIN_No(e.target.value);
     }
   };
@@ -737,18 +737,18 @@ function ApprovalFields(props) {
   const validateMSME_status = (e) => {
     setMSME_status(e.target.value);
     if (e.target.value.length === 0) {
-      setMSME_statusErr('MSME status is required');
+      setMSME_statusErr("MSME status is required");
     } else {
-      setMSME_statusErr('');
+      setMSME_statusErr("");
       setMSME_status(e.target.value);
     }
   };
   const validateMSME_No = (e) => {
     setMSME_No(e.target.value);
     if (e.target.value.length === 0) {
-      setMSME_NoErr('MSME number is required');
+      setMSME_NoErr("MSME number is required");
     } else {
-      setMSME_NoErr('');
+      setMSME_NoErr("");
       setMSME_No(e.target.value);
     }
   };
@@ -764,18 +764,18 @@ function ApprovalFields(props) {
   const validateMSME_Type = (e) => {
     setMSME_Type(e.target.value);
     if (e.target.value.length === 0) {
-      setMSME_TypeErr('MSME type is required');
+      setMSME_TypeErr("MSME type is required");
     } else {
-      setMSME_TypeErr('');
+      setMSME_TypeErr("");
       setMSME_Type(e.target.value);
     }
   };
   const validateTAN_No = (e) => {
     setTAN_No(e.target.value);
     if (e.target.value.length === 0) {
-      setTAN_NoErr('TAN number is required');
+      setTAN_NoErr("TAN number is required");
     } else {
-      setTAN_NoErr('');
+      setTAN_NoErr("");
       setTAN_No(e.target.value);
     }
   };
@@ -792,9 +792,9 @@ function ApprovalFields(props) {
   const validateTax_residency = (e) => {
     setTax_residency(e.target.value);
     if (e.target.value.length === 0) {
-      setTax_residencyErr('Tax residency is required');
+      setTax_residencyErr("Tax residency is required");
     } else {
-      setTax_residencyErr('');
+      setTax_residencyErr("");
       setTax_residency(e.target.value);
     }
   };
@@ -804,29 +804,28 @@ function ApprovalFields(props) {
   };
 
   const handleEdit = (event) => {
-    setStyle('cont2');
+    setStyle("cont2");
   };
   const handleLogoView = (event) => {
     Swal.fire({
-      title: 'Company Logo',
-      html:
-        ` <img className="camera-img" src=${event} alt="image" width='100px' width='100px'/> `,
+      title: "Company Logo",
+      html: ` <img className="camera-img" src=${event} alt="image" width='100px' width='100px'/> `,
       focusConfirm: false,
-    })
-  }
+    });
+  };
 
   const handleView = (event) => {
     if (event) {
-      let text = event
+      let text = event;
       let fname = text.split("/");
-      fetch(
-        `http://localhost:12707/downloadPdfUploads/${fname[1]}`
-      ).then((response) => {
-        response.blob().then((blob) => {
-          let url = URL.createObjectURL(blob, 'application/pdf');
-          window.open(url, '_blank');
-        });
-      });
+      fetch(`http://localhost:12707/downloadPdfUploads/${fname[1]}`).then(
+        (response) => {
+          response.blob().then((blob) => {
+            let url = URL.createObjectURL(blob, "application/pdf");
+            window.open(url, "_blank");
+          });
+        }
+      );
     } else {
       Swal.fire({
         title: "Error While Fetching",
@@ -838,36 +837,36 @@ function ApprovalFields(props) {
   const handleEditPopup = (event) => {
     // event.preventDefault(); bankdetailDoc
     if (
-      (event === 'logo' && logo) ||
-      (event === 'GST_Doc' && GST_Doc) ||
-      (event === 'PAN_Doc' && PAN_Doc) ||
-      (event === 'form_10f' && form_10f) ||
-      (event === 'pe_declaration' && pe_declaration) ||
-      (event === 'Tax_residency' && Tax_residency) ||
-      (event === 'MSME_Doc' && MSME_Doc) ||
-      (event === 'TAN_Doc' && TAN_Doc) ||
-      (event === 'RPD_Doc' && RPD_Doc) ||
-      (event === 'COC_Doc' && COC_Doc) ||
-      (event === 'NDA_Doc' && NDA_Doc) ||
-      (event === 'financial_data' && financial_data) ||
-      (event === 'financial_data2' && financial_data2) ||
-      (event === 'bankdetailDoc' && bankdetailDoc)
+      (event === "logo" && logo) ||
+      (event === "GST_Doc" && GST_Doc) ||
+      (event === "PAN_Doc" && PAN_Doc) ||
+      (event === "form_10f" && form_10f) ||
+      (event === "pe_declaration" && pe_declaration) ||
+      (event === "Tax_residency" && Tax_residency) ||
+      (event === "MSME_Doc" && MSME_Doc) ||
+      (event === "TAN_Doc" && TAN_Doc) ||
+      (event === "RPD_Doc" && RPD_Doc) ||
+      (event === "COC_Doc" && COC_Doc) ||
+      (event === "NDA_Doc" && NDA_Doc) ||
+      (event === "financial_data" && financial_data) ||
+      (event === "financial_data2" && financial_data2) ||
+      (event === "bankdetailDoc" && bankdetailDoc)
     ) {
-      let bankDocument = 'Copy of cancel Cheque.pdf';
+      let bankDocument = "Copy of cancel Cheque.pdf";
       let title = event;
       Swal.fire({
         heightAuto: true,
-        title: 'Delete Existing File',
+        title: "Delete Existing File",
         html: `<div class="rejectstyle">
            <div> <lablel> ${title}</label>
        
          </div>
           `,
-        confirmButtonText: 'Delete',
-        confirmButtonColor: '#B1000E',
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#B1000E",
         showCancelButton: true,
         focusConfirm: false,
-        customClass: 'swal-wide',
+        customClass: "swal-wide",
         // didOpen: () => {
         //     const yes = document.querySelector('#delete')
         //     yes.addEventListener('click', () => {
@@ -876,65 +875,65 @@ function ApprovalFields(props) {
 
         preConfirm: () => {
           Swal.fire({
-            title: 'Do you want to save the changes?',
+            title: "Do you want to save the changes?",
             showDenyButton: true,
             // showCancelButton: true,
-            confirmButtonText: 'Yes',
-            confirmButtonColor: '#B1000E',
-            denyButtonText: 'No',
-            denyButtonColor: 'gray',
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#B1000E",
+            denyButtonText: "No",
+            denyButtonColor: "gray",
             customClass: {
-              actions: 'my-actions',
-              cancelButton: 'order-1 right-gap',
-              confirmButton: 'order-2',
-              denyButton: 'order-3',
+              actions: "my-actions",
+              cancelButton: "order-1 right-gap",
+              confirmButton: "order-2",
+              denyButton: "order-3",
             },
           }).then((result) => {
             if (result.isConfirmed) {
-              if (event === 'GST_Doc') {
-                setGST_Doc('');
-                setGST_DocErr('GST document is required');
-              } else if (event === 'logo') {
-                setlogo('');
-                setlogoErr('Logo is required');
-              } else if (event === 'PAN_Doc') {
-                setPAN_Doc('');
-                setPAN_DocErr('PAN document is required');
-              } else if (event === 'form_10f') {
-                setform_10f('');
-                setform_10fErr('form_10f document is required');
-              } else if (event === 'pe_declaration') {
-                setpe_declaration('');
-                setpe_declarationErr('Pe_declaration document is required');
-              } else if (event === 'MSME_Doc') {
-                setMSME_Doc('');
-                setMSME_DocErr('MSME document is required');
-              } else if (event === 'TAN_Doc') {
-                setTAN_Doc('');
-                setTAN_DocErr('TAN document is required');
-              } else if (event === 'Tax_residency') {
-                setTax_residency('');
-                setTax_residencyErr('TAX document is required');
-              } else if (event === 'RPD_Doc') {
-                setRPD_Doc('');
-                setRPD_DocErr('RPD document is required');
-              } else if (event === 'COC_Doc') {
-                setCOC_Doc('');
-                setCOC_DocErr('COC document is required');
-              } else if (event === 'NDA_Doc') {
-                setNDA_Doc('');
-                setNDA_DocErr('NDA document is required');
-              } else if (event === 'financial_data') {
-                setfinancial_data('');
-              } else if (event === 'financial_data2') {
-                setfinancial_data2('');
-              } else if (event === 'bankdetailDoc') {
-                setbankdetailDoc('');
-                setbankdetailDocErr('Bank document is required');
+              if (event === "GST_Doc") {
+                setGST_Doc("");
+                setGST_DocErr("GST document is required");
+              } else if (event === "logo") {
+                setlogo("");
+                setlogoErr("Logo is required");
+              } else if (event === "PAN_Doc") {
+                setPAN_Doc("");
+                setPAN_DocErr("PAN document is required");
+              } else if (event === "form_10f") {
+                setform_10f("");
+                setform_10fErr("form_10f document is required");
+              } else if (event === "pe_declaration") {
+                setpe_declaration("");
+                setpe_declarationErr("Pe_declaration document is required");
+              } else if (event === "MSME_Doc") {
+                setMSME_Doc("");
+                setMSME_DocErr("MSME document is required");
+              } else if (event === "TAN_Doc") {
+                setTAN_Doc("");
+                setTAN_DocErr("TAN document is required");
+              } else if (event === "Tax_residency") {
+                setTax_residency("");
+                setTax_residencyErr("TAX document is required");
+              } else if (event === "RPD_Doc") {
+                setRPD_Doc("");
+                setRPD_DocErr("RPD document is required");
+              } else if (event === "COC_Doc") {
+                setCOC_Doc("");
+                setCOC_DocErr("COC document is required");
+              } else if (event === "NDA_Doc") {
+                setNDA_Doc("");
+                setNDA_DocErr("NDA document is required");
+              } else if (event === "financial_data") {
+                setfinancial_data("");
+              } else if (event === "financial_data2") {
+                setfinancial_data2("");
+              } else if (event === "bankdetailDoc") {
+                setbankdetailDoc("");
+                setbankdetailDocErr("Bank document is required");
               }
-              Swal.fire('Deleted!', '', 'success');
+              Swal.fire("Deleted!", "", "success");
             } else if (result.isDenied) {
-              Swal.fire('File not deleted', '', 'info');
+              Swal.fire("File not deleted", "", "info");
             }
           });
           // Swal({
@@ -966,19 +965,19 @@ function ApprovalFields(props) {
       // let bankDocument = "Copy of cancel Cheque.pdf";
       // let title = event
       Swal.fire({
-        title: 'Select File',
-        input: 'file',
+        title: "Select File",
+        input: "file",
         // inputAttributes: {
         //     'accept': 'image/*',
         //     'aria-label': 'Upload your profile picture'
         // },
-        confirmButtonText: 'Upload',
-        confirmButtonColor: '#B1000E',
+        confirmButtonText: "Upload",
+        confirmButtonColor: "#B1000E",
         showCancelButton: true,
 
         inputValidator: (value) => {
           if (!value) {
-            return 'You need to upload a file!';
+            return "You need to upload a file!";
           }
         },
       }).then((result) => {
@@ -993,54 +992,54 @@ function ApprovalFields(props) {
         // reader.readAsDataURL(result.value)
 
         if (result.isConfirmed) {
-          if (event === 'GST_Doc') {
+          if (event === "GST_Doc") {
             setGST_Doc(result.value);
-            setGST_DocErr('');
-          } else if (event === 'logo') {
+            setGST_DocErr("");
+          } else if (event === "logo") {
             var filereader = new FileReader();
             filereader.readAsDataURL(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
               setlogo(btoa(base64));
-            }
-           
-            setlogoErr('');
-          } else if (event === 'PAN_Doc') {
+            };
+
+            setlogoErr("");
+          } else if (event === "PAN_Doc") {
             setPAN_Doc(result.value);
-            setPAN_DocErr('');
-          } else if (event === 'form_10f') {
+            setPAN_DocErr("");
+          } else if (event === "form_10f") {
             setform_10f(result.value);
-            setform_10fErr('');
-          } else if (event === 'pe_declaration') {
+            setform_10fErr("");
+          } else if (event === "pe_declaration") {
             setpe_declaration(result.value);
-            setpe_declarationErr('');
-          } else if (event === 'MSME_Doc') {
+            setpe_declarationErr("");
+          } else if (event === "MSME_Doc") {
             setMSME_Doc(result.value);
-            setMSME_DocErr('');
-          } else if (event === 'TAN_Doc') {
+            setMSME_DocErr("");
+          } else if (event === "TAN_Doc") {
             setTAN_Doc(result.value);
-            setTAN_DocErr('');
-          } else if (event === 'Tax_residency') {
+            setTAN_DocErr("");
+          } else if (event === "Tax_residency") {
             setTax_residency(result.value);
-            setTax_residencyErr('');
-          } else if (event === 'RPD_Doc') {
+            setTax_residencyErr("");
+          } else if (event === "RPD_Doc") {
             setRPD_Doc(result.value);
-            setRPD_DocErr('');
-          } else if (event === 'COC_Doc') {
+            setRPD_DocErr("");
+          } else if (event === "COC_Doc") {
             setCOC_Doc(result.value);
-            setCOC_DocErr('');
-          } else if (event === 'NDA_Doc') {
+            setCOC_DocErr("");
+          } else if (event === "NDA_Doc") {
             setNDA_Doc(result.value);
-            setNDA_DocErr('');
-          } else if (event === 'financial_data') {
+            setNDA_DocErr("");
+          } else if (event === "financial_data") {
             setfinancial_data(result.value);
-          } else if (event === 'financial_data2') {
+          } else if (event === "financial_data2") {
             setfinancial_data2(result.value);
-          } else if (event === 'bankdetailDoc') {
+          } else if (event === "bankdetailDoc") {
             setbankdetailDoc(result.value);
-            setbankdetailDocErr('');
+            setbankdetailDocErr("");
           }
-          Swal.fire('File Selected!', '', 'success');
+          Swal.fire("File Selected!", "", "success");
         }
       });
       //     console.log("file-------------->>>>>",file)
@@ -1060,25 +1059,25 @@ function ApprovalFields(props) {
     const userId = event;
     const data = new FormData();
     // data.append('level1Status', "approved");
-    data.append('userId', event);
+    data.append("userId", event);
     // data.append('level1RejectComment', "");
     // data.append('level1rejectFileDoc', "");
-    data.append('level2Status', 'approved');
-    data.append('level2Date', new Date());
+    data.append("level2Status", "approved");
+    data.append("level2Date", new Date());
     // data.append('level2RejectComment', "");
     // data.append('level2rejectFileDoc', "");
     apiService.updateApprovalStatus(userId, data).then((response) => {
       if (response) {
         Swal.fire({
-          title: 'Data saved',
-          icon: 'success',
-          confirmButtonText: 'OK',
+          title: "Data saved",
+          icon: "success",
+          confirmButtonText: "OK",
         });
       } else {
         Swal.fire({
-          title: 'Error While Fetching',
-          icon: 'error',
-          confirmButtonText: 'OK',
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
         });
       }
     });
@@ -1086,42 +1085,42 @@ function ApprovalFields(props) {
   const handleConcernFound = (event) => {
     Swal.fire({
       heightAuto: true,
-      title: 'Review vendor details',
+      title: "Review vendor details",
       html: `<div class="rejectstyle">
             <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
             <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
-      confirmButtonText: 'Reject',
-      confirmButtonColor: '#B1000E',
+      confirmButtonText: "Reject",
+      confirmButtonColor: "#B1000E",
       showCancelButton: true,
       focusConfirm: false,
-      customClass: 'swal-wide',
+      customClass: "swal-wide",
       preConfirm: () => {
-        const comment = Swal.getPopup().querySelector('#comment').value;
-        const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0];
+        const comment = Swal.getPopup().querySelector("#comment").value;
+        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
         if (!comment || !rejectdoc) {
           Swal.showValidationMessage(`Please enter comments and file`);
         } else {
           const data = new FormData();
-          console.log("new date--------", new Date())
-          data.append('userId', event);
-          data.append('level2Status', 'rejected');
-          data.append('level2RejectComment', comment);
-          data.append('level2rejectFileDoc', rejectdoc);
-          data.append('level2Date', new Date());
+          console.log("new date--------", new Date());
+          data.append("userId", event);
+          data.append("level2Status", "rejected");
+          data.append("level2RejectComment", comment);
+          data.append("level2rejectFileDoc", rejectdoc);
+          data.append("level2Date", new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((response) => {
             if (response) {
               Swal.fire({
-                title: 'Data saved',
-                icon: 'success',
-                confirmButtonText: 'OK',
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
-                title: 'Error While Fetching',
-                icon: 'error',
-                confirmButtonText: 'OK',
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
               });
             }
           });
@@ -1132,39 +1131,39 @@ function ApprovalFields(props) {
 
   const handleMRTApprove = (event) => {
     if (companyName.length === 0) {
-      setcompanyNameErr('Company name is required');
+      setcompanyNameErr("Company name is required");
     }
     if (address1.length === 0) {
-      console.log('hello2222');
-      setaddress1Err('Address 1 is required');
+      console.log("hello2222");
+      setaddress1Err("Address 1 is required");
     }
     if (country.length === 0) {
-      setcountryErr('Country is required');
+      setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      setstateErr('State is required');
+      setstateErr("State is required");
     }
     if (city.length === 0) {
-      setcityErr('City is required');
+      setcityErr("City is required");
     }
     if (pinCode.length === 0) {
-      setpinCodeErr('Pincode is required');
+      setpinCodeErr("Pincode is required");
     }
     if (!logo) {
-      setlogoErr('Logo is required');
-      console.log('hellossssssss', logoErr);
+      setlogoErr("Logo is required");
+      console.log("hellossssssss", logoErr);
     }
     if (fs_ContactName.length === 0) {
-      setfs_ContactNameErr('Contact name is required');
+      setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      setfs_DesignationErr('Designation is required');
+      setfs_DesignationErr("Designation is required");
     }
     if (fs_PhoneNo.length === 0) {
-      setfs_PhoneNoErr('Phone number is required');
+      setfs_PhoneNoErr("Phone number is required");
     }
     if (fs_Email.length === 0) {
-      setfs_EmailErr('Email is required');
+      setfs_EmailErr("Email is required");
     }
     // console.log("fs_Email",fs_Email);
     // console.log("mngs_ContactName",mngs_ContactName);
@@ -1174,167 +1173,167 @@ function ApprovalFields(props) {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      setmngs_ContactNameErr('Contact name is required');
+      setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      setmngs_DesignationErr('Designation is required');
+      setmngs_DesignationErr("Designation is required");
     }
     if (mngs_PhoneNo.length === 0) {
-      setmngs_PhoneNoErr('Phone number is required');
+      setmngs_PhoneNoErr("Phone number is required");
     }
     if (mngs_Email.length === 0) {
-      setmngs_EmailErr('Email is required');
+      setmngs_EmailErr("Email is required");
     }
     if (mastervendor_email.length === 0) {
-      setmastervendor_emailErr('Email is required');
+      setmastervendor_emailErr("Email is required");
     }
 
     if (bankAccountName.length === 0) {
-      setbankAccountNameErr('Account name is required');
+      setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      setbankNameErr('Bank name is required');
+      setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      setbankAccountNumberErr('Account number is required');
+      setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      setifscCodeErr('IFSC code is required');
+      setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      setMICRcodeErr('MICR code is required');
+      setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      setbranchAddressErr('Branch address is required');
+      setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      setbankdetailDocErr('Bank document is required');
+      setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      setRPD_DocErr('RPD document is required');
+      setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      setCOC_DocErr('COC document is required');
+      setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      setNDA_DocErr('NDA document is required');
+      setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      setnameErr('Name is required');
+      setnameErr("Name is required");
     }
     if (contactNumber.length === 0) {
-      setcontactNumberErr('Contact number is required');
+      setcontactNumberErr("Contact number is required");
     }
     if (email.length === 0) {
-      setemailErr('Email is required');
+      setemailErr("Email is required");
     }
 
     if (vendorType.length === 0) {
-      setvendorTypeErr('Vendor type is required');
+      setvendorTypeErr("Vendor type is required");
     }
     if (acManager.length === 0) {
-      setacManagerErr('A/C manager is required');
+      setacManagerErr("A/C manager is required");
     }
     if (mkcheck === false) {
-      setmkcheckErr('Check is required');
+      setmkcheckErr("Check is required");
     }
 
     if (GST_type.length === 0) {
-      setGST_typeErr('GST type is required');
+      setGST_typeErr("GST type is required");
     }
     if (GST_No.length === 0) {
-      setGST_NoErr('GST Number is required');
+      setGST_NoErr("GST Number is required");
     }
     if (!GST_Doc) {
-      setGST_DocErr('GST doc is required');
+      setGST_DocErr("GST doc is required");
     }
     if (PAN_No.length === 0) {
-      setPAN_NoErr('Pan number is required');
+      setPAN_NoErr("Pan number is required");
     }
     if (!PAN_Doc) {
-      setPAN_DocErr('Pan doc is required');
+      setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      setCIN_NoErr('CIN number is required');
+      setCIN_NoErr("CIN number is required");
     }
     if (!form_10f) {
-      setform_10fErr('Form 10f is required');
+      setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      setMSME_statusErr('MSME status is required');
+      setMSME_statusErr("MSME status is required");
     }
     if (MSME_No.length === 0) {
-      setMSME_NoErr('MSME number is required');
+      setMSME_NoErr("MSME number is required");
     }
     if (!MSME_Doc) {
-      setMSME_DocErr('MSME doc is required');
+      setMSME_DocErr("MSME doc is required");
     }
     if (MSME_Type.length === 0) {
-      setMSME_TypeErr('MSME type is required');
+      setMSME_TypeErr("MSME type is required");
     }
     if (TAN_No.length === 0) {
-      setTAN_NoErr('TAN number is required');
+      setTAN_NoErr("TAN number is required");
     }
     if (!TAN_Doc) {
-      setTAN_DocErr('TAN doc is required');
+      setTAN_DocErr("TAN doc is required");
     }
     if (!Tax_residency) {
-      setTax_residencyErr('Tax residency is required');
+      setTax_residencyErr("Tax residency is required");
     }
     if (!pe_declaration) {
-      setpe_declarationErr('PE declaration is required');
+      setpe_declarationErr("PE declaration is required");
     }
 
     const userId = props.userid;
-    console.log('companyNameErr', companyName);
-    console.log('address1Err', address1);
-    console.log('countryErr', country);
-    console.log('stateErr', state);
-    console.log('cityErr', city);
-    console.log('pinCodeErr', pinCode);
-    console.log('logoErr', logo);
-    console.log('fs_ContactNameErr', fs_ContactName);
-    console.log('fs_DesignationErr', fs_Designation);
-    console.log('fs_PhoneNoErr', fs_PhoneNo);
-    console.log('fs_EmailErr', fs_Email);
-    console.log('mngs_ContactNameErr', mngs_ContactName);
-    console.log('mngs_DesignationErr', mngs_Designation);
-    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
-    console.log('mngs_EmailErr', mngs_Email);
-    console.log('mastervendor_emailErr', mastervendor_email);
-    console.log('bankAccountNameErr', bankAccountName);
-    console.log('bankNameErr', bankName);
-    console.log('bankAccountNumberErr', bankAccountNumber);
-    console.log('ifscCodeErr', ifscCode);
-    console.log('MICRcodeErr', MICRcode);
-    console.log('branchAddressErr', branchAddress);
-    console.log('bankdetailDocErr', bankdetailDoc);
-    console.log('nameErr', name);
-    console.log('contactNumberErr', contactNumber);
-    console.log('emailErr', email);
-    console.log('vendorTypeErr', vendorType);
-    console.log('acManagerErr', acManager);
-    console.log('mkcheckErr', mkcheck);
-    console.log('GST_typeErr', GST_type);
-    console.log('GST_NoErr', GST_No);
-    console.log('PAN_NoErr', PAN_No);
-    console.log('CIN_NoErr', CIN_No);
-    console.log('form_10fErr', form_10f);
-    console.log('MSME_statusErr', MSME_status);
-    console.log('MSME_NoErr', MSME_No);
-    console.log('MSME_TypeErr', MSME_Type);
-    console.log('TAN_NoErr', TAN_No);
-    console.log('GST_DocErr', GST_Doc);
-    console.log('PAN_DocErr', PAN_Doc);
-    console.log('MSME_DocErr', MSME_Doc);
-    console.log('TAN_DocErr', TAN_Doc);
-    console.log('Tax_residencyErr', Tax_residency);
-    console.log('pe_declarationErr', pe_declaration);
-    console.log('RPD_DocErr', RPD_Doc);
-    console.log('COC_DocErr', COC_Doc);
-    console.log('NDA_DocErr', NDA_Doc);
+    console.log("companyNameErr", companyName);
+    console.log("address1Err", address1);
+    console.log("countryErr", country);
+    console.log("stateErr", state);
+    console.log("cityErr", city);
+    console.log("pinCodeErr", pinCode);
+    console.log("logoErr", logo);
+    console.log("fs_ContactNameErr", fs_ContactName);
+    console.log("fs_DesignationErr", fs_Designation);
+    console.log("fs_PhoneNoErr", fs_PhoneNo);
+    console.log("fs_EmailErr", fs_Email);
+    console.log("mngs_ContactNameErr", mngs_ContactName);
+    console.log("mngs_DesignationErr", mngs_Designation);
+    console.log("mngs_PhoneNoErr", mngs_PhoneNo);
+    console.log("mngs_EmailErr", mngs_Email);
+    console.log("mastervendor_emailErr", mastervendor_email);
+    console.log("bankAccountNameErr", bankAccountName);
+    console.log("bankNameErr", bankName);
+    console.log("bankAccountNumberErr", bankAccountNumber);
+    console.log("ifscCodeErr", ifscCode);
+    console.log("MICRcodeErr", MICRcode);
+    console.log("branchAddressErr", branchAddress);
+    console.log("bankdetailDocErr", bankdetailDoc);
+    console.log("nameErr", name);
+    console.log("contactNumberErr", contactNumber);
+    console.log("emailErr", email);
+    console.log("vendorTypeErr", vendorType);
+    console.log("acManagerErr", acManager);
+    console.log("mkcheckErr", mkcheck);
+    console.log("GST_typeErr", GST_type);
+    console.log("GST_NoErr", GST_No);
+    console.log("PAN_NoErr", PAN_No);
+    console.log("CIN_NoErr", CIN_No);
+    console.log("form_10fErr", form_10f);
+    console.log("MSME_statusErr", MSME_status);
+    console.log("MSME_NoErr", MSME_No);
+    console.log("MSME_TypeErr", MSME_Type);
+    console.log("TAN_NoErr", TAN_No);
+    console.log("GST_DocErr", GST_Doc);
+    console.log("PAN_DocErr", PAN_Doc);
+    console.log("MSME_DocErr", MSME_Doc);
+    console.log("TAN_DocErr", TAN_Doc);
+    console.log("Tax_residencyErr", Tax_residency);
+    console.log("pe_declarationErr", pe_declaration);
+    console.log("RPD_DocErr", RPD_Doc);
+    console.log("COC_DocErr", COC_Doc);
+    console.log("NDA_DocErr", NDA_Doc);
 
     if (
       companyName &&
@@ -1383,30 +1382,30 @@ function ApprovalFields(props) {
     ) {
       const userId = event;
       const data = new FormData();
-      data.append('userId', event);
-      data.append('level3Status', 'approved');
-      data.append('level3Date', new Date());
+      data.append("userId", event);
+      data.append("level3Status", "approved");
+      data.append("level3Date", new Date());
 
       apiService.updateApprovalStatus(userId, data).then((response) => {
         if (response) {
           Swal.fire({
-            title: 'Data saved',
-            icon: 'success',
-            confirmButtonText: 'OK',
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
-            title: 'Error While Fetching',
-            icon: 'error',
-            confirmButtonText: 'OK',
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
       });
     } else {
       Swal.fire({
-        title: 'Please fill the mandatory fields',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        title: "Please fill the mandatory fields",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
@@ -1414,41 +1413,41 @@ function ApprovalFields(props) {
   const handleMRTReject = (event) => {
     Swal.fire({
       heightAuto: true,
-      title: 'Review vendor details',
+      title: "Review vendor details",
       html: `<div class="rejectstyle">
             <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
             <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
-      confirmButtonText: 'Reject',
-      confirmButtonColor: '#B1000E',
+      confirmButtonText: "Reject",
+      confirmButtonColor: "#B1000E",
       showCancelButton: true,
       focusConfirm: false,
-      customClass: 'swal-wide',
+      customClass: "swal-wide",
       preConfirm: () => {
-        const comment = Swal.getPopup().querySelector('#comment').value;
-        const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0];
+        const comment = Swal.getPopup().querySelector("#comment").value;
+        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
         if (!comment || !rejectdoc) {
           Swal.showValidationMessage(`Please enter comments and file`);
         } else {
           const data = new FormData();
-          data.append('userId', event);
-          data.append('level3Status', 'rejected');
-          data.append('level3RejectComment', comment);
-          data.append('level3rejectFileDoc', rejectdoc);
-          data.append('level3Date', new Date());
+          data.append("userId", event);
+          data.append("level3Status", "rejected");
+          data.append("level3RejectComment", comment);
+          data.append("level3rejectFileDoc", rejectdoc);
+          data.append("level3Date", new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((response) => {
             if (response) {
               Swal.fire({
-                title: 'Data saved',
-                icon: 'success',
-                confirmButtonText: 'OK',
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
-                title: 'Error While Fetching',
-                icon: 'error',
-                confirmButtonText: 'OK',
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
               });
             }
           });
@@ -1458,42 +1457,42 @@ function ApprovalFields(props) {
   };
 
   const handleApprove = (event) => {
-    console.log("approvae click")
+    console.log("approvae click");
     // event.preventDefault();
     if (companyName.length === 0) {
-      setcompanyNameErr('Company name is required');
+      setcompanyNameErr("Company name is required");
     }
     if (address1.length === 0) {
-      console.log('hello2222');
-      setaddress1Err('Address 1 is required');
+      console.log("hello2222");
+      setaddress1Err("Address 1 is required");
     }
     if (country.length === 0) {
-      setcountryErr('Country is required');
+      setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      setstateErr('State is required');
+      setstateErr("State is required");
     }
     if (city.length === 0) {
-      setcityErr('City is required');
+      setcityErr("City is required");
     }
     if (pinCode.length === 0) {
-      setpinCodeErr('Pincode is required');
+      setpinCodeErr("Pincode is required");
     }
     if (!logo) {
-      setlogoErr('Logo is required');
-      console.log('hellossssssss', logoErr);
+      setlogoErr("Logo is required");
+      console.log("hellossssssss", logoErr);
     }
     if (fs_ContactName.length === 0) {
-      setfs_ContactNameErr('Contact name is required');
+      setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      setfs_DesignationErr('Designation is required');
+      setfs_DesignationErr("Designation is required");
     }
     if (fs_PhoneNo.length === 0) {
-      setfs_PhoneNoErr('Phone number is required');
+      setfs_PhoneNoErr("Phone number is required");
     }
     if (fs_Email.length === 0) {
-      setfs_EmailErr('Email is required');
+      setfs_EmailErr("Email is required");
     }
     // console.log("fs_Email",fs_Email);
     // console.log("mngs_ContactName",mngs_ContactName);
@@ -1503,167 +1502,167 @@ function ApprovalFields(props) {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      setmngs_ContactNameErr('Contact name is required');
+      setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      setmngs_DesignationErr('Designation is required');
+      setmngs_DesignationErr("Designation is required");
     }
     if (mngs_PhoneNo.length === 0) {
-      setmngs_PhoneNoErr('Phone number is required');
+      setmngs_PhoneNoErr("Phone number is required");
     }
     if (mngs_Email.length === 0) {
-      setmngs_EmailErr('Email is required');
+      setmngs_EmailErr("Email is required");
     }
     if (mastervendor_email.length === 0) {
-      setmastervendor_emailErr('Email is required');
+      setmastervendor_emailErr("Email is required");
     }
 
     if (bankAccountName.length === 0) {
-      setbankAccountNameErr('Account name is required');
+      setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      setbankNameErr('Bank name is required');
+      setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      setbankAccountNumberErr('Account number is required');
+      setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      setifscCodeErr('IFSC code is required');
+      setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      setMICRcodeErr('MICR code is required');
+      setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      setbranchAddressErr('Branch address is required');
+      setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      setbankdetailDocErr('Bank document is required');
+      setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      setRPD_DocErr('RPD document is required');
+      setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      setCOC_DocErr('COC document is required');
+      setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      setNDA_DocErr('NDA document is required');
+      setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      setnameErr('Name is required');
+      setnameErr("Name is required");
     }
     if (contactNumber.length === 0) {
-      setcontactNumberErr('Contact number is required');
+      setcontactNumberErr("Contact number is required");
     }
     if (email.length === 0) {
-      setemailErr('Email is required');
+      setemailErr("Email is required");
     }
 
     if (vendorType.length === 0) {
-      setvendorTypeErr('Vendor type is required');
+      setvendorTypeErr("Vendor type is required");
     }
     if (acManager.length === 0) {
-      setacManagerErr('A/C manager is required');
+      setacManagerErr("A/C manager is required");
     }
     if (mkcheck === false) {
-      setmkcheckErr('Check is required');
+      setmkcheckErr("Check is required");
     }
 
     if (GST_type.length === 0) {
-      setGST_typeErr('GST type is required');
+      setGST_typeErr("GST type is required");
     }
     if (GST_No.length === 0) {
-      setGST_NoErr('GST Number is required');
+      setGST_NoErr("GST Number is required");
     }
     if (!GST_Doc) {
-      setGST_DocErr('GST doc is required');
+      setGST_DocErr("GST doc is required");
     }
     if (PAN_No.length === 0) {
-      setPAN_NoErr('Pan number is required');
+      setPAN_NoErr("Pan number is required");
     }
     if (!PAN_Doc) {
-      setPAN_DocErr('Pan doc is required');
+      setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      setCIN_NoErr('CIN number is required');
+      setCIN_NoErr("CIN number is required");
     }
     if (!form_10f) {
-      setform_10fErr('Form 10f is required');
+      setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      setMSME_statusErr('MSME status is required');
+      setMSME_statusErr("MSME status is required");
     }
     if (MSME_No.length === 0) {
-      setMSME_NoErr('MSME number is required');
+      setMSME_NoErr("MSME number is required");
     }
     if (!MSME_Doc) {
-      setMSME_DocErr('MSME doc is required');
+      setMSME_DocErr("MSME doc is required");
     }
     if (MSME_Type.length === 0) {
-      setMSME_TypeErr('MSME type is required');
+      setMSME_TypeErr("MSME type is required");
     }
     if (TAN_No.length === 0) {
-      setTAN_NoErr('TAN number is required');
+      setTAN_NoErr("TAN number is required");
     }
     if (!TAN_Doc) {
-      setTAN_DocErr('TAN doc is required');
+      setTAN_DocErr("TAN doc is required");
     }
     if (!Tax_residency) {
-      setTax_residencyErr('Tax residency is required');
+      setTax_residencyErr("Tax residency is required");
     }
     if (!pe_declaration) {
-      setpe_declarationErr('PE declaration is required');
+      setpe_declarationErr("PE declaration is required");
     }
 
     const userId = props.userid;
-    console.log('companyNameErr', companyName);
-    console.log('address1Err', address1);
-    console.log('countryErr', country);
-    console.log('stateErr', state);
-    console.log('cityErr', city);
-    console.log('pinCodeErr', pinCode);
-    console.log('logoErr', logo);
-    console.log('fs_ContactNameErr', fs_ContactName);
-    console.log('fs_DesignationErr', fs_Designation);
-    console.log('fs_PhoneNoErr', fs_PhoneNo);
-    console.log('fs_EmailErr', fs_Email);
-    console.log('mngs_ContactNameErr', mngs_ContactName);
-    console.log('mngs_DesignationErr', mngs_Designation);
-    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
-    console.log('mngs_EmailErr', mngs_Email);
-    console.log('mastervendor_emailErr', mastervendor_email);
-    console.log('bankAccountNameErr', bankAccountName);
-    console.log('bankNameErr', bankName);
-    console.log('bankAccountNumberErr', bankAccountNumber);
-    console.log('ifscCodeErr', ifscCode);
-    console.log('MICRcodeErr', MICRcode);
-    console.log('branchAddressErr', branchAddress);
-    console.log('bankdetailDocErr', bankdetailDoc);
-    console.log('nameErr', name);
-    console.log('contactNumberErr', contactNumber);
-    console.log('emailErr', email);
-    console.log('vendorTypeErr', vendorType);
-    console.log('acManagerErr', acManager);
-    console.log('mkcheckErr', mkcheck);
-    console.log('GST_typeErr', GST_type);
-    console.log('GST_NoErr', GST_No);
-    console.log('PAN_NoErr', PAN_No);
-    console.log('CIN_NoErr', CIN_No);
-    console.log('form_10fErr', form_10f);
-    console.log('MSME_statusErr', MSME_status);
-    console.log('MSME_NoErr', MSME_No);
-    console.log('MSME_TypeErr', MSME_Type);
-    console.log('TAN_NoErr', TAN_No);
-    console.log('GST_DocErr', GST_Doc);
-    console.log('PAN_DocErr', PAN_Doc);
-    console.log('MSME_DocErr', MSME_Doc);
-    console.log('TAN_DocErr', TAN_Doc);
-    console.log('Tax_residencyErr', Tax_residency);
-    console.log('pe_declarationErr', pe_declaration);
-    console.log('RPD_DocErr', RPD_Doc);
-    console.log('COC_DocErr', COC_Doc);
-    console.log('NDA_DocErr', NDA_Doc);
+    console.log("companyNameErr", companyName);
+    console.log("address1Err", address1);
+    console.log("countryErr", country);
+    console.log("stateErr", state);
+    console.log("cityErr", city);
+    console.log("pinCodeErr", pinCode);
+    console.log("logoErr", logo);
+    console.log("fs_ContactNameErr", fs_ContactName);
+    console.log("fs_DesignationErr", fs_Designation);
+    console.log("fs_PhoneNoErr", fs_PhoneNo);
+    console.log("fs_EmailErr", fs_Email);
+    console.log("mngs_ContactNameErr", mngs_ContactName);
+    console.log("mngs_DesignationErr", mngs_Designation);
+    console.log("mngs_PhoneNoErr", mngs_PhoneNo);
+    console.log("mngs_EmailErr", mngs_Email);
+    console.log("mastervendor_emailErr", mastervendor_email);
+    console.log("bankAccountNameErr", bankAccountName);
+    console.log("bankNameErr", bankName);
+    console.log("bankAccountNumberErr", bankAccountNumber);
+    console.log("ifscCodeErr", ifscCode);
+    console.log("MICRcodeErr", MICRcode);
+    console.log("branchAddressErr", branchAddress);
+    console.log("bankdetailDocErr", bankdetailDoc);
+    console.log("nameErr", name);
+    console.log("contactNumberErr", contactNumber);
+    console.log("emailErr", email);
+    console.log("vendorTypeErr", vendorType);
+    console.log("acManagerErr", acManager);
+    console.log("mkcheckErr", mkcheck);
+    console.log("GST_typeErr", GST_type);
+    console.log("GST_NoErr", GST_No);
+    console.log("PAN_NoErr", PAN_No);
+    console.log("CIN_NoErr", CIN_No);
+    console.log("form_10fErr", form_10f);
+    console.log("MSME_statusErr", MSME_status);
+    console.log("MSME_NoErr", MSME_No);
+    console.log("MSME_TypeErr", MSME_Type);
+    console.log("TAN_NoErr", TAN_No);
+    console.log("GST_DocErr", GST_Doc);
+    console.log("PAN_DocErr", PAN_Doc);
+    console.log("MSME_DocErr", MSME_Doc);
+    console.log("TAN_DocErr", TAN_Doc);
+    console.log("Tax_residencyErr", Tax_residency);
+    console.log("pe_declarationErr", pe_declaration);
+    console.log("RPD_DocErr", RPD_Doc);
+    console.log("COC_DocErr", COC_Doc);
+    console.log("NDA_DocErr", NDA_Doc);
 
     if (
       companyName &&
@@ -1711,28 +1710,28 @@ function ApprovalFields(props) {
       NDA_Doc
     ) {
       const data = new FormData();
-      data.append('level1Status', 'approved');
-      data.append('userId', event);
+      data.append("level1Status", "approved");
+      data.append("userId", event);
       apiService.saveApproval(data).then((response) => {
         if (response) {
           Swal.fire({
-            title: 'Data saved',
-            icon: 'success',
-            confirmButtonText: 'OK',
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
-            title: 'Error While Fetching',
-            icon: 'error',
-            confirmButtonText: 'OK',
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
       });
     } else {
       Swal.fire({
-        title: 'Please fill the mandatory fields',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        title: "Please fill the mandatory fields",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
@@ -1740,40 +1739,40 @@ function ApprovalFields(props) {
   const handleRegject = (event) => {
     Swal.fire({
       heightAuto: true,
-      title: 'Review vendor details',
+      title: "Review vendor details",
       html: `<div class="rejectstyle">
             <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
             <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
        </div> `,
-      confirmButtonText: 'Reject',
-      confirmButtonColor: '#B1000E',
+      confirmButtonText: "Reject",
+      confirmButtonColor: "#B1000E",
       showCancelButton: true,
       focusConfirm: false,
-      customClass: 'swal-wide',
+      customClass: "swal-wide",
       preConfirm: () => {
-        const comment = Swal.getPopup().querySelector('#comment').value;
-        const rejectdoc = Swal.getPopup().querySelector('#rejectdoc').files[0];
+        const comment = Swal.getPopup().querySelector("#comment").value;
+        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
         if (!comment || !rejectdoc) {
           Swal.showValidationMessage(`Please enter comments and file`);
         } else {
           const data = new FormData();
-          data.append('userId', event);
-          data.append('level1Status', 'rejected');
-          data.append('level1RejectComment', comment);
-          data.append('level1rejectFileDoc', rejectdoc);
+          data.append("userId", event);
+          data.append("level1Status", "rejected");
+          data.append("level1RejectComment", comment);
+          data.append("level1rejectFileDoc", rejectdoc);
 
           apiService.saveApproval(data).then((response) => {
             if (response) {
               Swal.fire({
-                title: 'Data saved',
-                icon: 'success',
-                confirmButtonText: 'OK',
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
-                title: 'Error While Fetching',
-                icon: 'error',
-                confirmButtonText: 'OK',
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
               });
             }
           });
@@ -1785,39 +1784,39 @@ function ApprovalFields(props) {
   const submitHandler = (e, team) => {
     e.preventDefault();
     if (companyName.length === 0) {
-      setcompanyNameErr('Company name is required');
+      setcompanyNameErr("Company name is required");
     }
     if (address1.length === 0) {
-      console.log('hello2222');
-      setaddress1Err('Address 1 is required');
+      console.log("hello2222");
+      setaddress1Err("Address 1 is required");
     }
     if (country.length === 0) {
-      setcountryErr('Country is required');
+      setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      setstateErr('State is required');
+      setstateErr("State is required");
     }
     if (city.length === 0) {
-      setcityErr('City is required');
+      setcityErr("City is required");
     }
     if (pinCode.length === 0) {
-      setpinCodeErr('Pincode is required');
+      setpinCodeErr("Pincode is required");
     }
     if (!logo) {
-      setlogoErr('Logo is required');
-      console.log('hellossssssss', logoErr);
+      setlogoErr("Logo is required");
+      console.log("hellossssssss", logoErr);
     }
     if (fs_ContactName.length === 0) {
-      setfs_ContactNameErr('Contact name is required');
+      setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      setfs_DesignationErr('Designation is required');
+      setfs_DesignationErr("Designation is required");
     }
     if (fs_PhoneNo.length === 0) {
-      setfs_PhoneNoErr('Phone number is required');
+      setfs_PhoneNoErr("Phone number is required");
     }
     if (fs_Email.length === 0) {
-      setfs_EmailErr('Email is required');
+      setfs_EmailErr("Email is required");
     }
     // console.log("fs_Email",fs_Email);
     // console.log("mngs_ContactName",mngs_ContactName);
@@ -1827,167 +1826,167 @@ function ApprovalFields(props) {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      setmngs_ContactNameErr('Contact name is required');
+      setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      setmngs_DesignationErr('Designation is required');
+      setmngs_DesignationErr("Designation is required");
     }
     if (mngs_PhoneNo.length === 0) {
-      setmngs_PhoneNoErr('Phone number is required');
+      setmngs_PhoneNoErr("Phone number is required");
     }
     if (mngs_Email.length === 0) {
-      setmngs_EmailErr('Email is required');
+      setmngs_EmailErr("Email is required");
     }
     if (mastervendor_email.length === 0) {
-      setmastervendor_emailErr('Email is required');
+      setmastervendor_emailErr("Email is required");
     }
 
     if (bankAccountName.length === 0) {
-      setbankAccountNameErr('Account name is required');
+      setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      setbankNameErr('Bank name is required');
+      setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      setbankAccountNumberErr('Account number is required');
+      setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      setifscCodeErr('IFSC code is required');
+      setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      setMICRcodeErr('MICR code is required');
+      setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      setbranchAddressErr('Branch address is required');
+      setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      setbankdetailDocErr('Bank document is required');
+      setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      setRPD_DocErr('RPD document is required');
+      setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      setCOC_DocErr('COC document is required');
+      setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      setNDA_DocErr('NDA document is required');
+      setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      setnameErr('Name is required');
+      setnameErr("Name is required");
     }
     if (contactNumber.length === 0) {
-      setcontactNumberErr('Contact number is required');
+      setcontactNumberErr("Contact number is required");
     }
     if (email.length === 0) {
-      setemailErr('Email is required');
+      setemailErr("Email is required");
     }
 
     if (vendorType.length === 0) {
-      setvendorTypeErr('Vendor type is required');
+      setvendorTypeErr("Vendor type is required");
     }
     if (acManager.length === 0) {
-      setacManagerErr('A/C manager is required');
+      setacManagerErr("A/C manager is required");
     }
     if (mkcheck === false) {
-      setmkcheckErr('Check is required');
+      setmkcheckErr("Check is required");
     }
 
     if (GST_type.length === 0) {
-      setGST_typeErr('GST type is required');
+      setGST_typeErr("GST type is required");
     }
     if (GST_No.length === 0) {
-      setGST_NoErr('GST Number is required');
+      setGST_NoErr("GST Number is required");
     }
     if (!GST_Doc) {
-      setGST_DocErr('GST doc is required');
+      setGST_DocErr("GST doc is required");
     }
     if (PAN_No.length === 0) {
-      setPAN_NoErr('Pan number is required');
+      setPAN_NoErr("Pan number is required");
     }
     if (!PAN_Doc) {
-      setPAN_DocErr('Pan doc is required');
+      setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      setCIN_NoErr('CIN number is required');
+      setCIN_NoErr("CIN number is required");
     }
     if (!form_10f) {
-      setform_10fErr('Form 10f is required');
+      setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      setMSME_statusErr('MSME status is required');
+      setMSME_statusErr("MSME status is required");
     }
     if (MSME_No.length === 0) {
-      setMSME_NoErr('MSME number is required');
+      setMSME_NoErr("MSME number is required");
     }
     if (!MSME_Doc) {
-      setMSME_DocErr('MSME doc is required');
+      setMSME_DocErr("MSME doc is required");
     }
     if (MSME_Type.length === 0) {
-      setMSME_TypeErr('MSME type is required');
+      setMSME_TypeErr("MSME type is required");
     }
     if (TAN_No.length === 0) {
-      setTAN_NoErr('TAN number is required');
+      setTAN_NoErr("TAN number is required");
     }
     if (!TAN_Doc) {
-      setTAN_DocErr('TAN doc is required');
+      setTAN_DocErr("TAN doc is required");
     }
     if (!Tax_residency) {
-      setTax_residencyErr('Tax residency is required');
+      setTax_residencyErr("Tax residency is required");
     }
     if (!pe_declaration) {
-      setpe_declarationErr('PE declaration is required');
+      setpe_declarationErr("PE declaration is required");
     }
 
     const userId = props.userid;
-    console.log('companyNameErr', companyName);
-    console.log('address1Err', address1);
-    console.log('countryErr', country);
-    console.log('stateErr', state);
-    console.log('cityErr', city);
-    console.log('pinCodeErr', pinCode);
-    console.log('logoErr', logo);
-    console.log('fs_ContactNameErr', fs_ContactName);
-    console.log('fs_DesignationErr', fs_Designation);
-    console.log('fs_PhoneNoErr', fs_PhoneNo);
-    console.log('fs_EmailErr', fs_Email);
-    console.log('mngs_ContactNameErr', mngs_ContactName);
-    console.log('mngs_DesignationErr', mngs_Designation);
-    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
-    console.log('mngs_EmailErr', mngs_Email);
-    console.log('mastervendor_emailErr', mastervendor_email);
-    console.log('bankAccountNameErr', bankAccountName);
-    console.log('bankNameErr', bankName);
-    console.log('bankAccountNumberErr', bankAccountNumber);
-    console.log('ifscCodeErr', ifscCode);
-    console.log('MICRcodeErr', MICRcode);
-    console.log('branchAddressErr', branchAddress);
-    console.log('bankdetailDocErr', bankdetailDoc);
-    console.log('nameErr', name);
-    console.log('contactNumberErr', contactNumber);
-    console.log('emailErr', email);
-    console.log('vendorTypeErr', vendorType);
-    console.log('acManagerErr', acManager);
-    console.log('mkcheckErr', mkcheck);
-    console.log('GST_typeErr', GST_type);
-    console.log('GST_NoErr', GST_No);
-    console.log('PAN_NoErr', PAN_No);
-    console.log('CIN_NoErr', CIN_No);
-    console.log('form_10fErr', form_10f);
-    console.log('MSME_statusErr', MSME_status);
-    console.log('MSME_NoErr', MSME_No);
-    console.log('MSME_TypeErr', MSME_Type);
-    console.log('TAN_NoErr', TAN_No);
-    console.log('GST_DocErr', GST_Doc);
-    console.log('PAN_DocErr', PAN_Doc);
-    console.log('MSME_DocErr', MSME_Doc);
-    console.log('TAN_DocErr', TAN_Doc);
-    console.log('Tax_residencyErr', Tax_residency);
-    console.log('pe_declarationErr', pe_declaration);
-    console.log('RPD_DocErr', RPD_Doc);
-    console.log('COC_DocErr', COC_Doc);
-    console.log('NDA_DocErr', NDA_Doc);
+    console.log("companyNameErr", companyName);
+    console.log("address1Err", address1);
+    console.log("countryErr", country);
+    console.log("stateErr", state);
+    console.log("cityErr", city);
+    console.log("pinCodeErr", pinCode);
+    console.log("logoErr", logo);
+    console.log("fs_ContactNameErr", fs_ContactName);
+    console.log("fs_DesignationErr", fs_Designation);
+    console.log("fs_PhoneNoErr", fs_PhoneNo);
+    console.log("fs_EmailErr", fs_Email);
+    console.log("mngs_ContactNameErr", mngs_ContactName);
+    console.log("mngs_DesignationErr", mngs_Designation);
+    console.log("mngs_PhoneNoErr", mngs_PhoneNo);
+    console.log("mngs_EmailErr", mngs_Email);
+    console.log("mastervendor_emailErr", mastervendor_email);
+    console.log("bankAccountNameErr", bankAccountName);
+    console.log("bankNameErr", bankName);
+    console.log("bankAccountNumberErr", bankAccountNumber);
+    console.log("ifscCodeErr", ifscCode);
+    console.log("MICRcodeErr", MICRcode);
+    console.log("branchAddressErr", branchAddress);
+    console.log("bankdetailDocErr", bankdetailDoc);
+    console.log("nameErr", name);
+    console.log("contactNumberErr", contactNumber);
+    console.log("emailErr", email);
+    console.log("vendorTypeErr", vendorType);
+    console.log("acManagerErr", acManager);
+    console.log("mkcheckErr", mkcheck);
+    console.log("GST_typeErr", GST_type);
+    console.log("GST_NoErr", GST_No);
+    console.log("PAN_NoErr", PAN_No);
+    console.log("CIN_NoErr", CIN_No);
+    console.log("form_10fErr", form_10f);
+    console.log("MSME_statusErr", MSME_status);
+    console.log("MSME_NoErr", MSME_No);
+    console.log("MSME_TypeErr", MSME_Type);
+    console.log("TAN_NoErr", TAN_No);
+    console.log("GST_DocErr", GST_Doc);
+    console.log("PAN_DocErr", PAN_Doc);
+    console.log("MSME_DocErr", MSME_Doc);
+    console.log("TAN_DocErr", TAN_Doc);
+    console.log("Tax_residencyErr", Tax_residency);
+    console.log("pe_declarationErr", pe_declaration);
+    console.log("RPD_DocErr", RPD_Doc);
+    console.log("COC_DocErr", COC_Doc);
+    console.log("NDA_DocErr", NDA_Doc);
 
     if (
       companyName &&
@@ -2035,104 +2034,104 @@ function ApprovalFields(props) {
       NDA_Doc
     ) {
       const data = new FormData();
-      data.append('userId', props.userid);
-      data.append('address1', address1);
-      data.append('address2', address2);
-      data.append('companyName', companyName);
-      data.append('country', country);
-      data.append('state', state);
-      data.append('city', city);
-      data.append('pinCode', pinCode);
-      data.append('image', logo);
-      data.append('vendorType', vendorType);
-      data.append('vendorManager', acManager);
-      data.append('mkDenialCheque', mkcheck);
-      data.append('financeSpoccontactName', fs_ContactName);
-      data.append('financeSpocdesignation', fs_Designation);
-      data.append('financeSpocphoneNo', fs_PhoneNo);
-      data.append('financeSpocemail', fs_Email);
-      data.append('operationSpoccontactName', ops_ContactName);
-      data.append('operationSpocdesignation', ops_Designation);
-      data.append('operationSpocphoneNo', ops_PhoneNo);
-      data.append('operationSpocemail', ops_Email);
-      data.append('collectionSpoccontactName', colls_ContactName);
-      data.append('collectionSpocdesignation', colls_Designation);
-      data.append('collectionSpocphoneNo', colls_PhoneNo);
-      data.append('collectionSpocemail', colls_Email);
-      data.append('managementSpoccontactName', mngs_ContactName);
-      data.append('managementSpocdesignation', mngs_Designation);
-      data.append('managementSpocphoneNo', mngs_PhoneNo);
-      data.append('managementSpocemail', mngs_Email);
-      data.append('contactName', others_ContactName);
-      data.append('designation', others_Designation);
-      data.append('phoneNo', others_PhoneNo);
-      data.append('others_Email', others_Email);
-      data.append('mastervendor_email', mastervendor_email);
-      data.append('RPD_Doc', RPD_Doc);
-      data.append('NDA_Doc', NDA_Doc);
-      data.append('COC_Doc', COC_Doc);
-      data.append('GST_Doc', GST_Doc);
-      data.append('GST_type', GST_type);
-      data.append('GST_No', GST_No);
-      data.append('PAN_No', PAN_No);
-      data.append('PAN_Doc', PAN_Doc);
-      data.append('form_10f_Doc', form_10f);
-      data.append('TAN_Doc', TAN_Doc);
-      data.append('PE_Declaration_Doc', pe_declaration);
-      data.append('MSME_Doc', MSME_Doc);
-      data.append('Tax_residency_Doc', Tax_residency);
-      data.append('CIN_No', CIN_No);
-      data.append('MSME_status', MSME_status);
-      data.append('MSME_No', MSME_No);
-      data.append('MSME_Type', MSME_Type);
-      data.append('TAN_No', TAN_No);
-      data.append('financial_data', financial_data);
-      data.append('financial_data2', financial_data2);
-      data.append('yearOfAuditedFinancial', yearOfAuditedFinancial);
-      data.append('Revenue', Revenue);
-      data.append('Profit', Profit);
-      data.append('netWorth', netWorth);
-      data.append('currentAssets', currentAssets);
-      data.append('directorDetails', directorDetails);
-      data.append('bankAccountName', bankAccountName);
-      data.append('bankName', bankName);
-      data.append('bankAccountNumber', bankAccountNumber);
-      data.append('ifscCode', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('branchAddress', branchAddress);
-      data.append('bankdetailDoc', bankdetailDoc);
-      data.append('name', name);
-      data.append('contactNumber', contactNumber);
-      data.append('email', email);
-      data.append('name2', name2);
-      data.append('contactNumber2', contactNumber2);
-      data.append('email2', email2);
-      data.append('name3', name3);
-      data.append('contactNumber3', contactNumber3);
-      data.append('email3', email3);
-      console.log('Form Submitted', data);
+      data.append("userId", props.userid);
+      data.append("address1", address1);
+      data.append("address2", address2);
+      data.append("companyName", companyName);
+      data.append("country", country);
+      data.append("state", state);
+      data.append("city", city);
+      data.append("pinCode", pinCode);
+      data.append("image", logo);
+      data.append("vendorType", vendorType);
+      data.append("vendorManager", acManager);
+      data.append("mkDenialCheque", mkcheck);
+      data.append("financeSpoccontactName", fs_ContactName);
+      data.append("financeSpocdesignation", fs_Designation);
+      data.append("financeSpocphoneNo", fs_PhoneNo);
+      data.append("financeSpocemail", fs_Email);
+      data.append("operationSpoccontactName", ops_ContactName);
+      data.append("operationSpocdesignation", ops_Designation);
+      data.append("operationSpocphoneNo", ops_PhoneNo);
+      data.append("operationSpocemail", ops_Email);
+      data.append("collectionSpoccontactName", colls_ContactName);
+      data.append("collectionSpocdesignation", colls_Designation);
+      data.append("collectionSpocphoneNo", colls_PhoneNo);
+      data.append("collectionSpocemail", colls_Email);
+      data.append("managementSpoccontactName", mngs_ContactName);
+      data.append("managementSpocdesignation", mngs_Designation);
+      data.append("managementSpocphoneNo", mngs_PhoneNo);
+      data.append("managementSpocemail", mngs_Email);
+      data.append("contactName", others_ContactName);
+      data.append("designation", others_Designation);
+      data.append("phoneNo", others_PhoneNo);
+      data.append("others_Email", others_Email);
+      data.append("mastervendor_email", mastervendor_email);
+      data.append("RPD_Doc", RPD_Doc);
+      data.append("NDA_Doc", NDA_Doc);
+      data.append("COC_Doc", COC_Doc);
+      data.append("GST_Doc", GST_Doc);
+      data.append("GST_type", GST_type);
+      data.append("GST_No", GST_No);
+      data.append("PAN_No", PAN_No);
+      data.append("PAN_Doc", PAN_Doc);
+      data.append("form_10f_Doc", form_10f);
+      data.append("TAN_Doc", TAN_Doc);
+      data.append("PE_Declaration_Doc", pe_declaration);
+      data.append("MSME_Doc", MSME_Doc);
+      data.append("Tax_residency_Doc", Tax_residency);
+      data.append("CIN_No", CIN_No);
+      data.append("MSME_status", MSME_status);
+      data.append("MSME_No", MSME_No);
+      data.append("MSME_Type", MSME_Type);
+      data.append("TAN_No", TAN_No);
+      data.append("financial_data", financial_data);
+      data.append("financial_data2", financial_data2);
+      data.append("yearOfAuditedFinancial", yearOfAuditedFinancial);
+      data.append("Revenue", Revenue);
+      data.append("Profit", Profit);
+      data.append("netWorth", netWorth);
+      data.append("currentAssets", currentAssets);
+      data.append("directorDetails", directorDetails);
+      data.append("bankAccountName", bankAccountName);
+      data.append("bankName", bankName);
+      data.append("bankAccountNumber", bankAccountNumber);
+      data.append("ifscCode", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("branchAddress", branchAddress);
+      data.append("bankdetailDoc", bankdetailDoc);
+      data.append("name", name);
+      data.append("contactNumber", contactNumber);
+      data.append("email", email);
+      data.append("name2", name2);
+      data.append("contactNumber2", contactNumber2);
+      data.append("email2", email2);
+      data.append("name3", name3);
+      data.append("contactNumber3", contactNumber3);
+      data.append("email3", email3);
+      console.log("Form Submitted", data);
 
       apiService.updateAllCollection(userId, data).then((response) => {
-        console.log('res=============>>>>>>>', response);
+        console.log("res=============>>>>>>>", response);
         if (response) {
           Swal.fire({
-            title: 'Data saved',
-            icon: 'success',
-            confirmButtonText: 'OK',
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
-            title: 'Error While Fetching',
-            icon: 'error',
-            confirmButtonText: 'OK',
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
       });
     } else {
       Swal.fire({
-        title: 'Please fill the mandatory fields',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        title: "Please fill the mandatory fields",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
@@ -2140,39 +2139,39 @@ function ApprovalFields(props) {
   const submitMRTHandler = (e, team) => {
     e.preventDefault();
     if (companyName.length === 0) {
-      setcompanyNameErr('Company name is required');
+      setcompanyNameErr("Company name is required");
     }
     if (address1.length === 0) {
-      console.log('hello2222');
-      setaddress1Err('Address 1 is required');
+      console.log("hello2222");
+      setaddress1Err("Address 1 is required");
     }
     if (country.length === 0) {
-      setcountryErr('Country is required');
+      setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      setstateErr('State is required');
+      setstateErr("State is required");
     }
     if (city.length === 0) {
-      setcityErr('City is required');
+      setcityErr("City is required");
     }
     if (pinCode.length === 0) {
-      setpinCodeErr('Pincode is required');
+      setpinCodeErr("Pincode is required");
     }
     if (!logo) {
-      setlogoErr('Logo is required');
-      console.log('hellossssssss', logoErr);
+      setlogoErr("Logo is required");
+      console.log("hellossssssss", logoErr);
     }
     if (fs_ContactName.length === 0) {
-      setfs_ContactNameErr('Contact name is required');
+      setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      setfs_DesignationErr('Designation is required');
+      setfs_DesignationErr("Designation is required");
     }
     if (fs_PhoneNo.length === 0) {
-      setfs_PhoneNoErr('Phone number is required');
+      setfs_PhoneNoErr("Phone number is required");
     }
     if (fs_Email.length === 0) {
-      setfs_EmailErr('Email is required');
+      setfs_EmailErr("Email is required");
     }
     // console.log("fs_Email",fs_Email);
     // console.log("mngs_ContactName",mngs_ContactName);
@@ -2182,167 +2181,167 @@ function ApprovalFields(props) {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      setmngs_ContactNameErr('Contact name is required');
+      setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      setmngs_DesignationErr('Designation is required');
+      setmngs_DesignationErr("Designation is required");
     }
     if (mngs_PhoneNo.length === 0) {
-      setmngs_PhoneNoErr('Phone number is required');
+      setmngs_PhoneNoErr("Phone number is required");
     }
     if (mngs_Email.length === 0) {
-      setmngs_EmailErr('Email is required');
+      setmngs_EmailErr("Email is required");
     }
     if (mastervendor_email.length === 0) {
-      setmastervendor_emailErr('Email is required');
+      setmastervendor_emailErr("Email is required");
     }
 
     if (bankAccountName.length === 0) {
-      setbankAccountNameErr('Account name is required');
+      setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      setbankNameErr('Bank name is required');
+      setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      setbankAccountNumberErr('Account number is required');
+      setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      setifscCodeErr('IFSC code is required');
+      setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      setMICRcodeErr('MICR code is required');
+      setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      setbranchAddressErr('Branch address is required');
+      setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      setbankdetailDocErr('Bank document is required');
+      setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      setRPD_DocErr('RPD document is required');
+      setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      setCOC_DocErr('COC document is required');
+      setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      setNDA_DocErr('NDA document is required');
+      setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      setnameErr('Name is required');
+      setnameErr("Name is required");
     }
     if (contactNumber.length === 0) {
-      setcontactNumberErr('Contact number is required');
+      setcontactNumberErr("Contact number is required");
     }
     if (email.length === 0) {
-      setemailErr('Email is required');
+      setemailErr("Email is required");
     }
 
     if (vendorType.length === 0) {
-      setvendorTypeErr('Vendor type is required');
+      setvendorTypeErr("Vendor type is required");
     }
     if (acManager.length === 0) {
-      setacManagerErr('A/C manager is required');
+      setacManagerErr("A/C manager is required");
     }
     if (mkcheck === false) {
-      setmkcheckErr('Check is required');
+      setmkcheckErr("Check is required");
     }
 
     if (GST_type.length === 0) {
-      setGST_typeErr('GST type is required');
+      setGST_typeErr("GST type is required");
     }
     if (GST_No.length === 0) {
-      setGST_NoErr('GST Number is required');
+      setGST_NoErr("GST Number is required");
     }
     if (!GST_Doc) {
-      setGST_DocErr('GST doc is required');
+      setGST_DocErr("GST doc is required");
     }
     if (PAN_No.length === 0) {
-      setPAN_NoErr('Pan number is required');
+      setPAN_NoErr("Pan number is required");
     }
     if (!PAN_Doc) {
-      setPAN_DocErr('Pan doc is required');
+      setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      setCIN_NoErr('CIN number is required');
+      setCIN_NoErr("CIN number is required");
     }
     if (!form_10f) {
-      setform_10fErr('Form 10f is required');
+      setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      setMSME_statusErr('MSME status is required');
+      setMSME_statusErr("MSME status is required");
     }
     if (MSME_No.length === 0) {
-      setMSME_NoErr('MSME number is required');
+      setMSME_NoErr("MSME number is required");
     }
     if (!MSME_Doc) {
-      setMSME_DocErr('MSME doc is required');
+      setMSME_DocErr("MSME doc is required");
     }
     if (MSME_Type.length === 0) {
-      setMSME_TypeErr('MSME type is required');
+      setMSME_TypeErr("MSME type is required");
     }
     if (TAN_No.length === 0) {
-      setTAN_NoErr('TAN number is required');
+      setTAN_NoErr("TAN number is required");
     }
     if (!TAN_Doc) {
-      setTAN_DocErr('TAN doc is required');
+      setTAN_DocErr("TAN doc is required");
     }
     if (!Tax_residency) {
-      setTax_residencyErr('Tax residency is required');
+      setTax_residencyErr("Tax residency is required");
     }
     if (!pe_declaration) {
-      setpe_declarationErr('PE declaration is required');
+      setpe_declarationErr("PE declaration is required");
     }
 
     const userId = props.userid;
-    console.log('companyNameErr', companyName);
-    console.log('address1Err', address1);
-    console.log('countryErr', country);
-    console.log('stateErr', state);
-    console.log('cityErr', city);
-    console.log('pinCodeErr', pinCode);
-    console.log('logoErr', logo);
-    console.log('fs_ContactNameErr', fs_ContactName);
-    console.log('fs_DesignationErr', fs_Designation);
-    console.log('fs_PhoneNoErr', fs_PhoneNo);
-    console.log('fs_EmailErr', fs_Email);
-    console.log('mngs_ContactNameErr', mngs_ContactName);
-    console.log('mngs_DesignationErr', mngs_Designation);
-    console.log('mngs_PhoneNoErr', mngs_PhoneNo);
-    console.log('mngs_EmailErr', mngs_Email);
-    console.log('mastervendor_emailErr', mastervendor_email);
-    console.log('bankAccountNameErr', bankAccountName);
-    console.log('bankNameErr', bankName);
-    console.log('bankAccountNumberErr', bankAccountNumber);
-    console.log('ifscCodeErr', ifscCode);
-    console.log('MICRcodeErr', MICRcode);
-    console.log('branchAddressErr', branchAddress);
-    console.log('bankdetailDocErr', bankdetailDoc);
-    console.log('nameErr', name);
-    console.log('contactNumberErr', contactNumber);
-    console.log('emailErr', email);
-    console.log('vendorTypeErr', vendorType);
-    console.log('acManagerErr', acManager);
-    console.log('mkcheckErr', mkcheck);
-    console.log('GST_typeErr', GST_type);
-    console.log('GST_NoErr', GST_No);
-    console.log('PAN_NoErr', PAN_No);
-    console.log('CIN_NoErr', CIN_No);
-    console.log('form_10fErr', form_10f);
-    console.log('MSME_statusErr', MSME_status);
-    console.log('MSME_NoErr', MSME_No);
-    console.log('MSME_TypeErr', MSME_Type);
-    console.log('TAN_NoErr', TAN_No);
-    console.log('GST_DocErr', GST_Doc);
-    console.log('PAN_DocErr', PAN_Doc);
-    console.log('MSME_DocErr', MSME_Doc);
-    console.log('TAN_DocErr', TAN_Doc);
-    console.log('Tax_residencyErr', Tax_residency);
-    console.log('pe_declarationErr', pe_declaration);
-    console.log('RPD_DocErr', RPD_Doc);
-    console.log('COC_DocErr', COC_Doc);
-    console.log('NDA_DocErr', NDA_Doc);
+    console.log("companyNameErr", companyName);
+    console.log("address1Err", address1);
+    console.log("countryErr", country);
+    console.log("stateErr", state);
+    console.log("cityErr", city);
+    console.log("pinCodeErr", pinCode);
+    console.log("logoErr", logo);
+    console.log("fs_ContactNameErr", fs_ContactName);
+    console.log("fs_DesignationErr", fs_Designation);
+    console.log("fs_PhoneNoErr", fs_PhoneNo);
+    console.log("fs_EmailErr", fs_Email);
+    console.log("mngs_ContactNameErr", mngs_ContactName);
+    console.log("mngs_DesignationErr", mngs_Designation);
+    console.log("mngs_PhoneNoErr", mngs_PhoneNo);
+    console.log("mngs_EmailErr", mngs_Email);
+    console.log("mastervendor_emailErr", mastervendor_email);
+    console.log("bankAccountNameErr", bankAccountName);
+    console.log("bankNameErr", bankName);
+    console.log("bankAccountNumberErr", bankAccountNumber);
+    console.log("ifscCodeErr", ifscCode);
+    console.log("MICRcodeErr", MICRcode);
+    console.log("branchAddressErr", branchAddress);
+    console.log("bankdetailDocErr", bankdetailDoc);
+    console.log("nameErr", name);
+    console.log("contactNumberErr", contactNumber);
+    console.log("emailErr", email);
+    console.log("vendorTypeErr", vendorType);
+    console.log("acManagerErr", acManager);
+    console.log("mkcheckErr", mkcheck);
+    console.log("GST_typeErr", GST_type);
+    console.log("GST_NoErr", GST_No);
+    console.log("PAN_NoErr", PAN_No);
+    console.log("CIN_NoErr", CIN_No);
+    console.log("form_10fErr", form_10f);
+    console.log("MSME_statusErr", MSME_status);
+    console.log("MSME_NoErr", MSME_No);
+    console.log("MSME_TypeErr", MSME_Type);
+    console.log("TAN_NoErr", TAN_No);
+    console.log("GST_DocErr", GST_Doc);
+    console.log("PAN_DocErr", PAN_Doc);
+    console.log("MSME_DocErr", MSME_Doc);
+    console.log("TAN_DocErr", TAN_Doc);
+    console.log("Tax_residencyErr", Tax_residency);
+    console.log("pe_declarationErr", pe_declaration);
+    console.log("RPD_DocErr", RPD_Doc);
+    console.log("COC_DocErr", COC_Doc);
+    console.log("NDA_DocErr", NDA_Doc);
 
     if (
       companyName &&
@@ -2390,104 +2389,104 @@ function ApprovalFields(props) {
       NDA_Doc
     ) {
       const data = new FormData();
-      data.append('userId', props.userid);
-      data.append('address1', address1);
-      data.append('address2', address2);
-      data.append('companyName', companyName);
-      data.append('country', country);
-      data.append('state', state);
-      data.append('city', city);
-      data.append('pinCode', pinCode);
-      data.append('image', logo);
-      data.append('vendorType', vendorType);
-      data.append('vendorManager', acManager);
-      data.append('mkDenialCheque', mkcheck);
-      data.append('financeSpoccontactName', fs_ContactName);
-      data.append('financeSpocdesignation', fs_Designation);
-      data.append('financeSpocphoneNo', fs_PhoneNo);
-      data.append('financeSpocemail', fs_Email);
-      data.append('operationSpoccontactName', ops_ContactName);
-      data.append('operationSpocdesignation', ops_Designation);
-      data.append('operationSpocphoneNo', ops_PhoneNo);
-      data.append('operationSpocemail', ops_Email);
-      data.append('collectionSpoccontactName', colls_ContactName);
-      data.append('collectionSpocdesignation', colls_Designation);
-      data.append('collectionSpocphoneNo', colls_PhoneNo);
-      data.append('collectionSpocemail', colls_Email);
-      data.append('managementSpoccontactName', mngs_ContactName);
-      data.append('managementSpocdesignation', mngs_Designation);
-      data.append('managementSpocphoneNo', mngs_PhoneNo);
-      data.append('managementSpocemail', mngs_Email);
-      data.append('contactName', others_ContactName);
-      data.append('designation', others_Designation);
-      data.append('phoneNo', others_PhoneNo);
-      data.append('others_Email', others_Email);
-      data.append('mastervendor_email', mastervendor_email);
-      data.append('RPD_Doc', RPD_Doc);
-      data.append('NDA_Doc', COC_Doc);
-      data.append('COC_Doc', NDA_Doc);
-      data.append('GST_Doc', GST_Doc);
-      data.append('GST_type', GST_type);
-      data.append('GST_No', GST_No);
-      data.append('PAN_No', PAN_No);
-      data.append('PAN_Doc', PAN_Doc);
-      data.append('form_10f_Doc', form_10f);
-      data.append('TAN_Doc', TAN_Doc);
-      data.append('PE_Declaration_Doc', pe_declaration);
-      data.append('MSME_Doc', MSME_Doc);
-      data.append('Tax_residency_Doc', Tax_residency);
-      data.append('CIN_No', CIN_No);
-      data.append('MSME_status', MSME_status);
-      data.append('MSME_No', MSME_No);
-      data.append('MSME_Type', MSME_Type);
-      data.append('TAN_No', TAN_No);
-      data.append('financial_data', financial_data);
-      data.append('financial_data2', financial_data2);
-      data.append('yearOfAuditedFinancial', yearOfAuditedFinancial);
-      data.append('Revenue', Revenue);
-      data.append('Profit', Profit);
-      data.append('netWorth', netWorth);
-      data.append('currentAssets', currentAssets);
-      data.append('directorDetails', directorDetails);
-      data.append('bankAccountName', bankAccountName);
-      data.append('bankName', bankName);
-      data.append('bankAccountNumber', bankAccountNumber);
-      data.append('ifscCode', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('branchAddress', branchAddress);
-      data.append('bankdetailDoc', bankdetailDoc);
-      data.append('name', name);
-      data.append('contactNumber', contactNumber);
-      data.append('email', email);
-      data.append('name2', name2);
-      data.append('contactNumber2', contactNumber2);
-      data.append('email2', email2);
-      data.append('name3', name3);
-      data.append('contactNumber3', contactNumber3);
-      data.append('email3', email3);
-      console.log('Form Submitted', data);
+      data.append("userId", props.userid);
+      data.append("address1", address1);
+      data.append("address2", address2);
+      data.append("companyName", companyName);
+      data.append("country", country);
+      data.append("state", state);
+      data.append("city", city);
+      data.append("pinCode", pinCode);
+      data.append("image", logo);
+      data.append("vendorType", vendorType);
+      data.append("vendorManager", acManager);
+      data.append("mkDenialCheque", mkcheck);
+      data.append("financeSpoccontactName", fs_ContactName);
+      data.append("financeSpocdesignation", fs_Designation);
+      data.append("financeSpocphoneNo", fs_PhoneNo);
+      data.append("financeSpocemail", fs_Email);
+      data.append("operationSpoccontactName", ops_ContactName);
+      data.append("operationSpocdesignation", ops_Designation);
+      data.append("operationSpocphoneNo", ops_PhoneNo);
+      data.append("operationSpocemail", ops_Email);
+      data.append("collectionSpoccontactName", colls_ContactName);
+      data.append("collectionSpocdesignation", colls_Designation);
+      data.append("collectionSpocphoneNo", colls_PhoneNo);
+      data.append("collectionSpocemail", colls_Email);
+      data.append("managementSpoccontactName", mngs_ContactName);
+      data.append("managementSpocdesignation", mngs_Designation);
+      data.append("managementSpocphoneNo", mngs_PhoneNo);
+      data.append("managementSpocemail", mngs_Email);
+      data.append("contactName", others_ContactName);
+      data.append("designation", others_Designation);
+      data.append("phoneNo", others_PhoneNo);
+      data.append("others_Email", others_Email);
+      data.append("mastervendor_email", mastervendor_email);
+      data.append("RPD_Doc", RPD_Doc);
+      data.append("NDA_Doc", COC_Doc);
+      data.append("COC_Doc", NDA_Doc);
+      data.append("GST_Doc", GST_Doc);
+      data.append("GST_type", GST_type);
+      data.append("GST_No", GST_No);
+      data.append("PAN_No", PAN_No);
+      data.append("PAN_Doc", PAN_Doc);
+      data.append("form_10f_Doc", form_10f);
+      data.append("TAN_Doc", TAN_Doc);
+      data.append("PE_Declaration_Doc", pe_declaration);
+      data.append("MSME_Doc", MSME_Doc);
+      data.append("Tax_residency_Doc", Tax_residency);
+      data.append("CIN_No", CIN_No);
+      data.append("MSME_status", MSME_status);
+      data.append("MSME_No", MSME_No);
+      data.append("MSME_Type", MSME_Type);
+      data.append("TAN_No", TAN_No);
+      data.append("financial_data", financial_data);
+      data.append("financial_data2", financial_data2);
+      data.append("yearOfAuditedFinancial", yearOfAuditedFinancial);
+      data.append("Revenue", Revenue);
+      data.append("Profit", Profit);
+      data.append("netWorth", netWorth);
+      data.append("currentAssets", currentAssets);
+      data.append("directorDetails", directorDetails);
+      data.append("bankAccountName", bankAccountName);
+      data.append("bankName", bankName);
+      data.append("bankAccountNumber", bankAccountNumber);
+      data.append("ifscCode", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("branchAddress", branchAddress);
+      data.append("bankdetailDoc", bankdetailDoc);
+      data.append("name", name);
+      data.append("contactNumber", contactNumber);
+      data.append("email", email);
+      data.append("name2", name2);
+      data.append("contactNumber2", contactNumber2);
+      data.append("email2", email2);
+      data.append("name3", name3);
+      data.append("contactNumber3", contactNumber3);
+      data.append("email3", email3);
+      console.log("Form Submitted", data);
 
       apiService.updateAllCollection(userId, data).then((response) => {
-        console.log('res=============>>>>>>>', response);
+        console.log("res=============>>>>>>>", response);
         if (response) {
           Swal.fire({
-            title: 'Data saved',
-            icon: 'success',
-            confirmButtonText: 'OK',
+            title: "Data saved",
+            icon: "success",
+            confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
-            title: 'Error While Fetching',
-            icon: 'error',
-            confirmButtonText: 'OK',
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
           });
         }
       });
     } else {
       Swal.fire({
-        title: 'Please fill the mandatory fields',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        title: "Please fill the mandatory fields",
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   };
@@ -2496,15 +2495,15 @@ function ApprovalFields(props) {
     <Box>
       <div
         className="container-fluid  py-2"
-        style={{ backgroundColor: '#f3f4f7' }}
+        style={{ backgroundColor: "#f3f4f7" }}
       >
-        <form className={style} style={{ marginBottom: '3em' }}>
+        <form className={style} style={{ marginBottom: "3em" }}>
           {/* <div >onSubmit={submitHandler} */}
           <div className={style}>
-            <div style={{ overflowY: 'scroll', height: '300px' }}>
+            <div style={{ overflowY: "scroll", height: "300px" }}>
               <div
                 className="row px-3  pt-3"
-                style={{ backgroundColor: '#fff' }}
+                style={{ backgroundColor: "#fff" }}
               >
                 <h5 className="headlines">
                   <b>Vendor Details Basic Informations</b>
@@ -2532,7 +2531,7 @@ function ApprovalFields(props) {
                   <span className="formError">{address1Err}</span>
                 </div>
 
-                {((editData[0]?.address2 !== 'null') && editData[0]?.address2) ? (
+                {editData[0]?.address2 !== "null" && editData[0]?.address2 ? (
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="address2">Address 2</label>
                     <input
@@ -2544,7 +2543,9 @@ function ApprovalFields(props) {
                     />
                     {/* <span className="formError">{address2Err}</span> */}
                   </div>
-                ) : ""}
+                ) : (
+                  ""
+                )}
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="country">Country</label>
                   <input
@@ -2590,11 +2591,11 @@ function ApprovalFields(props) {
                   <span className="formError">{pinCodeErr}</span>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12 mb-0">
-                  {style === 'cont2' ? (
+                  {style === "cont2" ? (
                     <>
                       <button
                         type="button"
-                        onClick={(e) => handleEditPopup('logo')}
+                        onClick={(e) => handleEditPopup("logo")}
                         className="btn bankbtn btn-primary btn-md mt-3"
                       >
                         View Logo
@@ -2632,7 +2633,7 @@ function ApprovalFields(props) {
                                 </div> */}
               </div>
 
-              <div className="row px-3" style={{ backgroundColor: '#fff' }}>
+              <div className="row px-3" style={{ backgroundColor: "#fff" }}>
                 <h5 className="headlines">
                   <b>Communication Details</b>
                 </h5>
@@ -2689,10 +2690,14 @@ function ApprovalFields(props) {
                   editCommmData[0]?.operationSpocdesignation &&
                   editCommmData[0]?.operationSpocphoneNo &&
                   editCommmData[0]?.operationSpocemail ? ( */}
-                {(((editCommmData[0]?.operationSpoccontactName !== 'null') && editCommmData[0]?.operationSpoccontactName) &&
-                  ((editCommmData[0]?.operationSpocdesignation !== 'null') && editCommmData[0]?.operationSpocdesignation) &&
-                  ((editCommmData[0]?.operationSpocphoneNo !== 'null') && editCommmData[0]?.operationSpocphoneNo) &&
-                  ((editCommmData[0]?.operationSpocemail !== 'null') && editCommmData[0]?.operationSpocemail)) ? (
+                {editCommmData[0]?.operationSpoccontactName !== "null" &&
+                editCommmData[0]?.operationSpoccontactName &&
+                editCommmData[0]?.operationSpocdesignation !== "null" &&
+                editCommmData[0]?.operationSpocdesignation &&
+                editCommmData[0]?.operationSpocphoneNo !== "null" &&
+                editCommmData[0]?.operationSpocphoneNo &&
+                editCommmData[0]?.operationSpocemail !== "null" &&
+                editCommmData[0]?.operationSpocemail ? (
                   <>
                     <p>
                       <b>Operation Spoc</b>
@@ -2741,16 +2746,20 @@ function ApprovalFields(props) {
                     </div>
                   </>
                 ) : (
-                  ''
+                  ""
                 )}
                 {/* {editCommmData[0]?.collectionSpoccontactName &&
                   editCommmData[0]?.collectionSpocdesignation &&
                   editCommmData[0]?.collectionSpocphoneNo &&
                   editCommmData[0]?.collectionSpocemail ? ( */}
-                {(((editCommmData[0]?.collectionSpoccontactName !== 'null') && editCommmData[0]?.collectionSpoccontactName) &&
-                  ((editCommmData[0]?.collectionSpocdesignation !== 'null') && editCommmData[0]?.collectionSpocdesignation) &&
-                  ((editCommmData[0]?.collectionSpocphoneNo !== 'null') && editCommmData[0]?.collectionSpocphoneNo) &&
-                  ((editCommmData[0]?.collectionSpocemail !== 'null') && editCommmData[0]?.collectionSpocemail)) ? (
+                {editCommmData[0]?.collectionSpoccontactName !== "null" &&
+                editCommmData[0]?.collectionSpoccontactName &&
+                editCommmData[0]?.collectionSpocdesignation !== "null" &&
+                editCommmData[0]?.collectionSpocdesignation &&
+                editCommmData[0]?.collectionSpocphoneNo !== "null" &&
+                editCommmData[0]?.collectionSpocphoneNo &&
+                editCommmData[0]?.collectionSpocemail !== "null" &&
+                editCommmData[0]?.collectionSpocemail ? (
                   <>
                     <p>
                       <b>Collection Spoc</b>
@@ -2799,7 +2808,7 @@ function ApprovalFields(props) {
                     </div>
                   </>
                 ) : (
-                  ''
+                  ""
                 )}
 
                 <p>
@@ -2855,10 +2864,14 @@ function ApprovalFields(props) {
                   editCommmData[0]?.designation &&
                   editCommmData[0]?.phoneNo &&
                   editCommmData[0]?.email ? ( */}
-                {(((editCommmData[0]?.contactName !== 'null') && editCommmData[0]?.contactName) &&
-                  ((editCommmData[0]?.designation !== 'null') && editCommmData[0]?.designation) &&
-                  ((editCommmData[0]?.phoneNo !== 'null') && editCommmData[0]?.phoneNo) &&
-                  ((editCommmData[0]?.email !== 'null') && editCommmData[0]?.email)) ? (
+                {editCommmData[0]?.contactName !== "null" &&
+                editCommmData[0]?.contactName &&
+                editCommmData[0]?.designation !== "null" &&
+                editCommmData[0]?.designation &&
+                editCommmData[0]?.phoneNo !== "null" &&
+                editCommmData[0]?.phoneNo &&
+                editCommmData[0]?.email !== "null" &&
+                editCommmData[0]?.email ? (
                   <>
                     <p>
                       <b>Others</b>
@@ -2911,7 +2924,7 @@ function ApprovalFields(props) {
                     </div>
                   </>
                 ) : (
-                  ''
+                  ""
                 )}
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="pinCode">Master vendor email id*</label>
@@ -2926,7 +2939,7 @@ function ApprovalFields(props) {
                 </div>
               </div>
 
-              <div className="row px-3" style={{ backgroundColor: '#fff' }}>
+              <div className="row px-3" style={{ backgroundColor: "#fff" }}>
                 <h5 className="headlines">
                   <b>Statutary Details</b>
                 </h5>
@@ -2941,8 +2954,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="GST_type"
                             id="flexRadioDefault1"
-                            value={'Registered'}
-                            checked={GST_type === 'Registered'}
+                            value={"Registered"}
+                            checked={GST_type === "Registered"}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -2960,8 +2973,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="GST_type"
                             id="flexRadioDefault2"
-                            value={'UnRegistered'}
-                            checked={GST_type === 'UnRegistered'}
+                            value={"UnRegistered"}
+                            checked={GST_type === "UnRegistered"}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -2979,8 +2992,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="GST_type"
                             id="flexRadioDefault3"
-                            value={'Import'}
-                            checked={GST_type === 'Import'}
+                            value={"Import"}
+                            checked={GST_type === "Import"}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -3004,8 +3017,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_status"
                             id="MSME_status1"
-                            value={'Registered'}
-                            checked={MSME_status === 'Registered'}
+                            value={"Registered"}
+                            checked={MSME_status === "Registered"}
                             onChange={(e) => validateMSME_status(e)}
                           />
                           <label
@@ -3023,8 +3036,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_status"
                             id="MSME_status2"
-                            value={'UnRegistered'}
-                            checked={MSME_status === 'UnRegistered'}
+                            value={"UnRegistered"}
+                            checked={MSME_status === "UnRegistered"}
                             onChange={(e) => validateMSME_status(e)}
                           />
                           <label
@@ -3053,11 +3066,11 @@ function ApprovalFields(props) {
                       </div>
                       {editStatData[0]?.MSME_Doc ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
-                          {style === 'cont2' ? (
+                          {style === "cont2" ? (
                             <>
                               <button
                                 type="button"
-                                onClick={(e) => handleEditPopup('GST_Doc')}
+                                onClick={(e) => handleEditPopup("GST_Doc")}
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
                                 View File
@@ -3094,10 +3107,10 @@ function ApprovalFields(props) {
                       </div>
                       {editStatData[0]?.MSME_Doc ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
-                          {style === 'cont2' ? (
+                          {style === "cont2" ? (
                             <button
                               type="button"
-                              onClick={(e) => handleEditPopup('MSME_Doc')}
+                              onClick={(e) => handleEditPopup("MSME_Doc")}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
                               View File
@@ -3113,7 +3126,6 @@ function ApprovalFields(props) {
                           )}
                           <p className="formError">{MSME_DocErr}</p>
                         </div>
-
                       ) : (
                         <></>
                       )}
@@ -3133,10 +3145,10 @@ function ApprovalFields(props) {
                         <span className="formError">{PAN_NoErr}</span>
                       </div>
                       <div className="col-sm-12 col-lg-4 m-auto">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('PAN_Doc')}
+                            onClick={(e) => handleEditPopup("PAN_Doc")}
                             className="btn bankbtn btn-primary btn-md mt-3"
                           >
                             View File
@@ -3164,8 +3176,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type1"
-                            value={'Micro'}
-                            checked={MSME_Type === 'Micro'}
+                            value={"Micro"}
+                            checked={MSME_Type === "Micro"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
@@ -3183,8 +3195,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type2"
-                            value={'Small'}
-                            checked={MSME_Type === 'Small'}
+                            value={"Small"}
+                            checked={MSME_Type === "Small"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
@@ -3202,8 +3214,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type3"
-                            value={'Macro'}
-                            checked={MSME_Type === 'Macro'}
+                            value={"Macro"}
+                            checked={MSME_Type === "Macro"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
@@ -3246,10 +3258,10 @@ function ApprovalFields(props) {
                         <span className="formError">{TAN_NoErr}</span>
                       </div>
                       <div className="col-sm-12 col-lg-4 m-auto ">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('TAN_Doc')}
+                            onClick={(e) => handleEditPopup("TAN_Doc")}
                             className="btn bankbtn btn-primary btn-md mt-3"
                           >
                             View File
@@ -3276,10 +3288,10 @@ function ApprovalFields(props) {
                             <label className="banklabel mt-2">Form 10F*</label>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                            {style === 'cont2' ? (
+                            {style === "cont2" ? (
                               <button
                                 type="button"
-                                onClick={(e) => handleEditPopup('form_10f')}
+                                onClick={(e) => handleEditPopup("form_10f")}
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
                                 View File
@@ -3315,11 +3327,11 @@ function ApprovalFields(props) {
                             </label>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                            {style === 'cont2' ? (
+                            {style === "cont2" ? (
                               <button
                                 type="button"
                                 onClick={(e) =>
-                                  handleEditPopup('Tax_residency')
+                                  handleEditPopup("Tax_residency")
                                 }
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
@@ -3354,11 +3366,11 @@ function ApprovalFields(props) {
                             </label>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                            {style === 'cont2' ? (
+                            {style === "cont2" ? (
                               <button
                                 type="button"
                                 onClick={(e) =>
-                                  handleEditPopup('pe_declaration')
+                                  handleEditPopup("pe_declaration")
                                 }
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
@@ -3387,7 +3399,7 @@ function ApprovalFields(props) {
               </div>
               <div
                 className="row px-3 pt-2"
-                style={{ backgroundColor: '#fff' }}
+                style={{ backgroundColor: "#fff" }}
               >
                 <h5 className="headlines">
                   <b>Compliance Details</b>
@@ -3401,10 +3413,10 @@ function ApprovalFields(props) {
                         </label>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('RPD_Doc')}
+                            onClick={(e) => handleEditPopup("RPD_Doc")}
                             className="btn bankbtn btn-primary btn-md  m-1"
                           >
                             View File
@@ -3431,10 +3443,10 @@ function ApprovalFields(props) {
                         </label>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('COC_Doc')}
+                            onClick={(e) => handleEditPopup("COC_Doc")}
                             className="btn bankbtn btn-primary btn-md m-1"
                           >
                             View File
@@ -3461,10 +3473,10 @@ function ApprovalFields(props) {
                         </label>
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('NDA_Doc')}
+                            onClick={(e) => handleEditPopup("NDA_Doc")}
                             className="btn bankbtn btn-primary btn-md m-1"
                           >
                             View File
@@ -3487,7 +3499,7 @@ function ApprovalFields(props) {
               </div>
               <div
                 className="row px-3 pt-2"
-                style={{ backgroundColor: '#fff' }}
+                style={{ backgroundColor: "#fff" }}
               >
                 <h5 className="headlines">
                   <b>Bank Details</b>
@@ -3568,10 +3580,10 @@ function ApprovalFields(props) {
                         </label>
                       </div>
                       <div className="p-2 justify-content-start my-auto">
-                        {style === 'cont2' ? (
+                        {style === "cont2" ? (
                           <button
                             type="button"
-                            onClick={(e) => handleEditPopup('bankdetailDoc')}
+                            onClick={(e) => handleEditPopup("bankdetailDoc")}
                             className="btn bankbtn btn-primary btn-md "
                           >
                             View File
@@ -3599,14 +3611,15 @@ function ApprovalFields(props) {
               {/* { editFinanceData[0]?.yearOfAuditedFinancial || editFinanceData[0]?.Revenue || editFinanceData[0]?.Profit || editFinanceData[0]?.netWorth || editFinanceData[0]?.currentAssets || editFinanceData[0]?.directorDetails || editFinanceData[0]?.financial_data || editFinanceData[0]?.financial_data2 ? <> */}
               <div
                 className="row px-3 pt-2"
-                style={{ backgroundColor: '#fff' }}
+                style={{ backgroundColor: "#fff" }}
               >
                 <h5 className="headlines">
                   <b>Financial Details</b>
                 </h5>
                 <div className="row">
                   {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
-                  {((editFinanceData[0]?.yearOfAuditedFinancial !== 'null') && editFinanceData[0]?.yearOfAuditedFinancial) ? (
+                  {editFinanceData[0]?.yearOfAuditedFinancial !== "null" &&
+                  editFinanceData[0]?.yearOfAuditedFinancial ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">
                         Year of audited financials
@@ -3622,10 +3635,11 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.Revenue ? ( */}
-                  {((editFinanceData[0]?.Revenue !== 'null') && editFinanceData[0]?.Revenue) ? (
+                  {editFinanceData[0]?.Revenue !== "null" &&
+                  editFinanceData[0]?.Revenue ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
@@ -3637,10 +3651,11 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.Profit ? ( */}
-                  {((editFinanceData[0]?.Profit !== 'null') && editFinanceData[0]?.Profit) ? (
+                  {editFinanceData[0]?.Profit !== "null" &&
+                  editFinanceData[0]?.Profit ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
@@ -3652,10 +3667,11 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.netWorth ? ( */}
-                  {((editFinanceData[0]?.netWorth !== 'null') && editFinanceData[0]?.netWorth) ? (
+                  {editFinanceData[0]?.netWorth !== "null" &&
+                  editFinanceData[0]?.netWorth ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
@@ -3667,10 +3683,11 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.currentAssets ? ( */}
-                  {((editFinanceData[0]?.currentAssets !== 'null') && editFinanceData[0]?.currentAssets) ? (
+                  {editFinanceData[0]?.currentAssets !== "null" &&
+                  editFinanceData[0]?.currentAssets ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Current Assets</label>
                       <input
@@ -3682,10 +3699,11 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.directorDetails ? ( */}
-                  {((editFinanceData[0]?.directorDetails !== 'null') && editFinanceData[0]?.directorDetails) ? (
+                  {editFinanceData[0]?.directorDetails !== "null" &&
+                  editFinanceData[0]?.directorDetails ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Director detail</label>
                       <input
@@ -3697,16 +3715,17 @@ function ApprovalFields(props) {
                       />
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.financial_data ? ( */}
 
-                  {((editFinanceData[0]?.financial_data !== 'null') && editFinanceData[0]?.financial_data) ? (
+                  {editFinanceData[0]?.financial_data !== "null" &&
+                  editFinanceData[0]?.financial_data ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                      {style === 'cont2' ? (
+                      {style === "cont2" ? (
                         <button
                           type="button"
-                          onClick={(e) => handleEditPopup('financial_data')}
+                          onClick={(e) => handleEditPopup("financial_data")}
                           className="btn bankbtn btn-primary btn-md m-1"
                         >
                           Financials data
@@ -3723,15 +3742,16 @@ function ApprovalFields(props) {
                       {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data</button> */}
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   {/* {editFinanceData[0]?.financial_data2 ? ( */}
-                  {((editFinanceData[0]?.financial_data2 !== 'null') && editFinanceData[0]?.financial_data2) ? (
+                  {editFinanceData[0]?.financial_data2 !== "null" &&
+                  editFinanceData[0]?.financial_data2 ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                      {style === 'cont2' ? (
+                      {style === "cont2" ? (
                         <button
                           type="button"
-                          onClick={(e) => handleEditPopup('financial_data2')}
+                          onClick={(e) => handleEditPopup("financial_data2")}
                           className="btn bankbtn btn-primary btn-md m-1"
                         >
                           Financials data 2
@@ -3748,7 +3768,7 @@ function ApprovalFields(props) {
                       {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button> */}
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                 </div>
               </div>
@@ -3756,7 +3776,7 @@ function ApprovalFields(props) {
               {/* </>:<></>} */}
               <div
                 className="row px-3 pt-2"
-                style={{ backgroundColor: '#fff' }}
+                style={{ backgroundColor: "#fff" }}
               >
                 <h5 className="headlines">
                   <b>Hitachi Contact Team</b>
@@ -3799,9 +3819,12 @@ function ApprovalFields(props) {
                 {/* {editContactData[0]?.contactName2 &&
                   editContactData[0]?.emailId2 &&
                   editContactData[0]?.contactNumber2 ? ( */}
-                {(((editContactData[0]?.name2 !== 'null') && editContactData[0]?.name2) &&
-                  ((editContactData[0]?.emailId2 !== 'null') && editContactData[0]?.emailId2) &&
-                  ((editContactData[0]?.contactNumber2 !== 'null') && editContactData[0]?.contactNumber2)) ? (
+                {editContactData[0]?.name2 !== "null" &&
+                editContactData[0]?.name2 &&
+                editContactData[0]?.emailId2 !== "null" &&
+                editContactData[0]?.emailId2 &&
+                editContactData[0]?.contactNumber2 !== "null" &&
+                editContactData[0]?.contactNumber2 ? (
                   <>
                     <div className="row">
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -3837,11 +3860,14 @@ function ApprovalFields(props) {
                     </div>
                   </>
                 ) : (
-                  ''
+                  ""
                 )}
-                {(((editContactData[0]?.name3 !== 'null') && editContactData[0]?.name3) &&
-                  ((editContactData[0]?.emailId3 !== 'null') && editContactData[0]?.emailId3) &&
-                  ((editContactData[0]?.contactNumber3 !== 'null') && editContactData[0]?.contactNumber3)) ? (
+                {editContactData[0]?.name3 !== "null" &&
+                editContactData[0]?.name3 &&
+                editContactData[0]?.emailId3 !== "null" &&
+                editContactData[0]?.emailId3 &&
+                editContactData[0]?.contactNumber3 !== "null" &&
+                editContactData[0]?.contactNumber3 ? (
                   <>
                     <div className="row">
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -3877,96 +3903,209 @@ function ApprovalFields(props) {
                     </div>
                   </>
                 ) : (
-                  ''
+                  ""
                 )}
               </div>
             </div>
 
-            {props.approvedV === 'approvalTeam' ? <>
-              <div className="section2" >
-                <div className="row px-3 pt-2" >
-                  <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
-                    <label htmlFor="Distributors">Vendor Type</label>
-                    <select className="form-select" id="Distributors" name="vendorType" aria-label="Disabled select example" value={vendorType} onChange={(e) => validatevendorType(e)}>
-                      {/* <option selected>Open this select menu</option> */}
-                      <option value="Distributor">Distributor</option>
-                      <option value="import">import</option>
-                      <option value="OEM">OEM</option>
-                      <option value="local vendor">local vendor</option>
-                      <option value="others">others</option>
-                    </select>
-                    <span className="formError">{vendorTypeErr}</span>
-                  </div>
-                  <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
-                    <span>Vendor A/C Manager</span>
-                    <div className="row">
-                      <div className="col-lg-3 col-sm-12 col-xs-12">
-                        <div className="form-check">
-                          <input className="form-check-input" type="radio" name="acManager" id="acManager1" value={"Rajender San"} checked={acManager === "Rajender San"} onChange={(e) => validateacManager(e)} />
-                          <label className="form-check-label" htmlFor="acManager1">
-                            Rajender San
-                          </label>
+            {props.approvedV === "approvalTeam" ? (
+              <>
+                <div className="section2">
+                  <div className="row px-3 pt-2">
+                    <div className="col-lg-4 col-sm-6 col-xs-12 mb-3">
+                      <label htmlFor="Distributors">Vendor Type</label>
+                      <select
+                        className="form-select"
+                        id="Distributors"
+                        name="vendorType"
+                        aria-label="Disabled select example"
+                        value={vendorType}
+                        onChange={(e) => validatevendorType(e)}
+                      >
+                        {/* <option selected>Open this select menu</option> */}
+                        <option value="Distributor">Distributor</option>
+                        <option value="import">import</option>
+                        <option value="OEM">OEM</option>
+                        <option value="local vendor">local vendor</option>
+                        <option value="others">others</option>
+                      </select>
+                      <span className="formError">{vendorTypeErr}</span>
+                    </div>
+                    <div className="col-lg-8 col-sm-6 col-xs-12 pt-1">
+                      <span>Vendor A/C Manager</span>
+                      <div className="row">
+                        <div className="col-lg-3 col-sm-12 col-xs-12">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              name="acManager"
+                              id="acManager1"
+                              value={"Rajender San"}
+                              checked={acManager === "Rajender San"}
+                              onChange={(e) => validateacManager(e)}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="acManager1"
+                            >
+                              Rajender San
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-xs-12">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              name="acManager"
+                              id="acManager2"
+                              value={"Keshav San"}
+                              checked={acManager === "Keshav San"}
+                              onChange={(e) => validateacManager(e)}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="acManager2"
+                            >
+                              Keshav San
+                            </label>
+                          </div>
+                          <span className="formError">{acManagerErr}</span>
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-xs-12">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id="mkcheck1"
+                              name="mkcheck"
+                              checked={mkcheck}
+                              onChange={(e) => validatemkcheck(e)}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="mkcheck1"
+                            >
+                              MK Denial Check
+                            </label>
+                          </div>
+                          <span className="formError">{mkcheckErr}</span>
                         </div>
 
-                      </div>
-                      <div className="col-lg-3 col-sm-12 col-xs-12">
-                        <div className="form-check">
-                          <input className="form-check-input" type="radio" name="acManager" id="acManager2" value={"Keshav San"} checked={acManager === "Keshav San"} onChange={(e) => validateacManager(e)} />
-                          <label className="form-check-label" htmlFor="acManager2">
-                            Keshav San
-                          </label>
+                        <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
+                          <label htmlFor="approverFile1">Select File</label>
+                          <input
+                            type="file"
+                            id="approverFile1"
+                            name="approverFile"
+                            onChange={onApproverFileChange}
+                          />
                         </div>
-                        <span className="formError">{acManagerErr}</span>
-                      </div>
-                      <div className="col-lg-3 col-sm-12 col-xs-12">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="mkcheck1" name="mkcheck" checked={mkcheck} onChange={(e) => validatemkcheck(e)} />
-                          <label className="form-check-label" htmlFor="mkcheck1">
-                            MK Denial Check
-                          </label>
-                        </div>
-                        <span className="formError">{mkcheckErr}</span>
-                      </div>
-
-                      <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
-                        <label htmlFor="approverFile1">Select File</label>
-                        <input type="file" id="approverFile1" name="approverFile" onChange={onApproverFileChange} />
                       </div>
                     </div>
                   </div>
                 </div>
-              </div></> : <></>}
-
+              </>
+            ) : (
+              <></>
+            )}
           </div>
 
-          {props.japan ? <>
-            <div className="float-end my-2" >
-              <button type="button" onClick={(e) => handleConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Concern found</button>
-              <button type="button" onClick={(e) => handleNoConcernFound(props.userid)} className="btn bankbtn btn-primary btn-md m-2">No Concern found</button>
-            </div>
-          </> :
-            props.MRT ?
-              <>
-                <div className="float-end" >
-                  <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
-                  <button type="button" onClick={(e) => submitMRTHandler(e, "MRTsubmit")} className="btn bankbtn btn-primary btn-md m-2">Save</button>
-                  <button type="button" onClick={(e) => handleMRTReject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
-                  <button type="button" onClick={(e) => handleMRTApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
-                </div></>
-              : props.approvedV ? <>
-                <div className="float-end" >
-                  <button type="button" onClick={handleEdit} className="btn bankbtn btn-primary btn-md m-2">Edit</button>
-                  <button type="button" onClick={(e) => submitHandler(e, "VCTsubmit")} className="btn bankbtn btn-primary btn-md m-2">Save</button>
-                  <button type="button" onClick={(e) => handleRegject(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Reject</button>
-                  <button type="button" onClick={(e) => handleApprove(props.userid)} className="btn bankbtn btn-primary btn-md m-2">Approve</button>
-                </div></> : <></>
-          }
+          {props.japan ? (
+            <>
+              <div className="float-end my-2">
+                <button
+                  type="button"
+                  onClick={(e) => handleConcernFound(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Concern found
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleNoConcernFound(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  No Concern found
+                </button>
+              </div>
+            </>
+          ) : props.MRT ? (
+            <>
+              <div className="float-end">
+                <button
+                  type="button"
+                  onClick={handleEdit}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => submitMRTHandler(e, "MRTsubmit")}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleMRTReject(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Reject
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleMRTApprove(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Approve
+                </button>
+              </div>
+            </>
+          ) : props.approvedV ? (
+            <>
+              <div className="float-end">
+                <button
+                  type="button"
+                  onClick={handleEdit}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => submitHandler(e, "VCTsubmit")}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleRegject(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Reject
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleApprove(props.userid)}
+                  className="btn bankbtn btn-primary btn-md m-2"
+                >
+                  Approve
+                </button>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
 
           {/* </div> */}
         </form>
-      </div >
-    </Box >
-  )
+      </div>
+    </Box>
+  );
 }
 
 export default ApprovalFields;

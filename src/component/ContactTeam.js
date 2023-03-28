@@ -158,7 +158,13 @@ const ContactTeam = () => {
       communicationArray.push("managementSpoc-designation");
       communicationArray.push("managementSpoc-phoneNo");
       communicationArray.push("managementSpoc-Email");
-      communicationArray.push("mastervendor EmailId");
+      {
+        let role = JSON.parse(window.sessionStorage.getItem("jwt")).result.role;
+        console.log("role", role);
+        if (role !== "Admin") {
+          communicationArray.push("mastervendor EmailId");
+        }
+      }
     } else {
       Object.entries(communicationDetail[0]).map(([key, value]) => {
         if (value === "" || null) {
@@ -382,17 +388,17 @@ const ContactTeam = () => {
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-            "There are no blank or incomplete required fields"
+              "There are no blank or incomplete required fields"
           ) {
             basicInfo[0].submitStatus = "Submitted";
             basicInfo[0].submitDate = Date.now();
@@ -421,27 +427,29 @@ const ContactTeam = () => {
         }
       });
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
-      console.log("new user----------------->>>>>", newuser)
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      console.log("new user----------------->>>>>", newuser);
       if (newuser) {
-        user.userId = newuser
+        user.userId = newuser;
         apiService.saveContactTeam(user).then((response) => {
           if (response.data.status === "success") {
             // let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
             //   .userId;
             if (
               basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+                "There are no blank or incomplete required fields"
             ) {
               basicInfo[0].submitStatus = "Submitted";
               basicInfo[0].submitDate = Date.now();
@@ -472,21 +480,21 @@ const ContactTeam = () => {
       } else {
         apiService.saveContactTeam(user).then((response) => {
           if (response.data.status === "success") {
-            let userkey = JSON.parse(window.sessionStorage.getItem("jwt")).result
-              .userId;
+            let userkey = JSON.parse(window.sessionStorage.getItem("jwt"))
+              .result.userId;
             if (
               basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+                "There are no blank or incomplete required fields"
             ) {
               basicInfo[0].submitStatus = "Submitted";
               basicInfo[0].submitDate = Date.now();
@@ -515,8 +523,8 @@ const ContactTeam = () => {
           }
         });
       }
-    };
-  }
+    }
+  };
   const updateContactTeam = (e) => {
     e.preventDefault();
     const formErrors = validateForm();
@@ -729,17 +737,17 @@ const ContactTeam = () => {
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-            "There are no blank or incomplete required fields"
+              "There are no blank or incomplete required fields"
           ) {
             let basic;
             apiService.getAllCollection(params.userId).then((res) => {
@@ -791,7 +799,9 @@ const ContactTeam = () => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
