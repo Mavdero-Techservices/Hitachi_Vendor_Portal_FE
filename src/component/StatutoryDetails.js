@@ -892,8 +892,8 @@ export default function Statutory(props) {
                                     }}
                                     className="statInput"
                                     type="text"
-                                    value={values.GST_Registration_No}
-                                    onChange={handleChange("GST_Registration_No")}
+                                    value={values.GST_No}
+                                    onChange={handleChange("GST_No")}
                                   />
                                   <InputGroup.Text style={{ border: "none" }}>
                                     <Tooltip title={gstNo}>
@@ -901,9 +901,9 @@ export default function Statutory(props) {
                                     </Tooltip>
                                   </InputGroup.Text>
                                 </InputGroup>
-                                {errors.GST_Registration_No ? (
+                                {errors.GST_No ? (
                                   <p className="text text-danger small">
-                                    {errors.GST_Registration_No}
+                                    {errors.GST_No}
                                   </p>
                                 ) : (
                                   ""
@@ -980,12 +980,12 @@ export default function Statutory(props) {
                                   className="statutoryInput"
                                   type="text"
                                   value="N/A"
-                                  onChange={handleChange("GST_Registration_No")}
+                                  onChange={handleChange("GST_No")}
                                   disabled="true"
                                 />
-                                {errors.GST_Registration_No ? (
+                                {errors.GST_No ? (
                                   <p className="text text-danger small">
-                                    {errors.GST_Registration_No}
+                                    {errors.GST_No}
                                   </p>
                                 ) : (
                                   ""
@@ -1072,8 +1072,8 @@ export default function Statutory(props) {
                               <Form.Control
                                 style={{ border: "none", borderRadius: "25px" }}
                                 type="text"
-                                value={values.P_A_N_No}
-                                onChange={handleChange("P_A_N_No")}
+                                value={values.PAN_No}
+                                onChange={handleChange("PAN_No")}
                               />
                               <InputGroup.Text style={{ border: "none" }}>
                                 <Tooltip title={panNo}>
@@ -1081,9 +1081,9 @@ export default function Statutory(props) {
                                 </Tooltip>
                               </InputGroup.Text>
                             </InputGroup>
-                            {errors.P_A_N_No ? (
+                            {errors.PAN_No ? (
                               <p className="text text-danger small">
-                                {errors.P_A_N_No}
+                                {errors.PAN_No}
                               </p>
                             ) : (
                               ""
@@ -1355,8 +1355,8 @@ export default function Statutory(props) {
                                     borderRadius: "25px",
                                   }}
                                   type="text"
-                                  value={values.MSMED_Number}
-                                  onChange={handleChange("MSMED_Number")}
+                                  value={values.MSME_No}
+                                  onChange={handleChange("MSME_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
                                   <Tooltip title={msmeNo}>
