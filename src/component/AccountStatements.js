@@ -231,7 +231,7 @@ function AccountStatements() {
       editable: true,
     },
     {
-      field: "tdsAmt",
+      field: "TdsAmt",
       headerName: "TDS Amount",
       width: 150,
       editable: true,
@@ -284,7 +284,8 @@ function AccountStatements() {
       date: "19/10/22",
       externalno: "HIPL2602/2022-23",
       poNo: "DELXXXXXXXX",
-      tdsAmt: "81,310",
+      TdsAmt: "62.6",
+      Amt: "81,310",
     },
     {
       id: 2,
@@ -293,7 +294,8 @@ function AccountStatements() {
       date: "19/10/22",
       externalno: "HIPL2602/2022-23",
       poNo: "DELXXXXXXXX",
-      tdsAmt: "7,01,460",
+      TdsAmt: "62.6",
+      Amt: "7,01,460",
     },
     {
       id: 3,
@@ -302,7 +304,8 @@ function AccountStatements() {
       date: "19/10/22",
       externalno: "HIPL2602/2022-23",
       poNo: "DELXXXXXXXX",
-      tdsAmt: "1,60,590",
+      TdsAmt: "62.6",
+      Amt: "1,60,590",
     },
   ];
   const column = [
@@ -331,7 +334,13 @@ function AccountStatements() {
       editable: true,
     },
     {
-      field: "tdsAmt",
+      field: "TdsAmt",
+      headerName: "TDS Amount",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Amt",
       headerName: " Amount",
       width: 150,
       editable: true,
@@ -385,7 +394,7 @@ function AccountStatements() {
               sx={{
                 display: "flex",
                 boxShadow: "1px 2px 1px #B1000E",
-                margin: "2em",
+                margin: " 2em 2em",
                 padding: "1rem",
               }}
             >
@@ -424,7 +433,7 @@ function AccountStatements() {
             </Box>
             <Container>
               {acState === "StatementConfirmation" ? (
-                <Box sx={{ mt: 2, height: 350, width: "100%" }}>
+                <Box sx={{ mt: 2, height: 300, width: "100%" }}>
                   <Typography variant="p" sx={{ mt: 2 }}>
                     Kindly find the details of the outstanding balance as of
                     (report run rate), Kindly review the same and let us know if
@@ -499,9 +508,7 @@ function AccountStatements() {
                         }
                         let totall = 0;
                         for (let i = 0; i < row.length; i++) {
-                          let val = parseFloat(
-                            row[i].tdsAmt.replace(/\,/g, "")
-                          );
+                          let val = parseFloat(row[i].Amt.replace(/\,/g, ""));
 
                           totall += val;
 
