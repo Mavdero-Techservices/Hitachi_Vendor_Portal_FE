@@ -488,12 +488,12 @@ export default function Statutory(props) {
             ""
           );
           setValues({
-            GST_No: value.GST_No,
-            GST_type: value.GST_type,
-            MSME_No: value.MSME_No,
-            MSME_Type: value.MSME_Type,
-            MSME_status: value.MSME_status,
-            PAN_No: value.PAN_No,
+            GST_No: value.GST_Registration_No,
+            GST_type: value.GST_Vendor_Type,
+            MSME_No: value.MSMED_Number,
+            MSME_Type: value.MSMED_Vendor_Type,
+            MSME_status: value.MSMED,
+            PAN_No: value.P_A_N_No,
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
             Tax_residency_No: value.Tax_residency_No,
@@ -543,12 +543,12 @@ export default function Statutory(props) {
             ""
           );
           setValues({
-            GST_No: value.GST_No,
-            GST_type: value.GST_type,
-            MSME_No: value.MSME_No,
-            MSME_Type: value.MSME_Type,
-            MSME_status: value.MSME_status,
-            PAN_No: value.PAN_No,
+            GST_No: value.GST_Registration_No,
+            GST_type: value.GST_Vendor_Type,
+            MSME_No: value.MSMED_Number,
+            MSME_Type: value.MSMED_Vendor_Type,
+            MSME_status: value.MSMED,
+            PAN_No: value.P_A_N_No,
             CIN_No: value.CIN_No,
             TAN_No: value.TAN_No,
             Tax_residency_No: value.Tax_residency_No,
@@ -587,9 +587,9 @@ export default function Statutory(props) {
 
     const data = new FormData();
     data.append("GST_Doc", GST_Doc);
-    data.append("GST_type", GST_type);
-    data.append("GST_No", values.GST_No);
-    data.append("PAN_No", values.PAN_No);
+    data.append("GST_Vendor_Type", GST_type);
+    data.append("GST_Registration_No", values.GST_Registration_No);
+    data.append("P_A_N_No", values.P_A_N_No);
     data.append("PAN_Doc", PAN_Doc);
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
@@ -599,9 +599,9 @@ export default function Statutory(props) {
     data.append("Tax_residency_Doc", Tax_residency_Doc);
     data.append("CIN_No", values.CIN_No);
     data.append("form_10f", values.form_10f);
-    data.append("MSME_status", MSME_status);
-    data.append("MSME_No", values.MSME_No);
-    data.append("MSME_Type", MSME);
+    data.append("MSMED", MSME_status);
+    data.append("MSMED_Number", values.MSME_No);
+    data.append("MSMED_Vendor_Type", MSME);
     data.append("TAN_No", values.TAN_No);
     data.append(
       "userId",
@@ -636,9 +636,9 @@ export default function Statutory(props) {
       if (newuser) {
         const statdata = new FormData();
         statdata.append("GST_Doc", GST_Doc);
-        statdata.append("GST_type", GST_type);
-        statdata.append("GST_No", values.GST_No);
-        statdata.append("PAN_No", values.PAN_No);
+        statdata.append("GST_Vendor_Type", GST_type);
+        statdata.append("GST_Registration_No", values.GST_Registration_No);
+        statdata.append("P_A_N_No", values.P_A_N_No);
         statdata.append("PAN_Doc", PAN_Doc);
         statdata.append("form_10f_Doc", form_10f_Doc);
         statdata.append("TAN_Doc", TAN_Doc);
@@ -648,9 +648,9 @@ export default function Statutory(props) {
         statdata.append("Tax_residency_Doc", Tax_residency_Doc);
         statdata.append("CIN_No", values.CIN_No);
         statdata.append("form_10f", values.form_10f);
-        statdata.append("MSME_status", MSME_status);
-        statdata.append("MSME_No", values.MSME_No);
-        statdata.append("MSME_Type", MSME);
+        statdata.append("MSMED", MSME_status);
+        statdata.append("MSMED_Number", values.MSMED_Number);
+        statdata.append("MSMED_Vendor_Type", MSME);
         statdata.append("TAN_No", values.TAN_No);
         statdata.append("userId", newuser);
         statdata.append("Tax_residency_No", values.Tax_residency_No);
@@ -706,9 +706,9 @@ export default function Statutory(props) {
 
     const data = new FormData();
     data.append("GST_Doc", GST_Doc);
-    data.append("GST_type", GST_type);
-    data.append("GST_No", values.GST_No);
-    data.append("PAN_No", values.PAN_No);
+    data.append("GST_Vendor_Type", GST_type);
+    data.append("GST_Registration_No", values.GST_Registration_No);
+    data.append("P_A_N_No", values.P_A_N_No);
     data.append("PAN_Doc", PAN_Doc);
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
@@ -718,9 +718,9 @@ export default function Statutory(props) {
     data.append("Tax_residency_Doc", Tax_residency_Doc);
     data.append("CIN_No", values.CIN_No);
     data.append("form_10f", values.form_10f);
-    data.append("MSME_status", MSME_status);
-    data.append("MSME_No", values.MSME_No);
-    data.append("MSME_Type", MSME);
+    data.append("MSMED", MSME_status);
+    data.append("MSMED_Number", values.MSMED_Number);
+    data.append("MSMED_Vendor_Type", MSME);
     data.append("TAN_No", values.TAN_No);
     data.append("userId", params.userId);
     data.append("Tax_residency_No", values.Tax_residency_No);
@@ -892,8 +892,8 @@ export default function Statutory(props) {
                                     }}
                                     className="statInput"
                                     type="text"
-                                    value={values.GST_No}
-                                    onChange={handleChange("GST_No")}
+                                    value={values.GST_Registration_No}
+                                    onChange={handleChange("GST_Registration_No")}
                                   />
                                   <InputGroup.Text style={{ border: "none" }}>
                                     <Tooltip title={gstNo}>
@@ -901,9 +901,9 @@ export default function Statutory(props) {
                                     </Tooltip>
                                   </InputGroup.Text>
                                 </InputGroup>
-                                {errors.GST_No ? (
+                                {errors.GST_Registration_No ? (
                                   <p className="text text-danger small">
-                                    {errors.GST_No}
+                                    {errors.GST_Registration_No}
                                   </p>
                                 ) : (
                                   ""
@@ -980,12 +980,12 @@ export default function Statutory(props) {
                                   className="statutoryInput"
                                   type="text"
                                   value="N/A"
-                                  onChange={handleChange("GST_No")}
+                                  onChange={handleChange("GST_Registration_No")}
                                   disabled="true"
                                 />
-                                {errors.GST_No ? (
+                                {errors.GST_Registration_No ? (
                                   <p className="text text-danger small">
-                                    {errors.GST_No}
+                                    {errors.GST_Registration_No}
                                   </p>
                                 ) : (
                                   ""
@@ -1072,8 +1072,8 @@ export default function Statutory(props) {
                               <Form.Control
                                 style={{ border: "none", borderRadius: "25px" }}
                                 type="text"
-                                value={values.PAN_No}
-                                onChange={handleChange("PAN_No")}
+                                value={values.P_A_N_No}
+                                onChange={handleChange("P_A_N_No")}
                               />
                               <InputGroup.Text style={{ border: "none" }}>
                                 <Tooltip title={panNo}>
@@ -1081,9 +1081,9 @@ export default function Statutory(props) {
                                 </Tooltip>
                               </InputGroup.Text>
                             </InputGroup>
-                            {errors.PAN_No ? (
+                            {errors.P_A_N_No ? (
                               <p className="text text-danger small">
-                                {errors.PAN_No}
+                                {errors.P_A_N_No}
                               </p>
                             ) : (
                               ""
@@ -1355,8 +1355,8 @@ export default function Statutory(props) {
                                     borderRadius: "25px",
                                   }}
                                   type="text"
-                                  value={values.MSME_No}
-                                  onChange={handleChange("MSME_No")}
+                                  value={values.MSMED_Number}
+                                  onChange={handleChange("MSMED_Number")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
                                   <Tooltip title={msmeNo}>

@@ -234,10 +234,10 @@ const ContactTeam = () => {
     } else {
       Object.entries(statutory[0]).map(([key, value]) => {
         if (value === "" || null) {
-          if (key === "GST_No") {
+          if (key === "GST_Registration_No") {
             statutoryArray.push("GST No");
           }
-          if (key === "PAN_No") {
+          if (key === "P_A_N_No") {
             statutoryArray.push("PAN No");
           }
           if (key === "CIN_No") {
@@ -263,24 +263,17 @@ const ContactTeam = () => {
           }
         }
 
-        // if (value === "UnRegistered" && key === "MSME_status") {
-        //   if (key === "MSME_Doc") {
-        //     if (!value) {
-        //       statutoryArray.push("MSME DOC");
-        //     }
-        //   }
-        // }
 
-        if (value && key === "GST_No") {
+        if (value && key === "GST_Registration_No") {
           if (!GSTValidation.test(value))
             statutoryArray.push("GST No is invalid");
         }
 
-        if (value && key === "GST_No") {
+        if (value && key === "GST_Registration_No") {
           if (!GSTValidation.test(value))
             statutoryArray.push("GST No is invalid");
         }
-        if (value && key === "PAN_No") {
+        if (value && key === "P_A_N_No") {
           if (!PANValidation.test(value))
             statutoryArray.push("PAN NO is invalid");
         }
@@ -617,10 +610,10 @@ const ContactTeam = () => {
     } else {
       Object.entries(statutory[0]).map(([key, value]) => {
         if (value === "" || null) {
-          if (key === "GST_No") {
+          if (key === "GST_Registration_No") {
             statutoryArray.push("GST No");
           }
-          if (key === "PAN_No") {
+          if (key === "P_A_N_No") {
             statutoryArray.push("PAN No");
           }
           if (key === "CIN_No") {

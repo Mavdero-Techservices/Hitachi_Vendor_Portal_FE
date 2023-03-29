@@ -115,18 +115,18 @@ function ApprovalFields(props) {
         var statarr = res.data.Statutory;
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
-        setGST_type(res.data.Statutory[0].GST_type);
-        setGST_No(res.data.Statutory[0].GST_No);
+        setGST_type(res.data.Statutory[0].GST_Vendor_Type);
+        setGST_No(res.data.Statutory[0].GST_Registration_No);
         setGST_Doc(res.data.Statutory[0].GST_Doc);
-        setPAN_No(res.data.Statutory[0].PAN_No);
+        setPAN_No(res.data.Statutory[0].P_A_N_No);
         setPAN_Doc(res.data.Statutory[0].PAN_Doc);
         setCIN_No(res.data.Statutory[0].CIN_No);
         setform_10f(res.data.Statutory[0].form_10f);
         setpe_declaration(res.data.Statutory[0].pe_declaration);
-        setMSME_status(res.data.Statutory[0].MSME_status);
-        setMSME_No(res.data.Statutory[0].MSME_No);
+        setMSME_status(res.data.Statutory[0].MSMED);
+        setMSME_No(res.data.Statutory[0].MSMED_Number);
         setMSME_Doc(res.data.Statutory[0].MSME_Doc);
-        setMSME_Type(res.data.Statutory[0].MSME_Type);
+        setMSME_Type(res.data.Statutory[0].MSMED_Vendor_Type);
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency);
@@ -2071,9 +2071,9 @@ function ApprovalFields(props) {
       data.append("NDA_Doc", NDA_Doc);
       data.append("COC_Doc", COC_Doc);
       data.append("GST_Doc", GST_Doc);
-      data.append("GST_type", GST_type);
-      data.append("GST_No", GST_No);
-      data.append("PAN_No", PAN_No);
+      data.append("GST_Vendor_Type", GST_type);
+      data.append("GST_Registration_No", GST_No);
+      data.append("P_A_N_No", PAN_No);
       data.append("PAN_Doc", PAN_Doc);
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
@@ -2081,9 +2081,9 @@ function ApprovalFields(props) {
       data.append("MSME_Doc", MSME_Doc);
       data.append("Tax_residency_Doc", Tax_residency);
       data.append("CIN_No", CIN_No);
-      data.append("MSME_status", MSME_status);
-      data.append("MSME_No", MSME_No);
-      data.append("MSME_Type", MSME_Type);
+      data.append("MSMED", MSME_status);
+      data.append("MSMED_Number", MSME_No);
+      data.append("MSMED_Vendor_Type", MSME_Type);
       data.append("TAN_No", TAN_No);
       data.append("financial_data", financial_data);
       data.append("financial_data2", financial_data2);
@@ -2426,9 +2426,9 @@ function ApprovalFields(props) {
       data.append("NDA_Doc", COC_Doc);
       data.append("COC_Doc", NDA_Doc);
       data.append("GST_Doc", GST_Doc);
-      data.append("GST_type", GST_type);
-      data.append("GST_No", GST_No);
-      data.append("PAN_No", PAN_No);
+      data.append("GST_Vendor_Type", GST_type);
+      data.append("GST_Registration_No", GST_No);
+      data.append("P_A_N_No", PAN_No);
       data.append("PAN_Doc", PAN_Doc);
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
@@ -2436,9 +2436,9 @@ function ApprovalFields(props) {
       data.append("MSME_Doc", MSME_Doc);
       data.append("Tax_residency_Doc", Tax_residency);
       data.append("CIN_No", CIN_No);
-      data.append("MSME_status", MSME_status);
-      data.append("MSME_No", MSME_No);
-      data.append("MSME_Type", MSME_Type);
+      data.append("MSMED", MSME_status);
+      data.append("MSMED_Number", MSME_No);
+      data.append("MSMED_Vendor_Type", MSME_Type);
       data.append("TAN_No", TAN_No);
       data.append("financial_data", financial_data);
       data.append("financial_data2", financial_data2);
@@ -2952,7 +2952,7 @@ function ApprovalFields(props) {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="GST_type"
+                            name="GST_Vendor_Type"
                             id="flexRadioDefault1"
                             value={"Registered"}
                             checked={GST_type === "Registered"}
@@ -2971,7 +2971,7 @@ function ApprovalFields(props) {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="GST_type"
+                            name="GST_Vendor_Type"
                             id="flexRadioDefault2"
                             value={"UnRegistered"}
                             checked={GST_type === "UnRegistered"}
@@ -2990,7 +2990,7 @@ function ApprovalFields(props) {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="GST_type"
+                            name="GST_Vendor_Type"
                             id="flexRadioDefault3"
                             value={"Import"}
                             checked={GST_type === "Import"}
@@ -3015,7 +3015,7 @@ function ApprovalFields(props) {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="MSME_status"
+                            name="MSMED"
                             id="MSME_status1"
                             value={"Registered"}
                             checked={MSME_status === "Registered"}
@@ -3034,7 +3034,7 @@ function ApprovalFields(props) {
                           <input
                             className="form-check-input"
                             type="radio"
-                            name="MSME_status"
+                            name="MSMED"
                             id="MSME_status2"
                             value={"UnRegistered"}
                             checked={MSME_status === "UnRegistered"}
@@ -3054,11 +3054,11 @@ function ApprovalFields(props) {
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-2">
                     <div className="row">
                       <div className="col-sm-12 col-lg-8">
-                        <label htmlFor="GST_No">GST no*</label>
+                        <label htmlFor="GST_Registration_No">GST no*</label>
                         <input
                           type="text"
                           className="mb-2 inputbox"
-                          name="GST_No"
+                          name="GST_Registration_No"
                           value={GST_No}
                           onChange={(e) => validateGST_No(e)}
                         />
@@ -3134,11 +3134,11 @@ function ApprovalFields(props) {
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
                     <div className="row">
                       <div className="col-sm-12 col-lg-8">
-                        <label htmlFor="PAN_No">PAN no*</label>
+                        <label htmlFor="P_A_N_No">PAN no*</label>
                         <input
                           type="text"
                           className="mb-2 inputbox"
-                          name="PAN_No"
+                          name="P_A_N_No"
                           value={PAN_No}
                           onChange={(e) => validatePAN_No(e)}
                         />

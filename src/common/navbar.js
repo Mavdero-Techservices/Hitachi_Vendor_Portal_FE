@@ -34,7 +34,7 @@ function App() {
   };
   const VendorDetails = (e) => {
     if (
-      editUser.basicInfo.length > 0 &&
+      editUser?.basicInfo?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
@@ -53,7 +53,7 @@ function App() {
   };
   const statutoryDetails = (e) => {
     if (
-      editUser.Statutory.length > 0 &&
+      editUser?.Statutory?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
@@ -72,7 +72,7 @@ function App() {
   };
   const complianceDetails = (e) => {
     if (
-      editUser.ComplianceDetail.length > 0 &&
+      editUser?.ComplianceDetail?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
@@ -91,7 +91,7 @@ function App() {
   };
   const bankDetails = (e) => {
     if (
-      editUser.Bankdetail.length > 0 &&
+      editUser?.Bankdetail?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
@@ -110,7 +110,7 @@ function App() {
   };
   const financialDetails = (e) => {
     if (
-      editUser.FinancialDetail.length > 0 &&
+      editUser?.FinancialDetail?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(

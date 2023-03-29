@@ -134,6 +134,7 @@ export default function Signin(props) {
       setErrors(formErrors);
     } else {
       signin(user).then((data) => {
+        console.log("data------>", data);
         setErrors(formErrors);
         if (data.status === "success") {
           console.log("LoggedIn");
