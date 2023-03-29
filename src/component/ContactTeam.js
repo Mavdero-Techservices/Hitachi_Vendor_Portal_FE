@@ -989,7 +989,7 @@ const ContactTeam = () => {
             >
               Cancel
             </button>
-            {params.userId ? (
+            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
               <>
                 <button
                   type="button"

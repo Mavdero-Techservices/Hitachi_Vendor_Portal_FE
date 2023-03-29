@@ -1713,7 +1713,7 @@ export default function Statutory(props) {
             >
               Cancel
             </button>
-            {params.userId ? (
+            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
               <>
                 <button
                   type="button"

@@ -316,6 +316,7 @@ const ComplianceDetails = () => {
         compdata.append("COC_Doc", fileCOC);
         compdata.append("userId", newuser);
         apiService.saveComplianceDetail(compdata).then((res) => {
+          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -335,6 +336,7 @@ const ComplianceDetails = () => {
         });
       } else {
         apiService.saveComplianceDetail(data).then((res) => {
+          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -608,7 +610,7 @@ const ComplianceDetails = () => {
                 >
                   Cancel
                 </button>
-                {params.userId ? (
+                {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
                   <>
                     <button
                       type="button"

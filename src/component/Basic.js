@@ -61,7 +61,10 @@ export class Basic extends React.Component {
       edit: true,
       editStatutory: "",
       savebutton: true,
+      commuDetail: false,
     };
+
+    console.log("commuDetail------->", this.state.commuDetail);
 
     this.savebutton = this.savebutton.bind(this);
     this.togglebutton = this.togglebutton.bind(this);
@@ -229,16 +232,16 @@ export class Basic extends React.Component {
         apiService.saveNewRegVendordetail(basicInfo).then((response) => {
           this.setState({
             savebutton: true,
-          })
-          this.setState({ newUser: response.data.result.userId })
+          });
+          this.setState({ newUser: response.data.result.userId });
           let data = { newregUser: response.data.result.userId };
-          sessionStorage.setItem('newregUser', JSON.stringify(data))
+          sessionStorage.setItem("newregUser", JSON.stringify(data));
           if (response) {
             Swal.fire({
               title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
-            })
+            });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -251,7 +254,7 @@ export class Basic extends React.Component {
         apiService.saveVendordetail(basicInfo).then((response) => {
           this.setState({
             savebutton: true,
-          })
+          });
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -331,36 +334,61 @@ export class Basic extends React.Component {
       mastervendor_email: this.state.mastervendor_email,
     };
     if (this.props.params.userId) {
-      apiService
-        .updateCommunicationdetail(
-          this.props.params.userId,
-          communicationDetails
-        )
-        .then((response) => {
-          if (response) {
-            Swal.fire({
-              title: "Data Updated",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        });
-    } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
-      if (newuser) {
-        communicationDetails.userId = newuser
+      if (this.state.commuDetail) {
+        apiService
+          .updateCommunicationdetail(
+            this.props.params.userId,
+            communicationDetails
+          )
+          .then((response) => {
+            if (response) {
+              Swal.fire({
+                title: "Data Updated",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      } else {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
             this.setState({
               savebutton: true,
-            })
+            });
+            if (response.data.msg === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      }
+    } else {
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      if (newuser) {
+        communicationDetails.userId = newuser;
+        apiService
+          .SaveVendorCommunication(communicationDetails)
+          .then((response) => {
+            this.setState({
+              savebutton: true,
+            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -381,7 +409,7 @@ export class Basic extends React.Component {
           .then((response) => {
             this.setState({
               savebutton: true,
-            })
+            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -397,7 +425,6 @@ export class Basic extends React.Component {
             }
           });
       }
-
     }
   };
   updatehandleSubmitComDetail = (e) => {
@@ -424,28 +451,53 @@ export class Basic extends React.Component {
       designation: this.state.designation,
       phoneNo: this.state.phoneNo,
       email: this.state.email,
+      mastervendor_email: this.state.mastervendor_email,
     };
     if (this.props.params.userId) {
-      apiService
-        .updateCommunicationdetail(
-          this.props.params.userId,
-          communicationDetails
-        )
-        .then((response) => {
-          if (response) {
-            Swal.fire({
-              title: "Data Updated",
-              icon: "success",
-              confirmButtonText: "OK",
+      // "aravinth"
+      if (this.state.commuDetail) {
+        apiService
+          .updateCommunicationdetail(
+            this.props.params.userId,
+            communicationDetails
+          )
+          .then((response) => {
+            if (response) {
+              Swal.fire({
+                title: "Data Updated",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      } else {
+        apiService
+          .SaveVendorCommunication(communicationDetails)
+          .then((response) => {
+            this.setState({
+              savebutton: true,
             });
-          } else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        });
+            if (response.data.msg === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+      }
     }
   };
   convertBase64 = (file) => {
@@ -477,12 +529,17 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => { });
+    apiService.updateVendordetail(userId, data).then((response) => {});
   }
   componentDidMount() {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
-    if (this.props.params.newReg === 'newReg') {
-      this.setState({ companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result.companyName });
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
+    if (this.props.params.newReg === "newReg") {
+      this.setState({
+        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
+          .companyName,
+      });
     }
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.getAllCollection(userid).then((res) => {
@@ -515,7 +572,16 @@ export class Basic extends React.Component {
             image: value.image,
           });
         });
+        console.log(
+          "commuDetail2222",
+          res.data.CommunicationDetails.length,
+          res.data.CommunicationDetails
+        );
         Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
+          this.setState({
+            commuDetail:
+              res.data.CommunicationDetails.length > 0 ? true : false,
+          });
           this.setState({
             financeSpoccontactName: value.financeSpoccontactName,
             financeSpocdesignation: value.financeSpocdesignation,
@@ -813,8 +879,8 @@ export class Basic extends React.Component {
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
                                   {this.state.image != "" ||
-                                    undefined ||
-                                    null ? (
+                                  undefined ||
+                                  null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -865,7 +931,7 @@ export class Basic extends React.Component {
                                 >
                                   Cancel
                                 </button>
-                                {this.props.params.userId ? (
+                                {this.props.params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ?(
                                   <>
                                     <button
                                       type="button"
@@ -1208,7 +1274,10 @@ export class Basic extends React.Component {
                                   >
                                     Cancel
                                   </button>
-                                  {this.props.params.userId ? (
+                                  {this.props.params.userId &&
+                                  JSON.parse(
+                                    window.sessionStorage.getItem("jwt")
+                                  ).result.role === "Admin" ? (
                                     <>
                                       <button
                                         type="button"
