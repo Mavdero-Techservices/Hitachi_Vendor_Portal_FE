@@ -80,6 +80,7 @@ export default function Statutory(props) {
     TAN_No: "",
     Tax_residency_No: "",
   });
+
   function onChangeValue(event) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
@@ -120,6 +121,7 @@ export default function Statutory(props) {
   }
   const handleChange = (name) => (event) => {
     event.preventDefault();
+
     setValues({ ...values, [name]: event.target.value });
     setErrors(event);
     if (!!errors[name])
@@ -588,8 +590,8 @@ export default function Statutory(props) {
     const data = new FormData();
     data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
-    data.append("GST_Registration_No", values.GST_Registration_No);
-    data.append("P_A_N_No", values.P_A_N_No);
+    data.append("GST_Registration_No", values.GST_No);
+    data.append("P_A_N_No", values.PAN_No);
     data.append("PAN_Doc", PAN_Doc);
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
@@ -637,8 +639,8 @@ export default function Statutory(props) {
         const statdata = new FormData();
         statdata.append("GST_Doc", GST_Doc);
         statdata.append("GST_Vendor_Type", GST_type);
-        statdata.append("GST_Registration_No", values.GST_Registration_No);
-        statdata.append("P_A_N_No", values.P_A_N_No);
+        statdata.append("GST_Registration_No", values.GST_No);
+        statdata.append("P_A_N_No", values.PAN_No);
         statdata.append("PAN_Doc", PAN_Doc);
         statdata.append("form_10f_Doc", form_10f_Doc);
         statdata.append("TAN_Doc", TAN_Doc);
@@ -678,6 +680,7 @@ export default function Statutory(props) {
       });
     }else{
         apiService.saveStatutoryDetail(data).then((res) => {
+          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -707,8 +710,8 @@ export default function Statutory(props) {
     const data = new FormData();
     data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
-    data.append("GST_Registration_No", values.GST_Registration_No);
-    data.append("P_A_N_No", values.P_A_N_No);
+    data.append("GST_Registration_No", values.GST_No);
+    data.append("P_A_N_No", values.PAN_No);
     data.append("PAN_Doc", PAN_Doc);
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
