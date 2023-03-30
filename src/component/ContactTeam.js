@@ -115,7 +115,7 @@ const ContactTeam = () => {
     var contactDetailArray = [];
     if (basicInfo.length <= 0) {
       basicInfoArray.push("Address Line-1");
-      basicInfoArray.push("city");
+      basicInfoArray.push("City");
       basicInfoArray.push("companyName");
       basicInfoArray.push("country");
       basicInfoArray.push("pinCode");
@@ -123,11 +123,11 @@ const ContactTeam = () => {
     } else {
       Object.entries(basicInfo[0]).map(([key, value]) => {
         if (value === "" || value === null) {
-          if (key === "address1") {
+          if (key === "Address") {
             basicInfoArray.push("Address Line-1");
           }
-          if (key === "city") {
-            basicInfoArray.push("city");
+          if (key === "City") {
+            basicInfoArray.push("City");
           }
           if (key === "companyName") {
             basicInfoArray.push("companyName");
@@ -531,7 +531,7 @@ const ContactTeam = () => {
     if (basicInfo.length <= 0) {
       console.log("basicInfo", basicInfo);
       basicInfoArray.push("Address Line-1");
-      basicInfoArray.push("city");
+      basicInfoArray.push("City");
       basicInfoArray.push("companyName");
       basicInfoArray.push("country");
       basicInfoArray.push("pinCode");
@@ -539,11 +539,11 @@ const ContactTeam = () => {
     } else {
       Object.entries(basicInfo[0]).map(([key, value]) => {
         if (value === "" || null) {
-          if (key === "address1") {
+          if (key === "Address") {
             basicInfoArray.push("Address Line-1");
           }
-          if (key === "city") {
-            basicInfoArray.push("city");
+          if (key === "City") {
+            basicInfoArray.push("City");
           }
           if (key === "companyName") {
             basicInfoArray.push("companyName");

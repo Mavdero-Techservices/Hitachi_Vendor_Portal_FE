@@ -27,9 +27,9 @@ export class Basic extends React.Component {
     super(props);
     this.state = {
       userId: "",
-      address1: "",
-      address2: "",
-      city: "",
+      Address: "",
+      Address_2: "",
+      City: "",
       state: "",
       country: "",
       pinCode: "",
@@ -100,7 +100,7 @@ export class Basic extends React.Component {
       .then((response) => {
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
-        this.setState({ city: response.data.data.postalcodes[0].adminName3 });
+        this.setState({ City: response.data.data.postalcodes[0].adminName3 });
       });
   }
   togglebutton() {
@@ -140,9 +140,9 @@ export class Basic extends React.Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
-          address1: "",
-          address2: "",
-          city: "",
+          Address: "",
+          Address_2: "",
+          City: "",
           state: "",
           country: "",
           pinCode: "",
@@ -200,9 +200,9 @@ export class Basic extends React.Component {
     const basicInfo = {
       // id: this.state.id,
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
-      address1: this.state.address1,
-      address2: this.state.address2,
-      city: this.state.city,
+      Address: this.state.Address,
+      Address_2: this.state.Address_2,
+      City: this.state.City,
       state: this.state.state,
       country: this.state.country,
       pinCode: this.state.pinCode,
@@ -277,9 +277,9 @@ export class Basic extends React.Component {
     const basicInfo = {
       // id: this.state.id,
       userId: this.props.params.userId,
-      address1: this.state.address1,
-      address2: this.state.address2,
-      city: this.state.city,
+      Address: this.state.Address,
+      Address_2: this.state.Address_2,
+      City: this.state.City,
       state: this.state.state,
       country: this.state.country,
       pinCode: this.state.pinCode,
@@ -584,9 +584,9 @@ export class Basic extends React.Component {
         Object.entries(res.data.basicInfo).map(([key, value]) => {
           this.setState({
             companyName: value.companyName,
-            address1: value.address1,
-            address2: value.address2,
-            city: value.city,
+            Address: value.Address,
+            Address_2: value.Address_2,
+            City: value.City,
             state: value.state,
             country: value.country,
             pinCode: value.pinCode,
@@ -637,9 +637,9 @@ export class Basic extends React.Component {
         Object.entries(res.data.basicInfo).map(([key, value]) => {
           this.setState({
             companyName: value.companyName,
-            address1: value.address1,
-            address2: value.address2,
-            city: value.city,
+            Address: value.Address,
+            Address_2: value.Address_2,
+            City: value.City,
             state: value.state,
             country: value.country,
             pinCode: value.pinCode,
@@ -687,9 +687,9 @@ export class Basic extends React.Component {
   render() {
     const {
       vendorId,
-      address1,
-      address2,
-      city,
+      Address,
+      Address_2,
+      City,
       state,
       country,
       pinCode,
@@ -791,7 +791,7 @@ export class Basic extends React.Component {
                                       <MDBCol>
                                         <div>
                                           {" "}
-                                          <label htmlFor="address1">
+                                          <label htmlFor="Address">
                                             Address line - 1*
                                           </label>
                                         </div>
@@ -799,10 +799,10 @@ export class Basic extends React.Component {
                                           <textarea
                                             type="text"
                                             className="addressLine"
-                                            name="address1"
-                                            id="address1"
+                                            name="Address"
+                                            id="Address"
                                             onChange={this.formValChange}
-                                            value={address1}
+                                            value={Address}
                                             disabled={
                                               this.state.setStyle ===
                                               "notEditable"
@@ -814,7 +814,7 @@ export class Basic extends React.Component {
                                       </MDBCol>
                                     </MDBRow>
                                     <div>
-                                      <label htmlFor="address2">
+                                      <label htmlFor="Address_2">
                                         Address line - 2
                                       </label>
                                     </div>
@@ -822,10 +822,10 @@ export class Basic extends React.Component {
                                       <textarea
                                         type="text"
                                         className="addressLine"
-                                        name="address2"
-                                        id="address2"
+                                        name="Address_2"
+                                        id="Address_2"
                                         onChange={this.formValChange}
-                                        value={address2}
+                                        value={Address_2}
                                         disabled={
                                           this.state.setStyle === "notEditable"
                                             ? true
@@ -895,16 +895,16 @@ export class Basic extends React.Component {
                                       </MDBCol>
                                       <MDBCol>
                                         <div>
-                                          <label htmlFor="city">City*</label>
+                                          <label htmlFor="City">City*</label>
                                         </div>
                                         <div>
                                           <input
                                             type="text"
                                             className="mb-4 VendorInput"
-                                            name="city"
-                                            id="city"
+                                            name="City"
+                                            id="City"
                                             onChange={this.formValChange}
-                                            value={this.state.city}
+                                            value={this.state.City}
                                           />
                                         </div>
                                       </MDBCol>

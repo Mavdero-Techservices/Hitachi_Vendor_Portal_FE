@@ -21,12 +21,12 @@ function ApprovalFields(props) {
         var abc = res.data.basicInfo;
         seteditData([]);
         seteditData((prevState) => [...prevState, ...abc]);
-        setaddress1(res.data.basicInfo[0].address1);
-        setaddress2(res.data.basicInfo[0].address2);
+        setaddress1(res.data.basicInfo[0].Address);
+        setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
         setcountry(res.data.basicInfo[0].country);
         setstate(res.data.basicInfo[0].state);
-        setcity(res.data.basicInfo[0].city);
+        setcity(res.data.basicInfo[0].City);
         setpinCode(res.data.basicInfo[0].pinCode);
         setlogo(res.data.basicInfo[0].image);
       } else {
@@ -237,12 +237,12 @@ function ApprovalFields(props) {
     });
   }, []);
 
-  const [address1, setaddress1] = useState("");
-  const [address2, setaddress2] = useState("");
+  const [Address, setaddress1] = useState("");
+  const [Address_2, setaddress2] = useState("");
   const [companyName, setcompanyName] = useState("");
   const [country, setcountry] = useState("");
   const [state, setstate] = useState("");
-  const [city, setcity] = useState("");
+  const [City, setcity] = useState("");
   const [pinCode, setpinCode] = useState("");
   const [logo, setlogo] = useState("");
 
@@ -1133,7 +1133,7 @@ function ApprovalFields(props) {
     if (companyName.length === 0) {
       setcompanyNameErr("Company name is required");
     }
-    if (address1.length === 0) {
+    if (Address.length === 0) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
@@ -1143,7 +1143,7 @@ function ApprovalFields(props) {
     if (state.length === 0) {
       setstateErr("State is required");
     }
-    if (city.length === 0) {
+    if (City.length === 0) {
       setcityErr("City is required");
     }
     if (pinCode.length === 0) {
@@ -1288,10 +1288,10 @@ function ApprovalFields(props) {
 
     const userId = props.userid;
     console.log("companyNameErr", companyName);
-    console.log("address1Err", address1);
+    console.log("address1Err", Address);
     console.log("countryErr", country);
     console.log("stateErr", state);
-    console.log("cityErr", city);
+    console.log("cityErr", City);
     console.log("pinCodeErr", pinCode);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
@@ -1337,10 +1337,10 @@ function ApprovalFields(props) {
 
     if (
       companyName &&
-      address1 &&
+      Address &&
       country &&
       state &&
-      city &&
+      City &&
       pinCode &&
       fs_ContactName &&
       fs_Designation &&
@@ -1462,7 +1462,7 @@ function ApprovalFields(props) {
     if (companyName.length === 0) {
       setcompanyNameErr("Company name is required");
     }
-    if (address1.length === 0) {
+    if (Address.length === 0) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
@@ -1472,7 +1472,7 @@ function ApprovalFields(props) {
     if (state.length === 0) {
       setstateErr("State is required");
     }
-    if (city.length === 0) {
+    if (City.length === 0) {
       setcityErr("City is required");
     }
     if (pinCode.length === 0) {
@@ -1617,10 +1617,10 @@ function ApprovalFields(props) {
 
     const userId = props.userid;
     console.log("companyNameErr", companyName);
-    console.log("address1Err", address1);
+    console.log("address1Err", Address);
     console.log("countryErr", country);
     console.log("stateErr", state);
-    console.log("cityErr", city);
+    console.log("cityErr", City);
     console.log("pinCodeErr", pinCode);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
@@ -1666,10 +1666,10 @@ function ApprovalFields(props) {
 
     if (
       companyName &&
-      address1 &&
+      Address &&
       country &&
       state &&
-      city &&
+      City &&
       pinCode &&
       fs_ContactName &&
       fs_Designation &&
@@ -1786,7 +1786,7 @@ function ApprovalFields(props) {
     if (companyName.length === 0) {
       setcompanyNameErr("Company name is required");
     }
-    if (address1.length === 0) {
+    if (Address.length === 0) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
@@ -1796,7 +1796,7 @@ function ApprovalFields(props) {
     if (state.length === 0) {
       setstateErr("State is required");
     }
-    if (city.length === 0) {
+    if (City.length === 0) {
       setcityErr("City is required");
     }
     if (pinCode.length === 0) {
@@ -1941,10 +1941,10 @@ function ApprovalFields(props) {
 
     const userId = props.userid;
     console.log("companyNameErr", companyName);
-    console.log("address1Err", address1);
+    console.log("address1Err", Address);
     console.log("countryErr", country);
     console.log("stateErr", state);
-    console.log("cityErr", city);
+    console.log("cityErr", City);
     console.log("pinCodeErr", pinCode);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
@@ -1990,10 +1990,10 @@ function ApprovalFields(props) {
 
     if (
       companyName &&
-      address1 &&
+      Address &&
       country &&
       state &&
-      city &&
+      City &&
       pinCode &&
       fs_ContactName &&
       fs_Designation &&
@@ -2035,12 +2035,12 @@ function ApprovalFields(props) {
     ) {
       const data = new FormData();
       data.append("userId", props.userid);
-      data.append("address1", address1);
-      data.append("address2", address2);
+      data.append("Address", Address);
+      data.append("Address_2",Address_2);
       data.append("companyName", companyName);
       data.append("country", country);
       data.append("state", state);
-      data.append("city", city);
+      data.append("city", City);
       data.append("pinCode", pinCode);
       data.append("image", logo);
       data.append("vendorType", vendorType);
@@ -2141,7 +2141,7 @@ function ApprovalFields(props) {
     if (companyName.length === 0) {
       setcompanyNameErr("Company name is required");
     }
-    if (address1.length === 0) {
+    if (Address.length === 0) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
@@ -2151,7 +2151,7 @@ function ApprovalFields(props) {
     if (state.length === 0) {
       setstateErr("State is required");
     }
-    if (city.length === 0) {
+    if (City.length === 0) {
       setcityErr("City is required");
     }
     if (pinCode.length === 0) {
@@ -2296,10 +2296,10 @@ function ApprovalFields(props) {
 
     const userId = props.userid;
     console.log("companyNameErr", companyName);
-    console.log("address1Err", address1);
+    console.log("address1Err", Address);
     console.log("countryErr", country);
     console.log("stateErr", state);
-    console.log("cityErr", city);
+    console.log("cityErr", City);
     console.log("pinCodeErr", pinCode);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
@@ -2345,10 +2345,10 @@ function ApprovalFields(props) {
 
     if (
       companyName &&
-      address1 &&
+      Address &&
       country &&
       state &&
-      city &&
+      City &&
       pinCode &&
       fs_ContactName &&
       fs_Designation &&
@@ -2390,12 +2390,12 @@ function ApprovalFields(props) {
     ) {
       const data = new FormData();
       data.append("userId", props.userid);
-      data.append("address1", address1);
-      data.append("address2", address2);
+      data.append("Address", Address);
+      data.append("Address_2",Address_2);
       data.append("companyName", companyName);
       data.append("country", country);
       data.append("state", state);
-      data.append("city", city);
+      data.append("city", City);
       data.append("pinCode", pinCode);
       data.append("image", logo);
       data.append("vendorType", vendorType);
@@ -2520,25 +2520,25 @@ function ApprovalFields(props) {
                   <span className="formError">{companyNameErr}</span>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="address1">Address 1</label>
+                  <label htmlFor="Address">Address 1</label>
                   <input
                     type="text"
                     className="mb-2 inputbox"
-                    name="address1"
-                    value={address1}
+                    name="Address"
+                    value={Address}
                     onChange={(e) => validateaddress1(e)}
                   />
                   <span className="formError">{address1Err}</span>
                 </div>
 
-                {editData[0]?.address2 !== "null" && editData[0]?.address2 ? (
+                {editData[0]?.Address_2 !== "null" && editData[0]?.Address_2 ? (
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                    <label htmlFor="address2">Address 2</label>
+                    <label htmlFor="Address_2">Address 2</label>
                     <input
                       type="text"
                       className="mb-2 inputbox"
-                      name="address2"
-                      value={address2}
+                      name="Address_2"
+                      value={Address_2}
                       onChange={(e) => validateaddress2(e)}
                     />
                     {/* <span className="formError">{address2Err}</span> */}
@@ -2569,12 +2569,12 @@ function ApprovalFields(props) {
                   <span className="formError">{stateErr}</span>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="city">City</label>
+                  <label htmlFor="City">City</label>
                   <input
                     type="text"
                     className="mb-2 inputbox"
-                    name="city"
-                    value={city}
+                    name="City"
+                    value={City}
                     onChange={(e) => validatecity(e)}
                   />
                   <span className="formError">{cityErr}</span>
