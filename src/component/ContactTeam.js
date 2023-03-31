@@ -193,7 +193,7 @@ const ContactTeam = () => {
           if (key === "managementSpocemail") {
             communicationArray.push("managementSpoc-Email");
           }
-          if (key === "mastervendor_email") {
+          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin') {
             communicationArray.push("mastervendor EmailId");
           }
         }
@@ -449,9 +449,18 @@ const ContactTeam = () => {
               apiService
                 .updateVendordetail(newuser, basicInfo[0])
                 .then((response) => {
-                  Swal.fire(
-                    "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                  );
+                  Swal.fire({
+                    title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    let id = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser;
+                    if (id) {
+                      sessionStorage.removeItem('newregUser')
+                    }
+                    if (result.isConfirmed) {
+                      navigate("/userCreation")
+                    }
+                  })
                 });
             } else {
               Swal.fire({
@@ -754,9 +763,15 @@ const ContactTeam = () => {
                 apiService
                   .updateVendordetail(userkey, basic)
                   .then((response) => {
-                    Swal.fire(
-                      "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                    );
+                    Swal.fire({
+                      title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                      confirmButtonText: "Yes",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        navigate("/userCreation")
+                      }
+                    })
+                    // chandran
                   });
               }
             });

@@ -59,11 +59,11 @@ export const MasterVendorSidemenu = (props) => {
     if (City) {
       setPincode(e);
       const id = vendorDetails?.filter((item) => {
-        return item.pinCode === e && item.city === City;
+        return item.pinCode === e && item.City === City;
       });
 
       setUserId(id[0].userId);
-      setCity(id[0].city);
+      setCity(id[0].City);
     } else {
       setPincode(e);
 
@@ -72,7 +72,7 @@ export const MasterVendorSidemenu = (props) => {
       });
 
       setUserId(id[0].userId);
-      setCity(id[0].city);
+      setCity(id[0].City);
     }
   };
   const handleUserId = (e) => {
@@ -82,7 +82,7 @@ export const MasterVendorSidemenu = (props) => {
       const id = vendorDetails?.filter((item) => {
         return item.userId === e;
       });
-      setCity(id[0].city);
+      setCity(id[0].City);
 
       setPincode(id[0].pincode);
     }
@@ -340,8 +340,8 @@ export const MasterVendorSidemenu = (props) => {
                               <option>Select City</option>
                               {vendorDetails?.map((item) => {
                                 return (
-                                  <option key={item.id} value={item.city}>
-                                    {item.city}
+                                  <option key={item.id} value={item.City}>
+                                    {item.City}
                                   </option>
                                 );
                               })}
@@ -371,7 +371,7 @@ export const MasterVendorSidemenu = (props) => {
                               {City
                                 ? vendorDetails
                                     ?.filter((item) => {
-                                      return item.city === City;
+                                      return item.City === City;
                                     })
                                     ?.map((item) => {
                                       return (

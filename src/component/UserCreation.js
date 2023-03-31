@@ -26,6 +26,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function createData(
   Name,
@@ -84,7 +85,7 @@ const rows = [
 function UserCreation() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const navigate = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -175,22 +176,41 @@ function UserCreation() {
       });
     });
   };
-  // const CustomToastWithLink = (users) => (
-  //   <div>
-  //     <Link to={`/basic/${users}`} onClick={(users) => { sessionStorage.setItem('newregUser', JSON.stringify(users)) }}  >Rejected user {users}</Link>
-  //   </div>
-  // );
-
+  const CustomToastWithLink = (users) => (
+    <div>
+      Rejected users {users}
+    </div>
+  );
+  const onMove = (id) => {
+    navigate(`/basic/${id}`)
+  }
   useEffect(() => {
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
     });
-    apiService.signupFindSubUserList(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-      // res.data.result.forEach((item) => {
-      //   toast.warn(CustomToastWithLink(item.userId));
+    let rejUsers = []
+    const fetchData = async () => {
+      await apiService.signupFindSubUserList(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        rejUsers = res.data.result
+      });
 
-      // })
-    });
+      if (rejUsers.length > 0) {
+        await apiService.AllRejectVendorList().then((res) => {
+
+          let arr = res.data.result.filter(function (e) {
+            return rejUsers.find((item) => (item.userId === e.userId))
+          });
+          if (arr) {
+            arr.forEach((item) => {
+              toast.warn("Rejected " + item.userId, { onClick: () => { onMove(item.userId) }, autoClose: false, position: 'top-right' });
+            })
+          }
+        })
+      };
+
+    }
+    fetchData()
+
   }, []);
 
   const deleteRecord = (id) => {
@@ -547,6 +567,10 @@ function UserCreation() {
                   </Table>
 
                 </TableContainer>
+                <ToastContainer
+
+                />
+
                 {getAllUser != null ? (
                   <TablePagination
                     rowsPerPageOptions={[5, 10]}

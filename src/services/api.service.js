@@ -211,5 +211,8 @@ class apiService {
   vendorIdList(vendorId) {
     return axios.get(`http://localhost:12707/vendorIdList/${vendorId}`);
   }
+  AllRejectVendorList() {
+    return axios.get(`http://localhost:12707/AllRejectVendorList`);
+  }
 }
 export default new apiService();

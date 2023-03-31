@@ -678,11 +678,13 @@ export class Basic extends React.Component {
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
+    if (this.state.country && this.state.pinCode){
     apiService
       .getStateAndcityByzipcode(this.state.country, this.state.pinCode)
       .then((response) => {
         this.setState({ getCityAndState: response.data.postalcodes });
       });
+    }
   }
   render() {
     const {
@@ -697,7 +699,7 @@ export class Basic extends React.Component {
       companyName,
       image,
       open,
-      commu,
+      commu
     } = this.state;
     let countriesList =
       this.state.countryData?.length > 0 &&

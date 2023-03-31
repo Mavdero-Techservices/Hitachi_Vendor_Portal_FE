@@ -11,7 +11,8 @@ import apiService from "../services/api.service";
 import { Navigate } from "react-router-dom";
 function App() {
   const [Edit, setEdit] = useState(true);
-  const [editUser, seteditUser] = useState();
+  const [editUser, seteditUser] = useState(); 
+  const [editsubUser, seteditsubUser] = useState();
   const navigate = useNavigate();
   const params = useParams();
   const handleClickOpen = () => {
@@ -44,7 +45,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.basicInfo?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/basic/${params.userId}`, { state: { editUser } });
     } else {
@@ -63,7 +64,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.Statutory?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/statutory/${params.userId}`, { state: { editUser } });
     } else {
@@ -82,7 +83,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.ComplianceDetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/ComplianceDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -101,7 +102,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.Bankdetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/bank/${params.userId}`, { state: { editUser } });
     } else {
@@ -120,7 +121,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.FinancialDetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/FinancialDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -139,7 +140,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser.contactDetail.length > 0 &&  JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/ContactTeam/${params.userId}`, { state: { editUser } });
     } else {
@@ -147,7 +148,8 @@ function App() {
     }
   };
   useEffect(() => {
-    apiService
+    (async () => {
+   await apiService
       .getAllCollection(
         JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
       )
@@ -159,6 +161,19 @@ function App() {
           setEdit(false);
         }
       });
+
+   await apiService
+      .getAllCollection(params.userId)
+      .then((res) => {
+        if (res.data.status === "success") {
+          setEdit(true);
+          seteditsubUser(res.data);
+        } else {
+          setEdit(false);
+        }
+      });
+    })();
+    
   }, []);
   return (
     <>

@@ -463,13 +463,21 @@ export default function Statutory(props) {
     });
   }
   useEffect(() => {
+    (async () => {
     let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let id = newuser ? newuser : params.userId ? params.userId : values.userId
+      await apiService.getvendorDetail(id).then((res) => {
+        setcountry(res.data.country);
+        if (res.data.country === "IN") {
+          setshowLoginTab(false);
+        }
+      });
     if (params.userId) {
       let finalstatus = "";
-      apiService.signupFindByUserId(params.userId).then((res) => {
+     await apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
-      apiService.getAllCollection(params.userId).then((res) => {
+      await  apiService.getAllCollection(params.userId).then((res) => {
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"
@@ -521,10 +529,10 @@ export default function Statutory(props) {
       });
     } else if (newuser){
       let finalstatus = "";
-      apiService.signupFindByUserId(newuser).then((res) => {
+      await apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
-      apiService.getAllCollection(newuser).then((res) => {
+      await apiService.getAllCollection(newuser).then((res) => {
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"
@@ -576,12 +584,9 @@ export default function Statutory(props) {
       });
 
     }
-    apiService.getvendorDetail(values.userId).then((res) => {
-      setcountry(res.data.country);
-      if (res.data.country === "IN") {
-        setshowLoginTab(false);
-      }
-    });
+    
+      
+  })();
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
@@ -603,6 +608,7 @@ export default function Statutory(props) {
     data.append("form_10f", values.form_10f);
     data.append("MSMED", MSME_status);
     data.append("MSMED_Number", values.MSME_No);
+    console.log("values.MSME_No--------->>>>", values.MSME_No)
     data.append("MSMED_Vendor_Type", MSME);
     data.append("TAN_No", values.TAN_No);
     data.append(
@@ -651,7 +657,7 @@ export default function Statutory(props) {
         statdata.append("CIN_No", values.CIN_No);
         statdata.append("form_10f", values.form_10f);
         statdata.append("MSMED", MSME_status);
-        statdata.append("MSMED_Number", values.MSMED_Number);
+        statdata.append("MSMED_Number", values.MSME_No);
         statdata.append("MSMED_Vendor_Type", MSME);
         statdata.append("TAN_No", values.TAN_No);
         statdata.append("userId", newuser);
