@@ -64,7 +64,6 @@ export class Basic extends React.Component {
       commuDetail: false,
     };
 
-    console.log("commuDetail------->", this.state.commuDetail);
 
     this.savebutton = this.savebutton.bind(this);
     this.togglebutton = this.togglebutton.bind(this);
@@ -213,6 +212,9 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
+          this.setState({
+            savebutton: true,
+          });
           if (response) {
             Swal.fire({
               title: "Data Updated",
@@ -290,6 +292,9 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
+          this.setState({
+            savebutton: true,
+          });
           if (response) {
             Swal.fire({
               title: "Data Updated",
@@ -341,6 +346,9 @@ export class Basic extends React.Component {
             communicationDetails
           )
           .then((response) => {
+            this.setState({
+              savebutton: true,
+            });
             if (response) {
               Swal.fire({
                 title: "Data Updated",

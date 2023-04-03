@@ -109,6 +109,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
+        setSaveButton(true)
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -141,7 +142,6 @@ const BankDetails = (props) => {
         bankdata.append("Bank_Address", branchAdd);
         bankdata.append("bankdetailDoc", fileBank);
         apiService.savebankdetail(bankdata).then((response) => {
-          setSaveButton(true);
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -162,6 +162,7 @@ const BankDetails = (props) => {
         });
       } else {
         apiService.savebankdetail(data).then((response) => {
+          setSaveButton(true)
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -198,6 +199,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
+        setSaveButton(true)
         if (response) {
           Swal.fire({
             title: "Data updated",

@@ -619,6 +619,7 @@ export default function Statutory(props) {
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -736,6 +737,7 @@ export default function Statutory(props) {
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",

@@ -17,8 +17,10 @@ const ComplianceDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [EditCompliance, setEditCompliance] = useState(true);
+  console.log("EditCompliance", EditCompliance);
   const [showEditUploadsField, setshowEditUploadsField] = useState(true);
   const [fileRPD, setfileRPD] = useState();
+  console.log("fileRPD", fileRPD);
   const [editVlauefileRPD, seteditVlauefileRPD] = useState();
   const [editVlauefileCOC, seteditVlauefileCOC] = useState();
   const [editVlauefileNDA, seteditVlauefileNDA] = useState();
@@ -290,6 +292,7 @@ const ComplianceDetails = () => {
     );
     if (params.userId) {
       apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data updated",
@@ -369,6 +372,7 @@ const ComplianceDetails = () => {
     data.append("userId", params.userId);
     if (params.userId) {
       apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data updated",

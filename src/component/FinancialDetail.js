@@ -174,6 +174,7 @@ const FinancialDetails = () => {
     if (params.userId) {
       if (style !== "notEditable") {
         apiService.updateFinacialDetail(params.userId, data).then((res) => {
+          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data updated",
@@ -217,7 +218,6 @@ const FinancialDetails = () => {
         financedata.append("directorDetails", values.directorDetails);
         financedata.append("userId", newuser);
         apiService.saveFinacialDetail(financedata).then((res) => {
-          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -276,6 +276,7 @@ const FinancialDetails = () => {
     data.append("userId", params.userId);
     if (params.userId) {
       apiService.updateFinacialDetail(params.userId, data).then((res) => {
+        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data updated",
