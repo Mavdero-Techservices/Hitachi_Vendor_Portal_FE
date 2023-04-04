@@ -465,7 +465,7 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileRPD != "" ? (
+                        {fileRPD ? (
                           <Button className="UploadBtn" onClick={deleteRpd}>
                             Delete files
                           </Button>
@@ -518,7 +518,7 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileCOC != "" ? (
+                        {fileCOC ? (
                           <Button onClick={deleteCOC} className="UploadBtn">
                             Delete files
                           </Button>
@@ -569,7 +569,7 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileNDA != "" ? (
+                        {fileNDA ? (
                           <Button onClick={deleteNDA} className="UploadBtn">
                             Delete files
                           </Button>
