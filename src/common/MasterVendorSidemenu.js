@@ -36,7 +36,7 @@ export const MasterVendorSidemenu = (props) => {
   const [vendorComDetails, setvendorComDetails] = useState([]);
   const [UserId, setUserId] = useState("");
   const [City, setCity] = useState();
-  const [Pincode, setPincode] = useState();
+  const [Post_Code, setPincode] = useState();
   const [state, setState] = useState();
   const [adminEmail, setAdminEmail] = useState();
 
@@ -59,7 +59,7 @@ export const MasterVendorSidemenu = (props) => {
     if (City) {
       setPincode(e);
       const id = vendorDetails?.filter((item) => {
-        return item.pinCode === e && item.City === City;
+        return item.Post_Code === e && item.City === City;
       });
 
       setUserId(id[0].userId);
@@ -68,7 +68,7 @@ export const MasterVendorSidemenu = (props) => {
       setPincode(e);
 
       const id = vendorDetails?.filter((item) => {
-        return item.pinCode === e;
+        return item.Post_Code === e;
       });
 
       setUserId(id[0].userId);
@@ -84,7 +84,7 @@ export const MasterVendorSidemenu = (props) => {
       });
       setCity(id[0].City);
 
-      setPincode(id[0].pincode);
+      setPincode(id[0].Post_Code);
     }
   };
   const handleCity = (e) => {
@@ -358,7 +358,7 @@ export const MasterVendorSidemenu = (props) => {
                           <FormControl sx={{ width: 200, ml: 6 }}>
                             <Select
                               native
-                              value={Pincode}
+                              value={Post_Code}
                               onChange={(e) => handlePincode(e.target.value)}
                               input={
                                 <OutlinedInput
@@ -377,9 +377,9 @@ export const MasterVendorSidemenu = (props) => {
                                       return (
                                         <option
                                           key={item.id}
-                                          value={item.pinCode}
+                                          value={item.Post_Code}
                                         >
-                                          {item.pinCode}
+                                          {item.Post_Code}
                                         </option>
                                       );
                                     })
@@ -387,9 +387,9 @@ export const MasterVendorSidemenu = (props) => {
                                     return (
                                       <option
                                         key={item.id}
-                                        value={item.pinCode}
+                                        value={item.Post_Code}
                                       >
-                                        {item.pinCode}
+                                        {item.Post_Code}
                                       </option>
                                     );
                                   })}

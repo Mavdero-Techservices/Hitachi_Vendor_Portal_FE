@@ -39,8 +39,8 @@ class apiService {
   getCountry() {
     return http.get('/getCountry');
   }
-  getStateAndcityByzipcode(code, pinCode) {
-    return http.get(`/getStateAndcityByzipcode/${code}/${pinCode}`);
+  getStateAndcityByzipcode(code, Post_Code) {
+    return http.get(`/getStateAndcityByzipcode/${code}/${Post_Code}`);
   }
   saveStatutoryDetail(data) {
     return axios.post('http://localhost:12707/saveStatutoryDetail', data);
@@ -214,5 +214,22 @@ class apiService {
   AllRejectVendorList() {
     return axios.get(`http://localhost:12707/AllRejectVendorList`);
   }
+  //ERP
+  getErpVendor_API() {
+    return http.get("/getErpVendor_API");
+  }
+  getErpVendor_APIById(No) {
+    return http.get(`/getErpVendor_APIById/${No}`);
+  }
+  postErpResourcePortalVendorlist(data) {
+    return http.post('/postErpResourcePortalVendorlist', data);
+  }
+  getErpResourcePortalVendorlist() {
+    return http.get("/getErpResourcePortalVendorlist");
+  }
+  getErpResourcePortalVendorlistById(Vendor_No) {
+    return http.get(`/getErpResourcePortalVendorlistById/${Vendor_No}`);
+  }
+
 }
 export default new apiService();

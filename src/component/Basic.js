@@ -31,8 +31,8 @@ export class Basic extends React.Component {
       Address_2: "",
       City: "",
       state: "",
-      country: "",
-      pinCode: "",
+      Country_Region_Code: "",
+      Post_Code: "",
       companyName: "",
       image: "",
       financeSpoccontactName: "",
@@ -85,7 +85,7 @@ export class Basic extends React.Component {
     this.setState({
       [name]: value,
     });
-    this.setState({ pinCode: e.target.value });
+    this.setState({ Post_Code: e.target.value });
   }
   mouseOut(e) {
     e.preventDefault();
@@ -93,9 +93,9 @@ export class Basic extends React.Component {
     this.setState({
       [name]: value,
     });
-    this.setState({ pinCode: e.target.value });
+    this.setState({ Post_Code: e.target.value });
     apiService
-      .getStateAndcityByzipcode(this.state.country, this.state.pinCode)
+      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
       .then((response) => {
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
@@ -143,8 +143,8 @@ export class Basic extends React.Component {
           Address_2: "",
           City: "",
           state: "",
-          country: "",
-          pinCode: "",
+          Country_Region_Code: "",
+          Post_Code: "",
           companyName: "",
           image: "",
         });
@@ -184,7 +184,7 @@ export class Basic extends React.Component {
     });
   };
   handleChange(e) {
-    this.setState({ country: e.target.value });
+    this.setState({ Country_Region_Code: e.target.value });
   }
   formValChange = (e) => {
     e.preventDefault();
@@ -203,8 +203,8 @@ export class Basic extends React.Component {
       Address_2: this.state.Address_2,
       City: this.state.City,
       state: this.state.state,
-      country: this.state.country,
-      pinCode: this.state.pinCode,
+      Country_Region_Code: this.state.Country_Region_Code,
+      Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
     };
@@ -283,8 +283,8 @@ export class Basic extends React.Component {
       Address_2: this.state.Address_2,
       City: this.state.City,
       state: this.state.state,
-      country: this.state.country,
-      pinCode: this.state.pinCode,
+      Country_Region_Code: this.state.Country_Region_Code,
+      Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
     };
@@ -540,6 +540,15 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => {});
   }
   componentDidMount() {
+   //erpTestAPi  
+    apiService.getErpVendor_API().then((res) => {
+      console.log("erp::",res);
+    }
+    )
+    apiService.getErpResourcePortalVendorlist().then((res) => {
+      console.log("getErpResourcePortalVendorlist::",res);
+    }
+    )
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });
@@ -596,8 +605,8 @@ export class Basic extends React.Component {
             Address_2: value.Address_2,
             City: value.City,
             state: value.state,
-            country: value.country,
-            pinCode: value.pinCode,
+            Country_Region_Code: value.Country_Region_Code,
+            Post_Code: value.Post_Code,
             image: value.image,
           });
         });
@@ -649,8 +658,8 @@ export class Basic extends React.Component {
             Address_2: value.Address_2,
             City: value.City,
             state: value.state,
-            country: value.country,
-            pinCode: value.pinCode,
+            Country_Region_Code: value.Country_Region_Code,
+            Post_Code: value.Post_Code,
             image: value.image,
           });
         });
@@ -688,7 +697,7 @@ export class Basic extends React.Component {
     });
     if (this.state.country && this.state.pinCode){
     apiService
-      .getStateAndcityByzipcode(this.state.country, this.state.pinCode)
+      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
       .then((response) => {
         this.setState({ getCityAndState: response.data.postalcodes });
       });
@@ -701,8 +710,8 @@ export class Basic extends React.Component {
       Address_2,
       City,
       state,
-      country,
-      pinCode,
+      Country_Region_Code,
+      Post_Code,
       contactName,
       companyName,
       image,
@@ -846,16 +855,16 @@ export class Basic extends React.Component {
                                     <MDBRow className="mb-4">
                                       <MDBCol>
                                         <div>
-                                          <label htmlFor="country">
+                                          <label htmlFor="Country_Region_Code">
                                             Country*
                                           </label>
                                         </div>
                                         <div>
                                           <select
                                             className="mb-4 VendorInput"
-                                            name="country"
-                                            id="country"
-                                            value={this.state.country}
+                                            name="Country_Region_Code"
+                                            id="Country_Region_Code"
+                                            value={this.state.Country_Region_Code}
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
@@ -870,7 +879,7 @@ export class Basic extends React.Component {
                                       </MDBCol>
                                       <MDBCol>
                                         <div>
-                                          <label htmlFor="pinCode">
+                                          <label htmlFor="Post_Code">
                                             Pincode*
                                           </label>
                                         </div>
@@ -878,9 +887,9 @@ export class Basic extends React.Component {
                                           <input
                                             type="text"
                                             className="mb-4 VendorInput"
-                                            name="pinCode"
-                                            id="pinCode"
-                                            value={pinCode}
+                                            name="Post_Code"
+                                            id="Post_Code"
+                                            value={Post_Code}
                                             onMouseLeave={this.mouseOut}
                                             onChange={this.mouseEnter}
                                           />

@@ -84,7 +84,7 @@ const rows = [
 
 function UserCreation() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const navigate = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -94,6 +94,7 @@ function UserCreation() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const [password, setPassword] = useState(null);
   const [getAllUser, setgetAllUser] = useState(null);
   const [subUserId, setsubUserId] = useState(null);
   const [values, setValues] = useState({
@@ -151,7 +152,14 @@ function UserCreation() {
     };
     apiService.UpdateMasterVendorSubUserById(user).then((response) => {
       apiService.getAllMasterVendorSubUser().then((res) => {
-        setgetAllUser(res.data.result);
+        const modifiedUsers = res.data.result.map((user) => {
+          return {
+            ...user,
+            password: "*****",
+          };
+        });
+        setgetAllUser(modifiedUsers);
+        setEditModalShow(false);
       });
     });
   };
@@ -166,13 +174,18 @@ function UserCreation() {
       Department: values.Department || undefined,
       emailId: values.emailId || undefined,
       mobileNo: values.mobileNo || undefined,
-      loginId: values.loginId || undefined,
-      password: values.password || undefined,
       roles: values.roles || undefined,
     };
     apiService.saveMasterVendor(user).then((response) => {
       apiService.getAllMasterVendorSubUser().then((res) => {
-        setgetAllUser(res.data.result);
+        const modifiedUsers = res.data.result.map((user) => {
+          return {
+            ...user,
+            password: "*****",
+          };
+        });
+        setgetAllUser(modifiedUsers);
+        setModalShow(false);
       });
     });
   };
@@ -186,8 +199,15 @@ function UserCreation() {
   }
   useEffect(() => {
     apiService.getAllMasterVendorSubUser().then((res) => {
-      setgetAllUser(res.data.result);
+      const modifiedUsers = res.data.result.map((user) => {
+        return {
+          ...user,
+          password: "*****",
+        };
+      });
+      setgetAllUser(modifiedUsers);
     });
+    console.log("password",password);
     let rejUsers = []
     const fetchData = async () => {
       await apiService.signupFindSubUserList(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
@@ -222,7 +242,13 @@ function UserCreation() {
     }).then((ClearData) => {
       apiService.deleteMasterVendorSubUserById(id).then((res) => {
         apiService.getAllMasterVendorSubUser().then((res) => {
-          setgetAllUser(res.data.result);
+          const modifiedUsers = res.data.result.map((user) => {
+            return {
+              ...user,
+              password: "*****",
+            };
+          });
+          setgetAllUser(modifiedUsers);
         });
       });
     });
@@ -255,6 +281,7 @@ function UserCreation() {
                     <AddIcon sx={{ color: "black" }} /> Add
                   </Button>
                   <Modal
+                  dialogClassName="custom-modal"
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                     aria-labelledby="contained-modal-title-vcenter"
@@ -328,30 +355,6 @@ function UserCreation() {
                           <Col xs={12} md={6}>
                             <input
                               type="text"
-                              id="LoginId"
-                              className="swal2-input"
-                              name="loginId"
-                              value={values.loginId}
-                              onChange={handleChange("loginId")}
-                              placeholder="LoginId"
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col xs={12} md={6}>
-                            <input
-                              type="text"
-                              id="Password"
-                              className="swal2-input"
-                              name="password"
-                              value={values.password}
-                              onChange={handleChange("password")}
-                              placeholder="Password"
-                            />
-                          </Col>
-                          <Col xs={12} md={6}>
-                            <input
-                              type="text"
                               id="roles"
                               className="swal2-input"
                               name="roles"
@@ -361,6 +364,7 @@ function UserCreation() {
                             ></input>
                           </Col>
                         </Row>
+                      
                       </Container>
                     </Modal.Body>
                     <Modal.Footer>
@@ -428,6 +432,7 @@ function UserCreation() {
                                 sx={{ color: "black" }}
                               />
                               <Modal
+                              dialogClassName="custom-modal"
                                 show={editmodalShow}
                                 onHide={() => setEditModalShow(false)}
                                 aria-labelledby="contained-modal-title-vcenter"
@@ -573,7 +578,7 @@ function UserCreation() {
 
                 {getAllUser != null ? (
                   <TablePagination
-                    rowsPerPageOptions={[5, 10]}
+                    rowsPerPageOptions={[5]}
                     component="div"
                     count={getAllUser.length}
                     rowsPerPage={rowsPerPage}

@@ -132,17 +132,17 @@ const ContactTeam = () => {
           if (key === "companyName") {
             basicInfoArray.push("companyName");
           }
-          if (key === "country") {
+          if (key === "Country_Region_Code") {
             basicInfoArray.push("country");
           }
-          if (key === "pinCode") {
+          if (key === "Post_Code") {
             basicInfoArray.push("pinCode");
           }
           if (key === "state") {
             basicInfoArray.push("state");
           }
         }
-        if (value && key === "pinCode") {
+        if (value && key === "Post_Code") {
           if (!numberValidation.test(value) || value.length !== 6)
             basicInfoArray.push("Pincode is invalid");
         }
@@ -374,6 +374,25 @@ const ContactTeam = () => {
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
     };
+    const ERPData={
+      contactName1: values.contactName1 || undefined,
+      emailId1: values.emailId1 || undefined,
+      contactNumber1: values.contactNumber1 || undefined,
+      contactName2: values.contactName2 || undefined,
+      emailId2: values.emailId2 || undefined,
+      contactNumber2: values.contactNumber2 || undefined,
+      contactName3: values.contactName3 || undefined,
+      emailId3: values.emailId3 || undefined,
+      contactNumber3: values.contactNumber3 || undefined,
+      Address: basicInfo[0].Address,
+      Address_2:basicInfo[0].Address_2,
+      City: basicInfo[0].City,
+      state:basicInfo[0].state,
+      Country_Region_Code: basicInfo[0].Country_Region_Code,
+      Post_Code: basicInfo[0].Post_Code,
+      companyName:basicInfo[0].companyName,
+      
+    };
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
         if (response.data.status === "success") {
@@ -398,9 +417,16 @@ const ContactTeam = () => {
             apiService
               .updateVendordetail(userkey, basicInfo[0])
               .then((response) => {
+                
+                apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+
+                })
                 Swal.fire(
                   "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
                 );
+                apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+
+                })
               });
           } else {
             Swal.fire({
@@ -503,6 +529,10 @@ const ContactTeam = () => {
               apiService
                 .updateVendordetail(userkey, basicInfo[0])
                 .then((response) => {
+                  console.log("erp3::")
+                  apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+
+                  })
                   Swal.fire(
                     "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
                   );
@@ -557,10 +587,10 @@ const ContactTeam = () => {
           if (key === "companyName") {
             basicInfoArray.push("companyName");
           }
-          if (key === "country") {
+          if (key === "Country_Region_Code") {
             basicInfoArray.push("country");
           }
-          if (key === "pinCode") {
+          if (key === "Post_Code") {
             basicInfoArray.push("pinCode");
           }
           if (key === "state") {
@@ -816,6 +846,7 @@ const ContactTeam = () => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
+       
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"

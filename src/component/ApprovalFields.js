@@ -14,6 +14,7 @@ function ApprovalFields(props) {
   const [editStatData, seteditStatData] = useState([]);
   const [editFinanceData, seteditFinanceData] = useState([]);
   const [editContactData, seteditContactData] = useState([]);
+ 
 
   useEffect(() => {
     apiService.getAllCollection(props.userid).then((res) => {
@@ -24,10 +25,10 @@ function ApprovalFields(props) {
         setaddress1(res.data.basicInfo[0].Address);
         setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
-        setcountry(res.data.basicInfo[0].country);
+        setcountry(res.data.basicInfo[0].Country_Region_Code);
         setstate(res.data.basicInfo[0].state);
         setcity(res.data.basicInfo[0].City);
-        setpinCode(res.data.basicInfo[0].pinCode);
+        setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
       } else {
         setaddress1("");
@@ -240,10 +241,10 @@ function ApprovalFields(props) {
   const [Address, setaddress1] = useState("");
   const [Address_2, setaddress2] = useState("");
   const [companyName, setcompanyName] = useState("");
-  const [country, setcountry] = useState("");
+  const [Country_Region_Code, setcountry] = useState("");
   const [state, setstate] = useState("");
   const [City, setcity] = useState("");
-  const [pinCode, setpinCode] = useState("");
+  const [Post_Code, setpinCode] = useState("");
   const [logo, setlogo] = useState("");
 
   const [fs_ContactName, setfs_ContactName] = useState("");
@@ -1137,7 +1138,7 @@ function ApprovalFields(props) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
-    if (country.length === 0) {
+    if (Country_Region_Code.length === 0) {
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
@@ -1146,7 +1147,7 @@ function ApprovalFields(props) {
     if (City.length === 0) {
       setcityErr("City is required");
     }
-    if (pinCode.length === 0) {
+    if (Post_Code.length === 0) {
       setpinCodeErr("Pincode is required");
     }
     if (!logo) {
@@ -1289,10 +1290,10 @@ function ApprovalFields(props) {
     const userId = props.userid;
     console.log("companyNameErr", companyName);
     console.log("address1Err", Address);
-    console.log("countryErr", country);
+    console.log("countryErr", Country_Region_Code);
     console.log("stateErr", state);
     console.log("cityErr", City);
-    console.log("pinCodeErr", pinCode);
+    console.log("pinCodeErr", Post_Code);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
     console.log("fs_DesignationErr", fs_Designation);
@@ -1338,10 +1339,10 @@ function ApprovalFields(props) {
     if (
       companyName &&
       Address &&
-      country &&
+      Country_Region_Code &&
       state &&
       City &&
-      pinCode &&
+      Post_Code &&
       fs_ContactName &&
       fs_Designation &&
       fs_PhoneNo &&
@@ -1466,7 +1467,7 @@ function ApprovalFields(props) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
-    if (country.length === 0) {
+    if (Country_Region_Code.length === 0) {
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
@@ -1475,7 +1476,7 @@ function ApprovalFields(props) {
     if (City.length === 0) {
       setcityErr("City is required");
     }
-    if (pinCode.length === 0) {
+    if (Post_Code.length === 0) {
       setpinCodeErr("Pincode is required");
     }
     if (!logo) {
@@ -1618,10 +1619,10 @@ function ApprovalFields(props) {
     const userId = props.userid;
     console.log("companyNameErr", companyName);
     console.log("address1Err", Address);
-    console.log("countryErr", country);
+    console.log("countryErr", Country_Region_Code);
     console.log("stateErr", state);
     console.log("cityErr", City);
-    console.log("pinCodeErr", pinCode);
+    console.log("pinCodeErr", Post_Code);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
     console.log("fs_DesignationErr", fs_Designation);
@@ -1667,10 +1668,10 @@ function ApprovalFields(props) {
     if (
       companyName &&
       Address &&
-      country &&
+      Country_Region_Code &&
       state &&
       City &&
-      pinCode &&
+      Post_Code &&
       fs_ContactName &&
       fs_Designation &&
       fs_PhoneNo &&
@@ -1713,7 +1714,22 @@ function ApprovalFields(props) {
       data.append("level1Status", "approved");
       data.append("userId", event);
       apiService.saveApproval(data).then((response) => {
+        //erpPost
         if (response) {
+          const ERPData={
+            Address: Address,
+            Address_2:Address_2,
+            City: City,
+            state:state,
+            Country_Region_Code: Country_Region_Code,
+            Post_Code: Post_Code,
+            companyName: companyName,
+            Ticket_ID:Math.floor(Math.random() * 1000),
+            Vendor_No:"VLOC-3888",
+          };
+          apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+            console.log("saved",data);
+          })
           Swal.fire({
             title: "Data saved",
             icon: "success",
@@ -1787,10 +1803,9 @@ function ApprovalFields(props) {
       setcompanyNameErr("Company name is required");
     }
     if (Address.length === 0) {
-      console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
-    if (country.length === 0) {
+    if (Country_Region_Code.length === 0) {
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
@@ -1799,7 +1814,7 @@ function ApprovalFields(props) {
     if (City.length === 0) {
       setcityErr("City is required");
     }
-    if (pinCode.length === 0) {
+    if (Post_Code.length === 0) {
       setpinCodeErr("Pincode is required");
     }
     if (!logo) {
@@ -1942,10 +1957,10 @@ function ApprovalFields(props) {
     const userId = props.userid;
     console.log("companyNameErr", companyName);
     console.log("address1Err", Address);
-    console.log("countryErr", country);
+    console.log("countryErr", Country_Region_Code);
     console.log("stateErr", state);
     console.log("cityErr", City);
-    console.log("pinCodeErr", pinCode);
+    console.log("pinCodeErr", Post_Code);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
     console.log("fs_DesignationErr", fs_Designation);
@@ -1991,12 +2006,12 @@ function ApprovalFields(props) {
     if (
       companyName &&
       Address &&
-      country &&
+      Country_Region_Code &&
       state &&
       City &&
-      pinCode &&
+      Post_Code &&
       fs_ContactName &&
-      fs_Designation &&
+      fs_Designation && 
       fs_PhoneNo &&
       fs_Email &&
       mngs_ContactName &&
@@ -2038,10 +2053,10 @@ function ApprovalFields(props) {
       data.append("Address", Address);
       data.append("Address_2",Address_2);
       data.append("companyName", companyName);
-      data.append("country", country);
+      data.append("Country_Region_Code",Country_Region_Code);
       data.append("state", state);
-      data.append("city", City);
-      data.append("pinCode", pinCode);
+      data.append("City", City);
+      data.append("Post_Code", Post_Code);
       data.append("image", logo);
       data.append("vendorType", vendorType);
       data.append("vendorManager", acManager);
@@ -2145,7 +2160,7 @@ function ApprovalFields(props) {
       console.log("hello2222");
       setaddress1Err("Address 1 is required");
     }
-    if (country.length === 0) {
+    if (Country_Region_Code.length === 0) {
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
@@ -2154,7 +2169,7 @@ function ApprovalFields(props) {
     if (City.length === 0) {
       setcityErr("City is required");
     }
-    if (pinCode.length === 0) {
+    if (Post_Code.length === 0) {
       setpinCodeErr("Pincode is required");
     }
     if (!logo) {
@@ -2297,10 +2312,10 @@ function ApprovalFields(props) {
     const userId = props.userid;
     console.log("companyNameErr", companyName);
     console.log("address1Err", Address);
-    console.log("countryErr", country);
+    console.log("countryErr", Country_Region_Code);
     console.log("stateErr", state);
     console.log("cityErr", City);
-    console.log("pinCodeErr", pinCode);
+    console.log("pinCodeErr", Post_Code);
     console.log("logoErr", logo);
     console.log("fs_ContactNameErr", fs_ContactName);
     console.log("fs_DesignationErr", fs_Designation);
@@ -2346,10 +2361,10 @@ function ApprovalFields(props) {
     if (
       companyName &&
       Address &&
-      country &&
+      Country_Region_Code &&
       state &&
       City &&
-      pinCode &&
+      Post_Code &&
       fs_ContactName &&
       fs_Designation &&
       fs_PhoneNo &&
@@ -2393,10 +2408,10 @@ function ApprovalFields(props) {
       data.append("Address", Address);
       data.append("Address_2",Address_2);
       data.append("companyName", companyName);
-      data.append("country", country);
+      data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
-      data.append("city", City);
-      data.append("pinCode", pinCode);
+      data.append("City", City);
+      data.append("Post_Code", Post_Code);
       data.append("image", logo);
       data.append("vendorType", vendorType);
       data.append("vendorManager", acManager);
@@ -2552,7 +2567,7 @@ function ApprovalFields(props) {
                     type="text"
                     className="mb-2 inputbox"
                     name="country"
-                    value={country}
+                    value={Country_Region_Code}
                     onChange={(e) => validatecountry(e)}
                   />
                   <span className="formError">{countryErr}</span>
@@ -2580,12 +2595,12 @@ function ApprovalFields(props) {
                   <span className="formError">{cityErr}</span>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="pinCode">PinCode</label>
+                  <label htmlFor="Post_Code">PinCode</label>
                   <input
                     type="text"
                     className="mb-2 inputbox"
-                    name="pinCode"
-                    value={pinCode}
+                    name="Post_Code"
+                    value={Post_Code}
                     onChange={(e) => validatepinCode(e)}
                   />
                   <span className="formError">{pinCodeErr}</span>
@@ -2927,7 +2942,7 @@ function ApprovalFields(props) {
                   ""
                 )}
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="pinCode">Master vendor email id*</label>
+                  <label htmlFor="Post_Code">Master vendor email id*</label>
                   <input
                     type="text"
                     className="mb-2 inputbox"

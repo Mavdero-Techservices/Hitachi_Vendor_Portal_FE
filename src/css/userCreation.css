@@ -52,3 +52,13 @@
     width: 45vw !important; 
     max-width:45vw !important;
 }
+.modal-content {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+  }
+  .custom-modal.modal-dialog {
+    width: 90%!important;
+    max-width: 1000px!important; 
+  }
+  
