@@ -230,6 +230,8 @@ export default function Signin(props) {
   if (redirectToReferrer) {
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
+    } else if (role === "vendor" && verifiedUser === "approved"){
+      return <Navigate to={"/documents"} />;
     }
     if (role === "user" && verifiedUser === "approved") {
       if (editUser.length <= 0) {

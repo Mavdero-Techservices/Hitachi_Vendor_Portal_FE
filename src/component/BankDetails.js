@@ -411,8 +411,8 @@ const BankDetails = (props) => {
                   </div>
                 )}
               </div>
-              <div className="col-md-4 col-sm-12 col-xs-12 my-auto">
-                {EditBank && editValuefileBank != "" ? (
+              <div className="col-md-4 col-sm-12 col-xs-12 ">
+                {fileBank !== "" && fileBank !== undefined && fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}

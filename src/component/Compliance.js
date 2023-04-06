@@ -422,7 +422,7 @@ const ComplianceDetails = () => {
                       <Col sm={6}>
                         {EditCompliance ? (
                           <div>
-                            {editVlauefileRPD != "" ? (
+                            {editVlauefileRPD ? (
                               <div>
                                 <span>File name:{editVlauefileRPD}</span>
                               </div>
@@ -497,7 +497,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && editVlauefileCOC != "" ? (
+                        {editVlauefileCOC ? (
                           <span>File name:{editVlauefileCOC}</span>
                         ) : (
                           <div>
@@ -548,7 +548,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && editVlauefileNDA != "" ? (
+                        { editVlauefileNDA? (
                           <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>

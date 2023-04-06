@@ -474,7 +474,7 @@ const FinancialDetails = () => {
                 Financial Data
                 {EditfinancialDetail ? (
                   <div>
-                    {editfileFD != "" ? (
+                    {editfileFD ? (
                       <div>
                         <span>File name:{editfileFD}</span>
                       </div>
@@ -515,7 +515,7 @@ const FinancialDetails = () => {
                 )}
               </div>
               <div className="col-sm-4 col-xs-12 my-auto">
-                {EditfinancialDetail && editfileFD != "" ? (
+                {fileFD !== "" && fileFD !== null && fileFD !== undefined ? (
                   <button
                     type="button"
                     onClick={deleteFile1}
@@ -542,7 +542,7 @@ const FinancialDetails = () => {
                 Financial Data 2
                 {EditfinancialDetail ? (
                   <div>
-                    {editfileFD2 != "" ? (
+                    {editfileFD2 ? (
                       <div>
                         <span>File name:{editfileFD2}</span>
                       </div>
@@ -585,7 +585,7 @@ const FinancialDetails = () => {
                 )}
               </div>
               <div className="col-sm-4 col-xs-12 my-auto">
-                {EditfinancialDetail && editfileFD2 != "" ? (
+                {fileFD2 !== "" && fileFD2 !== null && fileFD2 !== undefined ? (
                   <button
                     type="button"
                     onClick={deleteFile2}
