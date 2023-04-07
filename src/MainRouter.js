@@ -4,7 +4,7 @@ import { Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SignUp from './component/signUp';
 import Login from './component/login';
-import { AdminRoute, UserRoute, CommonRoute } from './auth/PrivateRoute';
+import { AdminRoute, UserRoute, CommonRoute,FinanceRoute,OtherRoute } from './auth/PrivateRoute';
 import Navbar1 from './common/navbar';
 import Spinner from './common/spinner';
 import Basic from './component/Basic.js';
@@ -93,6 +93,16 @@ const MainRouter = () => {
           />
           <Route path="/bank" element={<Bank user={state.userInfo} />} />{' '}
         </Route>
+          {/*FinancialRoutes */} 
+        <Route element={<FinanceRoute />}>
+        <Route path="/documents" element={<Documents />} />
+        <Route path="/documents/:vId" element={<Documents />} />
+          </Route>
+             {/*otherRoutes */}
+          <Route element={<OtherRoute />}>
+          <Route path="/poTeam" element={<PoApproval />} />
+          </Route>
+          
         <Route path="/" element={<NewUser />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
