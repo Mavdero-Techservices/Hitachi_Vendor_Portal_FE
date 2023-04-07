@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
@@ -22,13 +22,12 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import DeleteIcon from "@mui/icons-material/Delete";
-import TablePagination from "@mui/material/TablePagination";
+import Autocomplete from "@mui/material/Autocomplete";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import TablePagination from "@mui/material/TablePagination";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { useParams } from "react-router-dom";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -39,7 +38,6 @@ function createData(Name) {
   };
 }
 function UserAccess() {
-  const params = useParams();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -53,9 +51,7 @@ function UserAccess() {
   };
   const [getAllUser, setgetAllUser] = useState(null);
   const [getAllvendorcode, setgetAllvendorcode] = useState(null);
-  const [vendorcode, setvendorcode] = useState(null);
   const [subUserId, setsubUserId] = useState(null);
-  const [separateVendorCode, setseparateVendorCode] = useState(null);
   const [values, setValues] = useState({
     Name: "",
     city_vendorCode_Pincode: "",
@@ -63,62 +59,22 @@ function UserAccess() {
   const [modalShow, setModalShow] = useState(false);
   const [Edit, setEdit] = useState({});
   const [editmodalShow, setEditModalShow] = useState(false);
+  const [vcode, setVcode] = useState();
+  const [vcityPincode, setvcityPincode] = useState();
+
   const theme = createTheme({
     Link: {
       textTransform: "none",
     },
   });
-  // const [options, setOptions] = useState(getAllvendorcode);
-  const [options, setOptions] = useState([
-    {
-      No: "A0029",
-    },
-    {
-      No: "A0056",
-    },
-  ]);
-
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const handleOptionSelect = (event, selectedOptions) => {
-    setOptions(
-      options.map((option) =>
-        selectedOptions.find(
-          (selectedOption) => selectedOption.No === option.No
-        )
-          ? { ...option, checked: true }
-          : { ...option, checked: false }
-      )
-    );
-  };
-
-  const renderOption = (option, { selected }) => (
-    <React.Fragment>
-      <Checkbox checked={option.checked} />
-      {option.label}
-    </React.Fragment>
-  );
-
-  const autoCompleteRef = useRef(null);
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [currentRowData, setCurrentRowData] = useState(null);
-
-  const handleSelectedValues = (event, value) => {
-    event.preventDefault();
-    const updatedOptions = options.map((option) => {
-      if (
-        value.find((selectedOption) => selectedOption.value === option.value)
-      ) {
-        return { ...option, checked: true };
-      } else {
-        return { ...option, checked: false };
-      }
-    });
-    setOptions(updatedOptions);
-    setSelectedValues(value);
-  };
-
-  const handleRowDataChange = (rowData) => {
-    setCurrentRowData(rowData);
+  const handleChange = (name, value, id) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [id]: {
+        ...prevValues[id],
+        [name]: value,
+      },
+    }));
   };
 
   function editMasterVendor(id, Name) {
@@ -127,53 +83,42 @@ function UserAccess() {
       [id]: true,
     }));
   }
-  function UpdateMasterVendor(id) {
-    const arrOfselectedValues = selectedValues
-      ?.map((value) => value.No)
-      .join(",");
+
+  let vendorCode = vcode;
+
+  function UpdateMasterVendor(id, Name, city_vendorCode_Pincode) {
     const user = {
       SubUserId: id || undefined,
-      city_vendorCode_Pincode: arrOfselectedValues || undefined,
+      city_vendorCode_Pincode: city_vendorCode_Pincode || undefined,
+      vendorCode: vendorCode || undefined,
     };
     apiService.UpdateMasterVendorSubUserById(user).then((response) => {
       apiService.getAllMasterVendorSubUser().then((res) => {
         setEdit(true);
         setgetAllUser(res.data.result);
       });
+      apiService.getAllVendorSubUser().then((res) => {
+        setvcityPincode(res.data.result)
+      });
     });
   }
-  // const city_vendorCode_PincodeNo = getAllvendorcode;
-  const city_vendorCode_PincodeNo = [
-    {
-      No: "A0029",
-    },
-    {
-      No: "A0056",
-    },
-  ];
   useEffect(() => {
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
-      const valuesString = res.data.result?.map(
-        (value) => value.city_vendorCode_Pincode
-      );
-      const mappedArray = valuesString.map((valueString) => {
-        const values2 = valueString.split(",");
-        return values2;
-      });
-      setOptions(
-        options.map((option) => ({
-          ...option,
-          checked: mappedArray.includes(option.No),
-        }))
-      );
     });
-    apiService
-      .getErpVendor_APIByParent_Vendor_Code(params.Parent_Vendor_Code)
-      .then((vendorCode) => {
-        setgetAllvendorcode(vendorCode.data);
-      });
+    apiService.getAllMasterVendorUserAccess().then((vendorCode) => {
+      setgetAllvendorcode(vendorCode.data.result);
+    });
+
+    apiService.getAllVendorSubUser().then((res) => {
+      setvcityPincode(res.data.result)
+    });
   }, []);
+
+  const handleVendorCodeChange = (event, value, data) => {
+    setVcode(value);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: "#f3f4f7" }}>
@@ -213,58 +158,55 @@ function UserAccess() {
                             <TableCell align="center">{row.Name}</TableCell>
 
                             <TableCell align="center">
-                              <div>
-                                {!Edit[row.id] &&
-                                row.city_vendorCode_Pincode ? (
-                                  <p>{row.city_vendorCode_Pincode}</p>
-                                ) : (
-                                  <Autocomplete
-                                    clearOnBlur={false}
-                                    ref={autoCompleteRef}
-                                    multiple
-                                    options={city_vendorCode_PincodeNo}
-                                    disableCloseOnSelect
-                                    getOptionLabel={(option) => option.No}
-                                    renderOption={(
-                                      props,
-                                      option,
-                                      { selected }
-                                    ) => (
-                                      <li {...props}>
-                                        <Checkbox
-                                          icon={icon}
-                                          checkedIcon={checkedIcon}
-                                          style={{ marginRight: 8 }}
-                                          checked={
-                                            selected ||
-                                            selectedValues?.includes(option.No)
-                                          }
-                                        />
-                                        {option.No}
-                                      </li>
-                                    )}
-                                    style={{ width: 500 }}
-                                    onChange={handleSelectedValues}
-                                    onInputChange={(event, value) => {
-                                      if (autoCompleteRef.current) {
-                                        handleRowDataChange(
-                                          autoCompleteRef.current?.inputValue
-                                        );
-                                      }
-                                    }}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        label="City_vendor_Pincode"
-                                        placeholder="City_vendor_Pincode"
+                              {!Edit[row.id] && row.city_vendorCode_Pincode ? (                                
+                                <>
+                                {vcityPincode?.filter((vcity) => {
+                                  return vcity.SubUserId === row.SubUserId
+                                }).map((vpincode, key) => (
+                                  <p key={key}>{vpincode.vendorCode + "_" + vpincode.city + "_" + vpincode.Pincode}</p>
+                                ))}
+                                </>
+                              ) : (
+                                <Autocomplete
+                                  multiple
+                                  id="checkboxes-tags-demo"
+                                  options={getAllvendorcode}
+                                  disableCloseOnSelect
+                                  getOptionLabel={(option) =>
+                                    option.vendorCode +
+                                    "_" +
+                                    option.city +
+                                    "_" +
+                                    option.Pincode
+                                  }
+                                  renderOption={(
+                                    props,
+                                    option,
+                                    { selected }
+                                  ) => (
+                                    <li {...props}>
+                                      <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={selected}
                                       />
-                                    )}
-                                    isOptionEqualToValue={(option, value) =>
-                                      option.No === value.No
-                                    }
-                                  />
-                                )}
-                              </div>
+                                      {option.vendorCode +
+                                        "_" +
+                                        option.city +
+                                        "_" +
+                                        option.Pincode}
+                                    </li>
+                                  )}
+                                  style={{ width: 400, marginLeft: 100 }}
+                                  onChange={(event, value) =>
+                                    handleVendorCodeChange(event, value)
+                                  }
+                                  renderInput={(params) => (
+                                    <TextField {...params} label="Checkboxes" />
+                                  )}
+                                />
+                              )}
                             </TableCell>
 
                             <TableCell align="left">
@@ -272,10 +214,7 @@ function UserAccess() {
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    editMasterVendor(
-                                      row.id,
-                                      row.city_vendorCode_Pincode
-                                    )
+                                    editMasterVendor(row.id, row.Name)
                                   }
                                   className="btn m-2 uploadFile"
                                 >
@@ -285,7 +224,11 @@ function UserAccess() {
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    UpdateMasterVendor(row.SubUserId)
+                                    UpdateMasterVendor(
+                                      row.SubUserId,
+                                      row.Name,
+                                      values[row.id]?.city_vendorCode_Pincode
+                                    )
                                   }
                                   className="btn m-2 uploadFile"
                                 >
@@ -302,7 +245,7 @@ function UserAccess() {
                   <TablePagination
                     rowsPerPageOptions={[5]}
                     component="div"
-                    count={getAllUser?.length}
+                    count={getAllUser.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

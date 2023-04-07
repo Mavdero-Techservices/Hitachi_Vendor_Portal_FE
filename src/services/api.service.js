@@ -157,6 +157,10 @@ class apiService {
     return http.get('/getAllMasterVendorSubUser');
   }
 
+  getAllVendorSubUser() {
+    return http.get('/getAllVendorSubUser');
+  }
+
   saveMasterVendorUserAccess(data) {
     return http.post('/saveMasterVendorUserAccess', data);
   }
