@@ -230,6 +230,8 @@ class apiService {
   getErpResourcePortalVendorlistById(Vendor_No) {
     return http.get(`/getErpResourcePortalVendorlistById/${Vendor_No}`);
   }
-
+  getErpVendor_APIByParent_Vendor_Code(Parent_Vendor_Code) {
+    return http.get(`/getErpVendor_APIByParent_Vendor_Code/${Parent_Vendor_Code}`);
+  }
 }
 export default new apiService();
