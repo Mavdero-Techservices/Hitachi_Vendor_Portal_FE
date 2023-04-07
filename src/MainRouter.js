@@ -64,6 +64,7 @@ const MainRouter = () => {
         <Route element={<AdminRoute />}>
           <Route path="/userCreation" element={<UserCreation />} />
           <Route path="/UserAccess" element={<UserAccess />} />
+          <Route path="/UserAccess/:Parent_Vendor_Code" element={<UserAccess />} />
         </Route>
         {/* userRoutes */}
         <Route element={<UserRoute />}></Route>

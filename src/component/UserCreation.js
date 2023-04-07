@@ -23,8 +23,8 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TablePagination from "@mui/material/TablePagination";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -189,14 +189,10 @@ function UserCreation() {
       });
     });
   };
-  const CustomToastWithLink = (users) => (
-    <div>
-      Rejected users {users}
-    </div>
-  );
+  const CustomToastWithLink = (users) => <div>Rejected users {users}</div>;
   const onMove = (id) => {
-    navigate(`/basic/${id}`)
-  }
+    navigate(`/basic/${id}`);
+  };
   useEffect(() => {
     apiService.getAllMasterVendorSubUser().then((res) => {
       const modifiedUsers = res.data.result.map((user) => {
@@ -207,34 +203,39 @@ function UserCreation() {
       });
       setgetAllUser(modifiedUsers);
     });
-    console.log("password",password);
-    let rejUsers = []
+    let rejUsers = [];
     const fetchData = async () => {
-      await apiService.signupFindSubUserList(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-        rejUsers = res.data.result
-      });
+      await apiService
+        .signupFindSubUserList(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          rejUsers = res.data.result;
+        });
 
       if (rejUsers.length > 0) {
         await apiService.AllRejectVendorList().then((res) => {
-
           let arr = res.data.result.filter(function (e) {
-            return rejUsers.find((item) => (item.userId === e.userId))
+            return rejUsers.find((item) => item.userId === e.userId);
           });
           if (arr) {
             arr.forEach((item) => {
-              toast.warn("Rejected " + item.userId, { onClick: () => { onMove(item.userId) }, autoClose: false, position: 'top-right' });
-            })
+              toast.warn("Rejected " + item.userId, {
+                onClick: () => {
+                  onMove(item.userId);
+                },
+                autoClose: false,
+                position: "top-right",
+              });
+            });
           }
-        })
-      };
-
-    }
-    fetchData()
-
+        });
+      }
+    };
+    fetchData();
   }, []);
 
   const deleteRecord = (id) => {
-    console.log("id::", id);
     Swal.fire({
       title: "Are You sure You want to delete?",
       icon: "warning",
@@ -281,7 +282,7 @@ function UserCreation() {
                     <AddIcon sx={{ color: "black" }} /> Add
                   </Button>
                   <Modal
-                  dialogClassName="custom-modal"
+                    dialogClassName="custom-modal"
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                     aria-labelledby="contained-modal-title-vcenter"
@@ -353,18 +354,19 @@ function UserCreation() {
                             />
                           </Col>
                           <Col xs={12} md={6}>
-                            <input
-                              type="text"
+                            <select
                               id="roles"
                               className="swal2-input"
                               name="roles"
                               value={values.roles}
                               onChange={handleChange("roles")}
-                              placeholder="roles"
-                            ></input>
+                            >
+                              <option value="">Select a role</option>
+                              <option value="financial">Financial</option>
+                              <option value="other">Other</option>
+                            </select>
                           </Col>
                         </Row>
-                      
                       </Container>
                     </Modal.Body>
                     <Modal.Footer>
@@ -377,9 +379,7 @@ function UserCreation() {
                     </Modal.Footer>
                   </Modal>
                 </div>
-                <div className="App">
-
-                </div>
+                <div className="App"></div>
               </div>
               <Box sx={{ mt: 2, height: 350, width: "100%" }}>
                 <TableContainer component={Paper}>
@@ -420,7 +420,6 @@ function UserCreation() {
                       )
                       ?.map((row) => (
                         <TableBody>
-
                           <TableRow key={row.SubUserId}>
                             <TableCell component="th" scope="row">
                               <EditIcon
@@ -432,7 +431,7 @@ function UserCreation() {
                                 sx={{ color: "black" }}
                               />
                               <Modal
-                              dialogClassName="custom-modal"
+                                dialogClassName="custom-modal"
                                 show={editmodalShow}
                                 onHide={() => setEditModalShow(false)}
                                 aria-labelledby="contained-modal-title-vcenter"
@@ -528,15 +527,21 @@ function UserCreation() {
                                         />
                                       </Col>
                                       <Col xs={12} md={6}>
-                                        <input
-                                          type="text"
+                                        <select
                                           id="roles"
                                           className="swal2-input"
                                           name="roles"
                                           value={values.roles}
                                           onChange={handleChange("roles")}
-                                          placeholder="roles"
-                                        ></input>
+                                        >
+                                          <option value="">
+                                            Select a role
+                                          </option>
+                                          <option value="financial">
+                                            Financial
+                                          </option>
+                                          <option value="other">Other</option>
+                                        </select>
                                       </Col>
                                     </Row>
                                   </Container>
@@ -564,17 +569,11 @@ function UserCreation() {
                             <TableCell align="center">{row.password}</TableCell>
                             <TableCell align="center">{row.roles}</TableCell>
                           </TableRow>
-
-
                         </TableBody>
-
                       ))}
                   </Table>
-
                 </TableContainer>
-                <ToastContainer
-
-                />
+                <ToastContainer />
 
                 {getAllUser != null ? (
                   <TablePagination
@@ -587,7 +586,6 @@ function UserCreation() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 ) : null}
-
               </Box>
             </Container>
           </Box>
