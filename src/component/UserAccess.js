@@ -170,7 +170,7 @@ function UserAccess() {
                                 <Autocomplete
                                   multiple
                                   id="checkboxes-tags-demo"
-                                  options={getAllvendorcode}
+                                  options={getAllvendorcode ? getAllvendorcode : ""}
                                   disableCloseOnSelect
                                   getOptionLabel={(option) =>
                                     option.vendorCode +
@@ -210,7 +210,7 @@ function UserAccess() {
                             </TableCell>
 
                             <TableCell align="left">
-                              {!Edit[row.id] && row.city_vendorCode_Pincode ? (
+                              {!Edit[row.id] ? (
                                 <button
                                   type="button"
                                   onClick={() =>
