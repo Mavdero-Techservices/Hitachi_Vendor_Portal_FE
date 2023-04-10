@@ -43,6 +43,7 @@ export default function Signin(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [role, setRole] = useState();
+  const [userName, setUserName] = useState();
   const [verifiedUser, setverifiedUser] = useState();
   const [userId, setuserId] = useState();
   const [Validation, setValidation] = useState();
@@ -147,6 +148,7 @@ export default function Signin(props) {
         }
         const details = data?.result;
         setValidation(data);
+        setUserName(data?.result?.userName);
         setRole(data?.result?.role);
         setverifiedUser(data?.result?.verifiedUser);
         if (data === "invalid user") {
@@ -230,8 +232,8 @@ export default function Signin(props) {
   if (redirectToReferrer) {
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
-    } else if (role === "vendor" && verifiedUser === "approved"){
-      return <Navigate to={"/documents"} />;
+    } else if (role === "other"){
+      return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "user" && verifiedUser === "approved") {
       if (editUser.length <= 0) {

@@ -94,10 +94,10 @@ const MainRouter = () => {
           <Route path="/bank" element={<Bank user={state.userInfo} />} />{' '}
         </Route>
           {/*FinancialRoutes */} 
-        <Route element={<FinanceRoute />}>
+        {/* <Route element={<FinanceRoute />}>
         <Route path="/documents" element={<Documents />} />
         <Route path="/documents/:vId" element={<Documents />} />
-          </Route>
+          </Route> */}
              {/*otherRoutes */}
           <Route element={<OtherRoute />}>
           <Route path="/poTeam" element={<PoApproval />} />
@@ -136,8 +136,13 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
-        <Route path="/documents" element={<Documents />} />
-        <Route path="/documents/:vId" element={<Documents />} />
+        {/*otherRoutes */}
+        <Route element={<OtherRoute />}>
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/documents/:vId" element={<Documents />} />
+        </Route>
+        {/*otherRoutes */}
+       
         <Route path="/acStatement" element={<AccountStatements />} />
         <Route path="/poTeam" element={<PoApproval />} />
         <Route path="/poApproved" element={<PoApproved />} />

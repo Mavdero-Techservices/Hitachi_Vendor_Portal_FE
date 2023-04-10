@@ -46,7 +46,7 @@ const FinanceRoute = ({ component: Component, ...rest }) => {
 const OtherRoute = ({ component: Component, ...rest }) => {
   const navigate = useNavigate();
   return (
-    auth?.isAuthenticated()?.result?.role === "other" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+    auth?.isAuthenticated()?.result?.role === "other" ? <Outlet /> :(() => navigate('/documents'))
   )
 }
 
