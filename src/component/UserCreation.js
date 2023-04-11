@@ -1,88 +1,34 @@
-import React, { useState, useEffect } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Container } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { ThemeProvider } from "@mui/material";
-import VendorPortalHeader from "../common/MasterVendorHeader";
-import VendorPortSidemenu from "../common/MasterVendorSidemenu";
-import Button from "@mui/material/Button";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import apiService from "../services/api.service";
-import Swal from "sweetalert2";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import "../css/userCreation.css";
+import { Box, Container, ThemeProvider } from "@mui/material";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TablePagination from "@mui/material/TablePagination";
+import { createTheme } from "@mui/material/styles";
+import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
-import DeleteIcon from "@mui/icons-material/Delete";
-import TablePagination from "@mui/material/TablePagination";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-function createData(
-  Name,
-  designation,
-  Department,
-  emailId,
-  mobileNo,
-  loginId,
-  password,
-  roles
-) {
-  return {
-    Name,
-    designation,
-    Department,
-    emailId,
-    mobileNo,
-    loginId,
-    password,
-    roles,
-  };
-}
-const rows = [
-  createData(
-    "Rahul",
-    "Am",
-    "finance",
-    "xxx@gmail.com",
-    "9876543210",
-    "xxxxxx",
-    "xxx9",
-    "financial"
-  ),
-  createData(
-    "Ankit",
-    "Manager",
-    "finance",
-    "xxx@gmail.com",
-    "9876543210",
-    "xxxxxx",
-    "xxx9",
-    "financial"
-  ),
-  createData(
-    "Nitin",
-    "CEO",
-    "finance",
-    "xxx@gmail.com",
-    "9876543210",
-    "xxxxxx",
-    "xxx9",
-    "financial"
-  ),
-];
+import Swal from "sweetalert2";
+import VendorPortalHeader from "../common/MasterVendorHeader";
+import VendorPortSidemenu from "../common/MasterVendorSidemenu";
+import "../css/userCreation.css";
+import apiService from "../services/api.service";
 
 function UserCreation() {
+  const numberValidation = /^-?(0|[1-9]\d*)?$/;
+  const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const navigate = useNavigate();
@@ -94,20 +40,26 @@ function UserCreation() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [password, setPassword] = useState(null);
+  // const [password, setPassword] = useState(null);
   const [getAllUser, setgetAllUser] = useState(null);
   const [subUserId, setsubUserId] = useState(null);
-  const [values, setValues] = useState({
-    Name: "",
-    designation: "",
-    Department: "",
-    emailId: "",
-    mobileNo: "",
-    loginId: "",
-    password: "",
-    roles: "",
-    userId: "",
-  });
+
+  const [Name, setName] = useState();
+  const [designation, setdesignation] = useState();
+  const [Department, setDepartment] = useState();
+  const [emailId, setemailId] = useState();
+  const [mobileNo, setmobileNo] = useState();
+  const [loginId, setloginId] = useState();
+  const [password, setpassword] = useState();
+  const [roles, setroles] = useState();
+  const [userId, setuserId] = useState();
+  const [usernameErr, setuserNameErr] = useState();
+  const [designationErr, setdesignationErr] = useState();
+  const [departmentErr, setdepartmentErr] = useState();
+  const [emailErr, setEmailErr] = useState();
+  const [phoneErr, setPhoneNoErr] = useState();
+  const [roleErr, setroleErr] = useState();
+
   const [modalShow, setModalShow] = useState(false);
   const [editmodalShow, setEditModalShow] = useState(false);
   const theme = createTheme({
@@ -115,9 +67,82 @@ function UserCreation() {
       textTransform: "none",
     },
   });
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+
+  const validateuserName = (e) => {
+    setName(e.target.value);
+    if (e.target.value.length === 0) {
+      setuserNameErr("Username is required");
+    } else {
+      setuserNameErr("");
+      setName(e.target.value);
+    }
   };
+
+  const validateDesignation = (e) => {
+    setdesignation(e.target.value);
+    if (e.target.value.length === 0) {
+      setdesignationErr("Designation is required");
+    } else {
+      setdesignationErr("");
+      setdesignation(e.target.value);
+    }
+  };
+
+  const validateDepartment = (e) => {
+    setDepartment(e.target.value);
+    if (e.target.value.length === 0) {
+      setdepartmentErr("Department is required");
+    } else {
+      setdepartmentErr("");
+      setDepartment(e.target.value);
+    }
+  };
+
+  const validateEmailId = (e) => {
+    setemailId(e.target.value);
+    if (e.target.value.length === 0) {
+      setEmailErr("Email is required");
+    } else if (!emailValidation.test(e.target.value)) {
+      setEmailErr("Email is invalid");
+    } else {
+      setEmailErr("");
+      setemailId(e.target.value);
+    }
+  };
+
+  const validateMobileNo = (e) => {
+    setmobileNo(e.target.value);
+    if (e.target.value.length === 0) {
+      setPhoneNoErr("Phone number is required");
+    } else if (
+      !numberValidation.test(e.target.value) ||
+      e.target.value.length !== 10
+    ) {
+      setPhoneNoErr("Phone number is invalid");
+    } else {
+      setPhoneNoErr("");
+      setmobileNo(e.target.value);
+    }
+  };
+
+  const validateRole = (e) => {
+    setroles(e.target.value);
+    if (e.target.value.length === 0) {
+      setroleErr("Roles is required");
+    } else {
+      setroleErr("");
+      setroles(e.target.value);
+    }
+  };
+
+  const validateLoginId = (e) => {
+    setloginId(e.target.value);
+  };
+
+  const validatePassword = (e) => {
+    setpassword(e.target.value);
+  };
+
   function editMasterVendor(id) {
     const user = {
       SubUserId: id || undefined,
@@ -125,30 +150,28 @@ function UserCreation() {
     setEditModalShow(true);
     setsubUserId(user);
     apiService.getMasterVendorSubUserById(user).then((response) => {
-      setValues({
-        Name: response.data.result.Name || undefined,
-        designation: response.data.result.designation || undefined,
-        Department: response.data.result.Department || undefined,
-        emailId: response.data.result.emailId || undefined,
-        mobileNo: response.data.result.mobileNo || undefined,
-        loginId: response.data.result.loginId || undefined,
-        password: response.data.result.password || undefined,
-        roles: response.data.result.roles || undefined,
-      });
+      setName(response.data.result.Name);
+      setdesignation(response.data.result.designation);
+      setDepartment(response.data.result.Department);
+      setemailId(response.data.result.emailId);
+      setmobileNo(response.data.result.mobileNo);
+      setloginId(response.data.result.loginId);
+      setpassword(response.data.result.password);
+      setroles(response.data.result.roles);
     });
   }
   const UpdateMasterVendor = (e) => {
     e.preventDefault();
     const user = {
       SubUserId: subUserId.SubUserId,
-      Name: values.Name || undefined,
-      designation: values.designation || undefined,
-      Department: values.Department || undefined,
-      emailId: values.emailId || undefined,
-      mobileNo: values.mobileNo || undefined,
-      loginId: values.loginId || undefined,
-      password: values.password || undefined,
-      roles: values.roles || undefined,
+      Name: Name,
+      designation: designation,
+      Department: Department,
+      emailId: emailId,
+      mobileNo: mobileNo,
+      loginId: loginId,
+      password: password,
+      roles: roles,
     };
     apiService.UpdateMasterVendorSubUserById(user).then((response) => {
       apiService.getAllMasterVendorSubUser().then((res) => {
@@ -164,30 +187,55 @@ function UserCreation() {
     });
   };
   const saveMasterVendor = (e) => {
-    e.preventDefault();
-    const user = {
-      userId:
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId ||
-        undefined,
-      Name: values.Name || undefined,
-      designation: values.designation || undefined,
-      Department: values.Department || undefined,
-      emailId: values.emailId || undefined,
-      mobileNo: values.mobileNo || undefined,
-      roles: values.roles || undefined,
-    };
-    apiService.saveMasterVendor(user).then((response) => {
-      apiService.getAllMasterVendorSubUser().then((res) => {
-        const modifiedUsers = res.data.result.map((user) => {
-          return {
-            ...user,
-            password: "*****",
-          };
+    console.log("Name--->", Name);
+    if (Name?.length === 0) {
+      setuserNameErr("Username is required");
+    }
+    if (designation?.length === 0) {
+      setdesignationErr("Designation is required");
+    }
+    if (Department?.length === 0) {
+      setdepartmentErr("Department is required");
+    }
+    if (emailId?.length === 0) {
+      setEmailErr("Email is required");
+    }
+    if (mobileNo?.length === 0) {
+      setPhoneNoErr("Phone number is invalid");
+    }
+    if (roles?.length === 0) {
+      setroleErr("Roles is required");
+    }
+    if (Name && designation && Department && emailId && mobileNo && roles) {
+      e.preventDefault();
+      const user = {
+        userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+        Name: Name,
+        designation: designation,
+        Department: Department,
+        emailId: emailId,
+        mobileNo: mobileNo,
+        roles: roles,
+      };
+      apiService.saveMasterVendor(user).then((response) => {
+        apiService.getAllMasterVendorSubUser().then((res) => {
+          const modifiedUsers = res.data.result.map((user) => {
+            return {
+              ...user,
+              password: "*****",
+            };
+          });
+          setgetAllUser(modifiedUsers);
+          setModalShow(false);
         });
-        setgetAllUser(modifiedUsers);
-        setModalShow(false);
       });
-    });
+    } else {
+      Swal.fire({
+        title: "Please fill the mandatory fields",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
   const CustomToastWithLink = (users) => <div>Rejected users {users}</div>;
   const onMove = (id) => {
@@ -300,10 +348,11 @@ function UserCreation() {
                               type="text"
                               className="swal2-input"
                               name="Name"
-                              value={values.Name}
-                              onChange={handleChange("Name")}
+                              value={Name}
+                              onChange={(e) => validateuserName(e)}
                               placeholder="Username"
                             />
+                            <span className="formError">{usernameErr}</span>
                           </Col>
                           <Col xs={12} md={6}>
                             <input
@@ -311,10 +360,11 @@ function UserCreation() {
                               id="designation"
                               className="swal2-input"
                               name="designation"
-                              value={values.designation}
-                              onChange={handleChange("designation")}
+                              value={designation}
+                              onChange={(e) => validateDesignation(e)}
                               placeholder="Designation"
                             />
+                            <span className="formError">{designationErr}</span>
                           </Col>
                         </Row>
                         <Row>
@@ -324,10 +374,11 @@ function UserCreation() {
                               id="department"
                               className="swal2-input"
                               name="Department"
-                              value={values.Department}
-                              onChange={handleChange("Department")}
+                              value={Department}
+                              onChange={(e) => validateDepartment(e)}
                               placeholder="department"
                             />
+                            <span className="formError">{departmentErr}</span>
                           </Col>
                           <Col xs={12} md={6}>
                             <input
@@ -335,10 +386,11 @@ function UserCreation() {
                               id="emailId"
                               className="swal2-input"
                               name="emailId"
-                              value={values.emailId}
-                              onChange={handleChange("emailId")}
+                              value={emailId}
+                              onChange={(e) => validateEmailId(e)}
                               placeholder="Email Id"
                             />
+                            <span className="formError">{emailErr}</span>
                           </Col>
                         </Row>
                         <Row>
@@ -348,23 +400,25 @@ function UserCreation() {
                               id="MobNo"
                               className="swal2-input"
                               name="mobileNo"
-                              value={values.mobileNo}
-                              onChange={handleChange("mobileNo")}
+                              value={mobileNo}
+                              onChange={(e) => validateMobileNo(e)}
                               placeholder="mobile No"
                             />
+                            <span className="formError">{phoneErr}</span>
                           </Col>
                           <Col xs={12} md={6}>
                             <select
                               id="roles"
                               className="swal2-input"
                               name="roles"
-                              value={values.roles}
-                              onChange={handleChange("roles")}
+                              value={roles}
+                              onChange={(e) => validateRole(e)}
                             >
                               <option value="">Select a role</option>
                               <option value="financial">Financial</option>
                               <option value="other">Other</option>
                             </select>
+                            <span className="formError">{roleErr}</span>
                           </Col>
                         </Row>
                       </Container>
@@ -449,8 +503,8 @@ function UserCreation() {
                                           type="text"
                                           className="swal2-input"
                                           name="Name"
-                                          value={values.Name}
-                                          onChange={handleChange("Name")}
+                                          value={Name}
+                                          onChange={(e) => validateuserName(e)}
                                           placeholder="Username"
                                         />
                                       </Col>
@@ -460,8 +514,10 @@ function UserCreation() {
                                           id="designation"
                                           className="swal2-input"
                                           name="designation"
-                                          value={values.designation}
-                                          onChange={handleChange("designation")}
+                                          value={designation}
+                                          onChange={(e) =>
+                                            validateDesignation(e)
+                                          }
                                           placeholder="Designation"
                                         />
                                       </Col>
@@ -473,8 +529,10 @@ function UserCreation() {
                                           id="department"
                                           className="swal2-input"
                                           name="Department"
-                                          value={values.Department}
-                                          onChange={handleChange("Department")}
+                                          value={Department}
+                                          onChange={(e) =>
+                                            validateDepartment(e)
+                                          }
                                           placeholder="department"
                                         />
                                       </Col>
@@ -484,8 +542,8 @@ function UserCreation() {
                                           id="emailId"
                                           className="swal2-input"
                                           name="emailId"
-                                          value={values.emailId}
-                                          onChange={handleChange("emailId")}
+                                          value={emailId}
+                                          onChange={(e) => validateEmailId(e)}
                                           placeholder="Email Id"
                                         />
                                       </Col>
@@ -497,8 +555,8 @@ function UserCreation() {
                                           id="MobNo"
                                           className="swal2-input"
                                           name="mobileNo"
-                                          value={values.mobileNo}
-                                          onChange={handleChange("mobileNo")}
+                                          value={mobileNo}
+                                          onChange={(e) => validateMobileNo(e)}
                                           placeholder="mobile No"
                                         />
                                       </Col>
@@ -508,8 +566,8 @@ function UserCreation() {
                                           id="LoginId"
                                           className="swal2-input"
                                           name="loginId"
-                                          value={values.loginId}
-                                          onChange={handleChange("loginId")}
+                                          value={loginId}
+                                          onChange={(e) => validateLoginId(e)}
                                           placeholder="LoginId"
                                         />
                                       </Col>
@@ -521,8 +579,8 @@ function UserCreation() {
                                           id="Password"
                                           className="swal2-input"
                                           name="password"
-                                          value={values.password}
-                                          onChange={handleChange("password")}
+                                          value={password}
+                                          onChange={(e) => validatePassword(e)}
                                           placeholder="Password"
                                         />
                                       </Col>
@@ -531,8 +589,8 @@ function UserCreation() {
                                           id="roles"
                                           className="swal2-input"
                                           name="roles"
-                                          value={values.roles}
-                                          onChange={handleChange("roles")}
+                                          value={roles}
+                                          onChange={(e) => validateRole(e)}
                                         >
                                           <option value="">
                                             Select a role
