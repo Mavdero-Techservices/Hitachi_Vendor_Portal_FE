@@ -41,6 +41,7 @@ import InvoiceTeam from './component/InvoiceTeam';
 import InvoiceApproved from './component/InvoiceApproved';
 import InvoiceRejected from './component/InvoiceRejected';
 import InvoicePortal from './component/InvoicePortal';
+import VendorHomePage from './component/VendorHomePage';
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus);
@@ -155,7 +156,7 @@ const MainRouter = () => {
         <Route path="/invoiceApproved" element={<InvoiceApproved />} />
         <Route path="/invoiceRejected" element={<InvoiceRejected />} />
         <Route path="/invoicePortal" element={<InvoicePortal />} />
-        
+        <Route path="/Homesidemenu" element={<VendorHomePage />} />
       </Routes>
     </div>
   );

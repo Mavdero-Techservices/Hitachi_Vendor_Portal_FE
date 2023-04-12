@@ -118,9 +118,10 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          }).then((res) => {
-            navigate(`/FinancialDetail/${params.userId}`);
-          });
+          })
+          // .then((res) => {
+          //   navigate(`/FinancialDetail/${params.userId}`);
+          // });
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -171,9 +172,10 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
-              navigate(`/FinancialDetail`);
-            });
+            })
+            // .then((res) => {
+            //   navigate(`/FinancialDetail`);
+            // });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -227,7 +229,6 @@ const BankDetails = (props) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
-        console.log("res.data.basicInfo[0].submitStatus----------->>>>>", res.data)
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"

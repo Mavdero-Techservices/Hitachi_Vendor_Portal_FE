@@ -21,7 +21,6 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import PaidIcon from '@mui/icons-material/Paid';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-
 export const Homesidemenu = (props) => {
     const [open, setOpen] = useState(false);
     const sidemenuOpen = () => {
@@ -53,8 +52,7 @@ export const Homesidemenu = (props) => {
                 <List sx={{  }}>
                     <ListItem
                         disablePadding
-                        component={Link}
-                        to="/japanTeam"
+                       
                         sx={{
                             backgroundColor: pathname === '/japanTeam' ? 'gray' : '',
                             borderRadius: '20px',
@@ -78,8 +76,7 @@ export const Homesidemenu = (props) => {
                     </ListItem>
                     <ListItem
                         disablePadding
-                        component={Link}
-                        to="/japanapprovedVendors"
+                       
                         sx={{
                             backgroundColor:
                                 pathname === '/japanapprovedVendors' ? 'gray' : '',
@@ -104,8 +101,7 @@ export const Homesidemenu = (props) => {
                     </ListItem>
                     <ListItem
                         disablePadding
-                        component={Link}
-                        to="/japanrejectedVendors"
+                       
                         sx={{
                             backgroundColor:
                                 pathname === '/japanrejectedVendors' ? 'gray' : '',
@@ -133,8 +129,7 @@ export const Homesidemenu = (props) => {
 
                     <ListItem
                         disablePadding
-                        component={Link}
-                        to="/japanrejectedVendors"
+                      
                         sx={{
                             backgroundColor:
                                 pathname === '/japanrejectedVendors' ? 'gray' : '',
@@ -160,8 +155,7 @@ export const Homesidemenu = (props) => {
 
                     <ListItem
                         disablePadding
-                        component={Link}
-                        to="/japanrejectedVendors"
+                       
                         sx={{
                             backgroundColor:
                                 pathname === '/japanrejectedVendors' ? 'gray' : '',
@@ -187,6 +181,7 @@ export const Homesidemenu = (props) => {
                 </List>
             </nav>
         </Box>
+        
     );
 };
 

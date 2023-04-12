@@ -164,30 +164,35 @@ export class Basic extends React.Component {
       title: "Are You Sure,You want to reset?",
       icon: "success",
       confirmButtonText: "OK",
+      showCloseButton: true,
+      cancelButtonText: "Cancel",
+      showCancelButton: true,
     }).then((ClearData) => {
-      this.setState({
-        financeSpoccontactName: "",
-        financeSpocdesignation: "",
-        financeSpocphoneNo: "",
-        financeSpocemail: "",
-        operationSpoccontactName: "",
-        operationSpocdesignation: "",
-        operationSpocphoneNo: "",
-        operationSpocemail: "",
-        collectionSpoccontactName: "",
-        collectionSpocdesignation: "",
-        collectionSpocphoneNo: "",
-        collectionSpocemail: "",
-        managementSpoccontactName: "",
-        managementSpocdesignation: "",
-        managementSpocphoneNo: "",
-        managementSpocemail: "",
-        contactName: "",
-        designation: "",
-        phoneNo: "",
-        email: "",
-        mastervendor_email: "",
-      });
+      if (ClearData.isConfirmed) {
+        this.setState({
+          financeSpoccontactName: "",
+          financeSpocdesignation: "",
+          financeSpocphoneNo: "",
+          financeSpocemail: "",
+          operationSpoccontactName: "",
+          operationSpocdesignation: "",
+          operationSpocphoneNo: "",
+          operationSpocemail: "",
+          collectionSpoccontactName: "",
+          collectionSpocdesignation: "",
+          collectionSpocphoneNo: "",
+          collectionSpocemail: "",
+          managementSpoccontactName: "",
+          managementSpocdesignation: "",
+          managementSpocphoneNo: "",
+          managementSpocemail: "",
+          contactName: "",
+          designation: "",
+          phoneNo: "",
+          email: "",
+          mastervendor_email: "",
+        });
+      }
     });
   };
   handleChange(e) {

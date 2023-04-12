@@ -29,6 +29,7 @@ const tanNo = `Tax Deduction Account Number`;
 
 export default function Statutory(props) {
   const location = useLocation();
+  const [countryName, setCountryName] = useState(null);
   const [HideImport, setHideImport] = useState(true);
   const [url, seturl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
@@ -55,7 +56,7 @@ export default function Statutory(props) {
   const [submit, setSubmit] = useState(null);
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
-  const [country, setcountry] = useState({});
+  const [country, setcountry] = useState({}); 
   const [saveButton, setSaveButton] = useState(true);
   const [style, setStyle] = useState("editable");
   const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] =
@@ -84,17 +85,27 @@ export default function Statutory(props) {
   function onChangeValue(event) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
+      if (values.PAN_No === 'N/A' && countryName === "IN"){
+        setValues({ PAN_No: '' })
+      }
       sethideunRegisteredField(false);
     } else {
       sethideunRegisteredField(true);
     }
     if (event.target.value === "Import") {
+      setValues({ PAN_No: 'N/A' })
       setHideImport(false);
     } else {
       setHideImport(true);
     }
+    if (event.target.value === "Registered") {
+      if (values.PAN_No === 'N/A' && countryName ==="IN") {
+        setValues({ PAN_No: '' })
+      }
+    }
   }
   function onFileDisclosurechange(e) {
+    e.preventDefault()
     if (e.size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -105,7 +116,7 @@ export default function Statutory(props) {
         allowEscapeKey: false,
       });
     } else {
-      setfileDisclosure(e);
+      setfileDisclosure(e.target.files[0]);
     }
   }
   function onChangeValueMSME(event) {
@@ -462,8 +473,18 @@ export default function Statutory(props) {
       }
     });
   }
+
   useEffect(() => {
     (async () => {
+    await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+      let cName = res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
+      if (cName !== 'IN' && cName !== null && cName !== undefined) {
+        setValues({ PAN_No: 'N/A' })
+      } 
+      setCountryName(res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : "")
+      }).then((result)=>{
+      })
+     
     let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       let id = newuser ? newuser : params.userId ? params.userId : values.userId
       await apiService.getvendorDetail(id).then((res) => {
@@ -515,7 +536,7 @@ export default function Statutory(props) {
           });
 
           setform_10f_Doc(value.form_10f_Doc);
-
+          setfileDisclosure(value.fileDisclosure);
           setFile(value.GST_Doc);
           setPAN_Doc(value.PAN_Doc);
           setTAN_Doc(value.TAN_Doc);
@@ -570,7 +591,7 @@ export default function Statutory(props) {
           });
 
           setform_10f_Doc(value.form_10f_Doc);
-
+          setfileDisclosure(value.fileDisclosure);
           setFile(value.GST_Doc);
           setPAN_Doc(value.PAN_Doc);
           setTAN_Doc(value.TAN_Doc);
@@ -608,7 +629,6 @@ export default function Statutory(props) {
     data.append("form_10f", values.form_10f);
     data.append("MSMED", MSME_status);
     data.append("MSMED_Number", values.MSME_No);
-    console.log("values.MSME_No--------->>>>", values.MSME_No)
     data.append("MSMED_Vendor_Type", MSME);
     data.append("TAN_No", values.TAN_No);
     data.append(
@@ -762,6 +782,7 @@ export default function Statutory(props) {
   };
   const deleteFile = (event) => {
     if (
+      (event === "fileDisclosure" && fileDisclosure) ||
       (event === "GST_Doc" && GST_Doc) ||
       (event === "PAN_Doc" && PAN_Doc) ||
       (event === "MSME_Doc" && MSME_Doc) ||
@@ -804,7 +825,10 @@ export default function Statutory(props) {
                 setValues({
                   GST_Doc: "",
                 });
-              } else if (event === "PAN_Doc") {
+              } else if (event === "fileDisclosure") {
+                setfileDisclosure("");
+              } 
+               else if (event === "PAN_Doc") {
                 setPAN_Doc("");
                 setValues({
                   PAN_Doc: "",
@@ -1021,15 +1045,15 @@ export default function Statutory(props) {
                                     />
                                   </div>{" "} */}
 
-                                  {GST_Doc !== "" &&
-                                  GST_Doc !== "null" &&
-                                  GST_Doc !== undefined ? (
+                                      {fileDisclosure !== "" &&
+                                        fileDisclosure !== "null" &&
+                                        fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
                                         className="deleteFile"
                                         onClick={() => {
-                                          deleteFile("GST_Doc");
+                                          deleteFile("fileDisclosure");
                                         }}
                                       >
                                         Delete UnRegister Gst
@@ -1043,7 +1067,7 @@ export default function Statutory(props) {
                                       <input
                                         type="file"
                                         id="fileupload"
-                                        handleChange={onFileDisclosurechange}
+                                        onChange={onFileDisclosurechange}
                                         name="fileDisclosure"
                                         required
                                       />
@@ -1073,9 +1097,42 @@ export default function Statutory(props) {
                           : null} */}
                       </Row>
                       <Row>
-                        <Col>
+                        {GST_type === "Import"?
+                          <Col >
+                            <Form.Group
+
+                              sx={{ mb: 3 }}
+                              controlId="formBasicEmail"
+                            >
+                              <Form.Label>PAN no*</Form.Label>
+                              <InputGroup className="statutoryInput">
+                                <Form.Control
+
+                                  style={{ border: "none", borderRadius: "25px" }}
+                                  type="text"
+                                  value="N/A"
+                                  disabled="true"
+                                  onChange={handleChange("PAN_No")}
+                                />
+                                <InputGroup.Text style={{ border: "none" }}>
+                                  <Tooltip title={panNo}>
+                                    <InfoIcon />
+                                  </Tooltip>
+                                </InputGroup.Text>
+                              </InputGroup>
+                              {errors.PAN_No ? (
+                                <p className="text text-danger small">
+                                  {errors.PAN_No}
+                                </p>
+                              ) : (
+                                ""
+                              )}
+                            </Form.Group>
+                          </Col>:
+                        
+                        <Col >
                           <Form.Group
-                            className="mb-3"
+                            sx={{mb:3}}
                             controlId="formBasicEmail"
                           >
                             <Form.Label>PAN no*</Form.Label>
@@ -1084,6 +1141,7 @@ export default function Statutory(props) {
                                 style={{ border: "none", borderRadius: "25px" }}
                                 type="text"
                                 value={values.PAN_No}
+                                disabled={countryName !== 'IN' }
                                 onChange={handleChange("PAN_No")}
                               />
                               <InputGroup.Text style={{ border: "none" }}>
@@ -1100,7 +1158,7 @@ export default function Statutory(props) {
                               ""
                             )}
                           </Form.Group>
-                        </Col>
+                        </Col>}
                         <Col>
                           {/* {values.PAN_Doc!='' ? (
                           <div className="frame-input">
@@ -1142,7 +1200,8 @@ export default function Statutory(props) {
                               </button>
                             </div>
                           ) : (
-                            <div className="frame-input">
+                               GST_type !== "Import" ?
+                              <div className="frame-input">
                               <label htmlFor="fileuploadPan">Upload PAN</label>
                               <input
                                 type="file"
@@ -1150,8 +1209,9 @@ export default function Statutory(props) {
                                 value={values.PAN_Doc}
                                 onChange={onFileChangePAN_Doc}
                                 required
+                                disabled={countryName !== 'IN'}
                               />
-                            </div>
+                              </div> : ""
                           )}
                         </Col>
                       </Row>
@@ -1205,7 +1265,7 @@ export default function Statutory(props) {
                         : null} */}
                       <Row>
                         <Col>
-                          {showLoginTab ? (
+                          {countryName !=="IN" ? (
                             <Form.Group
                               className="mb-3"
                               controlId="formBasicEmail"
@@ -1268,7 +1328,7 @@ export default function Statutory(props) {
                       </Row>
                       <Row>
                         <Col>
-                          {showLoginTab ? (
+                          {countryName !== "IN" ? (
                             <Form.Group
                               className="mb-3"
                               controlId="formBasicEmail"
@@ -1612,7 +1672,7 @@ export default function Statutory(props) {
                           )}
                         </Col>
                       </Row>
-                      {showLoginTab ? (
+                      {countryName !== "IN" ? (
                         <Row>
                           <Col>
                             <Form.Group

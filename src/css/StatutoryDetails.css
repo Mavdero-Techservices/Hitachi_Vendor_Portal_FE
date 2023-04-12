@@ -461,3 +461,10 @@ Form.Control:focus {
 .editable input {
   background-color: white;
 }
+.panhidetrue input{
+  pointer-events: none !important;
+  background-color: #f8f7f7 !important;
+}
+.panhidefalse input{
+    pointer-events: auto !important;
+}

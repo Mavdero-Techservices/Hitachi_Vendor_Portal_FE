@@ -160,7 +160,6 @@ const ContactTeam = () => {
       communicationArray.push("managementSpoc-Email");
       {
         let role = JSON.parse(window.sessionStorage.getItem("jwt")).result.role;
-        console.log("role", role);
         if (role !== "Admin") {
           communicationArray.push("mastervendor EmailId");
         }
@@ -228,7 +227,9 @@ const ContactTeam = () => {
       statutoryArray.push("MSME No");
       statutoryArray.push("TAN No");
       statutoryArray.push("GST Doc");
-      statutoryArray.push("PAN Doc");
+      if (basicInfo[0].Country_Region_Code === 'IN') {
+        statutoryArray.push("PAN Doc");
+      }
       statutoryArray.push("TAN Doc");
       statutoryArray.push("MSME No");
     } else {
@@ -253,7 +254,9 @@ const ContactTeam = () => {
             statutoryArray.push("GST Doc");
           }
           if (key === "PAN_Doc") {
-            statutoryArray.push("PAN Doc");
+            if (basicInfo[0].Country_Region_Code === 'IN') {
+              statutoryArray.push("PAN Doc");
+            }
           }
           if (key === "TAN_Doc") {
             statutoryArray.push("TAN Doc");
@@ -424,7 +427,6 @@ const ContactTeam = () => {
       let newuser = JSON.parse(
         window.sessionStorage.getItem("newregUser")
       )?.newregUser;
-      console.log("new user----------------->>>>>", newuser);
       if (newuser) {
         user.userId = newuser;
         apiService.saveContactTeam(user).then((response) => {
@@ -539,7 +541,6 @@ const ContactTeam = () => {
     var bankDetailArray = [];
     var contactDetailArray = [];
     if (basicInfo.length <= 0) {
-      console.log("basicInfo", basicInfo);
       basicInfoArray.push("Address Line-1");
       basicInfoArray.push("City");
       basicInfoArray.push("companyName");
