@@ -237,5 +237,9 @@ class apiService {
   getErpVendor_APIByParent_Vendor_Code(Parent_Vendor_Code) {
     return http.get(`/getErpVendor_APIByParent_Vendor_Code/${Parent_Vendor_Code}`);
   }
+  getErpVendor_APIByP_A_N_No(P_A_N_No) {
+    return http.get(`/getErpVendor_APIByP_A_N_No/${P_A_N_No}`);
+  }
+
 }
 export default new apiService();
