@@ -4,7 +4,7 @@ import { Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SignUp from './component/signUp';
 import Login from './component/login';
-import { AdminRoute, UserRoute, CommonRoute,FinanceRoute,OtherRoute } from './auth/PrivateRoute';
+import { AdminRoute, UserRoute, CommonRoute,FinanceRoute,OtherRoute,VCTRoute,MRTRoute,JapanRoute } from './auth/PrivateRoute';
 import Navbar1 from './common/navbar';
 import Spinner from './common/spinner';
 import Basic from './component/Basic.js';
@@ -93,16 +93,39 @@ const MainRouter = () => {
           />
           <Route path="/bank" element={<Bank user={state.userInfo} />} />{' '}
         </Route>
-          {/*FinancialRoutes */} 
-        {/* <Route element={<FinanceRoute />}>
-        <Route path="/documents" element={<Documents />} />
-        <Route path="/documents/:vId" element={<Documents />} />
-          </Route> */}
-             {/*otherRoutes */}
-          <Route element={<OtherRoute />}>
-          <Route path="/poTeam" element={<PoApproval />} />
-          </Route>
+         {/*FinanceRoute */}
+        <Route element={<FinanceRoute />}>
           
+          </Route>
+                {/*otherRoutes */}
+        <Route element={<OtherRoute />}>
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/documents/:vId" element={<Documents />} />
+        </Route>
+        {/*VCTRoutes */}
+        <Route element={<VCTRoute/>}>
+        <Route path="/approval" element={<AdminPage />} />
+        <Route path="/approvedVendors" element={<ApprovedVendors />} />
+        <Route path="/rejectedVendors" element={<RejectedVendors />} />
+          </Route>
+          {/*MRTRoutes */}
+          <Route element={<MRTRoute />}>
+          <Route path="/MRTteam" element={<MRTteam />} />
+        <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors />} />
+        <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors />} />
+          </Route>
+            {/*JapanRoutes */}
+            <Route element={<JapanRoute />}>
+            <Route path="/japanTeam" element={<JapanTeam />} />
+        <Route
+          path="/japanapprovedVendors"
+          element={<JapanApprovedvendors />}
+        />
+        <Route
+          path="/japanrejectedVendors"
+          element={<JapanRejectedVendors />}
+        />
+          </Route>
         <Route path="/" element={<NewUser />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -114,21 +137,6 @@ const MainRouter = () => {
           path="/passwordGeneration/:emailId/:mailConfirmationCode"
           element={<Password />}
         />
-        <Route path="/approval" element={<AdminPage />} />
-        <Route path="/approvedVendors" element={<ApprovedVendors />} />
-        <Route path="/rejectedVendors" element={<RejectedVendors />} />
-        <Route path="/japanTeam" element={<JapanTeam />} />
-        <Route
-          path="/japanapprovedVendors"
-          element={<JapanApprovedvendors />}
-        />
-        <Route
-          path="/japanrejectedVendors"
-          element={<JapanRejectedVendors />}
-        />
-        <Route path="/MRTteam" element={<MRTteam />} />
-        <Route path="/MRTapprovedvendors" element={<MRTapprovedvendors />} />
-        <Route path="/MRTrejectedvendors" element={<MRTrejectedvendors />} />
         <Route path="/approvalReq" element={<ApprovalRequest />} />
         <Route path="/vendorPortal" element={<VendorPortalHeader />} />
         <Route path="/MasterVendorHeader" element={<MasterVendorHeader />} />
@@ -136,12 +144,6 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
-        {/*otherRoutes */}
-        <Route element={<OtherRoute />}>
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/documents/:vId" element={<Documents />} />
-        </Route>
-        {/*otherRoutes */}
        
         <Route path="/acStatement" element={<AccountStatements />} />
         <Route path="/poTeam" element={<PoApproval />} />

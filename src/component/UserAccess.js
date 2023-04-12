@@ -28,6 +28,7 @@ import TextField from "@mui/material/TextField";
 import TablePagination from "@mui/material/TablePagination";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useParams } from "react-router-dom";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -38,6 +39,7 @@ function createData(Name) {
   };
 }
 function UserAccess() {
+  const params = useParams();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -92,30 +94,57 @@ function UserAccess() {
       city_vendorCode_Pincode: city_vendorCode_Pincode || undefined,
       vendorCode: vendorCode || undefined,
     };
+    console.log("user------------->>>>", user)
     apiService.UpdateMasterVendorSubUserById(user).then((response) => {
-      apiService.getAllMasterVendorSubUser().then((res) => {
-        setEdit(true);
-        setgetAllUser(res.data.result);
+      Swal.fire({
+        title: "Data saved",
+        icon: "success",
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          apiService.getAllVendorSubUser().then((res) => {
+            console.log("res.data.result-------------city--------",res.data.result)
+            setEdit(true);
+            setvcityPincode(res.data.result)
+          });
+        }
+      
       });
-      apiService.getAllVendorSubUser().then((res) => {
-        setvcityPincode(res.data.result)
-      });
+   
+      // apiService.getAllMasterVendorSubUser().then((res) => {
+      //   setEdit(true);
+      //   setgetAllUser(res.data.result);
+      // });
+      // apiService.getAllVendorSubUser().then((res) => {
+      //   setvcityPincode(res.data.result)
+      // });
     });
   }
   useEffect(() => {
+    setgetAllvendorcode([]);
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
     });
-    apiService.getAllMasterVendorUserAccess().then((vendorCode) => {
-      setgetAllvendorcode(vendorCode.data.result);
+    apiService.getErpVendor_APIByP_A_N_No(params.Parent_Vendor_Code).then((vendorCode) => {
+      console.log("vendorCode.data.result",vendorCode.data);
+      // if(vendorCode?.data.length>0){
+        setgetAllvendorcode(  vendorCode.data);
+        // setvcityPincode(vendorCode.data)
+        // nameList => [...nameList, props]
+      // }
     });
-
+   
     apiService.getAllVendorSubUser().then((res) => {
       setvcityPincode(res.data.result)
     });
   }, []);
-
+  {console.log("test--------->>>",getAllvendorcode)}
   const handleVendorCodeChange = (event, value, data) => {
+    console.log("dropdpwn--------->>>",value)
     setVcode(value);
   };
 
@@ -167,17 +196,18 @@ function UserAccess() {
                                 ))}
                                 </>
                               ) : (
+                               
                                 <Autocomplete
                                   multiple
                                   id="checkboxes-tags-demo"
                                   options={getAllvendorcode ? getAllvendorcode : ""}
                                   disableCloseOnSelect
                                   getOptionLabel={(option) =>
-                                    option.vendorCode +
+                                    option.No +
                                     "_" +
-                                    option.city +
+                                    option.City +
                                     "_" +
-                                    option.Pincode
+                                    option.State_Code
                                   }
                                   renderOption={(
                                     props,
@@ -191,11 +221,11 @@ function UserAccess() {
                                         style={{ marginRight: 8 }}
                                         checked={selected}
                                       />
-                                      {option.vendorCode +
+                                      {option.No +
                                         "_" +
-                                        option.city +
+                                        option.City +
                                         "_" +
-                                        option.Pincode}
+                                        option.State_Code}
                                     </li>
                                   )}
                                   style={{ width: 400, marginLeft: 100 }}

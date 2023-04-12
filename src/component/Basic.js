@@ -99,7 +99,14 @@ export class Basic extends React.Component {
       .then((response) => {
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
-        this.setState({ City: response.data.data.postalcodes[0].adminName3 });
+        if(response.data.data.postalcodes[0].adminName3)
+        {
+          this.setState({ City: response.data.data.postalcodes[0].adminName3 });
+        }
+        else{
+          this.setState({ City: response.data.data.postalcodes[0].placeName });
+        }
+        
       });
   }
   togglebutton() {

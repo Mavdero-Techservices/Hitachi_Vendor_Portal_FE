@@ -232,7 +232,8 @@ export default function Signin(props) {
   if (redirectToReferrer) {
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
-    } else if (role === "other"){
+    } 
+    if (role === "other"){
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "user" && verifiedUser === "approved") {
@@ -246,8 +247,20 @@ export default function Signin(props) {
           />
         );
       }
-    } else if (verifiedUser && verifiedUser === "pending") {
+    } else if (verifiedUser === "pending") {
       return <Navigate to={"/"} />;
+    }
+    if (role === "financial"){
+      return <Navigate to={`/documents/${userName}`} />;
+    }
+    if (role === "VCT"){     
+      return <Navigate to={"/approval"} />;
+    }
+    if (role === "MRT"){
+      return <Navigate to={"/MRTteam"} />;
+    }
+    if (role === "Japan"){
+      return <Navigate to={"/japanTeam"} />;
     }
   }
   return (
