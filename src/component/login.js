@@ -189,8 +189,8 @@ export default function Signin(props) {
       apiService.resetPasswordByCode(user).then((data) => {
         if (data) {
           Swal.fire({
-            title: " check your email,to reset your password",
-            icon: "success",
+            title: data.data.data,
+            icon: data.data.status,
             confirmButtonText: "OK",
           });
           setshowLoginTab(true);

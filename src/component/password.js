@@ -121,11 +121,15 @@ const toggleConfirmPassword = () => {
     apiService.resetPassword(user).then((data) => {
       if (data) {
         Swal.fire({
-          title: "Password generated successfully.",
-          icon: "success",
+          title: data.data.data,
+          icon: data.data.status,
           confirmButtonText: "OK",
-        });
-        navigate('/login');
+        }).then((result) => {
+          if(data.data.status==="success")
+          {
+            navigate('/login'); 
+          }
+        })      
       }
     })
   }
