@@ -32,6 +32,9 @@
 .approvalsform input {
   pointer-events: none;
 }
+.approvalsform label {
+  pointer-events: none;
+}
 .cont2 {
   pointer-events: auto !important;
   color: black;

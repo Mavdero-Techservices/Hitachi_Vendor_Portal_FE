@@ -114,6 +114,7 @@ function ApprovalFields(props) {
 
       if (res.data.Statutory[0] !== "null" && res.data.Statutory.length > 0) {
         var statarr = res.data.Statutory;
+        console.log("res.data.Statutory", res.data.Statutory[0])
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
         setGST_type(res.data.Statutory[0].GST_Vendor_Type);
@@ -122,15 +123,16 @@ function ApprovalFields(props) {
         setPAN_No(res.data.Statutory[0].P_A_N_No);
         setPAN_Doc(res.data.Statutory[0].PAN_Doc);
         setCIN_No(res.data.Statutory[0].CIN_No);
-        setform_10f(res.data.Statutory[0].form_10f);
-        setpe_declaration(res.data.Statutory[0].pe_declaration);
+        setform_10f(res.data.Statutory[0].form_10f_Doc);
+        setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);
         setMSME_status(res.data.Statutory[0].MSMED);
         setMSME_No(res.data.Statutory[0].MSMED_Number);
         setMSME_Doc(res.data.Statutory[0].MSME_Doc);
         setMSME_Type(res.data.Statutory[0].MSMED_Vendor_Type);
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
-        setTax_residency(res.data.Statutory[0].Tax_residency);
+        setTax_residency(res.data.Statutory[0].Tax_residency_Doc
+);
       } else {
         setGST_type("");
         setGST_No("");
@@ -805,12 +807,18 @@ function ApprovalFields(props) {
   };
 
   const handleEdit = (event) => {
-    setStyle("cont2");
+    console.log('styl================',style)
+    if (style === "cont2"){
+      setStyle("approvalsform");
+    }else{
+      setStyle("cont2");
+    }
   };
   const handleLogoView = (event) => {
+    console.log("event------------------logo--->>>>", event)
     Swal.fire({
       title: "Company Logo",
-      html: ` <img className="camera-img" src=${event} alt="image" width='100px' width='100px'/> `,
+      html: ` <img className="camera-img" src='data:image/jpeg;base64,${event}' alt="image" width='100px' width='100px'/> `,
       focusConfirm: false,
     });
   };
@@ -835,6 +843,7 @@ function ApprovalFields(props) {
       });
     }
   };
+  console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
     // event.preventDefault(); bankdetailDoc
     if (
@@ -998,9 +1007,11 @@ function ApprovalFields(props) {
             setGST_DocErr("");
           } else if (event === "logo") {
             var filereader = new FileReader();
-            filereader.readAsDataURL(result.value);
+            // filereader.readAsDataURL(result.value);
+            filereader.readAsBinaryString(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
+              console.log("btoa(base64)-------------------------->>>>", btoa(base64))
               setlogo(btoa(base64));
             };
 
@@ -2124,7 +2135,11 @@ function ApprovalFields(props) {
       data.append("name3", name3);
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
-      console.log("Form Submitted", data);
+      data.append("approverFile", approverFile);
+      
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
 
       apiService.updateAllCollection(userId, data).then((response) => {
         console.log("res=============>>>>>>>", response);
@@ -2479,7 +2494,8 @@ function ApprovalFields(props) {
       data.append("name3", name3);
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
-      console.log("Form Submitted", data);
+      data.append("approverFile", approverFile);
+      console.log("Form Submitted", data); 
 
       apiService.updateAllCollection(userId, data).then((response) => {
         console.log("res=============>>>>>>>", response);
@@ -3935,6 +3951,7 @@ function ApprovalFields(props) {
                         name="vendorType"
                         aria-label="Disabled select example"
                         value={vendorType}
+                        disabled={style === "approvalsform"?true:false}
                         onChange={(e) => validatevendorType(e)}
                       >
                         {/* <option selected>Open this select menu</option> */}
@@ -4054,7 +4071,7 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  Edit
+                    {style === "cont2" ? "View" : "Edit"}
                 </button>
                 <button
                   type="button"
@@ -4087,7 +4104,8 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  Edit
+                      {style === "cont2" ? "View" : "Edit"}
+                  
                 </button>
                 <button
                   type="button"

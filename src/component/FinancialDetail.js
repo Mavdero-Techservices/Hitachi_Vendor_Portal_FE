@@ -29,6 +29,8 @@ const FinancialDetails = () => {
     netWorth: "",
     currentAssets: "",
     directorDetails: "",
+    organisationType:"",
+    shareholderName:"",
   });
   function onFileChangeFD(e) {
     if (e.size > 5000000) {
@@ -118,6 +120,8 @@ const FinancialDetails = () => {
           netWorth: "",
           currentAssets: "",
           directorDetails: "",
+          organisationType: "",
+          shareholderName: "",
         });
         setfileFD("");
         setdeleteUploadedFile(false);
@@ -167,6 +171,8 @@ const FinancialDetails = () => {
     data.append("netWorth", values.netWorth);
     data.append("currentAssets", values.currentAssets);
     data.append("directorDetails", values.directorDetails);
+    data.append("organisationType", values.organisationType);
+    data.append("shareholderName", values.shareholderName);
     data.append(
       "userId",
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
@@ -216,6 +222,8 @@ const FinancialDetails = () => {
         financedata.append("netWorth", values.netWorth);
         financedata.append("currentAssets", values.currentAssets);
         financedata.append("directorDetails", values.directorDetails);
+        data.append("organisationType", values.organisationType);
+        data.append("shareholderName", values.shareholderName);
         financedata.append("userId", newuser);
         apiService.saveFinacialDetail(financedata).then((res) => {
           if (res.data.status === "success") {
@@ -273,6 +281,8 @@ const FinancialDetails = () => {
     data.append("netWorth", values.netWorth);
     data.append("currentAssets", values.currentAssets);
     data.append("directorDetails", values.directorDetails);
+    data.append("organisationType", values.organisationType);
+    data.append("shareholderName", values.shareholderName);
     data.append("userId", params.userId);
     if (params.userId) {
       apiService.updateFinacialDetail(params.userId, data).then((res) => {
@@ -333,6 +343,8 @@ const FinancialDetails = () => {
             netWorth: value.netWorth,
             currentAssets: value.currentAssets,
             directorDetails: value.directorDetails,
+            organisationType: value.organisationType,
+            shareholderName: value.shareholderName,
           });
           setfileFD2(initialUrlfinancial_data2);
           setfileFD(initialUrlfinancial_data);
@@ -374,6 +386,8 @@ const FinancialDetails = () => {
             netWorth: value.netWorth,
             currentAssets: value.currentAssets,
             directorDetails: value.directorDetails,
+            organisationType: value.organisationType,
+            shareholderName: value.shareholderName,
           });
           setfileFD2(initialUrlfinancial_data2);
           setfileFD(initialUrlfinancial_data);
@@ -459,6 +473,34 @@ const FinancialDetails = () => {
                   name="directorDetails"
                   value={values.directorDetails}
                   onChange={handleChange("directorDetails")}
+                />
+              </div>
+              <div className="col-md-4 col-sm-12 col-xs-12">
+                <label htmlFor="Organisationtype">Organisation type</label>
+                <select
+                  className="form-select"
+                  id="Distributors"
+                  name="Organisationtype"
+                  aria-label="Disabled select example"
+                  value={values.organisationType} 
+                  disabled={style === "notEditable" ? true : false}
+                  onChange={handleChange("organisationType")}
+                >
+                  <option value="null">- Select Organisation Type -</option>
+                  <option value="Company">Company</option>
+                  <option value="LLP">LLP</option>
+                  <option value="Partnership Firm">Partnership Firm</option>
+                  <option value="Proprietorship">Proprietorship</option>
+                </select>
+              </div>
+              <div className="col-md-4 col-sm-12 col-xs-12">
+                <label htmlFor="Shareholdername">Shareholder name</label>
+                <input
+                  type="text"
+                  className="mb-4 inputbox"
+                  name="Shareholdername"
+                  value={values.shareholderName}
+                  onChange={handleChange("shareholderName")}
                 />
               </div>
             </div>
