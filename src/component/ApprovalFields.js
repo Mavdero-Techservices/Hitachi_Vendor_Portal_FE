@@ -114,6 +114,7 @@ function ApprovalFields(props) {
 
       if (res.data.Statutory[0] !== "null" && res.data.Statutory.length > 0) {
         var statarr = res.data.Statutory;
+        console.log("res.data.Statutory", res.data.Statutory[0])
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
         setGST_type(res.data.Statutory[0].GST_Vendor_Type);
@@ -131,6 +132,8 @@ function ApprovalFields(props) {
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
+        setTax_residency(res.data.Statutory[0].Tax_residency_Doc
+);
       } else {
         setGST_type("");
         setGST_No("");
@@ -812,6 +815,7 @@ function ApprovalFields(props) {
     }
   };
   const handleLogoView = (event) => {
+    console.log("event------------------logo--->>>>", event)
     Swal.fire({
       title: "Company Logo",
       html: ` <img className="camera-img" src='data:image/jpeg;base64,${event}' alt="image" width='100px' width='100px'/> `,
@@ -839,6 +843,7 @@ function ApprovalFields(props) {
       });
     }
   };
+  console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
     // event.preventDefault(); bankdetailDoc
     if (
@@ -1003,8 +1008,10 @@ function ApprovalFields(props) {
           } else if (event === "logo") {
             var filereader = new FileReader();
             // filereader.readAsDataURL(result.value);
+            filereader.readAsBinaryString(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
+              console.log("btoa(base64)-------------------------->>>>", btoa(base64))
               setlogo(btoa(base64));
             };
 
@@ -2130,6 +2137,10 @@ function ApprovalFields(props) {
       data.append("email3", email3);
       data.append("approverFile", approverFile);
       console.log("Form Submitted", data);
+      
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
 
       apiService.updateAllCollection(userId, data).then((response) => {
         console.log("res=============>>>>>>>", response);
@@ -2486,6 +2497,7 @@ function ApprovalFields(props) {
       data.append("email3", email3);
       data.append("approverFile", approverFile);
       console.log("Form Submitted", data);
+      console.log("Form Submitted", data); 
 
       apiService.updateAllCollection(userId, data).then((response) => {
         console.log("res=============>>>>>>>", response);
@@ -4095,6 +4107,8 @@ function ApprovalFields(props) {
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
                    {style === "cont2" ? "View" : "Edit"}
+                      {style === "cont2" ? "View" : "Edit"}
+                  
                 </button>
                 <button
                   type="button"
