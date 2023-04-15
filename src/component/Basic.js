@@ -60,23 +60,14 @@ export class Basic extends React.Component {
       commu: false,
       edit: true,
       editStatutory: "",
-      savebutton: true,
       commuDetail: false,
     };
 
-
-    this.savebutton = this.savebutton.bind(this);
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
-  }
-
-  savebutton() {
-    this.setState({
-      savebutton: false,
-    });
   }
 
   mouseEnter(e) {
@@ -95,18 +86,18 @@ export class Basic extends React.Component {
     });
     this.setState({ Post_Code: e.target.value });
     apiService
-      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
+      .getStateAndcityByzipcode(
+        this.state.Country_Region_Code,
+        this.state.Post_Code
+      )
       .then((response) => {
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
-        if(response.data.data.postalcodes[0].adminName3)
-        {
+        if (response.data.data.postalcodes[0].adminName3) {
           this.setState({ City: response.data.data.postalcodes[0].adminName3 });
-        }
-        else{
+        } else {
           this.setState({ City: response.data.data.postalcodes[0].placeName });
         }
-        
       });
   }
   togglebutton() {
@@ -224,9 +215,6 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
-          this.setState({
-            savebutton: true,
-          });
           if (response) {
             Swal.fire({
               title: "Data Updated",
@@ -244,9 +232,6 @@ export class Basic extends React.Component {
     } else {
       if (this.props.params.newReg) {
         apiService.saveNewRegVendordetail(basicInfo).then((response) => {
-          this.setState({
-            savebutton: true,
-          });
           this.setState({ newUser: response.data.result.userId });
           let data = { newregUser: response.data.result.userId };
           sessionStorage.setItem("newregUser", JSON.stringify(data));
@@ -266,9 +251,6 @@ export class Basic extends React.Component {
         });
       } else {
         apiService.saveVendordetail(basicInfo).then((response) => {
-          this.setState({
-            savebutton: true,
-          });
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -304,9 +286,6 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
-          this.setState({
-            savebutton: true,
-          });
           if (response) {
             Swal.fire({
               title: "Data Updated",
@@ -358,9 +337,6 @@ export class Basic extends React.Component {
             communicationDetails
           )
           .then((response) => {
-            this.setState({
-              savebutton: true,
-            });
             if (response) {
               Swal.fire({
                 title: "Data Updated",
@@ -379,9 +355,6 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            this.setState({
-              savebutton: true,
-            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -406,9 +379,6 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            this.setState({
-              savebutton: true,
-            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -427,9 +397,6 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            this.setState({
-              savebutton: true,
-            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -500,9 +467,6 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            this.setState({
-              savebutton: true,
-            });
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -552,15 +516,13 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => {});
   }
   componentDidMount() {
-   //erpTestAPi  
+    //erpTestAPi
     apiService.getErpVendor_API().then((res) => {
-      console.log("erp::",res);
-    }
-    )
+      console.log("erp::", res);
+    });
     apiService.getErpResourcePortalVendorlist().then((res) => {
-      console.log("getErpResourcePortalVendorlist::",res);
-    }
-    )
+      console.log("getErpResourcePortalVendorlist::", res);
+    });
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });
@@ -707,12 +669,15 @@ export class Basic extends React.Component {
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
-    if (this.state.country && this.state.pinCode){
-    apiService
-      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
-      .then((response) => {
-        this.setState({ getCityAndState: response.data.postalcodes });
-      });
+    if (this.state.country && this.state.pinCode) {
+      apiService
+        .getStateAndcityByzipcode(
+          this.state.Country_Region_Code,
+          this.state.Post_Code
+        )
+        .then((response) => {
+          this.setState({ getCityAndState: response.data.postalcodes });
+        });
     }
   }
   render() {
@@ -728,7 +693,7 @@ export class Basic extends React.Component {
       companyName,
       image,
       open,
-      commu
+      commu,
     } = this.state;
     let countriesList =
       this.state.countryData?.length > 0 &&
@@ -876,7 +841,9 @@ export class Basic extends React.Component {
                                             className="mb-4 VendorInput"
                                             name="Country_Region_Code"
                                             id="Country_Region_Code"
-                                            value={this.state.Country_Region_Code}
+                                            value={
+                                              this.state.Country_Region_Code
+                                            }
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
@@ -1021,28 +988,17 @@ export class Basic extends React.Component {
                                 ) : (
                                   <>
                                     {" "}
-                                    {this.state.savebutton === true ? (
-                                      <>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            this.handleSubmit();
-                                            this.savebutton();
-                                          }}
-                                          className="btn basicbtn btn-primary btn-md m-3"
-                                        >
-                                          Save
-                                        </button>
-                                      </>
-                                    ) : (
+                                    <>
                                       <button
                                         type="button"
-                                        disabled
+                                        onClick={() => {
+                                          this.handleSubmit();
+                                        }}
                                         className="btn basicbtn btn-primary btn-md m-3"
                                       >
                                         Save
                                       </button>
-                                    )}
+                                    </>
                                   </>
                                 )}
 
@@ -1368,30 +1324,15 @@ export class Basic extends React.Component {
                                       </>
                                     ) : (
                                       <>
-                                        {this.state.savebutton === true ? (
-                                          <>
-                                            <button
-                                              type="button"
-                                              onClick={() => {
-                                                this.handleSubmitComDetail();
-                                                this.savebutton();
-                                              }}
-                                              className="btn basicbtn btn-primary btn-md m-3"
-                                            >
-                                              Save
-                                            </button>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <button
-                                              type="button"
-                                              disabled
-                                              className="btn basicbtn btn-primary btn-md m-3"
-                                            >
-                                              Save
-                                            </button>
-                                          </>
-                                        )}
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            this.handleSubmitComDetail();
+                                          }}
+                                          className="btn basicbtn btn-primary btn-md m-3"
+                                        >
+                                          Save
+                                        </button>
                                       </>
                                     )}
                                     <button

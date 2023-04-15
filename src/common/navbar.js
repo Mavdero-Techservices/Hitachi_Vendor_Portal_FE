@@ -130,7 +130,7 @@ function App() {
   };
   const contactDetails = (e) => {
     if (
-      editUser.contactDetail.length > 0 &&
+      editUser?.contactDetail?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
@@ -140,7 +140,7 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser.contactDetail.length > 0 &&  JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.contactDetail?.length > 0 &&  JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/ContactTeam/${params.userId}`, { state: { editUser } });
     } else {

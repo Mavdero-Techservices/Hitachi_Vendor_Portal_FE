@@ -271,11 +271,6 @@ const ContactTeam = () => {
           if (!GSTValidation.test(value))
             statutoryArray.push("GST No is invalid");
         }
-
-        if (value && key === "GST_Registration_No") {
-          if (!GSTValidation.test(value))
-            statutoryArray.push("GST No is invalid");
-        }
         if (value && key === "P_A_N_No") {
           if (!PANValidation.test(value))
             statutoryArray.push("PAN NO is invalid");
@@ -411,7 +406,7 @@ const ContactTeam = () => {
               title: "please complete this field.",
               html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
                  <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
-                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> STATUTORY DETAIL: </b> <br>${statutoryArray},<br>
                  <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
                  <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
                  <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
@@ -470,7 +465,7 @@ const ContactTeam = () => {
                 title: "please complete this field.",
                 html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
                  <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
-                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> STATUTORY DETAIL: </b> <br>${statutoryArray},<br>
                  <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
                  <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
                  <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
@@ -515,7 +510,7 @@ const ContactTeam = () => {
                 title: "please complete this field.",
                 html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
                  <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
-                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> STATUTORY DETAIL: </b> <br>${statutoryArray},<br>
                  <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
                  <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
                  <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,
@@ -794,7 +789,7 @@ const ContactTeam = () => {
               title: "please complete this field.",
               html: `<b> VENDOR DETAIL-BASIC INFORMATION:</b> <br> ${basicInfoArray}${basicInfoMandtatory}<br>
                  <b>VENDOR DETAIL-COMMUNICATION DETAIL: </b> <br> ${communicationArray}, <br>
-                 <b> SATUTORY DETAIL: </b> <br>${statutoryArray},<br>
+                 <b> STATUTORY DETAIL: </b> <br>${statutoryArray},<br>
                  <b> COMPLIANCE DETAIL: </b> <br> ${complianceArray}<br> 
                  <b>BANK DETAIL:  </b> <br> ${bankDetailArray} <br>
                  <b> CONTACT DETAIL: </b> <br> ${contactDetailArray}`,

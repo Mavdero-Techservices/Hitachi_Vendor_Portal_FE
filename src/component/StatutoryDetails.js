@@ -56,8 +56,7 @@ export default function Statutory(props) {
   const [submit, setSubmit] = useState(null);
   const params = useParams();
   const [fileRPD, setfileRPD] = useState();
-  const [country, setcountry] = useState({}); 
-  const [saveButton, setSaveButton] = useState(true);
+  const [country, setcountry] = useState({});
   const [style, setStyle] = useState("editable");
   const [deleteform_10fUploadedFile, setdeleteform_10fUploadedFile] =
     useState(false);
@@ -85,27 +84,27 @@ export default function Statutory(props) {
   function onChangeValue(event) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
-      if (values.PAN_No === 'N/A' && countryName === "IN"){
-        setValues({ PAN_No: '' })
+      if (values.PAN_No === "N/A" && countryName === "IN") {
+        setValues({ PAN_No: "" });
       }
       sethideunRegisteredField(false);
     } else {
       sethideunRegisteredField(true);
     }
     if (event.target.value === "Import") {
-      setValues({ PAN_No: 'N/A' })
+      setValues({ PAN_No: "N/A" });
       setHideImport(false);
     } else {
       setHideImport(true);
     }
     if (event.target.value === "Registered") {
-      if (values.PAN_No === 'N/A' && countryName ==="IN") {
-        setValues({ PAN_No: '' })
+      if (values.PAN_No === "N/A" && countryName === "IN") {
+        setValues({ PAN_No: "" });
       }
     }
   }
   function onFileDisclosurechange(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (e.size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -192,7 +191,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangePAN_Doc(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -225,7 +224,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeTAN_Doc(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -243,7 +242,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeMSME_Doc(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -476,138 +475,151 @@ export default function Statutory(props) {
 
   useEffect(() => {
     (async () => {
-    await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-      let cName = res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
-      if (cName !== 'IN' && cName !== null && cName !== undefined) {
-        setValues({ PAN_No: 'N/A' })
-      } 
-      setCountryName(res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : "")
-      }).then((result)=>{
-      })
-     
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
-      let id = newuser ? newuser : params.userId ? params.userId : values.userId
+      await apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          let cName = res.data.basicInfo
+            ? res.data.basicInfo[0].Country_Region_Code
+            : "";
+          if (cName !== "IN" && cName !== null && cName !== undefined) {
+            setValues({ PAN_No: "N/A" });
+          }
+          setCountryName(
+            res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
+          );
+        })
+        .then((result) => {});
+
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      let id = newuser
+        ? newuser
+        : params.userId
+        ? params.userId
+        : values.userId;
       await apiService.getvendorDetail(id).then((res) => {
         setcountry(res.data.country);
         if (res.data.country === "IN") {
           setshowLoginTab(false);
         }
       });
-    if (params.userId) {
-      let finalstatus = "";
-     await apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
-      });
-      await  apiService.getAllCollection(params.userId).then((res) => {
-        if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
-        ) {
-          setStyle("notEditable");
-        }
-        Object.entries(res.data.Statutory).map(([key, value]) => {
-          var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
-          var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-          var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
-          var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
-            "uploads/",
-            ""
-          );
-          var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
-          var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
-            "uploads/",
-            ""
-          );
-          setValues({
-            GST_No: value.GST_Registration_No,
-            GST_type: value.GST_Vendor_Type,
-            MSME_No: value.MSMED_Number,
-            MSME_Type: value.MSMED_Vendor_Type,
-            MSME_status: value.MSMED,
-            PAN_No: value.P_A_N_No,
-            CIN_No: value.CIN_No,
-            TAN_No: value.TAN_No,
-            Tax_residency_No: value.Tax_residency_No,
-            GST_Doc: value.GST_Doc,
-            PAN_Doc: value.PAN_Doc,
-            TAN_Doc: value.TAN_Doc,
-            MSME_Doc: value.MSME_Doc,
-            Tax_residency_Doc: value.Tax_residency_Doc,
-          });
-
-          setform_10f_Doc(value.form_10f_Doc);
-          setfileDisclosure(value.fileDisclosure);
-          setFile(value.GST_Doc);
-          setPAN_Doc(value.PAN_Doc);
-          setTAN_Doc(value.TAN_Doc);
-          setPE_Declaration_Doc(value.PE_Declaration_Doc);
-          setMSME_Doc(value.MSME_Doc);
-          setTax_residency_Doc(value.Tax_residency_Doc);
-          seteditTax_residency_Doc(replaceTax_residency_DocValue);
-          setEditform_10f_Doc(replaceform10fValue);
-          setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
+      if (params.userId) {
+        let finalstatus = "";
+        await apiService.signupFindByUserId(params.userId).then((res) => {
+          finalstatus = res.data.result.finalStatus;
         });
-      });
-    } else if (newuser){
-      let finalstatus = "";
-      await apiService.signupFindByUserId(newuser).then((res) => {
-        finalstatus = res.data.result.finalStatus;
-      });
-      await apiService.getAllCollection(newuser).then((res) => {
-        if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
-        ) {
-          setStyle("notEditable");
-        }
-        Object.entries(res.data.Statutory).map(([key, value]) => {
-          var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
-          var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-          var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
-          var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
-            "uploads/",
-            ""
-          );
-          var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
-          var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
-            "uploads/",
-            ""
-          );
-          setValues({
-            GST_No: value.GST_Registration_No,
-            GST_type: value.GST_Vendor_Type,
-            MSME_No: value.MSMED_Number,
-            MSME_Type: value.MSMED_Vendor_Type,
-            MSME_status: value.MSMED,
-            PAN_No: value.P_A_N_No,
-            CIN_No: value.CIN_No,
-            TAN_No: value.TAN_No,
-            Tax_residency_No: value.Tax_residency_No,
-            GST_Doc: value.GST_Doc,
-            PAN_Doc: value.PAN_Doc,
-            TAN_Doc: value.TAN_Doc,
-            MSME_Doc: value.MSME_Doc,
-            Tax_residency_Doc: value.Tax_residency_Doc,
+        await apiService.getAllCollection(params.userId).then((res) => {
+          if (
+            res.data.basicInfo[0].submitStatus === "Submitted" &&
+            finalstatus !== "Approved"
+          ) {
+            setStyle("notEditable");
+          }
+          Object.entries(res.data.Statutory).map(([key, value]) => {
+            var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
+            var replaceform10fValue = form_10fUrl.replace("uploads/", "");
+            var PE_Declaration_DocUrl =
+              res.data.Statutory[0].PE_Declaration_Doc;
+            var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
+              "uploads/",
+              ""
+            );
+            var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
+            var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
+              "uploads/",
+              ""
+            );
+            setValues({
+              GST_No: value.GST_Registration_No,
+              GST_type: value.GST_Vendor_Type,
+              MSME_No: value.MSMED_Number,
+              MSME_Type: value.MSMED_Vendor_Type,
+              MSME_status: value.MSMED,
+              PAN_No: value.P_A_N_No,
+              CIN_No: value.CIN_No,
+              TAN_No: value.TAN_No,
+              Tax_residency_No: value.Tax_residency_No,
+              GST_Doc: value.GST_Doc,
+              PAN_Doc: value.PAN_Doc,
+              TAN_Doc: value.TAN_Doc,
+              MSME_Doc: value.MSME_Doc,
+              Tax_residency_Doc: value.Tax_residency_Doc,
+            });
+
+            setform_10f_Doc(value.form_10f_Doc);
+            setfileDisclosure(value.fileDisclosure);
+            setFile(value.GST_Doc);
+            setPAN_Doc(value.PAN_Doc);
+            setTAN_Doc(value.TAN_Doc);
+            setPE_Declaration_Doc(value.PE_Declaration_Doc);
+            setMSME_Doc(value.MSME_Doc);
+            setTax_residency_Doc(value.Tax_residency_Doc);
+            seteditTax_residency_Doc(replaceTax_residency_DocValue);
+            setEditform_10f_Doc(replaceform10fValue);
+            setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
-
-          setform_10f_Doc(value.form_10f_Doc);
-          setfileDisclosure(value.fileDisclosure);
-          setFile(value.GST_Doc);
-          setPAN_Doc(value.PAN_Doc);
-          setTAN_Doc(value.TAN_Doc);
-          setPE_Declaration_Doc(value.PE_Declaration_Doc);
-          setMSME_Doc(value.MSME_Doc);
-          setTax_residency_Doc(value.Tax_residency_Doc);
-          seteditTax_residency_Doc(replaceTax_residency_DocValue);
-          setEditform_10f_Doc(replaceform10fValue);
-          setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
         });
-      });
+      } else if (newuser) {
+        let finalstatus = "";
+        await apiService.signupFindByUserId(newuser).then((res) => {
+          finalstatus = res.data.result.finalStatus;
+        });
+        await apiService.getAllCollection(newuser).then((res) => {
+          if (
+            res.data.basicInfo[0].submitStatus === "Submitted" &&
+            finalstatus !== "Approved"
+          ) {
+            setStyle("notEditable");
+          }
+          Object.entries(res.data.Statutory).map(([key, value]) => {
+            var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
+            var replaceform10fValue = form_10fUrl.replace("uploads/", "");
+            var PE_Declaration_DocUrl =
+              res.data.Statutory[0].PE_Declaration_Doc;
+            var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
+              "uploads/",
+              ""
+            );
+            var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
+            var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
+              "uploads/",
+              ""
+            );
+            setValues({
+              GST_No: value.GST_Registration_No,
+              GST_type: value.GST_Vendor_Type,
+              MSME_No: value.MSMED_Number,
+              MSME_Type: value.MSMED_Vendor_Type,
+              MSME_status: value.MSMED,
+              PAN_No: value.P_A_N_No,
+              CIN_No: value.CIN_No,
+              TAN_No: value.TAN_No,
+              Tax_residency_No: value.Tax_residency_No,
+              GST_Doc: value.GST_Doc,
+              PAN_Doc: value.PAN_Doc,
+              TAN_Doc: value.TAN_Doc,
+              MSME_Doc: value.MSME_Doc,
+              Tax_residency_Doc: value.Tax_residency_Doc,
+            });
 
-    }
-    
-      
-  })();
+            setform_10f_Doc(value.form_10f_Doc);
+            setfileDisclosure(value.fileDisclosure);
+            setFile(value.GST_Doc);
+            setPAN_Doc(value.PAN_Doc);
+            setTAN_Doc(value.TAN_Doc);
+            setPE_Declaration_Doc(value.PE_Declaration_Doc);
+            setMSME_Doc(value.MSME_Doc);
+            setTax_residency_Doc(value.Tax_residency_Doc);
+            seteditTax_residency_Doc(replaceTax_residency_DocValue);
+            setEditform_10f_Doc(replaceform10fValue);
+            setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
+          });
+        });
+      }
+    })();
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
@@ -639,7 +651,6 @@ export default function Statutory(props) {
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -661,7 +672,9 @@ export default function Statutory(props) {
         }
       });
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
       if (newuser) {
         const statdata = new FormData();
         statdata.append("GST_Doc", GST_Doc);
@@ -683,31 +696,8 @@ export default function Statutory(props) {
         statdata.append("TAN_No", values.TAN_No);
         statdata.append("userId", newuser);
         statdata.append("Tax_residency_No", values.Tax_residency_No);
-        statdata.append("fileDisclosure", fileDisclosure);  
+        statdata.append("fileDisclosure", fileDisclosure);
         apiService.saveStatutoryDetail(statdata).then((res) => {
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        }
-      });
-    }else{
-        apiService.saveStatutoryDetail(data).then((res) => {
-          setSaveButton(true)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -728,7 +718,29 @@ export default function Statutory(props) {
             });
           }
         });
-    }
+      } else {
+        apiService.saveStatutoryDetail(data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        });
+      }
     }
   };
   const updateStatutoryDetail = (e) => {
@@ -757,7 +769,6 @@ export default function Statutory(props) {
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-        setSaveButton(true)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -827,8 +838,7 @@ export default function Statutory(props) {
                 });
               } else if (event === "fileDisclosure") {
                 setfileDisclosure("");
-              } 
-               else if (event === "PAN_Doc") {
+              } else if (event === "PAN_Doc") {
                 setPAN_Doc("");
                 setValues({
                   PAN_Doc: "",
@@ -916,7 +926,7 @@ export default function Statutory(props) {
                                 className="mb-3"
                                 controlId="formBasicEmail"
                               >
-                                <Form.Label>GST no*</Form.Label>'
+                                <Form.Label>GST no*</Form.Label>
                                 <InputGroup className="statutoryInput">
                                   <Form.Control
                                     style={{
@@ -1045,9 +1055,9 @@ export default function Statutory(props) {
                                     />
                                   </div>{" "} */}
 
-                                      {fileDisclosure !== "" &&
-                                        fileDisclosure !== "null" &&
-                                        fileDisclosure !== undefined ? (
+                                  {fileDisclosure !== "" &&
+                                  fileDisclosure !== "null" &&
+                                  fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
@@ -1097,18 +1107,19 @@ export default function Statutory(props) {
                           : null} */}
                       </Row>
                       <Row>
-                        {GST_type === "Import"?
-                          <Col >
+                        {GST_type === "Import" ? (
+                          <Col>
                             <Form.Group
-
                               sx={{ mb: 3 }}
                               controlId="formBasicEmail"
                             >
                               <Form.Label>PAN no*</Form.Label>
                               <InputGroup className="statutoryInput">
                                 <Form.Control
-
-                                  style={{ border: "none", borderRadius: "25px" }}
+                                  style={{
+                                    border: "none",
+                                    borderRadius: "25px",
+                                  }}
                                   type="text"
                                   value="N/A"
                                   disabled="true"
@@ -1128,37 +1139,41 @@ export default function Statutory(props) {
                                 ""
                               )}
                             </Form.Group>
-                          </Col>:
-                        
-                        <Col >
-                          <Form.Group
-                            sx={{mb:3}}
-                            controlId="formBasicEmail"
-                          >
-                            <Form.Label>PAN no*</Form.Label>
-                            <InputGroup className="statutoryInput">
-                              <Form.Control
-                                style={{ border: "none", borderRadius: "25px" }}
-                                type="text"
-                                value={values.PAN_No}
-                                disabled={countryName !== 'IN' }
-                                onChange={handleChange("PAN_No")}
-                              />
-                              <InputGroup.Text style={{ border: "none" }}>
-                                <Tooltip title={panNo}>
-                                  <InfoIcon />
-                                </Tooltip>
-                              </InputGroup.Text>
-                            </InputGroup>
-                            {errors.PAN_No ? (
-                              <p className="text text-danger small">
-                                {errors.PAN_No}
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </Form.Group>
-                        </Col>}
+                          </Col>
+                        ) : (
+                          <Col>
+                            <Form.Group
+                              sx={{ mb: 3 }}
+                              controlId="formBasicEmail"
+                            >
+                              <Form.Label>PAN no*</Form.Label>
+                              <InputGroup className="statutoryInput">
+                                <Form.Control
+                                  style={{
+                                    border: "none",
+                                    borderRadius: "25px",
+                                  }}
+                                  type="text"
+                                  value={values.PAN_No}
+                                  disabled={countryName !== "IN"}
+                                  onChange={handleChange("PAN_No")}
+                                />
+                                <InputGroup.Text style={{ border: "none" }}>
+                                  <Tooltip title={panNo}>
+                                    <InfoIcon />
+                                  </Tooltip>
+                                </InputGroup.Text>
+                              </InputGroup>
+                              {errors.PAN_No ? (
+                                <p className="text text-danger small">
+                                  {errors.PAN_No}
+                                </p>
+                              ) : (
+                                ""
+                              )}
+                            </Form.Group>
+                          </Col>
+                        )}
                         <Col>
                           {/* {values.PAN_Doc!='' ? (
                           <div className="frame-input">
@@ -1199,9 +1214,8 @@ export default function Statutory(props) {
                                 Delete PAN
                               </button>
                             </div>
-                          ) : (
-                               GST_type !== "Import" ?
-                              <div className="frame-input">
+                          ) : GST_type !== "Import" ? (
+                            <div className="frame-input">
                               <label htmlFor="fileuploadPan">Upload PAN</label>
                               <input
                                 type="file"
@@ -1209,9 +1223,11 @@ export default function Statutory(props) {
                                 value={values.PAN_Doc}
                                 onChange={onFileChangePAN_Doc}
                                 required
-                                disabled={countryName !== 'IN'}
+                                disabled={countryName !== "IN"}
                               />
-                              </div> : ""
+                            </div>
+                          ) : (
+                            ""
                           )}
                         </Col>
                       </Row>
@@ -1265,7 +1281,7 @@ export default function Statutory(props) {
                         : null} */}
                       <Row>
                         <Col>
-                          {countryName !=="IN" ? (
+                          {countryName !== "IN" ? (
                             <Form.Group
                               className="mb-3"
                               controlId="formBasicEmail"
@@ -1781,7 +1797,9 @@ export default function Statutory(props) {
             >
               Cancel
             </button>
-            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
+            {params.userId &&
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+              "Admin" ? (
               <>
                 <button
                   type="button"
@@ -1793,27 +1811,15 @@ export default function Statutory(props) {
               </>
             ) : (
               <>
-                {saveButton === true ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      saveStatutoryDetail();
-                      setSaveButton(false);
-                    }}
-                    className="btn bankbtn btn-md m-1"
-                  >
-                    Save
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn bankbtn btn-md m-1"
-                    disabled
-                  >
-                    Save
-                  </button>
-                )}
-                
+                <button
+                  type="button"
+                  onClick={() => {
+                    saveStatutoryDetail();
+                  }}
+                  className="btn bankbtn btn-md m-1"
+                >
+                  Save
+                </button>
               </>
             )}
 
