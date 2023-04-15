@@ -32,7 +32,9 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
-const passwordValidation=RegExp(/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/)
+const passwordValidation = RegExp(
+  /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/
+);
 const useStyles = makeStyles((theme) => ({
   error: {
     verticalAlign: "middle",
@@ -189,8 +191,8 @@ export default function Signin(props) {
       apiService.resetPasswordByCode(user).then((data) => {
         if (data) {
           Swal.fire({
-            title: " check your email,to reset your password",
-            icon: "success",
+            title: data.data.data,
+            icon: data.data.status,
             confirmButtonText: "OK",
           });
           setshowLoginTab(true);
@@ -232,8 +234,8 @@ export default function Signin(props) {
   if (redirectToReferrer) {
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
-    } 
-    if (role === "other"){
+    }
+    if (role === "other") {
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "user" && verifiedUser === "approved") {
@@ -250,16 +252,16 @@ export default function Signin(props) {
     } else if (verifiedUser === "pending") {
       return <Navigate to={"/"} />;
     }
-    if (role === "financial"){
+    if (role === "financial") {
       return <Navigate to={`/documents/${userName}`} />;
     }
-    if (role === "VCT"){     
+    if (role === "VCT") {
       return <Navigate to={"/approval"} />;
     }
-    if (role === "MRT"){
+    if (role === "MRT") {
       return <Navigate to={"/MRTteam"} />;
     }
-    if (role === "Japan"){
+    if (role === "Japan") {
       return <Navigate to={"/japanTeam"} />;
     }
   }

@@ -122,15 +122,15 @@ function ApprovalFields(props) {
         setPAN_No(res.data.Statutory[0].P_A_N_No);
         setPAN_Doc(res.data.Statutory[0].PAN_Doc);
         setCIN_No(res.data.Statutory[0].CIN_No);
-        setform_10f(res.data.Statutory[0].form_10f);
-        setpe_declaration(res.data.Statutory[0].pe_declaration);
+        setform_10f(res.data.Statutory[0].form_10f_Doc);
+        setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);
         setMSME_status(res.data.Statutory[0].MSMED);
         setMSME_No(res.data.Statutory[0].MSMED_Number);
         setMSME_Doc(res.data.Statutory[0].MSME_Doc);
         setMSME_Type(res.data.Statutory[0].MSMED_Vendor_Type);
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
-        setTax_residency(res.data.Statutory[0].Tax_residency);
+        setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
       } else {
         setGST_type("");
         setGST_No("");
@@ -805,12 +805,16 @@ function ApprovalFields(props) {
   };
 
   const handleEdit = (event) => {
-    setStyle("cont2");
+    if (style === "cont2"){
+      setStyle("approvalsform");
+    }else{
+      setStyle("cont2");
+    }
   };
   const handleLogoView = (event) => {
     Swal.fire({
       title: "Company Logo",
-      html: ` <img className="camera-img" src=${event} alt="image" width='100px' width='100px'/> `,
+      html: ` <img className="camera-img" src='data:image/jpeg;base64,${event}' alt="image" width='100px' width='100px'/> `,
       focusConfirm: false,
     });
   };
@@ -819,7 +823,7 @@ function ApprovalFields(props) {
     if (event) {
       let text = event;
       let fname = text.split("/");
-      fetch(`http://localhost:12707/downloadPdfUploads/${fname[1]}`).then(
+      fetch(`http://43.204.173.152:12707/downloadPdfUploads/${fname[1]}`).then(
         (response) => {
           response.blob().then((blob) => {
             let url = URL.createObjectURL(blob, "application/pdf");
@@ -998,7 +1002,7 @@ function ApprovalFields(props) {
             setGST_DocErr("");
           } else if (event === "logo") {
             var filereader = new FileReader();
-            filereader.readAsDataURL(result.value);
+            // filereader.readAsDataURL(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
               setlogo(btoa(base64));
@@ -2124,6 +2128,7 @@ function ApprovalFields(props) {
       data.append("name3", name3);
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
+      data.append("approverFile", approverFile);
       console.log("Form Submitted", data);
 
       apiService.updateAllCollection(userId, data).then((response) => {
@@ -2479,6 +2484,7 @@ function ApprovalFields(props) {
       data.append("name3", name3);
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
+      data.append("approverFile", approverFile);
       console.log("Form Submitted", data);
 
       apiService.updateAllCollection(userId, data).then((response) => {
@@ -3935,6 +3941,7 @@ function ApprovalFields(props) {
                         name="vendorType"
                         aria-label="Disabled select example"
                         value={vendorType}
+                        disabled={style === "approvalsform"?true:false}
                         onChange={(e) => validatevendorType(e)}
                       >
                         {/* <option selected>Open this select menu</option> */}
@@ -4054,7 +4061,7 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  Edit
+                    {style === "cont2" ? "View" : "Edit"}
                 </button>
                 <button
                   type="button"
@@ -4087,7 +4094,7 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  Edit
+                   {style === "cont2" ? "View" : "Edit"}
                 </button>
                 <button
                   type="button"
