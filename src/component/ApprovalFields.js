@@ -845,7 +845,6 @@ function ApprovalFields(props) {
       });
     }
   };
-  console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
     // event.preventDefault(); bankdetailDoc
     if (
@@ -1021,7 +1020,6 @@ function ApprovalFields(props) {
             filereader.readAsBinaryString(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
-              console.log("btoa(base64)-------------------------->>>>", btoa(base64))
               setlogo(btoa(base64));
             };
 
@@ -3207,7 +3205,7 @@ function ApprovalFields(props) {
                             id="flexRadioDefault1"
                             value={"Registered"}
                             checked={GST_type === "Registered"}
-                            disabled={GST_type !== "Registered" ? true : false}
+                            // disabled={GST_type !== "Registered" ? true : false}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -3227,7 +3225,7 @@ function ApprovalFields(props) {
                             id="flexRadioDefault2"
                             value={"UnRegistered"}
                             checked={GST_type === "UnRegistered"}
-                            disabled={GST_type !== "UnRegistered" ? true : false}
+                            // disabled={GST_type !== "UnRegistered" ? true : false}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -3247,7 +3245,7 @@ function ApprovalFields(props) {
                             id="flexRadioDefault3"
                             value={"Import"}
                             checked={GST_type === "Import"}
-                            disabled={GST_type !== "Import" ? true : false}
+                            // disabled={GST_type !== "Import" ? true : false}
                             onChange={(e) => validateGST_type(e)}
                           />
                           <label
@@ -3560,7 +3558,7 @@ function ApprovalFields(props) {
                     </div>
                   </div>
 
-                  {editStatData[0]?.form_10f_Doc ? (
+                  {editStatData[0]?.form_10f_Doc && Country_Region_Code !== "IN"? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
@@ -3597,7 +3595,7 @@ function ApprovalFields(props) {
                   ) : (
                     <></>
                   )}
-                  {editStatData[0]?.Tax_residency_Doc ? (
+                  {editStatData[0]?.Tax_residency_Doc && Country_Region_Code !== "IN" ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
@@ -3636,7 +3634,7 @@ function ApprovalFields(props) {
                   ) : (
                     <></>
                   )}
-                  {editStatData[0]?.PE_Declaration_Doc ? (
+                  {editStatData[0]?.PE_Declaration_Doc && Country_Region_Code !== "IN" ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
