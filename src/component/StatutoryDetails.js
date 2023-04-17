@@ -542,10 +542,10 @@ export default function Statutory(props) {
               CIN_No: value.CIN_No,
               TAN_No: value.TAN_No,
               Tax_residency_No: value.Tax_residency_No,
-              GST_Doc: value.GST_Doc,
-              PAN_Doc: value.PAN_Doc,
-              TAN_Doc: value.TAN_Doc,
-              MSME_Doc: value.MSME_Doc,
+              // GST_Doc: value.GST_Doc,
+              // PAN_Doc: value.PAN_Doc,
+              // TAN_Doc: value.TAN_Doc,
+              // MSME_Doc: value.MSME_Doc,
               Tax_residency_Doc: value.Tax_residency_Doc,
             });
 
@@ -598,10 +598,10 @@ export default function Statutory(props) {
               CIN_No: value.CIN_No,
               TAN_No: value.TAN_No,
               Tax_residency_No: value.Tax_residency_No,
-              GST_Doc: value.GST_Doc,
-              PAN_Doc: value.PAN_Doc,
-              TAN_Doc: value.TAN_Doc,
-              MSME_Doc: value.MSME_Doc,
+              // GST_Doc: value.GST_Doc,
+              // PAN_Doc: value.PAN_Doc,
+              // TAN_Doc: value.TAN_Doc,
+              // MSME_Doc: value.MSME_Doc,
               Tax_residency_Doc: value.Tax_residency_Doc,
             });
 
@@ -833,26 +833,26 @@ export default function Statutory(props) {
             if (result.isConfirmed) {
               if (event === "GST_Doc") {
                 setFile("");
-                setValues({
-                  GST_Doc: "",
-                });
+                // setValues({
+                //   GST_Doc: "",
+                // });
               } else if (event === "fileDisclosure") {
                 setfileDisclosure("");
               } else if (event === "PAN_Doc") {
                 setPAN_Doc("");
-                setValues({
-                  PAN_Doc: "",
-                });
+                // setValues({
+                //   PAN_Doc: "",
+                // });
               } else if (event === "MSME_Doc") {
                 setMSME_Doc("");
-                setValues({
-                  MSME_Doc: "",
-                });
+                // setValues({
+                //   MSME_Doc: "",
+                // });
               } else if (event === "TAN_Doc") {
                 setTAN_Doc("");
-                setValues({
-                  TAN_Doc: "",
-                });
+                // setValues({
+                //   TAN_Doc: "",
+                // });
               }
               Swal.fire("Deleted!", "", "success");
             } else if (result.isDenied) {
@@ -1002,7 +1002,7 @@ export default function Statutory(props) {
                                   <input
                                     type="file"
                                     id="fileupload"
-                                    value={values.GST_Doc}
+                                    // value={values.GST_Doc}
                                     onChange={onFileChange}
                                     required
                                     disabled={
@@ -1220,7 +1220,7 @@ export default function Statutory(props) {
                               <input
                                 type="file"
                                 id="fileuploadPan"
-                                value={values.PAN_Doc}
+                                // value={values.PAN_Doc}
                                 onChange={onFileChangePAN_Doc}
                                 required
                                 disabled={countryName !== "IN"}
