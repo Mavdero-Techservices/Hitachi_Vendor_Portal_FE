@@ -1413,8 +1413,8 @@ function ApprovalFields(props) {
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
-      data.append("vendorType", vendorType);
-      data.append("vendorManager", acManager);
+      data.append("Vendor_Type", vendorType);
+      data.append("Vendor_Account_Manager", acManager);
       data.append("mkDenialCheque", mkcheck);
       data.append("financeSpoccontactName", fs_ContactName);
       data.append("financeSpocdesignation", fs_Designation);
@@ -1491,7 +1491,7 @@ function ApprovalFields(props) {
       data1.append("level3Status", "approved");
       data1.append("level3Date", new Date());
 
-      apiService.updateApprovalStatus(userId, data).then((response) => {
+      apiService.updateApprovalStatus(userId, data1).then((response) => {
         if (response) {
           Swal.fire({
             title: "Approved",
@@ -1825,8 +1825,8 @@ function ApprovalFields(props) {
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
-      data.append("vendorType", vendorType);
-      data.append("vendorManager", acManager);
+      data.append("Vendor_Type", vendorType);
+      data.append("Vendor_Account_Manager", acManager);
       data.append("mkDenialCheque", mkcheck);
       data.append("financeSpoccontactName", fs_ContactName);
       data.append("financeSpocdesignation", fs_Designation);
@@ -2247,8 +2247,8 @@ function ApprovalFields(props) {
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
-      data.append("vendorType", vendorType);
-      data.append("vendorManager", acManager);
+      data.append("Vendor_Type", vendorType);
+      data.append("Vendor_Account_Manager", acManager);
       data.append("mkDenialCheque", mkcheck);
       data.append("financeSpoccontactName", fs_ContactName);
       data.append("financeSpocdesignation", fs_Designation);
@@ -2607,8 +2607,8 @@ function ApprovalFields(props) {
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
-      data.append("vendorType", vendorType);
-      data.append("vendorManager", acManager);
+      data.append("Vendor_Type", vendorType);
+      data.append("Vendor_Account_Manager", acManager);
       data.append("mkDenialCheque", mkcheck);
       data.append("financeSpoccontactName", fs_ContactName);
       data.append("financeSpocdesignation", fs_Designation);
