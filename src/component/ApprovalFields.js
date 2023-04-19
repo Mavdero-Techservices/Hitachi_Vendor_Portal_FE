@@ -829,7 +829,7 @@ function ApprovalFields(props) {
     if (event) {
       let text = event;
       let fname = text.split("/");
-      fetch(`http://43.204.173.152:12707/downloadPdfUploads/${fname[1]}`).then(
+      fetch(`http://localhost:12707/downloadPdfUploads/${fname[1]}`).then(
         (response) => {
           response.blob().then((blob) => {
             let url = URL.createObjectURL(blob, "application/pdf");
