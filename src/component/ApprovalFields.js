@@ -274,7 +274,7 @@ function ApprovalFields(props) {
 
   const [GST_type, setGST_type] = useState("");
   const [GST_No, setGST_No] = useState("");
-  const [GST_Doc, setGST_Doc] = useState(""); 
+  const [GST_Doc, setGST_Doc] = useState("");
   const [fileDisclosure, setfileDisclosure] = useState("");
   const [PAN_No, setPAN_No] = useState("");
   const [PAN_Doc, setPAN_Doc] = useState("");
@@ -810,9 +810,9 @@ function ApprovalFields(props) {
   };
 
   const handleEdit = (event) => {
-    if (style === "cont2"){
+    if (style === "cont2") {
       setStyle("approvalsform");
-    }else{
+    } else {
       setStyle("cont2");
     }
   };
@@ -864,7 +864,6 @@ function ApprovalFields(props) {
       (event === "financial_data2" && financial_data2) ||
       (event === "bankdetailDoc" && bankdetailDoc)
     ) {
-      let bankDocument = "Copy of cancel Cheque.pdf";
       let title = event;
       Swal.fire({
         heightAuto: true,
@@ -1086,8 +1085,8 @@ function ApprovalFields(props) {
     data.append("level2Date", new Date());
     // data.append('level2RejectComment', "");
     // data.append('level2rejectFileDoc', "");
-    apiService.updateApprovalStatus(userId, data).then((response) => {
-      if (response) {
+    apiService.updateApprovalStatus(userId, data).then((responseData) => {
+      if (responseData.data.status === 'success') {
         Swal.fire({
           title: "Approved",
           icon: "success",
@@ -1095,7 +1094,7 @@ function ApprovalFields(props) {
         });
       } else {
         Swal.fire({
-          title: "Error While Fetching",
+          title: responseData.data.message,
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -1129,8 +1128,8 @@ function ApprovalFields(props) {
           data.append("level2rejectFileDoc", rejectdoc);
           data.append("level2Date", new Date());
           const userId = event;
-          apiService.updateApprovalStatus(userId, data).then((response) => {
-            if (response) {
+          apiService.updateApprovalStatus(userId, data).then((responseData) => {
+            if (responseData.data.status === 'success') {
               Swal.fire({
                 title: "Rejected",
                 icon: "success",
@@ -1138,7 +1137,7 @@ function ApprovalFields(props) {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
+                title: responseData.data.message,
                 icon: "error",
                 confirmButtonText: "OK",
               });
@@ -1400,7 +1399,7 @@ function ApprovalFields(props) {
       COC_Doc &&
       NDA_Doc
     ) {
-    
+
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -1489,8 +1488,8 @@ function ApprovalFields(props) {
       data1.append("level3Status", "approved");
       data1.append("level3Date", new Date());
 
-      apiService.updateApprovalStatus(userId, data1).then((response) => {
-        if (response) {
+      apiService.updateApprovalStatus(userId, data1).then((responseData) => {
+        if (responseData.data.status === 'success') {
           Swal.fire({
             title: "Approved",
             icon: "success",
@@ -1498,7 +1497,7 @@ function ApprovalFields(props) {
           });
         } else {
           Swal.fire({
-            title: "Error While Fetching",
+            title: responseData.data.message,
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -1539,8 +1538,8 @@ function ApprovalFields(props) {
           data.append("level3rejectFileDoc", rejectdoc);
           data.append("level3Date", new Date());
           const userId = event;
-          apiService.updateApprovalStatus(userId, data).then((response) => {
-            if (response) {
+          apiService.updateApprovalStatus(userId, data).then((responseData) => {
+            if (responseData.data.status === 'success') {
               Swal.fire({
                 title: "Rejected",
                 icon: "success",
@@ -1548,7 +1547,7 @@ function ApprovalFields(props) {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
+                title: responseData.data.message,
                 icon: "error",
                 confirmButtonText: "OK",
               });
@@ -1812,7 +1811,7 @@ function ApprovalFields(props) {
       COC_Doc &&
       NDA_Doc
     ) {
-      
+
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -1894,27 +1893,27 @@ function ApprovalFields(props) {
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
       });
-   
+
 
       const data1 = new FormData();
       data1.append("level1Status", "approved");
       data1.append("userId", event);
-      apiService.saveApproval(data1).then((response) => {
+      apiService.saveApproval(data1).then((responseData) => {
         //erpPost
-        if (response) {
-          const ERPData={
+        if (responseData.data.status === 'success') {
+          const ERPData = {
             Address: Address,
-            Address_2:Address_2,
+            Address_2: Address_2,
             City: City,
-            state:state,
+            state: state,
             Country_Region_Code: Country_Region_Code,
             Post_Code: Post_Code,
             companyName: companyName,
-            Ticket_ID:Math.floor(Math.random() * 1000),
-            Vendor_No:"VLOC-3888",
+            Ticket_ID: Math.floor(Math.random() * 1000),
+            Vendor_No: "VLOC-3888",
           };
           apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-            console.log("saved",data);
+            console.log("saved", data);
           })
           Swal.fire({
             title: "Approved",
@@ -1923,7 +1922,7 @@ function ApprovalFields(props) {
           });
         } else {
           Swal.fire({
-            title: "Error While Fetching",
+            title: responseData.data.message,
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -1963,9 +1962,9 @@ function ApprovalFields(props) {
           data.append("level1RejectComment", comment);
           data.append("level1rejectFileDoc", rejectdoc);
 
-          apiService.saveApproval(data).then((response) => {
-         
-            if (response) {
+          apiService.saveApproval(data).then((responseData) => {
+
+            if (responseData.data.status === 'success') {
               Swal.fire({
                 title: "Rejected",
                 icon: "success",
@@ -1973,7 +1972,7 @@ function ApprovalFields(props) {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
+                title: responseData.data.message,
                 icon: "error",
                 confirmButtonText: "OK",
               });
@@ -2198,7 +2197,7 @@ function ApprovalFields(props) {
       City &&
       Post_Code &&
       fs_ContactName &&
-      fs_Designation && 
+      fs_Designation &&
       fs_PhoneNo &&
       fs_Email &&
       mngs_ContactName &&
@@ -2238,9 +2237,9 @@ function ApprovalFields(props) {
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
-      data.append("Address_2",Address_2);
+      data.append("Address_2", Address_2);
       data.append("companyName", companyName);
-      data.append("Country_Region_Code",Country_Region_Code);
+      data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
       data.append("City", City);
       data.append("Post_Code", Post_Code);
@@ -2313,7 +2312,7 @@ function ApprovalFields(props) {
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
       data.append("approverFile", approverFile);
-      
+
       for (var pair of data.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
       }
@@ -2598,7 +2597,7 @@ function ApprovalFields(props) {
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
-      data.append("Address_2",Address_2);
+      data.append("Address_2", Address_2);
       data.append("companyName", companyName);
       data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
@@ -2656,7 +2655,7 @@ function ApprovalFields(props) {
       data.append("netWorth", netWorth);
       data.append("currentAssets", currentAssets);
       data.append("directorDetails", directorDetails);
-       data.append('Account_Holder_Name', bankAccountName);
+      data.append('Account_Holder_Name', bankAccountName);
       data.append('Bank_Name', bankName);
       data.append('Account_No', bankAccountNumber);
       data.append('IFSC_Code', ifscCode);
@@ -2673,7 +2672,7 @@ function ApprovalFields(props) {
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
       data.append("approverFile", approverFile);
-      console.log("Form Submitted", data); 
+      console.log("Form Submitted", data);
 
       apiService.updateAllCollection(userId, data).then((response) => {
         console.log("res=============>>>>>>>", response);
@@ -2899,8 +2898,8 @@ function ApprovalFields(props) {
                   editCommmData[0]?.operationSpocdesignation &&
                   editCommmData[0]?.operationSpocphoneNo &&
                   editCommmData[0]?.operationSpocemail ? ( */}
-               
-                  <>
+
+                <>
                   {(editCommmData[0]?.operationSpoccontactName !== "null" &&
                     editCommmData[0]?.operationSpoccontactName) ||
                    ( editCommmData[0]?.operationSpocdesignation !== "null" &&
@@ -2912,12 +2911,12 @@ function ApprovalFields(props) {
                     <p>
                       <b>Operation Spoc</b>
                     </p>
-                      ) : (
-                      ""
-                )}
-                    <div className="row">
+                  ) : (
+                    ""
+                  )}
+                  <div className="row">
                     {(editCommmData[0]?.operationSpoccontactName !== "null" &&
-                      editCommmData[0]?.operationSpoccontactName)?
+                      editCommmData[0]?.operationSpoccontactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_ContactName">Contact Name</label>
                         <input
@@ -2928,7 +2927,7 @@ function ApprovalFields(props) {
                           onChange={(e) => setops_ContactName(e.target.value)}
                         />
                       </div>
-                      :""}
+                      : ""}
                     {(editCommmData[0]?.operationSpocdesignation !== "null" &&
                       editCommmData[0]?.operationSpocdesignation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
@@ -2953,7 +2952,7 @@ function ApprovalFields(props) {
                           value={ops_PhoneNo}
                           onChange={(e) => setops_PhoneNo(e.target.value)}
                         />
-                      </div>:""}
+                      </div> : ""}
                     {(editCommmData[0]?.operationSpocemail !== "null" &&
                       editCommmData[0]?.operationSpocemail) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
@@ -2965,33 +2964,33 @@ function ApprovalFields(props) {
                           value={ops_Email}
                           onChange={(e) => setops_Email(e.target.value)}
                         />
-                      </div>:""}
-                    </div>
-                  </>
-               
+                      </div> : ""}
+                  </div>
+                </>
+
                 {/* {editCommmData[0]?.collectionSpoccontactName &&
                   editCommmData[0]?.collectionSpocdesignation &&
                   editCommmData[0]?.collectionSpocphoneNo &&
                   editCommmData[0]?.collectionSpocemail ? ( */}
-               
-                  <>
+
+                <>
                   {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
                     editCommmData[0]?.collectionSpoccontactName) ||
                     (editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                    editCommmData[0]?.collectionSpocdesignation) ||
+                      editCommmData[0]?.collectionSpocdesignation) ||
                     (editCommmData[0]?.collectionSpocphoneNo !== "null" &&
-                    editCommmData[0]?.collectionSpocphoneNo) ||
+                      editCommmData[0]?.collectionSpocphoneNo) ||
                     (editCommmData[0]?.collectionSpocemail !== "null" &&
-                    editCommmData[0]?.collectionSpocemail) ? (
+                      editCommmData[0]?.collectionSpocemail) ? (
                     <p>
                       <b>Collection Spoc</b>
                     </p>
                   ) : (
                     ""
                   )}
-                    <div className="row">
+                  <div className="row">
                     {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
-                      editCommmData[0]?.collectionSpoccontactName)? 
+                      editCommmData[0]?.collectionSpoccontactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Contact Name</label>
                         <input
@@ -3004,7 +3003,7 @@ function ApprovalFields(props) {
                       </div>
                       : ""}
                     {(editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                      editCommmData[0]?.collectionSpocdesignation) ? 
+                      editCommmData[0]?.collectionSpocdesignation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Designation</label>
                         <input
@@ -3042,8 +3041,8 @@ function ApprovalFields(props) {
                         />
                       </div>
                       : ""}
-                    </div>
-                  </>
+                  </div>
+                </>
 
                 <p>
                   <b>Management Spoc</b>
@@ -3098,25 +3097,25 @@ function ApprovalFields(props) {
                   editCommmData[0]?.designation &&
                   editCommmData[0]?.phoneNo &&
                   editCommmData[0]?.email ? ( */}
-                
-                  <>
+
+                <>
                   {(editCommmData[0]?.contactName !== "null" &&
                     editCommmData[0]?.contactName) ||
                     (editCommmData[0]?.designation !== "null" &&
-                    editCommmData[0]?.designation) ||
+                      editCommmData[0]?.designation) ||
                     (editCommmData[0]?.phoneNo !== "null" &&
-                    editCommmData[0]?.phoneNo) ||
+                      editCommmData[0]?.phoneNo) ||
                     (editCommmData[0]?.email !== "null" &&
-                    editCommmData[0]?.email) ? (
+                      editCommmData[0]?.email) ? (
                     <p>
                       <b>Others</b>
                     </p>
                   ) : (
                     ""
                   )}
-                    <div className="row">
+                  <div className="row">
                     {(editCommmData[0]?.contactName !== "null" &&
-                      editCommmData[0]?.contactName) ? 
+                      editCommmData[0]?.contactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_ContactName">Contact Name</label>
                         <input
@@ -3132,7 +3131,7 @@ function ApprovalFields(props) {
                       : ""}
 
                     {(editCommmData[0]?.designation !== "null" &&
-                      editCommmData[0]?.designation) ? 
+                      editCommmData[0]?.designation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_Designation">Designation</label>
                         <input
@@ -3172,9 +3171,9 @@ function ApprovalFields(props) {
                         />
                       </div>
                       : ""}
-                    </div>
-                  </>
-               
+                  </div>
+                </>
+
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="Post_Code">Master vendor email id*</label>
                   <input
@@ -3334,7 +3333,7 @@ function ApprovalFields(props) {
                               onClick={(e) => handleView(GST_Doc)}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
-                                View File
+                              View File
                             </button>
                           )}
                           <p className="formError">{GST_DocErr}</p>
@@ -3348,7 +3347,7 @@ function ApprovalFields(props) {
                             <>
                               <button
                                 type="button"
-                                  onClick={(e) => handleEditPopup("fileDisclosure")}
+                                onClick={(e) => handleEditPopup("fileDisclosure")}
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
                                 View File
@@ -3357,10 +3356,10 @@ function ApprovalFields(props) {
                           ) : (
                             <button
                               type="button"
-                                onClick={(e) => handleView(fileDisclosure)}
+                              onClick={(e) => handleView(fileDisclosure)}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
-                                View File
+                              View File
                             </button>
                           )}
                           <p className="formError">{fileDisclosureErr}</p>
@@ -3558,7 +3557,7 @@ function ApprovalFields(props) {
                     </div>
                   </div>
 
-                  {editStatData[0]?.form_10f_Doc && Country_Region_Code !== "IN"? (
+                  {editStatData[0]?.form_10f_Doc && Country_Region_Code !== "IN" ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
@@ -3897,7 +3896,7 @@ function ApprovalFields(props) {
                 <div className="row">
                   {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
                   {editFinanceData[0]?.yearOfAuditedFinancial !== "null" &&
-                  editFinanceData[0]?.yearOfAuditedFinancial ? (
+                    editFinanceData[0]?.yearOfAuditedFinancial ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">
                         Year of audited financials
@@ -3917,7 +3916,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.Revenue ? ( */}
                   {editFinanceData[0]?.Revenue !== "null" &&
-                  editFinanceData[0]?.Revenue ? (
+                    editFinanceData[0]?.Revenue ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
@@ -3933,7 +3932,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.Profit ? ( */}
                   {editFinanceData[0]?.Profit !== "null" &&
-                  editFinanceData[0]?.Profit ? (
+                    editFinanceData[0]?.Profit ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
@@ -3949,7 +3948,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.netWorth ? ( */}
                   {editFinanceData[0]?.netWorth !== "null" &&
-                  editFinanceData[0]?.netWorth ? (
+                    editFinanceData[0]?.netWorth ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
@@ -3965,7 +3964,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.currentAssets ? ( */}
                   {editFinanceData[0]?.currentAssets !== "null" &&
-                  editFinanceData[0]?.currentAssets ? (
+                    editFinanceData[0]?.currentAssets ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Current Assets</label>
                       <input
@@ -3981,7 +3980,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.directorDetails ? ( */}
                   {editFinanceData[0]?.directorDetails !== "null" &&
-                  editFinanceData[0]?.directorDetails ? (
+                    editFinanceData[0]?.directorDetails ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Director detail</label>
                       <input
@@ -3998,7 +3997,7 @@ function ApprovalFields(props) {
                   {/* {editFinanceData[0]?.financial_data ? ( */}
 
                   {editFinanceData[0]?.financial_data !== "null" &&
-                  editFinanceData[0]?.financial_data ? (
+                    editFinanceData[0]?.financial_data ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6 my-auto">
                       {style === "cont2" ? (
                         <button
@@ -4024,7 +4023,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.financial_data2 ? ( */}
                   {editFinanceData[0]?.financial_data2 !== "null" &&
-                  editFinanceData[0]?.financial_data2 ? (
+                    editFinanceData[0]?.financial_data2 ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                       {style === "cont2" ? (
                         <button
@@ -4094,9 +4093,9 @@ function ApprovalFields(props) {
                     <span className="formError">{contactNumberErr}</span>
                   </div>
                 </div>
-               
-                  <>
-                    <div className="row">
+
+                <>
+                  <div className="row">
                     {editContactData[0]?.contactName2 !== "null" &&
                       editContactData[0]?.contactName2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -4109,10 +4108,10 @@ function ApprovalFields(props) {
                           onChange={(e) => setname2(e.target.value)}
                         />
                       </div>
-                          : ""}
+                      : ""}
 
-                        {editContactData[0]?.emailId2 !== "null" &&
-                          editContactData[0]?.emailId2 ? 
+                    {editContactData[0]?.emailId2 !== "null" &&
+                      editContactData[0]?.emailId2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -4123,7 +4122,7 @@ function ApprovalFields(props) {
                           onChange={(e) => setemail2(e.target.value)}
                         />
                       </div>
-                          : ""}
+                      : ""}
                     {editContactData[0]?.contactNumber2 !== "null" &&
                       editContactData[0]?.contactNumber2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -4136,14 +4135,14 @@ function ApprovalFields(props) {
                           onChange={(e) => setcontactNumber2(e.target.value)}
                         />
                       </div>
-                          : ""}
-                    </div>
-                  </>
+                      : ""}
+                  </div>
+                </>
 
                 <>
-                    <div className="row">
+                  <div className="row">
                     {editContactData[0]?.contactName3 !== "null" &&
-                      editContactData[0]?.contactName3 ? 
+                      editContactData[0]?.contactName3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Name*</label>
                         <input
@@ -4154,9 +4153,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setname3(e.target.value)}
                         />
                       </div>
-                          : ""}
-                        {editContactData[0]?.emailId3 !== "null" &&
-                          editContactData[0]?.emailId3 ? 
+                      : ""}
+                    {editContactData[0]?.emailId3 !== "null" &&
+                      editContactData[0]?.emailId3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -4167,7 +4166,7 @@ function ApprovalFields(props) {
                           onChange={(e) => setemail3(e.target.value)}
                         />
                       </div>
-                          : ""}
+                      : ""}
                     {editContactData[0]?.contactNumber3 !== "null" &&
                       editContactData[0]?.contactNumber3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -4180,9 +4179,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setcontactNumber3(e.target.value)}
                         />
                       </div>
-                          : ""}
-                    </div>
-                  </>
+                      : ""}
+                  </div>
+                </>
               </div>
             </div>
 
@@ -4198,7 +4197,7 @@ function ApprovalFields(props) {
                         name="vendorType"
                         aria-label="Disabled select example"
                         value={vendorType}
-                        disabled={style === "approvalsform"?true:false}
+                        disabled={style === "approvalsform" ? true : false}
                         onChange={(e) => validatevendorType(e)}
                       >
                         {/* <option selected>Open this select menu</option> */}
@@ -4318,7 +4317,7 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                    {style === "cont2" ? "View" : "Edit"}
+                  {style === "cont2" ? "View" : "Edit"}
                 </button>
                 <button
                   type="button"
@@ -4351,8 +4350,8 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                      {style === "cont2" ? "View" : "Edit"}
-                  
+                  {style === "cont2" ? "View" : "Edit"}
+
                 </button>
                 <button
                   type="button"
