@@ -1097,15 +1097,53 @@ function ApprovalFields(props) {
         }).then((JapanTeamApprove) => {
           if(JapanTeamApprove){
             const ERPData={
-              Address: Address||undefined,
-              Address_2:Address_2||undefined,
-              City: City||undefined,
-              state:state||undefined,
-              Country_Region_Code: Country_Region_Code||undefined,
-              Entry_No:TicketID||undefined,   
+                Entry_No: TicketID||undefined,
+                Vendor_Type:vendorType||undefined,
+                // Employee_Code: "1",
+                Name:companyName||undefined,
+                // Name_2: "",
+                Address:Address||undefined,
+                Address_2: Address_2||undefined,
+                City:City||undefined,
+                // Contact: "",
+                // Phone_No: "9385580222",
+                // Telex_No: "9385580222",
+                // MSMED: "Unregistered",
+                // MSMED_Number: "NA",
+                // MSMED_Vendor_Type: " ",
+                // Country_Region_Code: "IND",
+                Post_Code: Post_Code||undefined,
+                // E_Mail: "apitestmail2@gmail.com",
+                P_A_N_No:PAN_No||undefined,
+                // State_Code: "UTP",
+                // Structure: "GST",
+                GST_Registration_No:GST_No||undefined,
+                GST_Vendor_Type:GST_type||undefined,
+                Account_Holder_Name:bankAccountName||undefined,
+                Account_No:bankAccountNumber||undefined,
+                Bank_Name:bankName||undefined,
+                Bank_Address:branchAddress||undefined,
+                IFSC_Code:ifscCode||undefined,
+                HSI_Contact_Name_1:name||undefined,
+                HSI_Contact_E_Mail_1:email||undefined,
+                HSI_Contact_Contact_No_1:contactNumber||undefined,
+                HSI_Contact_Name_2:name2||undefined,
+                HSI_Contact_E_Mail_2:email2||undefined,
+                HSI_Contact_Contact_No_2:contactNumber2||undefined,
+                HSI_Contact_Name_3:name3||undefined,
+                HSI_Contact_E_Mail_3:email3||undefined,
+                HSI_Contact_Contact_No_3:contactNumber3||undefined,
+                // Shareholder_Name: "",
+                // Organization_Type: " "             
             };
             apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-              console.log("saved",response);
+              const MasterVendor={
+                mastervendor_email:mastervendor_email||undefined,
+                companyName:mastervendor_email||undefined
+              }
+              apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+                console.log("masterLogin::",Masterresponse);
+              })
             })
           }
           
@@ -1515,20 +1553,52 @@ function ApprovalFields(props) {
           }).then((MRTTeamApprove) => {
             if(MRTTeamApprove){
               const ERPData={
-                Address: Address||undefined,
-                Address_2:Address_2||undefined,
-                City: City||undefined,
-                state:state||undefined,
-                Country_Region_Code: Country_Region_Code||undefined,
-                Entry_No:TicketID||undefined,   
-              };
-
+                Entry_No: TicketID||undefined,
+                Vendor_Type:vendorType||undefined,
+                // Employee_Code: "1",
+                Name:companyName||undefined,
+                // Name_2: "",
+                Address:Address||undefined,
+                Address_2: Address_2||undefined,
+                City:City||undefined,
+                // Contact: "",
+                // Phone_No: "9385580222",
+                // Telex_No: "9385580222",
+                // MSMED: "Unregistered",
+                // MSMED_Number: "NA",
+                // MSMED_Vendor_Type: " ",
+                // Country_Region_Code: "IND",
+                Post_Code: Post_Code||undefined,
+                // E_Mail: "apitestmail2@gmail.com",
+                P_A_N_No:PAN_No||undefined,
+                // State_Code: "UTP",
+                // Structure: "GST",
+                GST_Registration_No:GST_No||undefined,
+                GST_Vendor_Type:GST_type||undefined,
+                Account_Holder_Name:bankAccountName||undefined,
+                Account_No:bankAccountNumber||undefined,
+                Bank_Name:bankName||undefined,
+                Bank_Address:branchAddress||undefined,
+                IFSC_Code:ifscCode||undefined,
+                HSI_Contact_Name_1:name||undefined,
+                HSI_Contact_E_Mail_1:email||undefined,
+                HSI_Contact_Contact_No_1:contactNumber||undefined,
+                HSI_Contact_Name_2:name2||undefined,
+                HSI_Contact_E_Mail_2:email2||undefined,
+                HSI_Contact_Contact_No_2:contactNumber2||undefined,
+                HSI_Contact_Name_3:name3||undefined,
+                HSI_Contact_E_Mail_3:email3||undefined,
+                HSI_Contact_Contact_No_3:contactNumber3||undefined,
+                // Shareholder_Name: "",
+                // Organization_Type: " "             
+            };
               apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
                 const MasterVendor={
                   mastervendor_email:mastervendor_email||undefined,
                   companyName:mastervendor_email||undefined
                 }
-                apiService.saveMasterLogin(MasterVendor).then((response) => {
+                apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+                  console.log("masterLogin::",Masterresponse);
                 })              
               })
             }
@@ -1938,28 +2008,7 @@ function ApprovalFields(props) {
       data1.append("level1Status", "approved");
       data1.append("userId", event);
       apiService.saveApproval(data1).then((responseData) => {
-        //erpPost
         if (responseData.data.status === 'success') {
-          const ERPData = {
-            Address: Address,
-            Address_2: Address_2,
-            City: City,
-            state: state,
-            Country_Region_Code: Country_Region_Code,
-            Post_Code: Post_Code,
-            companyName: companyName,
-            Ticket_ID: Math.floor(Math.random() * 1000),
-            Vendor_No: "VLOC-3888",
-          };
-          apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-            console.log("saved", data);
-            const MasterVendor={
-              mastervendor_email:mastervendor_email||undefined,
-              companyName:mastervendor_email||undefined
-            }
-            apiService.saveMasterLogin(MasterVendor).then((response) => {
-            })
-          })
           Swal.fire({
             title: "Approved",
             icon: "success",
