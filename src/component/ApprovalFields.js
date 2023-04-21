@@ -227,6 +227,7 @@ function ApprovalFields(props) {
         setname3(res.data.contactDetail[0].contactName3);
         setcontactNumber3(res.data.contactDetail[0].contactNumber3);
         setemail3(res.data.contactDetail[0].emailId3);
+        setTicketID(res.data.contactDetail[0].Ticket_ID);
       } else {
         setname("");
         setcontactNumber("");
@@ -237,6 +238,7 @@ function ApprovalFields(props) {
         setname3("");
         setcontactNumber3("");
         setemail3("");
+        setTicketID("");
       }
     });
   }, []);
@@ -318,6 +320,7 @@ function ApprovalFields(props) {
   const [name3, setname3] = useState("");
   const [contactNumber3, setcontactNumber3] = useState("");
   const [email3, setemail3] = useState("");
+  const [TicketID,setTicketID]=useState("");
 
   const [vendorType, setvendorType] = useState("");
   const [acManager, setacManager] = useState("");
@@ -1091,7 +1094,22 @@ function ApprovalFields(props) {
           title: "Approved",
           icon: "success",
           confirmButtonText: "OK",
-        });
+        }).then((JapanTeamApprove) => {
+          if(JapanTeamApprove){
+            const ERPData={
+              Address: Address||undefined,
+              Address_2:Address_2||undefined,
+              City: City||undefined,
+              state:state||undefined,
+              Country_Region_Code: Country_Region_Code||undefined,
+              Entry_No:TicketID||undefined,   
+            };
+            apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+              console.log("saved",response);
+            })
+          }
+          
+                  })
       } else {
         Swal.fire({
           title: responseData.data.message,
@@ -1494,7 +1512,28 @@ function ApprovalFields(props) {
             title: "Approved",
             icon: "success",
             confirmButtonText: "OK",
-          });
+          }).then((MRTTeamApprove) => {
+            if(MRTTeamApprove){
+              const ERPData={
+                Address: Address||undefined,
+                Address_2:Address_2||undefined,
+                City: City||undefined,
+                state:state||undefined,
+                Country_Region_Code: Country_Region_Code||undefined,
+                Entry_No:TicketID||undefined,   
+              };
+
+              apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+                const MasterVendor={
+                  mastervendor_email:mastervendor_email||undefined,
+                  companyName:mastervendor_email||undefined
+                }
+                apiService.saveMasterLogin(MasterVendor).then((response) => {
+                })              
+              })
+            }
+            
+                    })
         } else {
           Swal.fire({
             title: responseData.data.message,
@@ -1914,6 +1953,12 @@ function ApprovalFields(props) {
           };
           apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
             console.log("saved", data);
+            const MasterVendor={
+              mastervendor_email:mastervendor_email||undefined,
+              companyName:mastervendor_email||undefined
+            }
+            apiService.saveMasterLogin(MasterVendor).then((response) => {
+            })
           })
           Swal.fire({
             title: "Approved",

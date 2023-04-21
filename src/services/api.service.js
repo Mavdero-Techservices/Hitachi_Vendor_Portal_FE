@@ -240,6 +240,8 @@ class apiService {
   getErpVendor_APIByP_A_N_No(P_A_N_No) {
     return http.get(`/getErpVendor_APIByP_A_N_No/${P_A_N_No}`);
   }
-
+  saveMasterLogin(data) {
+    return http.post('/saveMasterLogin', data);
+  }
 }
 export default new apiService();
