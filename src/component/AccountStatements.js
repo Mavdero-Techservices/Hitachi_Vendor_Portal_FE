@@ -22,6 +22,10 @@ function AccountStatements() {
   const [acList, setacList] = useState("");
   const [acState, setacState] = useState("CurrentAccount");
 
+
+  const [ledgerDetail, setledgerDetail] = useState("");
+
+
   const theme = createTheme({
     Link: {
       textTransform: "none",
@@ -32,6 +36,11 @@ function AccountStatements() {
     apiService.vendorApprovalList().then((response) => {
       setacList(response.data.result);
     });
+
+    apiService.getVendorLedgerEntries().then((response) => {
+      setledgerDetail(response.data.value);
+    });
+
   }, []);
 
   const renderDetailsButton = (params) => {
@@ -73,9 +82,7 @@ function AccountStatements() {
     );
   };
   const handleRejectChange = (event, value) => {
-    let sameid = acList
-      ? acList.find((item) => item.vendorId == value.id)?.vendorId
-      : "ajay";
+
     Swal.fire({
       heightAuto: true,
       title: "Review vendor details",
@@ -94,150 +101,96 @@ function AccountStatements() {
         if (!comment || !rejectdoc) {
           Swal.showValidationMessage(`Please enter comments and file`);
         } else {
+          
           const data = new FormData();
-          data.append(
-            "userId",
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-          );
-          data.append("vendorCode", "XYZ");
-          data.append("rejectComment", comment);
-          data.append("rejectFileDoc", rejectdoc);
-          data.append("vendorStatus", "rejected");
+          data.append("comment", comment);
+          data.append("rejectdoc", rejectdoc);
+          // console.log("data---->", data);
+          const No = value.Entry_No;
+          apiService.rejectAccStatementDetail(data,No).then((res) => {
+            // if (res.data.status === "success") {
+            //   Swal.fire({
+            //     title: "Data saved",
+            //     icon: "success",
+            //     confirmButtonText: "OK",
+            //     showCloseButton: true,
+            //     allowOutsideClick: false,
+            //     allowEscapeKey: false,
+            //   });
+            // } else {
+            //   Swal.fire({
+            //     title: "Error While Fetching",
+            //     icon: "error",
+            //     confirmButtonText: "OK",
+            //     showCloseButton: true,
+            //     allowOutsideClick: false,
+            //     allowEscapeKey: false,
+            //   });
+            // }
+          });
 
-          data.append("vendorId", value.vendorId);
-          data.append("poNo", value.poNo);
-          data.append("itemName", value.itemName);
-          data.append("date", value.date);
-          data.append("externalno", value.externalno);
-          data.append("tdsAmt", value.tdsAmt);
-          data.append("remainAmt", value.remainAmt);
-          if (sameid) {
-            apiService
-              .updatevendorApprovalStatus(sameid, data)
-              .then((response) => {
-                if (response) {
-                  Swal.fire({
-                    title: "Data saved",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                  });
-                } else {
-                  Swal.fire({
-                    title: "Error While Fetching",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                  });
-                }
-              });
-          } else {
-            apiService.saveVendorApproval(data).then((response) => {
-              if (response) {
-                Swal.fire({
-                  title: "Data saved",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
-              } else {
-                Swal.fire({
-                  title: "Error While Fetching",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            });
-          }
         }
       },
     });
   };
-  const handleApproveChange = (event, value) => {
-    let sameid = acList
-      ? acList.find((item) => item.vendorId == value.id)?.vendorId
-      : "ajay";
-    const data = new FormData();
-    data.append(
-      "userId",
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-    );
-    data.append("vendorCode", "XYZ");
-    data.append("rejectComment", "");
-    data.append("rejectFileDoc", "");
-    data.append("vendorStatus", "approved");
 
-    data.append("vendorId", value.vendorId);
-    data.append("poNo", value.poNo);
-    data.append("itemName", value.itemName);
-    data.append("date", value.date);
-    data.append("externalno", value.externalno);
-    data.append("tdsAmt", value.tdsAmt);
-    data.append("remainAmt", value.remainAmt);
-    if (sameid) {
-      apiService.updatevendorApprovalStatus(sameid, data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    } else {
-      apiService.saveVendorApproval(data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data saved",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    }
+  const handleApproveChange = (event, value) => {
+    apiService.approveAccStatementDetail(value).then((res) => {
+      // if (res.data.status === "success") {
+      //   Swal.fire({
+      //     title: "Data saved",
+      //     icon: "success",
+      //     confirmButtonText: "OK",
+      //     showCloseButton: true,
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     title: "Error While Fetching",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //     showCloseButton: true,
+      //     allowOutsideClick: false,
+      //     allowEscapeKey: false,
+      //   });
+      // }
+    });
   };
+
   const columns = [
     {
-      field: "itemName",
+      field: "Vendor_Name",
       headerName: "Name",
       width: 150,
       editable: true,
     },
     {
-      field: "date",
+      field: "Document_Date",
       headerName: "Document Date",
       width: 150,
       editable: true,
     },
     {
-      field: "externalno",
+      field: "External_Document_No",
       headerName: "External Document No.",
       width: 160,
       editable: true,
     },
     {
-      field: "poNo",
+      field: "Purchase_Order_No",
       headerName: "Purchase Order No.",
       width: 150,
       editable: true,
     },
     {
-      field: "TdsAmt",
+      field: "TDS_Amt",
       headerName: "TDS Amount",
       width: 150,
       editable: true,
     },
     {
-      field: "remainAmt",
+      field: "Remaining_Amount",
       headerName: "Remaining Amount",
       width: 150,
       editable: true,
@@ -250,127 +203,65 @@ function AccountStatements() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      vendorId: 1,
-      itemName: "HARMEEN INFONET",
-      date: "19/10/22",
-      externalno: "HIPL2602/2022-23",
-      poNo: "DELXXXXXXXX",
-      tdsAmt: "62.6",
-      remainAmt: "80,065.42",
-      vendorCode: "Trichy_V01",
-      userId: "uma878059",
-    },
-    {
-      id: 2,
-      vendorId: 2,
-      itemName: "HARMEEN INFONET",
-      date: "19/10/22",
-      externalno: "HIPL2602/2022-23",
-      poNo: "DELXXXXXXXX",
-      tdsAmt: "62.6",
-      remainAmt: "80,065.40",
-      vendorCode: "Trichy_V01",
-      userId: "uma878059",
-    },
-  ];
-  const row = [
-    {
-      id: 1,
-      vendorId: 1,
-      itemName: "HARMEEN INFONET",
-      date: "19/10/22",
-      externalno: "HIPL2602/2022-23",
-      poNo: "DELXXXXXXXX",
-      TdsAmt: "62.6",
-      Amt: "81,310",
-    },
-    {
-      id: 2,
-      vendorId: 2,
-      itemName: "HARMEEN INFONET",
-      date: "19/10/22",
-      externalno: "HIPL2602/2022-23",
-      poNo: "DELXXXXXXXX",
-      TdsAmt: "62.6",
-      Amt: "7,01,460",
-    },
-    {
-      id: 3,
-      vendorId: 3,
-      itemName: "Meraki MR Enterprise",
-      date: "19/10/22",
-      externalno: "HIPL2602/2022-23",
-      poNo: "DELXXXXXXXX",
-      TdsAmt: "62.6",
-      Amt: "1,60,590",
-    },
-  ];
+  const rows = [];
+  const row = [];
+
+
   const column = [
     {
-      field: "itemName",
+      field: "Vendor_Name",
       headerName: "Name",
       width: 150,
       editable: true,
     },
     {
-      field: "date",
+      field: "Document_Date",
       headerName: "Document Date",
       width: 150,
       editable: true,
     },
     {
-      field: "externalno",
+      field: "External_Document_No",
       headerName: "External Document No.",
       width: 160,
       editable: true,
     },
     {
-      field: "poNo",
+      field: "Purchase_Order_No",
       headerName: "Purchase Order No.",
       width: 150,
       editable: true,
     },
     {
-      field: "TdsAmt",
+      field: "TDS_Amt",
       headerName: "TDS Amount",
       width: 150,
       editable: true,
     },
     {
-      field: "Amt",
-      headerName: " Amount",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "utr",
-      headerName: "UTR Detail",
+      field: "Remaining_Amount",
+      headerName: "Amount",
       width: 150,
       editable: true,
     },
   ];
-  const handleExcelDownoad = (event) => {
+  const handleExcelDownload = (event) => {
     event.preventDefault();
-    let Vendorcode = "12h3";
     const filetype =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;Charset=UTF-8";
-    apiService.downloadVendorApprovalList(Vendorcode).then((response) => {
+    apiService.downloadCurrentAccountStatement().then((response) => {
       const data = new Blob([response.data], { type: filetype });
-      saveAs(data, "moorthy.xlsx");
+      saveAs(data, "CurrentAccountStatement.xlsx");
     });
   };
 
-  const handleExcelDownoadd = (event) => {
+  const handleExcelDownoad = (event) => {
     event.preventDefault();
-    let Vendorcode = "12h3";
     const filetype =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;Charset=UTF-8";
-    apiService.downloadVendorApprovalList(Vendorcode).then((response) => {
+    apiService.downloadAccStatementConfirmation().then((response) => {
       const data = new Blob([response.data], { type: filetype });
-      saveAs(data, "moorthy.xlsx");
+      saveAs(data, "AccountStatment.xlsx");
     });
   };
 
@@ -444,7 +335,8 @@ function AccountStatements() {
                   </Typography>
                   <DataGrid
                     sx={{ backgroundColor: "white", mt: 2 }}
-                    rows={rows}
+                    rows={ledgerDetail ? ledgerDetail : ""}
+                    getRowId={(rows) => rows.Entry_No}
                     columns={columns}
                     components={{
                       Footer: CustomFooterTotalComponent,
@@ -489,7 +381,8 @@ function AccountStatements() {
                   <Box sx={{ mt: 2, height: 350, width: "100%" }}>
                     <DataGrid
                       sx={{ backgroundColor: "white", mt: 2 }}
-                      rows={row}
+                      rows={ledgerDetail ? ledgerDetail : ""}
+                      getRowId={(rows) => rows.Entry_No}
                       columns={column}
                       components={{
                         Footer: CustomFooterTotalComponent,
@@ -498,7 +391,6 @@ function AccountStatements() {
                         footer: { totall },
                       }}
                       onStateChange={(state) => {
-                        console.log("state", state);
                         const visibleRows = state.filter.visibleRowsLookup;
                         let visibleItems = [];
                         for (const [id, value] of Object.entries(visibleRows)) {
@@ -523,7 +415,7 @@ function AccountStatements() {
                     <div className="float-end">
                       <button
                         type="button"
-                        onClick={(e) => handleExcelDownoadd(e)}
+                        onClick={(e) => handleExcelDownload(e)}
                         className="btn bankbtn btn-primary btn-md m-2"
                       >
                         Download

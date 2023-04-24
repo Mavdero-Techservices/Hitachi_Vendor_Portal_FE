@@ -243,5 +243,30 @@ class apiService {
   saveMasterLogin(data) {
     return http.post('/saveMasterLogin', data);
   }
+  getVendorLedgerEntries() {
+    return http.get('/getVendorLedgerEntries');
+  }
+
+  downloadCurrentAccountStatement() {
+    return axios.get(
+      `http://localhost:5000/downloadCurrentAccountStatement/exportExcel`,
+      { responseType: 'blob' }
+    );
+  }
+
+  downloadAccStatementConfirmation() {
+    return axios.get(
+      `http://localhost:5000/downloadAccStatementConfirmation/exportExcel`,
+      { responseType: 'blob' }
+    );
+  }
+
+  approveAccStatementDetail(value) {
+    return axios.post('http://localhost:5000/approveAccStatementDetail', value);
+  }
+
+  rejectAccStatementDetail(data, No) {
+    return axios.post(`http://localhost:5000/rejectAccStatementDetail/${No}`, data);
+  }
 }
 export default new apiService();
