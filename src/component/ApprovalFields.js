@@ -782,9 +782,9 @@ function ApprovalFields(props) {
   const validateTAN_No = (e) => {
     setTAN_No(e.target.value);
     if (e.target.value.length === 0) {
-      setTAN_NoErr("TAN number is required");
+      // setTAN_NoErr("TAN number is required");
     } else {
-      setTAN_NoErr("");
+      // setTAN_NoErr("");
       setTAN_No(e.target.value);
     }
   };
@@ -842,7 +842,7 @@ function ApprovalFields(props) {
       );
     } else {
       Swal.fire({
-        title: "Error While Fetching",
+        title: "File not found",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -928,7 +928,7 @@ function ApprovalFields(props) {
                 setMSME_DocErr("MSME document is required");
               } else if (event === "TAN_Doc") {
                 setTAN_Doc("");
-                setTAN_DocErr("TAN document is required");
+                // setTAN_DocErr("TAN document is required");
               } else if (event === "Tax_residency") {
                 setTax_residency("");
                 setTax_residencyErr("TAX document is required");
@@ -1348,12 +1348,12 @@ function ApprovalFields(props) {
     if (MSME_Type.length === 0) {
       setMSME_TypeErr("MSME type is required");
     }
-    if (TAN_No.length === 0) {
-      setTAN_NoErr("TAN number is required");
-    }
-    if (!TAN_Doc) {
-      setTAN_DocErr("TAN doc is required");
-    }
+    // if (TAN_No.length === 0) {
+    //   setTAN_NoErr("TAN number is required");
+    // }
+    // if (!TAN_Doc) {
+    //   setTAN_DocErr("TAN doc is required");
+    // }
     if (!Tax_residency) {
       setTax_residencyErr("Tax residency is required");
     }
@@ -1446,11 +1446,11 @@ function ApprovalFields(props) {
       MSME_status &&
       MSME_No &&
       MSME_Type &&
-      TAN_No &&
+      // TAN_No &&
       // GST_Doc &&
       PAN_Doc &&
       // MSME_Doc &&
-      TAN_Doc &&
+      // TAN_Doc &&
       RPD_Doc &&
       COC_Doc &&
       NDA_Doc
@@ -1813,12 +1813,12 @@ function ApprovalFields(props) {
     if (MSME_Type.length === 0) {
       setMSME_TypeErr("MSME type is required");
     }
-    if (TAN_No.length === 0) {
-      setTAN_NoErr("TAN number is required");
-    }
-    if (!TAN_Doc) {
-      setTAN_DocErr("TAN doc is required");
-    }
+    // if (TAN_No.length === 0) {
+    //   setTAN_NoErr("TAN number is required");
+    // }
+    // if (!TAN_Doc) {
+    //   setTAN_DocErr("TAN doc is required");
+    // }
     if (!Tax_residency) {
       setTax_residencyErr("Tax residency is required");
     }
@@ -1911,11 +1911,11 @@ function ApprovalFields(props) {
       MSME_status &&
       MSME_No &&
       MSME_Type &&
-      TAN_No &&
+      // TAN_No &&
       // GST_Doc &&
       PAN_Doc &&
       // MSME_Doc &&
-      TAN_Doc &&
+      // TAN_Doc &&
       RPD_Doc &&
       COC_Doc &&
       NDA_Doc
@@ -2221,12 +2221,12 @@ function ApprovalFields(props) {
     if (MSME_Type.length === 0) {
       setMSME_TypeErr("MSME type is required");
     }
-    if (TAN_No.length === 0) {
-      setTAN_NoErr("TAN number is required");
-    }
-    if (!TAN_Doc) {
-      setTAN_DocErr("TAN doc is required");
-    }
+    // if (TAN_No.length === 0) {
+    //   setTAN_NoErr("TAN number is required");
+    // }
+    // if (!TAN_Doc) {
+    //   setTAN_DocErr("TAN doc is required");
+    // }
     if (!Tax_residency) {
       setTax_residencyErr("Tax residency is required");
     }
@@ -2319,11 +2319,11 @@ function ApprovalFields(props) {
       MSME_status &&
       MSME_No &&
       MSME_Type &&
-      TAN_No &&
+      // TAN_No &&
       // GST_Doc &&
       PAN_Doc &&
       // MSME_Doc &&
-      TAN_Doc &&
+      // TAN_Doc &&
       RPD_Doc &&
       COC_Doc &&
       NDA_Doc
@@ -2581,12 +2581,12 @@ function ApprovalFields(props) {
     if (MSME_Type.length === 0) {
       setMSME_TypeErr("MSME type is required");
     }
-    if (TAN_No.length === 0) {
-      setTAN_NoErr("TAN number is required");
-    }
-    if (!TAN_Doc) {
-      setTAN_DocErr("TAN doc is required");
-    }
+    // if (TAN_No.length === 0) {
+    //   setTAN_NoErr("TAN number is required");
+    // }
+    // if (!TAN_Doc) {
+    //   setTAN_DocErr("TAN doc is required");
+    // }
     if (!Tax_residency) {
       setTax_residencyErr("Tax residency is required");
     }
@@ -2679,11 +2679,11 @@ function ApprovalFields(props) {
       MSME_status &&
       MSME_No &&
       MSME_Type &&
-      TAN_No &&
+      // TAN_No &&
       // GST_Doc &&
       PAN_Doc &&
       // MSME_Doc &&
-      TAN_Doc &&
+      // TAN_Doc &&
       RPD_Doc &&
       COC_Doc &&
       NDA_Doc
