@@ -23,6 +23,9 @@ const BankDetails = (props) => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [style, setStyle] = useState("editable");
 
+  const [saveButton, setSaveButton] = useState(true);
+
+
   const onFileChange = (file) => {
     if (file.size > 5000000) {
       Swal.fire({
@@ -106,6 +109,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
+        setSaveButton(true)
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -114,7 +118,7 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          });
+          })
           // .then((res) => {
           //   navigate(`/FinancialDetail/${params.userId}`);
           // });
@@ -127,9 +131,7 @@ const BankDetails = (props) => {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const bankdata = new FormData();
         bankdata.append("userId", newuser);
@@ -149,6 +151,7 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
+
             });
           } else {
             Swal.fire({
@@ -160,6 +163,7 @@ const BankDetails = (props) => {
         });
       } else {
         apiService.savebankdetail(data).then((response) => {
+          setSaveButton(true)
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -168,7 +172,7 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            });
+            })
             // .then((res) => {
             //   navigate(`/FinancialDetail`);
             // });
@@ -197,6 +201,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
+        setSaveButton(true)
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -217,9 +222,7 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -272,7 +275,8 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
         });
       });
-    } else {
+    }
+    else {
       setEditBank(false);
     }
   }, []);
@@ -409,9 +413,7 @@ const BankDetails = (props) => {
                 )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 ">
-                {fileBank !== "" &&
-                fileBank !== undefined &&
-                fileBank !== null ? (
+                {fileBank !== "" && fileBank !== undefined && fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}
@@ -435,9 +437,7 @@ const BankDetails = (props) => {
               >
                 Cancel
               </button>
-              {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                "Admin" ? (
+              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
                 <>
                   <button
                     type="submit"
@@ -449,15 +449,26 @@ const BankDetails = (props) => {
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    className="btn bankbtn btn-md m-1"
-                    onClick={() => {
-                      saveBankDetail();
-                    }}
-                  >
-                    Save
-                  </button>
+                  {saveButton === true ? (
+                    <button
+                      type="button"
+                      className="btn bankbtn btn-md m-1"
+                      onClick={() => {
+                        saveBankDetail();
+                        setSaveButton(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn bankbtn btn-md m-1"
+                      disabled
+                    >
+                      Save
+                    </button>
+                  )}
                 </>
               )}
 

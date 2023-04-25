@@ -63,12 +63,14 @@ export class Basic extends React.Component {
       commuDetail: false,
     };
 
+
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
   }
+
 
   mouseEnter(e) {
     e.preventDefault();
@@ -86,18 +88,17 @@ export class Basic extends React.Component {
     });
     this.setState({ Post_Code: e.target.value });
     apiService
-      .getStateAndcityByzipcode(
-        this.state.Country_Region_Code,
-        this.state.Post_Code
-      )
+      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
       .then((response) => {
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
         if (response.data.data.postalcodes[0].adminName3) {
           this.setState({ City: response.data.data.postalcodes[0].adminName3 });
-        } else {
+        }
+        else {
           this.setState({ City: response.data.data.postalcodes[0].placeName });
         }
+
       });
   }
   togglebutton() {
@@ -232,6 +233,7 @@ export class Basic extends React.Component {
     } else {
       if (this.props.params.newReg) {
         apiService.saveNewRegVendordetail(basicInfo).then((response) => {
+
           this.setState({ newUser: response.data.result.userId });
           let data = { newregUser: response.data.result.userId };
           sessionStorage.setItem("newregUser", JSON.stringify(data));
@@ -251,6 +253,7 @@ export class Basic extends React.Component {
         });
       } else {
         apiService.saveVendordetail(basicInfo).then((response) => {
+          
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -286,6 +289,7 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
+          
           if (response) {
             Swal.fire({
               title: "Data Updated",
@@ -337,6 +341,7 @@ export class Basic extends React.Component {
             communicationDetails
           )
           .then((response) => {
+            
             if (response) {
               Swal.fire({
                 title: "Data Updated",
@@ -355,6 +360,7 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
+           
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -379,6 +385,7 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
+            
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -397,6 +404,7 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
+            
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -467,6 +475,7 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
+            
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -513,16 +522,9 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => {});
+    apiService.updateVendordetail(userId, data).then((response) => { });
   }
   componentDidMount() {
-    //erpTestAPi
-    apiService.getErpVendor_API().then((res) => {
-      console.log("erp::", res);
-    });
-    apiService.getErpResourcePortalVendorlist().then((res) => {
-      console.log("getErpResourcePortalVendorlist::", res);
-    });
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });
@@ -671,10 +673,7 @@ export class Basic extends React.Component {
     });
     if (this.state.country && this.state.pinCode) {
       apiService
-        .getStateAndcityByzipcode(
-          this.state.Country_Region_Code,
-          this.state.Post_Code
-        )
+        .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
         .then((response) => {
           this.setState({ getCityAndState: response.data.postalcodes });
         });
@@ -693,7 +692,7 @@ export class Basic extends React.Component {
       companyName,
       image,
       open,
-      commu,
+      commu
     } = this.state;
     let countriesList =
       this.state.countryData?.length > 0 &&
@@ -801,7 +800,7 @@ export class Basic extends React.Component {
                                             value={Address}
                                             disabled={
                                               this.state.setStyle ===
-                                              "notEditable"
+                                                "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -841,13 +840,11 @@ export class Basic extends React.Component {
                                             className="mb-4 VendorInput"
                                             name="Country_Region_Code"
                                             id="Country_Region_Code"
-                                            value={
-                                              this.state.Country_Region_Code
-                                            }
+                                            value={this.state.Country_Region_Code}
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
-                                              "notEditable"
+                                                "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -915,8 +912,8 @@ export class Basic extends React.Component {
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
                                   {this.state.image != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -968,13 +965,13 @@ export class Basic extends React.Component {
                                 <button
                                   type="button"
                                   onClick={this.cancelBasicInfo}
-                                  className="btn basicbtn btn-primary btn-md m-3"
+                                  className="btn basicbtn btn-md m-3"
                                 >
                                   Cancel
                                 </button>
                                 {this.props.params.userId &&
-                                JSON.parse(window.sessionStorage.getItem("jwt"))
-                                  .result.role === "Admin" ? (
+                                  JSON.parse(window.sessionStorage.getItem("jwt"))
+                                    .result.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -988,24 +985,25 @@ export class Basic extends React.Component {
                                 ) : (
                                   <>
                                     {" "}
-                                    <>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          this.handleSubmit();
-                                        }}
-                                        className="btn basicbtn btn-primary btn-md m-3"
-                                      >
-                                        Save
-                                      </button>
-                                    </>
+                                      <>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            this.handleSubmit();
+                                          }}
+                                          className="btn basicbtn btn-md m-3"
+                                        >
+                                          Save
+                                        </button>
+                                      </>
+                                    
                                   </>
                                 )}
 
                                 <button
                                   type="button"
                                   onClick={this.togglebuttonCommu}
-                                  className="btn basicbtn btn-primary btn-md m-3"
+                                  className="btn basicbtn btn-md m-3"
                                 >
                                   Next
                                 </button>
@@ -1303,42 +1301,45 @@ export class Basic extends React.Component {
                                     <button
                                       type="button"
                                       onClick={this.cancelCommunicationInfo}
-                                      className="btn basicbtn btn-primary btn-md m-3"
+                                      className="btn basicbtn btn-md m-3"
                                     >
                                       Cancel
                                     </button>
                                     {this.props.params.userId &&
-                                    JSON.parse(
-                                      window.sessionStorage.getItem("jwt")
-                                    ).result.role === "Admin" ? (
+                                      JSON.parse(
+                                        window.sessionStorage.getItem("jwt")
+                                      ).result.role === "Admin" ? (
                                       <>
                                         <button
                                           type="button"
                                           onClick={
                                             this.updatehandleSubmitComDetail
                                           }
-                                          className="btn basicbtn btn-primary btn-md m-3"
+                                          className="btn basicbtn btn-md m-3"
                                         >
                                           Update
                                         </button>
                                       </>
                                     ) : (
                                       <>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            this.handleSubmitComDetail();
-                                          }}
-                                          className="btn basicbtn btn-primary btn-md m-3"
-                                        >
-                                          Save
-                                        </button>
+                                          <>
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                this.handleSubmitComDetail();
+                                              }}
+                                              className="btn basicbtn btn-md m-3"
+                                            >
+                                              Save
+                                            </button>
+                                          </>
+                                        
                                       </>
                                     )}
                                     <button
                                       type="button"
                                       onClick={this.next}
-                                      className="btn basicbtn btn-primary btn-md m-3"
+                                      className="btn basicbtn btn-md m-3"
                                     >
                                       Next
                                     </button>

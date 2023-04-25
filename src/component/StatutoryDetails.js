@@ -84,27 +84,27 @@ export default function Statutory(props) {
   function onChangeValue(event) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
-      if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+      if (values.PAN_No === 'N/A' && countryName === "IN") {
+        setValues({ PAN_No: '' })
       }
       sethideunRegisteredField(false);
     } else {
       sethideunRegisteredField(true);
     }
     if (event.target.value === "Import") {
-      setValues({ PAN_No: "N/A" });
+      setValues({ PAN_No: 'N/A' })
       setHideImport(false);
     } else {
       setHideImport(true);
     }
     if (event.target.value === "Registered") {
-      if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+      if (values.PAN_No === 'N/A' && countryName === "IN") {
+        setValues({ PAN_No: '' })
       }
     }
   }
   function onFileDisclosurechange(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -191,7 +191,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangePAN_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -224,7 +224,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeTAN_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -242,7 +242,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeMSME_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -475,31 +475,17 @@ export default function Statutory(props) {
 
   useEffect(() => {
     (async () => {
-      await apiService
-        .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-        )
-        .then((res) => {
-          let cName = res.data.basicInfo
-            ? res.data.basicInfo[0].Country_Region_Code
-            : "";
-          if (cName !== "IN" && cName !== null && cName !== undefined) {
-            setValues({ PAN_No: "N/A" });
-          }
-          setCountryName(
-            res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
-          );
-        })
-        .then((result) => {});
+      await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        let cName = res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
+        if (cName !== 'IN' && cName !== null && cName !== undefined) {
+          setValues({ PAN_No: 'N/A' })
+        }
+        setCountryName(res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : "")
+      }).then((result) => {
+      })
 
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      let id = newuser
-        ? newuser
-        : params.userId
-        ? params.userId
-        : values.userId;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let id = newuser ? newuser : params.userId ? params.userId : values.userId
       await apiService.getvendorDetail(id).then((res) => {
         setcountry(res.data.country);
         if (res.data.country === "IN") {
@@ -521,8 +507,7 @@ export default function Statutory(props) {
           Object.entries(res.data.Statutory).map(([key, value]) => {
             var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
             var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-            var PE_Declaration_DocUrl =
-              res.data.Statutory[0].PE_Declaration_Doc;
+            var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
             var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
               "uploads/",
               ""
@@ -548,6 +533,7 @@ export default function Statutory(props) {
               // MSME_Doc: value.MSME_Doc,
               Tax_residency_Doc: value.Tax_residency_Doc,
             });
+
             setGST_type(value.GST_Vendor_Type);
             setMSME_status(value.MSMED);
             setform_10f_Doc(value.form_10f_Doc);
@@ -578,8 +564,7 @@ export default function Statutory(props) {
           Object.entries(res.data.Statutory).map(([key, value]) => {
             var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
             var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-            var PE_Declaration_DocUrl =
-              res.data.Statutory[0].PE_Declaration_Doc;
+            var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
             var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
               "uploads/",
               ""
@@ -620,7 +605,10 @@ export default function Statutory(props) {
             setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
         });
+
       }
+
+
     })();
     seturl(pdf);
   }, []);
@@ -632,7 +620,6 @@ export default function Statutory(props) {
     data.append("GST_Vendor_Type", GST_type);
     data.append("GST_Registration_No", values.GST_No);
     if (countryName !== "IN") {
-      console.log("11111");
       data.append("P_A_N_No", "N/A");
       data.append("PAN_Doc", "");
     } else {
@@ -680,9 +667,7 @@ export default function Statutory(props) {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const statdata = new FormData();
         statdata.append("GST_Doc", GST_Doc);
@@ -696,7 +681,6 @@ export default function Statutory(props) {
           statdata.append("P_A_N_No", "N/A");
           statdata.append("PAN_Doc", "");
         }
-       
         statdata.append("form_10f_Doc", form_10f_Doc);
         statdata.append("TAN_Doc", TAN_Doc);
         statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -765,8 +749,13 @@ export default function Statutory(props) {
     data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
     data.append("GST_Registration_No", values.GST_No);
-    data.append("P_A_N_No", values.PAN_No);
-    data.append("PAN_Doc", PAN_Doc);
+    if (countryName !== "IN") {
+      data.append("P_A_N_No", "N/A");
+      data.append("PAN_Doc", "");
+    } else {
+      data.append("P_A_N_No", values.PAN_No);
+      data.append("PAN_Doc", PAN_Doc);
+    }
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
     data.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -782,19 +771,7 @@ export default function Statutory(props) {
     data.append("userId", params.userId);
     data.append("Tax_residency_No", values.Tax_residency_No);
     data.append("fileDisclosure", fileDisclosure);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     if (params.userId) {
-      console.log("11111----------->");
-
-      if (countryName !== "IN") {
-        console.log("11111");
-        console.log("data.P_A_N_No", data.P_A_N_No);
-        console.log("data.PAN_Doc", data.PAN_Doc);
-        data.P_A_N_No = "N/A";
-        data.PAN_Doc = "";
-      }
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
@@ -865,7 +842,8 @@ export default function Statutory(props) {
                 // });
               } else if (event === "fileDisclosure") {
                 setfileDisclosure("");
-              } else if (event === "PAN_Doc") {
+              }
+              else if (event === "PAN_Doc") {
                 setPAN_Doc("");
                 // setValues({
                 //   PAN_Doc: "",
@@ -1010,8 +988,8 @@ export default function Statutory(props) {
                             )} */}
 
                               {GST_Doc !== "" &&
-                              GST_Doc !== "null" &&
-                              GST_Doc !== undefined ? (
+                                GST_Doc !== "null" &&
+                                GST_Doc !== undefined ? (
                                 <div className="frame-input">
                                   <button
                                     type="button"
@@ -1083,8 +1061,8 @@ export default function Statutory(props) {
                                   </div>{" "} */}
 
                                   {fileDisclosure !== "" &&
-                                  fileDisclosure !== "null" &&
-                                  fileDisclosure !== undefined ? (
+                                    fileDisclosure !== "null" &&
+                                    fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
@@ -1134,19 +1112,18 @@ export default function Statutory(props) {
                           : null} */}
                       </Row>
                       <Row>
-                        {GST_type === "Import" ? (
-                          <Col>
+                        {GST_type === "Import" ?
+                          <Col >
                             <Form.Group
+
                               sx={{ mb: 3 }}
                               controlId="formBasicEmail"
                             >
                               <Form.Label>PAN no*</Form.Label>
                               <InputGroup className="statutoryInput">
                                 <Form.Control
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "25px",
-                                  }}
+
+                                  style={{ border: "none", borderRadius: "25px" }}
                                   type="text"
                                   value="N/A"
                                   disabled="true"
@@ -1166,9 +1143,9 @@ export default function Statutory(props) {
                                 ""
                               )}
                             </Form.Group>
-                          </Col>
-                        ) : (
-                          <Col>
+                          </Col> :
+
+                          <Col >
                             <Form.Group
                               sx={{ mb: 3 }}
                               controlId="formBasicEmail"
@@ -1176,15 +1153,12 @@ export default function Statutory(props) {
                               <Form.Label>PAN no*</Form.Label>
                               <InputGroup className="statutoryInput">
                                 <Form.Control
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "25px",
-                                  }}
+                                  style={{ border: "none", borderRadius: "25px" }}
                                   type="text"
                                   value={
                                     countryName !== "IN" ? "N/A" : values.PAN_No
                                   }
-                                  disabled={countryName !== "IN"}
+                                  disabled={countryName !== 'IN'}
                                   onChange={handleChange("PAN_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
@@ -1201,8 +1175,7 @@ export default function Statutory(props) {
                                 ""
                               )}
                             </Form.Group>
-                          </Col>
-                        )}
+                          </Col>}
                         <Col>
                           {/* {values.PAN_Doc!='' ? (
                           <div className="frame-input">
@@ -1228,10 +1201,11 @@ export default function Statutory(props) {
                           />
                         </div>
                         )} */}
+
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
-                            PAN_Doc !== "null" &&
-                            PAN_Doc !== undefined ? (
+                              PAN_Doc !== "null" &&
+                              PAN_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1259,8 +1233,7 @@ export default function Statutory(props) {
                               </div>
                             ) : (
                               ""
-                            )
-                          ) : (
+                            )) : (
                             ""
                           )}
                         </Col>
@@ -1325,8 +1298,8 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {Editform_10f_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <span>File name:{Editform_10f_Doc}</span>
 
@@ -1386,8 +1359,8 @@ export default function Statutory(props) {
                               <Form.Label>No PE declaration*</Form.Label>
                               {(params.userId &&
                                 EditPE_Declaration_Doc != "") ||
-                              undefined ||
-                              null ? (
+                                undefined ||
+                                null ? (
                                 <div>
                                   <span>
                                     File name:{EditPE_Declaration_Doc}
@@ -1518,8 +1491,8 @@ export default function Statutory(props) {
                           )} */}
 
                             {MSME_Doc !== "" &&
-                            MSME_Doc !== "null" &&
-                            MSME_Doc !== undefined ? (
+                              MSME_Doc !== "null" &&
+                              MSME_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1531,24 +1504,24 @@ export default function Statutory(props) {
                                   Delete MSME
                                 </button>
                               </div>
-                            ) : MSME_status === "Registered" ? (
-                              <div className="frame-input">
-                                <label htmlFor="fileuploadMSME">
-                                  Upload MSME
-                                </label>
-                                <input
-                                  type="file"
-                                  id="fileuploadMSME"
-                                  // value={values.MSME_Doc}
-                                  onChange={onFileChangeMSME_Doc}
-                                  required
-                                  disabled={
-                                    style === "notEditable" ? true : false
-                                  }
-                                />
-                              </div>
                             ) : (
-                              <></>
+                              MSME_status === "Registered" ? (
+                                <div className="frame-input">
+                                  <label htmlFor="fileuploadMSME">
+                                    Upload MSME
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="fileuploadMSME"
+                                    // value={values.MSME_Doc}
+                                    onChange={onFileChangeMSME_Doc}
+                                    required
+                                    disabled={
+                                      style === "notEditable" ? true : false
+                                    }
+                                  />
+                                </div>
+                              ) : (<></>)
                             )}
                           </Col>
                         </Row>
@@ -1570,9 +1543,9 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             {MSME_Doc !== "" &&
-                            MSME_Doc !== "null" &&
-                            MSME_Doc !== undefined &&
-                            MSME_status === "Registered" ? (
+                              MSME_Doc !== "null" &&
+                              MSME_Doc !== undefined &&
+                              MSME_status === "Registered" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1584,21 +1557,22 @@ export default function Statutory(props) {
                                   Delete MSME
                                 </button>
                               </div>
-                            ) : MSME_status === "Registered" ? (
-                              <div className="frame-input">
-                                <label htmlFor="fileuploadMSME">
-                                  Upload MSME
-                                </label>
-                                <input
-                                  type="file"
-                                  id="fileuploadMSME"
-                                  // value={values.MSME_Doc}
-                                  onChange={onFileChangeMSME_Doc}
-                                  disabled="true"
-                                />
-                              </div>
                             ) : (
-                              <></>
+                              MSME_status === "Registered" ? (
+                                <div className="frame-input">
+                                  <label htmlFor="fileuploadMSME">
+                                    Upload MSME
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="fileuploadMSME"
+                                    // value={values.MSME_Doc}
+                                    onChange={onFileChangeMSME_Doc}
+                                    disabled="true"
+                                  />
+                                </div>
+                              ) : (<></>)
+
                             )}
                           </Col>
                         </Row>
@@ -1625,7 +1599,7 @@ export default function Statutory(props) {
                                       : false
                                   }
                                 />{" "}
-                                Micro1
+                                Micro
                               </Col>
                               <Col sm={4}>
                                 <input
@@ -1700,8 +1674,8 @@ export default function Statutory(props) {
                           </div> */}
 
                           {TAN_Doc !== "" &&
-                          TAN_Doc !== "null" &&
-                          TAN_Doc !== undefined ? (
+                            TAN_Doc !== "null" &&
+                            TAN_Doc !== undefined ? (
                             <div className="frame-input">
                               <button
                                 type="button"
@@ -1740,8 +1714,8 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {editTax_residency_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <span>File name:{Tax_residency_Doc}</span>
                                       <ClearIcon
@@ -1836,9 +1810,7 @@ export default function Statutory(props) {
             >
               Cancel
             </button>
-            {params.userId &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-              "Admin" ? (
+            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
               <>
                 <button
                   type="button"
@@ -1859,6 +1831,8 @@ export default function Statutory(props) {
                 >
                   Save
                 </button>
+
+
               </>
             )}
 

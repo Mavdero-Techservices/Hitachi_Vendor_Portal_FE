@@ -129,13 +129,9 @@ function UserAccess() {
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
     });
-    apiService.getErpVendor_APIByP_A_N_No(params.Parent_Vendor_Code).then((vendorCode) => {
+    apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
       console.log("vendorCode.data.result",vendorCode.data);
-      // if(vendorCode?.data.length>0){
-        setgetAllvendorcode(  vendorCode.data);
-        // setvcityPincode(vendorCode.data)
-        // nameList => [...nameList, props]
-      // }
+        setgetAllvendorcode(vendorCode.data);
     });
    
     apiService.getAllVendorSubUser().then((res) => {
@@ -187,7 +183,7 @@ function UserAccess() {
                             <TableCell align="center">{row.Name}</TableCell>
 
                             <TableCell align="center">
-                              {!Edit[row.id] && row.city_vendorCode_Pincode ? (                                
+                              {!Edit[row.id] ? (                                
                                 <>
                                 {vcityPincode?.filter((vcity) => {
                                   return vcity.SubUserId === row.SubUserId
@@ -203,9 +199,9 @@ function UserAccess() {
                                   options={getAllvendorcode ? getAllvendorcode : ""}
                                   disableCloseOnSelect
                                   getOptionLabel={(option) =>
-                                    option.No +
-                                    "_" +
                                     option.City +
+                                    "_" +
+                                    option.No +
                                     "_" +
                                     option.State_Code
                                   }
@@ -221,9 +217,9 @@ function UserAccess() {
                                         style={{ marginRight: 8 }}
                                         checked={selected}
                                       />
-                                      {option.No +
+                                      {option.City +
                                         "_" +
-                                        option.City +
+                                        option.No +
                                         "_" +
                                         option.State_Code}
                                     </li>
@@ -233,7 +229,7 @@ function UserAccess() {
                                     handleVendorCodeChange(event, value)
                                   }
                                   renderInput={(params) => (
-                                    <TextField {...params} label="Checkboxes" />
+                                    <TextField {...params} label="City_VendorCode_Pincode" />
                                   )}
                                 />
                               )}

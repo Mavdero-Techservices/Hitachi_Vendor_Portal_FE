@@ -240,8 +240,8 @@ class apiService {
   getErpVendor_APIByP_A_N_No(P_A_N_No) {
     return http.get(`/getErpVendor_APIByP_A_N_No/${P_A_N_No}`);
   }
-  saveMasterLogin(data) {
-    return http.post('/saveMasterLogin', data);
+  updateTicketIdbyUserId(userId) {
+    return http.put(`/updateTicketIdbyUserId/${userId}`);
   }
   getVendorLedgerEntries() {
     return http.get('/getVendorLedgerEntries');
@@ -249,24 +249,24 @@ class apiService {
 
   downloadCurrentAccountStatement() {
     return axios.get(
-      `http://localhost:5000/downloadCurrentAccountStatement/exportExcel`,
+      `http://localhost:12707/downloadCurrentAccountStatement/exportExcel`,
       { responseType: 'blob' }
     );
   }
 
   downloadAccStatementConfirmation() {
     return axios.get(
-      `http://localhost:5000/downloadAccStatementConfirmation/exportExcel`,
+      `http://localhost:12707/downloadAccStatementConfirmation/exportExcel`,
       { responseType: 'blob' }
     );
   }
 
   approveAccStatementDetail(value) {
-    return axios.post('http://localhost:5000/approveAccStatementDetail', value);
+    return axios.post('http://localhost:12707/approveAccStatementDetail', value);
   }
 
   rejectAccStatementDetail(data, No) {
-    return axios.post(`http://localhost:5000/rejectAccStatementDetail/${No}`, data);
+    return axios.post(`http://localhost:12707/rejectAccStatementDetail/${No}`, data);
   }
 }
 export default new apiService();

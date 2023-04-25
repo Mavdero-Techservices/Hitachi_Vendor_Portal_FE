@@ -35,6 +35,7 @@ const ComplianceDetails = () => {
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
 
+
   const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -181,7 +182,7 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => {});
+    apiService.downloadPdf(user).then((response) => { });
   };
   function next(e) {
     // saveComplianceDetail(e);
@@ -192,9 +193,7 @@ const ComplianceDetails = () => {
     }
   }
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -252,6 +251,7 @@ const ComplianceDetails = () => {
             setEditCompliance(true);
           });
         }
+
       });
     } else {
       setEditCompliance(false);
@@ -262,9 +262,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => {});
-    apiService.createCocPdf(user).then((res) => {});
-    apiService.createNDAPdf(user).then((res) => {});
+    apiService.createRelatedDisclosurePdf(user).then((res) => { });
+    apiService.createCocPdf(user).then((res) => { });
+    apiService.createNDAPdf(user).then((res) => { });
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -309,9 +309,7 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const compdata = new FormData();
         compdata.append("RPD_Doc", fileRPD);
@@ -545,7 +543,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {editVlauefileNDA ? (
+                        { editVlauefileNDA? (
                           <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>
@@ -611,9 +609,7 @@ const ComplianceDetails = () => {
                 >
                   Cancel
                 </button>
-                {params.userId &&
-                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                  "Admin" ? (
+                {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
                   <>
                     <button
                       type="button"
@@ -625,15 +621,16 @@ const ComplianceDetails = () => {
                   </>
                 ) : (
                   <>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        saveComplianceDetail();
-                      }}
-                      className="btn bankbtn btn-md m-1"
-                    >
-                      Save
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          saveComplianceDetail();
+                        }}
+                        className="btn bankbtn btn-md m-1"
+                      >
+                        Save
+                      </button>
+                    
                   </>
                 )}
 

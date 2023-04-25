@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,12 +15,14 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Logo1 from '../img/logo1.png';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
+import apiService from '../services/api.service';
 const pages = ['Home', 'Admin', 'Master'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 function VendorPortalHeader(props) {
   const vcode = props.vCode;
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [vendoCode, setvendoCode] = useState();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -41,6 +43,33 @@ function VendorPortalHeader(props) {
       },
     },
   });
+
+  // console.log("vendoCode---------------->>>>",vendoCode)
+  useEffect(() => {
+    apiService.getErpResourcePortalVendorlist().then((res) => {
+      console.log("getErpResourcePortalVendorlist---------------->>>>",res.data.value)
+      setvendoCode(res.data.value)
+    })
+
+    apiService.getErpVendor_API().then((res) => {
+      console.log("getErpVendor_API---------------->>>>",res.data.value)
+    })
+    let arr=[]
+    apiService.getErpVendor_API().then((res) => {
+    
+
+      for(let i=0;i<res.data.value.length;i++){
+        if(res.data.value[i].Parent_Vendor_Code === 'DKM-006'){
+          console.log("arr------------------>>>>>", res.data.value[i])
+        arr.push(res.data.value[i])
+        }
+      }
+      if(arr.length>0){
+        console.log("arr------------------>>>>>", arr)
+      }
+    })
+  
+  }, [])
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -152,7 +181,7 @@ function VendorPortalHeader(props) {
                   display: 'block',
                 }}
               >
-              {vcode?vcode:"City vendor code"}
+                {vcode ? vcode : "City vendor code"}
               </Button>
               <Tooltip title="Mail">
                 <IconButton onClick={handleOpenUserMenu}>
@@ -188,9 +217,15 @@ function VendorPortalHeader(props) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+
+                {vendoCode?.map((setting, key) => (
+                  <MenuItem key={key} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.Vendor_No}_{setting.City}_{setting.Post_Code}</Typography>
+                  </MenuItem>
+                ))}
+                  {vendoCode?.map((setting, key) => (
+                  <MenuItem key={key} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.Vendor_No}_{setting.City}_{setting.Post_Code}</Typography>
                   </MenuItem>
                 ))}
               </Menu>

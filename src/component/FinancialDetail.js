@@ -28,8 +28,8 @@ const FinancialDetails = () => {
     netWorth: "",
     currentAssets: "",
     directorDetails: "",
-    organisationType: "",
-    shareholderName: "",
+    organisationType:"",
+    shareholderName:"",
   });
   function onFileChangeFD(e) {
     if (e.size > 5000000) {
@@ -209,17 +209,12 @@ const FinancialDetails = () => {
         });
       }
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const financedata = new FormData();
         financedata.append("financial_data", fileFD);
         financedata.append("financial_data2", fileFD2);
-        financedata.append(
-          "yearOfAuditedFinancial",
-          values.yearOfAuditedFinancial
-        );
+        financedata.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
         financedata.append("Revenue", values.Revenue);
         financedata.append("Profit", values.Profit);
         financedata.append("netWorth", values.netWorth);
@@ -238,7 +233,6 @@ const FinancialDetails = () => {
               allowOutsideClick: false,
               allowEscapeKey: false,
             }).then((res) => {
-              // navigate(`/ContactTeam`);
             });
           } else {
             Swal.fire({
@@ -259,7 +253,6 @@ const FinancialDetails = () => {
               allowOutsideClick: false,
               allowEscapeKey: false,
             }).then((res) => {
-              // navigate(`/ContactTeam`);
             });
           } else {
             Swal.fire({
@@ -311,9 +304,7 @@ const FinancialDetails = () => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -356,7 +347,8 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    } else if (newuser) {
+    }
+    else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
@@ -398,7 +390,8 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    } else {
+    }
+    else {
       setEditfinancialDetail(false);
     }
   }, []);
@@ -483,7 +476,7 @@ const FinancialDetails = () => {
                   id="Distributors"
                   name="Organisationtype"
                   aria-label="Disabled select example"
-                  value={values.organisationType}
+                  value={values.organisationType} 
                   disabled={style === "notEditable" ? true : false}
                   onChange={handleChange("organisationType")}
                 >
@@ -658,9 +651,7 @@ const FinancialDetails = () => {
               >
                 Cancel
               </button>
-              {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                "Admin" ? (
+              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ?(
                 <>
                   <button
                     type="submit"
@@ -672,15 +663,16 @@ const FinancialDetails = () => {
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      saveFinancialDetail();
-                    }}
-                    className="btn financialbtn btn-md m-3"
-                  >
-                    Save
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveFinancialDetail();
+                      }}
+                      className="btn financialbtn btn-md m-3"
+                    >
+                      Save
+                    </button>
+                  
                 </>
               )}
 

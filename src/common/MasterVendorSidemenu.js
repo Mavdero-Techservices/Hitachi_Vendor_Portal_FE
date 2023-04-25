@@ -39,8 +39,19 @@ export const MasterVendorSidemenu = (props) => {
   const [Post_Code, setPincode] = useState();
   const [state, setState] = useState();
   const [adminEmail, setAdminEmail] = useState();
+  const [getAllvendorcode,setgetAllvendorcode] = useState([]);
+  const [VendorId, setVendorId] = useState("");
 
   useEffect(() => {
+    apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
+      if (vendorCode.message === "No record found for the given Ticket_ID") {
+      setgetAllvendorcode("");
+      }
+      else
+      {
+        setgetAllvendorcode(vendorCode.data);
+      }
+    });
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
     });
@@ -76,16 +87,7 @@ export const MasterVendorSidemenu = (props) => {
     }
   };
   const handleUserId = (e) => {
-    setUserId(e);
-
-    if (e) {
-      const id = vendorDetails?.filter((item) => {
-        return item.userId === e;
-      });
-      setCity(id[0].City);
-
-      setPincode(id[0].Post_Code);
-    }
+    setVendorId(e);
   };
   const handleCity = (e) => {
     setCity(e);
@@ -406,7 +408,7 @@ export const MasterVendorSidemenu = (props) => {
 
                           <FormControl sx={{ width: 200, ml: 2.5 }}>
                             <Select
-                              value={UserId}
+                              value={VendorId}
                               onChange={(e) => handleUserId(e.target.value)}
                               native
                               input={
@@ -417,18 +419,16 @@ export const MasterVendorSidemenu = (props) => {
                               }
                             >
                               <option> Select Vendorcode</option>
-                              {vendorComDetails
-
-                                ?.filter((item) => {
-                                  return item.mastervendor_email === adminEmail;
-                                })
-                                ?.map((item) => {
-                                  return (
-                                    <option key={item.id} value={item.userId}>
-                                      {item.userId}
-                                    </option>
-                                  );
-                                })}
+                              {getAllvendorcode?.map((item) => {
+                                    return (
+                                      <option
+                                        key={item.No}
+                                        value={item.No}
+                                      >
+                                        {item.No}
+                                      </option>
+                                    );
+                                  })}
                             </Select>
                           </FormControl>
                         </Box>

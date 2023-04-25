@@ -93,8 +93,9 @@ setErrors({
           title: "Please check your email to proceed",
           icon: "success",
           confirmButtonText: "OK",
-        });
-        this.props.navigate("/login");
+        }).then(ok => {
+          navigate("/login");
+        })      
       }
       else {
         Swal.fire({
