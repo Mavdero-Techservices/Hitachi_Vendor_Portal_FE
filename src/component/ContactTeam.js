@@ -267,10 +267,10 @@ const ContactTeam = () => {
         }
 
 
-        if (value && key === "GST_Registration_No") {
-          if (!GSTValidation.test(value))
-            statutoryArray.push("GST No is invalid");
-        }
+        // if (value && key === "GST_Registration_No") {
+        //   if (!GSTValidation.test(value))
+        //     statutoryArray.push("GST No is invalid");
+        // }
         if (value && key === "P_A_N_No") {
           if (!PANValidation.test(value))
             statutoryArray.push("PAN NO is invalid");

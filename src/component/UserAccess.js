@@ -128,14 +128,11 @@ function UserAccess() {
     setgetAllvendorcode([]);
     apiService.getAllMasterVendorSubUser().then((res) => {
       setgetAllUser(res.data.result);
+      console.log("getall",res.data.result)
     });
-    apiService.getErpVendor_APIByP_A_N_No(params.Parent_Vendor_Code).then((vendorCode) => {
+    apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
       console.log("vendorCode.data.result",vendorCode.data);
-      // if(vendorCode?.data.length>0){
-        setgetAllvendorcode(  vendorCode.data);
-        // setvcityPincode(vendorCode.data)
-        // nameList => [...nameList, props]
-      // }
+        setgetAllvendorcode(vendorCode.data);
     });
    
     apiService.getAllVendorSubUser().then((res) => {
@@ -187,57 +184,102 @@ function UserAccess() {
                             <TableCell align="center">{row.Name}</TableCell>
 
                             <TableCell align="center">
-                              {!Edit[row.id] && row.city_vendorCode_Pincode ? (                                
-                                <>
-                                {vcityPincode?.filter((vcity) => {
-                                  return vcity.SubUserId === row.SubUserId
-                                }).map((vpincode, key) => (
-                                  <p key={key}>{vpincode.vendorCode + "_" + vpincode.city + "_" + vpincode.Pincode}</p>
-                                ))}
-                                </>
-                              ) : (
-                               
-                                <Autocomplete
-                                  multiple
-                                  id="checkboxes-tags-demo"
-                                  options={getAllvendorcode ? getAllvendorcode : ""}
-                                  disableCloseOnSelect
-                                  getOptionLabel={(option) =>
-                                    option.No +
-                                    "_" +
-                                    option.City +
-                                    "_" +
-                                    option.State_Code
-                                  }
-                                  renderOption={(
-                                    props,
-                                    option,
-                                    { selected }
-                                  ) => (
-                                    <li {...props}>
-                                      <Checkbox
-                                        icon={icon}
-                                        checkedIcon={checkedIcon}
-                                        style={{ marginRight: 8 }}
-                                        checked={selected}
-                                      />
-                                      {option.No +
-                                        "_" +
-                                        option.City +
-                                        "_" +
-                                        option.State_Code}
-                                    </li>
-                                  )}
-                                  style={{ width: 400, marginLeft: 100 }}
-                                  onChange={(event, value) =>
-                                    handleVendorCodeChange(event, value)
-                                  }
-                                  renderInput={(params) => (
-                                    <TextField {...params} label="Checkboxes" />
-                                  )}
-                                />
-                              )}
-                            </TableCell>
+  {!Edit[row.id] ? (
+    <>
+      {vcityPincode && vcityPincode.length > 0 ? (
+        vcityPincode.filter((vcity) => {
+          return (
+            vcity.SubUserId === row.SubUserId &&
+            vcity.city !== "" // check if city is not empty
+          );
+        }).map((vpincode, key) => (
+          <p key={key}>{vpincode.city + "_" + vpincode.vendorCode + "_" + vpincode.Pincode}</p>
+        ))
+      ) : (
+        <Autocomplete
+          multiple
+          id="checkboxes-tags-demo"
+          options={getAllvendorcode ? getAllvendorcode : ""}
+          disableCloseOnSelect
+          getOptionLabel={(option) =>
+            option.City +
+            "_" +
+            option.No +
+            "_" +
+            option.State_Code
+          }
+          renderOption={(
+            props,
+            option,
+            { selected }
+          ) => (
+            <li {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+              />
+              {option.City +
+                "_" +
+                option.No +
+                "_" +
+                option.State_Code}
+            </li>
+          )}
+          style={{ width: 400, marginLeft: 100 }}
+          onChange={(event, value) =>
+            handleVendorCodeChange(event, value)
+          }
+          renderInput={(params) => (
+            <TextField {...params} label="City_VendorCode_Pincode" />
+          )}
+        />
+      )}
+    </>
+  ) : (
+    <Autocomplete
+      multiple
+      id="checkboxes-tags-demo"
+      options={getAllvendorcode ? getAllvendorcode : ""}
+      disableCloseOnSelect
+      getOptionLabel={(option) =>
+        option.City +
+        "_" +
+        option.No +
+        "_" +
+        option.State_Code
+      }
+      renderOption={(
+        props,
+        option,
+        { selected }
+      ) => (
+        <li {...props}>
+          <Checkbox
+            icon={icon}
+            checkedIcon={checkedIcon}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {option.City +
+            "_" +
+            option.No +
+            "_" +
+            option.State_Code}
+        </li>
+      )}
+      style={{ width: 400, marginLeft: 100 }}
+      onChange={(event, value) =>
+        handleVendorCodeChange(event, value)
+      }
+      renderInput={(params) => (
+        <TextField {...params} label="City_VendorCode_Pincode" />
+      )}
+    />
+  )}
+</TableCell>
+
 
                             <TableCell align="left">
                               {!Edit[row.id] ? (

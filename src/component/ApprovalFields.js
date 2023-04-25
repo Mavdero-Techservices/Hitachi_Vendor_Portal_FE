@@ -1137,16 +1137,19 @@ function ApprovalFields(props) {
                 // Organization_Type: " "             
             };
             apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-              const MasterVendor={
+          if(response)
+          {
+                const MasterVendor={
                 mastervendor_email:mastervendor_email||undefined,
-                companyName:mastervendor_email||undefined
+                companyName:companyName||undefined,
+                Ticket_ID:TicketID||undefined,
               }
               apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
                 console.log("masterLogin::",Masterresponse);
               })
+          }
             })
           }
-          
                   })
       } else {
         Swal.fire({
@@ -1595,7 +1598,8 @@ function ApprovalFields(props) {
               apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
                 const MasterVendor={
                   mastervendor_email:mastervendor_email||undefined,
-                  companyName:mastervendor_email||undefined
+                  companyName:companyName||undefined,
+                  Ticket_ID:TicketID||undefined,
                 }
                 apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
                   console.log("masterLogin::",Masterresponse);

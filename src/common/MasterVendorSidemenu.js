@@ -33,14 +33,20 @@ export const MasterVendorSidemenu = (props) => {
   const navigate = useNavigate();
 
   const [vendorDetails, setvendorDetails] = useState([]);
+  const [getAllvendorcode,setgetAllvendorcode] = useState([]);
   const [vendorComDetails, setvendorComDetails] = useState([]);
   const [UserId, setUserId] = useState("");
+  const [VendorId, setVendorId] = useState("");
   const [City, setCity] = useState();
   const [Post_Code, setPincode] = useState();
   const [state, setState] = useState();
   const [adminEmail, setAdminEmail] = useState();
 
   useEffect(() => {
+    apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
+      console.log("vendorCode.data.result",vendorCode.data);
+        setgetAllvendorcode(vendorCode.data);
+    });
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
     });
@@ -76,16 +82,7 @@ export const MasterVendorSidemenu = (props) => {
     }
   };
   const handleUserId = (e) => {
-    setUserId(e);
-
-    if (e) {
-      const id = vendorDetails?.filter((item) => {
-        return item.userId === e;
-      });
-      setCity(id[0].City);
-
-      setPincode(id[0].Post_Code);
-    }
+    setVendorId(e);
   };
   const handleCity = (e) => {
     setCity(e);
@@ -406,7 +403,7 @@ export const MasterVendorSidemenu = (props) => {
 
                           <FormControl sx={{ width: 200, ml: 2.5 }}>
                             <Select
-                              value={UserId}
+                              value={VendorId}
                               onChange={(e) => handleUserId(e.target.value)}
                               native
                               input={
@@ -417,7 +414,17 @@ export const MasterVendorSidemenu = (props) => {
                               }
                             >
                               <option> Select Vendorcode</option>
-                              {vendorComDetails
+                              {getAllvendorcode?.map((item) => {
+                                    return (
+                                      <option
+                                        key={item.No}
+                                        value={item.No}
+                                      >
+                                        {item.No}
+                                      </option>
+                                    );
+                                  })}
+                              {/* {vendorComDetails
 
                                 ?.filter((item) => {
                                   return item.mastervendor_email === adminEmail;
@@ -428,7 +435,7 @@ export const MasterVendorSidemenu = (props) => {
                                       {item.userId}
                                     </option>
                                   );
-                                })}
+                                })} */}
                             </Select>
                           </FormControl>
                         </Box>
