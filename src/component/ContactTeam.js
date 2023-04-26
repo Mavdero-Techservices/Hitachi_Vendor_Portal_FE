@@ -192,7 +192,11 @@ const ContactTeam = () => {
           if (key === "managementSpocemail") {
             communicationArray.push("managementSpoc-Email");
           }
-          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin') {
+          if (
+            key === "mastervendor_email" &&
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+              "Admin"
+          ) {
             communicationArray.push("mastervendor EmailId");
           }
         }
@@ -221,7 +225,10 @@ const ContactTeam = () => {
       });
     }
     if (statutory.length <= 0) {
-      if (basicInfo[0].Country_Region_Code && basicInfo[0].Country_Region_Code === 'IN') {
+      if (
+        basicInfo[0].Country_Region_Code &&
+        basicInfo[0].Country_Region_Code === "IN"
+      ) {
         statutoryArray.push("GST No");
         statutoryArray.push("PAN No");
         statutoryArray.push("CIN No");
@@ -229,11 +236,10 @@ const ContactTeam = () => {
         statutoryArray.push("GST Doc");
         statutoryArray.push("PAN Doc");
         statutoryArray.push("MSME Doc");
-      }
-      else {
-        statutoryArray.push('form 10f');
-        statutoryArray.push('No PE declaration');
-        statutoryArray.push('Tax_residency_Doc');
+      } else {
+        statutoryArray.push("form 10f");
+        statutoryArray.push("No PE declaration");
+        statutoryArray.push("Tax_residency_Doc");
         statutoryArray.push("GST No");
         statutoryArray.push("CIN No");
         statutoryArray.push("MSME No");
@@ -241,8 +247,31 @@ const ContactTeam = () => {
         statutoryArray.push("MSME Doc");
       }
     } else {
-      if (basicInfo[0].Country_Region_Code && basicInfo[0].Country_Region_Code === 'IN') {
+      if (
+        basicInfo[0].Country_Region_Code &&
+        basicInfo[0].Country_Region_Code === "IN"
+      ) {
+        console.log("statutory------->", statutory[0]);
+        if((statutory[0].MSME_Doc === "" || null) && statutory[0].MSMED === "Registered") {
+          statutoryArray.push("MSME Doc");
+        }
+
+        if((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
+          statutoryArray.push("PAN Doc");
+        }
+
+        if((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
+          statutoryArray.push("GST Doc");
+        }
+
+        if((statutory[0].fileDisclosure === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
+          statutoryArray.push("GST Doc");
+        }
+
+        
         Object.entries(statutory[0]).map(([key, value]) => {
+          console.log("key---->", key);
+          console.log("value---->", value);
           if (value === "" || null) {
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
@@ -256,41 +285,43 @@ const ContactTeam = () => {
             if (key === "MSME No") {
               statutoryArray.push("MSME No");
             }
-            if (key === "GST_Doc") {
-              statutoryArray.push("GST Doc");
-            }
-            if (key === "PAN_Doc") {
-              statutoryArray.push("PAN Doc");
-            }
-            if (key === "MSME_Doc") {
-              statutoryArray.push("MSME Doc");
-            }
           }
 
-          if (key === "GST_Registration_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+          
+
+          if (
+            key === "GST_Registration_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!GSTValidation.test(value)) {
               statutoryArray.push("GST No is invalid");
             }
           }
-          
-          
-          if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+
+          if (
+            key === "P_A_N_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
         });
-      }
-      else {
+      } else {
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === '' || null) {
-            if (key === 'form_10f_Doc') {
-              statutoryArray.push('form 10f');
+
+          if (value === "" || null) {
+            if (key === "form_10f_Doc") {
+              statutoryArray.push("form 10f");
             }
-            if (key === 'PE_Declaration_Doc') {
-              statutoryArray.push('No PE declaration');
+            if (key === "PE_Declaration_Doc") {
+              statutoryArray.push("No PE declaration");
             }
-            if (key === 'Tax_residency_Doc') {
-              statutoryArray.push('Tax Residency Certificate');
+            if (key === "Tax_residency_Doc") {
+              statutoryArray.push("Tax Residency Certificate");
             }
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
@@ -308,18 +339,27 @@ const ContactTeam = () => {
               statutoryArray.push("MSME Doc");
             }
           }
-          if (key === "GST_Registration_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+          if (
+            key === "GST_Registration_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!GSTValidation.test(value)) {
               statutoryArray.push("GST No is invalid");
             }
           }
-          
-          
-          if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+
+          if (
+            key === "P_A_N_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-        })
+        });
       }
     }
     if (compaliance.length <= 0) {
@@ -416,27 +456,28 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID:JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID||undefined
+      Ticket_ID:
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID ||
+        undefined,
     };
     if (params.userId) {
-
       apiService.updateContactTeam(params.userId, user).then((response) => {
         if (response.data.status === "success") {
           navigate(`/ContactTeam/${params.userId}`);
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-            "There are no blank or incomplete required fields"
+              "There are no blank or incomplete required fields"
           ) {
             basicInfo[0].submitStatus = "Submitted";
             basicInfo[0].submitDate = Date.now();
@@ -476,17 +517,17 @@ const ContactTeam = () => {
             //   .userId;
             if (
               basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+                "There are no blank or incomplete required fields"
             ) {
               basicInfo[0].submitStatus = "Submitted";
               basicInfo[0].submitDate = Date.now();
@@ -494,17 +535,20 @@ const ContactTeam = () => {
                 .updateVendordetail(newuser, basicInfo[0])
                 .then((response) => {
                   Swal.fire({
-                    title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                    title:
+                      "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
                     confirmButtonText: "Yes",
                   }).then((result) => {
-                    let id = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser;
+                    let id = JSON.parse(
+                      window.sessionStorage.getItem("newregUser")
+                    )?.newregUser;
                     if (id) {
-                      sessionStorage.removeItem('newregUser')
+                      sessionStorage.removeItem("newregUser");
                     }
                     if (result.isConfirmed) {
-                      navigate("/userCreation")
+                      navigate("/userCreation");
                     }
-                  })
+                  });
                 });
             } else {
               Swal.fire({
@@ -530,17 +574,17 @@ const ContactTeam = () => {
               .result.userId;
             if (
               basicInfoArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               communicationArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               statutoryArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               complianceArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               bankDetailArray[0] ===
-              "There are no blank or incomplete required fields" &&
+                "There are no blank or incomplete required fields" &&
               contactDetailArray[0] ===
-              "There are no blank or incomplete required fields"
+                "There are no blank or incomplete required fields"
             ) {
               basicInfo[0].submitStatus = "Submitted";
               basicInfo[0].submitDate = Date.now();
@@ -654,7 +698,10 @@ const ContactTeam = () => {
       });
     }
     if (statutory.length <= 0) {
-      if (basicInfo[0].Country_Region_Code && basicInfo[0].Country_Region_Code === 'IN') {
+      if (
+        basicInfo[0].Country_Region_Code &&
+        basicInfo[0].Country_Region_Code === "IN"
+      ) {
         statutoryArray.push("GST No");
         statutoryArray.push("PAN No");
         statutoryArray.push("CIN No");
@@ -662,11 +709,10 @@ const ContactTeam = () => {
         statutoryArray.push("GST Doc");
         statutoryArray.push("PAN Doc");
         statutoryArray.push("MSME Doc");
-      }
-      else {
-        statutoryArray.push('form 10f');
-        statutoryArray.push('No PE declaration');
-        statutoryArray.push('Tax_residency_Doc');
+      } else {
+        statutoryArray.push("form 10f");
+        statutoryArray.push("No PE declaration");
+        statutoryArray.push("Tax_residency_Doc");
         statutoryArray.push("GST No");
         statutoryArray.push("CIN No");
         statutoryArray.push("MSME No");
@@ -674,7 +720,10 @@ const ContactTeam = () => {
         statutoryArray.push("MSME Doc");
       }
     } else {
-      if (basicInfo[0].Country_Region_Code && basicInfo[0].Country_Region_Code === 'IN') {
+      if (
+        basicInfo[0].Country_Region_Code &&
+        basicInfo[0].Country_Region_Code === "IN"
+      ) {
         Object.entries(statutory[0]).map(([key, value]) => {
           if (value === "" || null) {
             if (key === "GST_Registration_No") {
@@ -700,30 +749,38 @@ const ContactTeam = () => {
             }
           }
 
-          if (key === "GST_Registration_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+          if (
+            key === "GST_Registration_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!GSTValidation.test(value)) {
               statutoryArray.push("GST No is invalid");
             }
           }
-          
-          
-          if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+
+          if (
+            key === "P_A_N_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
         });
-      }
-      else {
+      } else {
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === '' || null) {
-            if (key === 'form_10f_Doc') {
-              statutoryArray.push('form 10f');
+          if (value === "" || null) {
+            if (key === "form_10f_Doc") {
+              statutoryArray.push("form 10f");
             }
-            if (key === 'PE_Declaration_Doc') {
-              statutoryArray.push('No PE declaration');
+            if (key === "PE_Declaration_Doc") {
+              statutoryArray.push("No PE declaration");
             }
-            if (key === 'Tax_residency_Doc') {
-              statutoryArray.push('Tax Residency Certificate');
+            if (key === "Tax_residency_Doc") {
+              statutoryArray.push("Tax Residency Certificate");
             }
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
@@ -741,18 +798,27 @@ const ContactTeam = () => {
               statutoryArray.push("MSME Doc");
             }
           }
-          if (key === "GST_Registration_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+          if (
+            key === "GST_Registration_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!GSTValidation.test(value)) {
               statutoryArray.push("GST No is invalid");
             }
           }
-          
-          
-          if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
+
+          if (
+            key === "P_A_N_No" &&
+            value.trim() !== "" &&
+            value !== "N/A" &&
+            value !== "null"
+          ) {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-        })
+        });
       }
     }
     if (compaliance.length <= 0) {
@@ -849,7 +915,9 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID:JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID||undefined
+      Ticket_ID:
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID ||
+        undefined,
     };
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
@@ -858,17 +926,17 @@ const ContactTeam = () => {
           let userkey = params.userId;
           if (
             basicInfoArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             communicationArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             statutoryArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             complianceArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             bankDetailArray[0] ===
-            "There are no blank or incomplete required fields" &&
+              "There are no blank or incomplete required fields" &&
             contactDetailArray[0] ===
-            "There are no blank or incomplete required fields"
+              "There are no blank or incomplete required fields"
           ) {
             let basic;
             apiService.getAllCollection(params.userId).then((res) => {
@@ -883,13 +951,14 @@ const ContactTeam = () => {
                   .updateVendordetail(userkey, basic)
                   .then((response) => {
                     Swal.fire({
-                      title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                      title:
+                        "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
                       confirmButtonText: "Yes",
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        navigate("/userCreation")
+                        navigate("/userCreation");
                       }
-                    })
+                    });
                     // chandran
                   });
               }
@@ -935,7 +1004,6 @@ const ContactTeam = () => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
-
         if (
           res.data.basicInfo[0].submitStatus === "Submitted" &&
           finalstatus !== "Approved"
@@ -1124,7 +1192,9 @@ const ContactTeam = () => {
             >
               Cancel
             </button>
-            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
+            {params.userId &&
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+              "Admin" ? (
               <>
                 <button
                   type="button"
