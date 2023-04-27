@@ -172,6 +172,14 @@ export default function Signin(props) {
                 });
               });
           } else {
+            Swal.fire({
+              title: "Please verify your email address.",
+              icon: "warning",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            })
             setValues({ ...values, error: "Please verify your email" });
           }
         }
@@ -232,6 +240,7 @@ export default function Signin(props) {
 
   const { redirectToReferrer } = values;
   if (redirectToReferrer) {
+    console.log("verifiedUser",verifiedUser)
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
     }
@@ -249,8 +258,21 @@ export default function Signin(props) {
           />
         );
       }
-    } else if (verifiedUser === "pending") {
-      return <Navigate to={"/"} />;
+    } 
+  if (verifiedUser === "Pending") {
+                    Swal.fire({
+                title: "Please verify your email address before logging in.",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  return <Navigate to={"/"} />; 
+                }
+              }
+              )
     }
     if (role === "financial") {
       return <Navigate to={`/documents/${userName}`} />;
@@ -287,7 +309,7 @@ export default function Signin(props) {
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <div>
-                        <label htmlFor="userName">user name*</label>
+                        <label htmlFor="userName">Username*</label>
                       </div>
                       <div>
                         <input
@@ -373,7 +395,7 @@ export default function Signin(props) {
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <div>
-                        <label htmlFor="userName">user name*</label>
+                        <label htmlFor="userName">Username*</label>
                       </div>
                       <div>
                         <input

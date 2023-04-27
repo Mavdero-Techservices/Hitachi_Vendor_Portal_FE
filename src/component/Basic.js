@@ -91,6 +91,11 @@ export class Basic extends React.Component {
         this.state.Post_Code
       )
       .then((response) => {
+        if (response.data.data.postalcodes.length === 0) {           
+          this.setState({ getCityAndState: "" });
+          this.setState({ state:"" });
+          this.setState({ City: "" });
+        } else {                  
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
         if (response.data.data.postalcodes[0].adminName3) {
@@ -98,6 +103,8 @@ export class Basic extends React.Component {
         } else {
           this.setState({ City: response.data.data.postalcodes[0].placeName });
         }
+        }
+        
       });
   }
   togglebutton() {
@@ -188,6 +195,10 @@ export class Basic extends React.Component {
   };
   handleChange(e) {
     this.setState({ Country_Region_Code: e.target.value });
+    this.setState({ getCityAndState: "" });
+    this.setState({ state:"" });
+    this.setState({ City: "" });
+    this.setState({ Post_Code: "" });
   }
   formValChange = (e) => {
     e.preventDefault();
