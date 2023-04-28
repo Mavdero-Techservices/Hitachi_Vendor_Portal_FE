@@ -33,6 +33,7 @@ export default function Statutory(props) {
   const [HideImport, setHideImport] = useState(true);
   const [url, seturl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
+  const [statRes, setstatRes] = useState("");
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [editTab, seteditTab] = useState(true);
   const [errors, setErrors] = useState({});
@@ -533,7 +534,10 @@ export default function Statutory(props) {
               ""
             );
             setValues({
-              GST_No: value.GST_Registration_No === "undefined" ? "" : value.GST_Registration_No,
+              GST_No:
+                value.GST_Registration_No === "undefined"
+                  ? ""
+                  : value.GST_Registration_No,
               // GST_type: value.GST_Vendor_Type,
               MSME_No: value.MSMED_Number,
               MSME_Type: value.MSMED_Vendor_Type,
@@ -591,7 +595,10 @@ export default function Statutory(props) {
               ""
             );
             setValues({
-              GST_No: value.GST_Registration_No === "undefined" ? "" : value.GST_Registration_No,
+              GST_No:
+                value.GST_Registration_No === "undefined"
+                  ? ""
+                  : value.GST_Registration_No,
               // GST_type: value.GST_Vendor_Type,
               MSME_No: value.MSMED_Number,
               MSME_Type: value.MSMED_Vendor_Type,
@@ -624,12 +631,11 @@ export default function Statutory(props) {
       }
     })();
     seturl(pdf);
-  }, []);
+  }, [statRes]);
   const saveStatutoryDetail = (e) => {
     // e.preventDefault();
 
     const data = new FormData();
-    data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
     data.append("GST_Registration_No", values.GST_No);
     if (countryName !== "IN") {
@@ -638,6 +644,13 @@ export default function Statutory(props) {
     } else {
       data.append("P_A_N_No", values.PAN_No);
       data.append("PAN_Doc", PAN_Doc);
+    }
+    if (GST_type === "Registered") {
+      data.append("GST_Doc", GST_Doc);
+      data.append("fileDisclosure", "");
+    } else {
+      data.append("GST_Doc", "");
+      data.append("fileDisclosure", fileDisclosure);
     }
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
@@ -656,9 +669,10 @@ export default function Statutory(props) {
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
     data.append("Tax_residency_No", values.Tax_residency_No);
-    data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        console.log("res-------------->", res.data);
+        setstatRes(res.data.status)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -689,7 +703,6 @@ export default function Statutory(props) {
         statdata.append("GST_Vendor_Type", GST_type);
         statdata.append("GST_Registration_No", values.GST_No);
         if (countryName !== "IN") {
-          console.log("11111");
           statdata.append("P_A_N_No", values.PAN_No);
           statdata.append("PAN_Doc", PAN_Doc);
         } else {
@@ -788,6 +801,7 @@ export default function Statutory(props) {
     data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        setstatRes(res.data.status)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -969,19 +983,7 @@ export default function Statutory(props) {
                                     <Row></Row>
                                   ) : (
                                     <Row>
-                                      {/* <div className="frame-input">
-                                      <label htmlFor="fileupload">
-                                        Upload UnRegister Gst
-                                      </label>
-                                      <input
-                                        type="file"
-                                        id="fileupload"
-                                        handleChange={onFileDisclosurechange}
-                                        name="fileDisclosure"
-                                        required
-                                      />
-                                    </div>{" "} */}
-
+                                  
                                       {fileDisclosure !== "" &&
                                       fileDisclosure !== "null" &&
                                       fileDisclosure !== undefined ? (
@@ -1043,79 +1045,161 @@ export default function Statutory(props) {
                                     <Col></Col>
                                   </Row>
                                 ) : (
-                                  <Row>
-                                    <Col>
-                                      <Form.Group
-                                        className="mb-3"
-                                        controlId="formBasicEmail"
-                                      >
-                                        <Form.Label>GST no*</Form.Label>
-                                        <InputGroup className="statutoryInput">
-                                          <Form.Control
-                                            style={{
-                                              border: "none",
-                                              borderRadius: "25px",
-                                              outline: "none",
-                                              outlineOffset: "none",
-                                            }}
-                                            className="statInput"
-                                            type="text"
-                                            value={values.GST_No}
-                                            onChange={handleChange("GST_No")}
-                                          />
-                                          <InputGroup.Text
-                                            style={{ border: "none" }}
-                                          >
-                                            <Tooltip title={gstNo}>
-                                              <InfoIcon />
-                                            </Tooltip>
-                                          </InputGroup.Text>
-                                        </InputGroup>
-                                        {errors.GST_No ? (
-                                          <p className="text text-danger small">
-                                            {errors.GST_No}
-                                          </p>
+                                  <>
+                                    {GST_type === "Registered" ? (
+                                      <Row>
+                                      <Col>
+                                        <Form.Group
+                                          className="mb-3"
+                                          controlId="formBasicEmail"
+                                        >
+                                          <Form.Label>GST no*</Form.Label>
+                                          <InputGroup className="statutoryInput">
+                                            <Form.Control
+                                              style={{
+                                                border: "none",
+                                                borderRadius: "25px",
+                                                outline: "none",
+                                                outlineOffset: "none",
+                                              }}
+                                              className="statInput"
+                                              type="text"
+                                              value={values.GST_No}
+                                              onChange={handleChange(
+                                                "GST_No"
+                                              )}
+                                            />
+                                            <InputGroup.Text
+                                              style={{ border: "none" }}
+                                            >
+                                              <Tooltip title={gstNo}>
+                                                <InfoIcon />
+                                              </Tooltip>
+                                            </InputGroup.Text>
+                                          </InputGroup>
+                                          {errors.GST_No ? (
+                                            <p className="text text-danger small">
+                                              {errors.GST_No}
+                                            </p>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </Form.Group>
+                                      </Col>
+                                      <Col>
+                                        {GST_Doc !== "" &&
+                                        GST_Doc !== "null" &&
+                                        GST_Doc !== undefined ? (
+                                          <div className="frame-input">
+                                            <button
+                                              type="button"
+                                              className="deleteFile"
+                                              onClick={() => {
+                                                deleteFile("GST_Doc");
+                                              }}
+                                            >
+                                              Delete GST
+                                            </button>
+                                          </div>
                                         ) : (
-                                          ""
+                                          <div className="frame-input">
+                                            <label htmlFor="fileupload">
+                                              Upload GST
+                                            </label>
+                                            <input
+                                              type="file"
+                                              id="fileupload"
+                                              // value={values.GST_Doc}
+                                              onChange={onFileChange}
+                                              required
+                                              disabled={
+                                                style === "notEditable"
+                                                  ? true
+                                                  : false
+                                              }
+                                            />
+                                          </div>
                                         )}
-                                      </Form.Group>
-                                    </Col>
-                                    <Col>
-                                      {GST_Doc !== "" &&
-                                      GST_Doc !== "null" &&
-                                      GST_Doc !== undefined ? (
-                                        <div className="frame-input">
-                                          <button
-                                            type="button"
-                                            className="deleteFile"
-                                            onClick={() => {
-                                              deleteFile("GST_Doc");
-                                            }}
+                                      </Col>
+                                    </Row>
+                                    ) : (
+                                      <Row>
+                                        <Col>
+                                          <Form.Group
+                                            className="mb-3"
+                                            controlId="formBasicEmail"
                                           >
-                                            Delete GST
-                                          </button>
-                                        </div>
-                                      ) : (
-                                        <div className="frame-input">
-                                          <label htmlFor="fileupload">
-                                            Upload GST
-                                          </label>
-                                          <input
-                                            type="file"
-                                            id="fileupload"
-                                            // value={values.GST_Doc}
-                                            onChange={onFileChange}
-                                            required
-                                            disabled={
-                                              style === "notEditable"
-                                                ? true
-                                                : false
-                                            }
-                                          />
-                                        </div>
-                                      )}
-                                    </Col>
-                                  </Row>
+                                            <Form.Label>GST no*</Form.Label>
+                                            <InputGroup className="statutoryInput">
+                                              <Form.Control
+                                                style={{
+                                                  border: "none",
+                                                  borderRadius: "25px",
+                                                  outline: "none",
+                                                  outlineOffset: "none",
+                                                }}
+                                                className="statInput"
+                                                type="text"
+                                                value={values.GST_No}
+                                                onChange={handleChange(
+                                                  "GST_No"
+                                                )}
+                                              />
+                                              <InputGroup.Text
+                                                style={{ border: "none" }}
+                                              >
+                                                <Tooltip title={gstNo}>
+                                                  <InfoIcon />
+                                                </Tooltip>
+                                              </InputGroup.Text>
+                                            </InputGroup>
+                                            {errors.GST_No ? (
+                                              <p className="text text-danger small">
+                                                {errors.GST_No}
+                                              </p>
+                                            ) : (
+                                              ""
+                                            )}
+                                          </Form.Group>
+                                        </Col>
+                                        <Col>
+                                          {GST_Doc !== "" &&
+                                          GST_Doc !== "null" &&
+                                          GST_Doc !== undefined ? (
+                                            <div className="frame-input">
+                                              <button
+                                                type="button"
+                                                className="deleteFile"
+                                                onClick={() => {
+                                                  deleteFile("GST_Doc");
+                                                }}
+                                              >
+                                                Delete GST
+                                              </button>
+                                            </div>
+                                          ) : (
+                                            <div className="frame-input">
+                                              <label htmlFor="fileupload">
+                                                Upload GST
+                                              </label>
+                                              <input
+                                                type="file"
+                                                id="fileupload"
+                                                // value={values.GST_Doc}
+                                                onChange={onFileChange}
+                                                required
+                                                disabled={
+                                                  style === "notEditable"
+                                                    ? true
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          )}
+                                        </Col>
+                                      </Row>
+                                    )}
+                                  </>
                                 )}
                               </>
                             )}

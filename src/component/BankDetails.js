@@ -25,20 +25,35 @@ const BankDetails = (props) => {
 
   const [saveButton, setSaveButton] = useState(true);
 
-
   const onFileChange = (file) => {
-    if (file.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-        showCloseButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      });
+    if (file.target) {
+      if (file.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileBank(file.target.files[0]);
+        setdeleteUploadedFile(true);
+      }
     } else {
-      setfileBank(file);
-      setdeleteUploadedFile(true);
+      if (file.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileBank(file);
+        setdeleteUploadedFile(true);
+      }
     }
   };
 
@@ -109,7 +124,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
-        setSaveButton(true)
+        setSaveButton(true);
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -118,7 +133,7 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          })
+          });
           // .then((res) => {
           //   navigate(`/FinancialDetail/${params.userId}`);
           // });
@@ -131,7 +146,9 @@ const BankDetails = (props) => {
         }
       });
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
       if (newuser) {
         const bankdata = new FormData();
         bankdata.append("userId", newuser);
@@ -151,7 +168,6 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-
             });
           } else {
             Swal.fire({
@@ -163,7 +179,7 @@ const BankDetails = (props) => {
         });
       } else {
         apiService.savebankdetail(data).then((response) => {
-          setSaveButton(true)
+          setSaveButton(true);
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -172,7 +188,7 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            })
+            });
             // .then((res) => {
             //   navigate(`/FinancialDetail`);
             // });
@@ -201,7 +217,7 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
-        setSaveButton(true)
+        setSaveButton(true);
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -222,7 +238,9 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -275,8 +293,7 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
         });
       });
-    }
-    else {
+    } else {
       setEditBank(false);
     }
   }, []);
@@ -413,7 +430,9 @@ const BankDetails = (props) => {
                 )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 ">
-                {fileBank !== "" && fileBank !== undefined && fileBank !== null ? (
+                {fileBank !== "" &&
+                fileBank !== undefined &&
+                fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}
@@ -422,9 +441,20 @@ const BankDetails = (props) => {
                     Delete files
                   </button>
                 ) : (
-                  <button type="button" className="btn m-2 uploadFile">
-                    Upload files
-                  </button>
+                  // <button type="button" className="btn m-2 uploadFile">
+                  //   Upload files
+                  // </button>
+                  <div className="bank-input">
+                    <label htmlFor="fileupload">upload files</label>
+                    <input
+                      type="file"
+                      id="fileupload"
+                      // value={values.GST_Doc}
+                      onChange={onFileChange}
+                      required
+                      disabled={style === "notEditable" ? true : false}
+                    />
+                  </div>
                 )}
               </div>
               <div className="col-md-2 col-sm-12 col-xs-12"></div>
@@ -437,7 +467,9 @@ const BankDetails = (props) => {
               >
                 Cancel
               </button>
-              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
+              {params.userId &&
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                "Admin" ? (
                 <>
                   <button
                     type="submit"

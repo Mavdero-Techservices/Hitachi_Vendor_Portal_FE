@@ -28,37 +28,69 @@ const FinancialDetails = () => {
     netWorth: "",
     currentAssets: "",
     directorDetails: "",
-    organisationType:"",
-    shareholderName:"",
+    organisationType: "",
+    shareholderName: "",
   });
   function onFileChangeFD(e) {
-    if (e.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-        showCloseButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      });
+    if (e.target) {
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileFD(e.target.files[0]);
+        setdeleteUploadedFile(true);
+      }
     } else {
-      setfileFD(e);
-      setdeleteUploadedFile(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileFD(e);
+        setdeleteUploadedFile(true);
+      }
     }
   }
   function onFileChangeFD2(e) {
-    if (e.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-        showCloseButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      });
+    if (e.target) {
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileFD2(e.target.files[0]);
+        setdeleteUploadedFile2(true);
+      }
     } else {
-      setfileFD2(e);
-      setdeleteUploadedFile2(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileFD2(e);
+        setdeleteUploadedFile2(true);
+      }
     }
   }
   function deleteFile1(e) {
@@ -209,12 +241,17 @@ const FinancialDetails = () => {
         });
       }
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
       if (newuser) {
         const financedata = new FormData();
         financedata.append("financial_data", fileFD);
         financedata.append("financial_data2", fileFD2);
-        financedata.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
+        financedata.append(
+          "yearOfAuditedFinancial",
+          values.yearOfAuditedFinancial
+        );
         financedata.append("Revenue", values.Revenue);
         financedata.append("Profit", values.Profit);
         financedata.append("netWorth", values.netWorth);
@@ -232,8 +269,7 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
-            });
+            }).then((res) => {});
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -252,8 +288,7 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
-            });
+            }).then((res) => {});
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -304,7 +339,9 @@ const FinancialDetails = () => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -347,8 +384,7 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    }
-    else if (newuser) {
+    } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
@@ -390,8 +426,7 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    }
-    else {
+    } else {
       setEditfinancialDetail(false);
     }
   }, []);
@@ -476,7 +511,7 @@ const FinancialDetails = () => {
                   id="Distributors"
                   name="Organisationtype"
                   aria-label="Disabled select example"
-                  value={values.organisationType} 
+                  value={values.organisationType}
                   disabled={style === "notEditable" ? true : false}
                   onChange={handleChange("organisationType")}
                 >
@@ -561,14 +596,16 @@ const FinancialDetails = () => {
                     Delete files
                   </button>
                 ) : (
-                  <div></div>
-                  // <button
-                  //   type="button"
-                  //   className="btn  m-2 uploadFile"
-                  //   style={{ fontSize: "12px" }}
-                  // >
-                  //   Upload files
-                  // </button>
+                  <div className="finance-input">
+                    <label htmlFor="fileupload">upload files</label>
+                    <input
+                      type="file"
+                      id="fileupload"
+                      onChange={onFileChangeFD}
+                      required
+                      disabled={style === "notEditable" ? true : false}
+                    />
+                  </div>
                 )}
               </div>
               <div className="col-sm-2 col-xs-12"></div>
@@ -631,14 +668,16 @@ const FinancialDetails = () => {
                     Delete files
                   </button>
                 ) : (
-                  <div></div>
-                  // <button
-                  //   type="button"
-                  //   className="btn  m-2 uploadFile"
-                  //   style={{ fontSize: "12px" }}
-                  // >
-                  //   Upload files
-                  // </button>
+                  <div className="finance-input">
+                    <label htmlFor="fileupload">upload files</label>
+                    <input
+                      type="file"
+                      id="fileupload"
+                      onChange={onFileChangeFD2}
+                      required
+                      disabled={style === "notEditable" ? true : false}
+                    />
+                  </div>
                 )}{" "}
               </div>
               <div className="col-sm-2 col-xs-12"></div>
@@ -651,7 +690,9 @@ const FinancialDetails = () => {
               >
                 Cancel
               </button>
-              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ?(
+              {params.userId &&
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                "Admin" ? (
                 <>
                   <button
                     type="submit"
@@ -663,16 +704,15 @@ const FinancialDetails = () => {
                 </>
               ) : (
                 <>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        saveFinancialDetail();
-                      }}
-                      className="btn financialbtn btn-md m-3"
-                    >
-                      Save
-                    </button>
-                  
+                  <button
+                    type="button"
+                    onClick={() => {
+                      saveFinancialDetail();
+                    }}
+                    className="btn financialbtn btn-md m-3"
+                  >
+                    Save
+                  </button>
                 </>
               )}
 
