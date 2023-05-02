@@ -329,13 +329,13 @@ const FinancialDetails = () => {
           }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
-          var replaceUrlFinancialData1 = initialUrlfinancial_data.replace(
+          var replaceUrlFinancialData1 = initialUrlfinancial_data?.replace(
             "uploads/",
             ""
           );
           var initialUrlfinancial_data2 =
             res.data.FinancialDetail[0].financial_data2;
-          var replaceUrlFinancialData2 = initialUrlfinancial_data2.replace(
+          var replaceUrlFinancialData2 = initialUrlfinancial_data2?.replace(
             "uploads/",
             ""
           );
@@ -371,13 +371,13 @@ const FinancialDetails = () => {
           }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
-          var replaceUrlFinancialData1 = initialUrlfinancial_data.replace(
+          var replaceUrlFinancialData1 = initialUrlfinancial_data?.replace(
             "uploads/",
             ""
           );
           var initialUrlfinancial_data2 =
             res.data.FinancialDetail[0].financial_data2;
-          var replaceUrlFinancialData2 = initialUrlfinancial_data2.replace(
+          var replaceUrlFinancialData2 = initialUrlfinancial_data2?.replace(
             "uploads/",
             ""
           );

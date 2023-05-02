@@ -1204,30 +1204,29 @@ function ApprovalFields(props) {
     });
   };
   const handleConcernFound = (event) => {
-    Swal.fire({
-      heightAuto: true,
-      title: "Review vendor details",
-      html: `<div class="rejectstyle">
-            <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
-            <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
-       </div> `,
-      confirmButtonText: "Reject",
-      confirmButtonColor: "#B1000E",
-      showCancelButton: true,
-      focusConfirm: false,
-      customClass: "swal-wide",
-      preConfirm: () => {
-        const comment = Swal.getPopup().querySelector("#comment").value;
-        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-        if (!comment || !rejectdoc) {
-          Swal.showValidationMessage(`Please enter comments and file`);
-        } else {
+    // Swal.fire({
+    //   heightAuto: true,
+    //   title: "Review vendor details",
+    //   html: `<div class="rejectstyle">
+    //         <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
+    //         <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
+    //    </div> `,
+    //   confirmButtonText: "Reject",
+    //   confirmButtonColor: "#B1000E",
+    //   showCancelButton: true,
+    //   focusConfirm: false,
+    //   customClass: "swal-wide",
+    //   preConfirm: () => {
+    //     const comment = Swal.getPopup().querySelector("#comment").value;
+    //     const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
+    //     if (!comment || !rejectdoc) {
+    //       Swal.showValidationMessage(`Please enter comments and file`);
+    //     } else {
           const data = new FormData();
-          console.log("new date--------", new Date());
           data.append("userId", event);
           data.append("level2Status", "rejected");
-          data.append("level2RejectComment", comment);
-          data.append("level2rejectFileDoc", rejectdoc);
+          data.append("level2RejectComment", "");
+          data.append("level2rejectFileDoc", undefined );
           data.append("level2Date", new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((responseData) => {
@@ -1245,9 +1244,9 @@ function ApprovalFields(props) {
               });
             }
           });
-        }
-      },
-    });
+        // }
+    //   },
+    // });
   };
 
   const handleMRTApprove = (event) => {
@@ -1725,8 +1724,8 @@ function ApprovalFields(props) {
       preConfirm: () => {
         const comment = Swal.getPopup().querySelector("#comment").value;
         const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-        if (!comment || !rejectdoc) {
-          Swal.showValidationMessage(`Please enter comments and file`);
+        if (!comment) {
+          Swal.showValidationMessage(`Please enter comments`);
         } else {
           const data = new FormData();
           data.append("userId", event);
@@ -2192,8 +2191,8 @@ function ApprovalFields(props) {
       preConfirm: () => {
         const comment = Swal.getPopup().querySelector("#comment").value;
         const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-        if (!comment || !rejectdoc) {
-          Swal.showValidationMessage(`Please enter comments and file`);
+        if (!comment ) {
+          Swal.showValidationMessage(`Please enter comments`);
         } else {
           const data = new FormData();
           data.append("userId", event);
