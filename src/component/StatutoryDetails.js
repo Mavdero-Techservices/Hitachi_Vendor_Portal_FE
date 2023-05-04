@@ -32,9 +32,11 @@ export default function Statutory(props) {
   const [countryName, setCountryName] = useState(null);
   const [HideImport, setHideImport] = useState(true);
   const [url, seturl] = useState();
+  const [redirectUrl, setredirectUrl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
   const [editTab, seteditTab] = useState(true);
+  const [statRes, setstatRes] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [hideMSMEunRegisteredField, sethideMSMEunRegisteredField] =
@@ -84,27 +86,32 @@ export default function Statutory(props) {
   function onChangeValue(event) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
-      if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+      if (values.PAN_No === 'N/A' && countryName === "IN") {
+        setValues({ PAN_No: '' })
       }
       sethideunRegisteredField(false);
     } else {
       sethideunRegisteredField(true);
     }
     if (event.target.value === "Import") {
-      setValues({ PAN_No: "N/A" });
+      setValues({ PAN_No: 'N/A' })
       setHideImport(false);
     } else {
       setHideImport(true);
     }
     if (event.target.value === "Registered") {
-      if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+      if (values.PAN_No === 'N/A' && countryName === "IN") {
+        setValues({ PAN_No: '' })
+      }
+    }
+    if (event.target.value === "UnRegistered") {
+      if (values.GST_Registration_No === "N/A") {
+        setValues({ GST_Registration_No: "N/A" });
       }
     }
   }
   function onFileDisclosurechange(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -191,7 +198,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangePAN_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -224,7 +231,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeTAN_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -242,7 +249,7 @@ export default function Statutory(props) {
     }
   }
   function onFileChangeMSME_Doc(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files[0].size > 5000000) {
       Swal.fire({
         title: "file size should be less than 5mb",
@@ -261,10 +268,10 @@ export default function Statutory(props) {
   }
   function next(e) {
     // saveComplianceDetail(e);
-    if (params.userId) {
-      navigate(`/ComplianceDetail/${params.userId}`);
+    if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
+      navigate("/ComplianceDetail");     
     } else {
-      navigate("/ComplianceDetail");
+      navigate(`/ComplianceDetail/${params.userId}`);
     }
   }
 
@@ -475,31 +482,18 @@ export default function Statutory(props) {
 
   useEffect(() => {
     (async () => {
-      await apiService
-        .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-        )
-        .then((res) => {
-          let cName = res.data.basicInfo
-            ? res.data.basicInfo[0].Country_Region_Code
-            : "";
-          if (cName !== "IN" && cName !== null && cName !== undefined) {
-            setValues({ PAN_No: "N/A" });
-          }
-          setCountryName(
-            res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
-          );
-        })
-        .then((result) => {});
+      await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        console.log("resw::",res.data);
+        setredirectUrl(res.data);
+        let cName = res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
+        if (cName !== 'IN' && cName !== null && cName !== undefined) {
+          setValues({ PAN_No: 'N/A' })
+        }
+        setCountryName(res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : "")
+      })
 
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      let id = newuser
-        ? newuser
-        : params.userId
-        ? params.userId
-        : values.userId;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let id = newuser ? newuser : params.userId ? params.userId : values.userId
       await apiService.getvendorDetail(id).then((res) => {
         setcountry(res.data.country);
         if (res.data.country === "IN") {
@@ -513,16 +507,14 @@ export default function Statutory(props) {
         });
         await apiService.getAllCollection(params.userId).then((res) => {
           if (
-            res.data.basicInfo[0].submitStatus === "Submitted" &&
-            finalstatus !== "Approved"
+            res.data.basicInfo[0].submitStatus === "Submitted" 
           ) {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {
             var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
             var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-            var PE_Declaration_DocUrl =
-              res.data.Statutory[0].PE_Declaration_Doc;
+            var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
             var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
               "uploads/",
               ""
@@ -533,21 +525,22 @@ export default function Statutory(props) {
               ""
             );
             setValues({
-              GST_No: value.GST_Registration_No,
+              GST_No: value.GST_Registration_No === "undefined" ? "" : value.GST_Registration_No,
               // GST_type: value.GST_Vendor_Type,
-              MSME_No: value.MSMED_Number,
+              MSME_No: value.MSMED_Number === "undefined" ? "" : value.MSMED_Number,
               MSME_Type: value.MSMED_Vendor_Type,
               // MSME_status: value.MSMED,
-              PAN_No: value.P_A_N_No,
-              CIN_No: value.CIN_No,
-              TAN_No: value.TAN_No,
-              Tax_residency_No: value.Tax_residency_No,
+              PAN_No: value.P_A_N_No === "undefined" ? "" : value.P_A_N_No,
+              CIN_No: value.CIN_No === "undefined" ? "" : value.CIN_No,
+              TAN_No: value.TAN_No === "undefined" ? "" : value.TAN_No,
+              Tax_residency_No: value.Tax_residency_No === "undefined" ? "" : value.Tax_residency_No,
               // GST_Doc: value.GST_Doc,
               // PAN_Doc: value.PAN_Doc,
               // TAN_Doc: value.TAN_Doc,
               // MSME_Doc: value.MSME_Doc,
               Tax_residency_Doc: value.Tax_residency_Doc,
             });
+
             setGST_type(value.GST_Vendor_Type);
             setMSME_status(value.MSMED);
             setform_10f_Doc(value.form_10f_Doc);
@@ -570,16 +563,14 @@ export default function Statutory(props) {
         });
         await apiService.getAllCollection(newuser).then((res) => {
           if (
-            res.data.basicInfo[0].submitStatus === "Submitted" &&
-            finalstatus !== "Approved"
+            res.data.basicInfo[0].submitStatus === "Submitted"
           ) {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {
             var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
             var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-            var PE_Declaration_DocUrl =
-              res.data.Statutory[0].PE_Declaration_Doc;
+            var PE_Declaration_DocUrl = res.data.Statutory[0].PE_Declaration_Doc;
             var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
               "uploads/",
               ""
@@ -590,15 +581,15 @@ export default function Statutory(props) {
               ""
             );
             setValues({
-              GST_No: value.GST_Registration_No,
+              GST_No: value.GST_Registration_No === "undefined" ? "" : value.GST_Registration_No,
               // GST_type: value.GST_Vendor_Type,
-              MSME_No: value.MSMED_Number,
+              MSME_No: value.MSMED_Number === "undefined" ? "" : value.MSMED_Number,
               MSME_Type: value.MSMED_Vendor_Type,
               // MSME_status: value.MSMED,
-              PAN_No: value.P_A_N_No,
-              CIN_No: value.CIN_No,
-              TAN_No: value.TAN_No,
-              Tax_residency_No: value.Tax_residency_No,
+              PAN_No: value.P_A_N_No === "undefined" ? "" : value.P_A_N_No,
+              CIN_No: value.CIN_No === "undefined" ? "" : value.CIN_No,
+              TAN_No: value.TAN_No === "undefined" ? "" : value.TAN_No,
+              Tax_residency_No: value.Tax_residency_No === "undefined" ? "" : value.Tax_residency_No,
               // GST_Doc: value.GST_Doc,
               // PAN_Doc: value.PAN_Doc,
               // TAN_Doc: value.TAN_Doc,
@@ -620,24 +611,39 @@ export default function Statutory(props) {
             setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
         });
+
       }
+
+
     })();
     seturl(pdf);
-  }, []);
+  }, [statRes]);
   const saveStatutoryDetail = (e) => {
     // e.preventDefault();
 
     const data = new FormData();
-    data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
-    data.append("GST_Registration_No", values.GST_No);
+    if (GST_type === "UnRegistered") {
+      data.append("GST_Registration_No", "N/A"); 
+    }
+    else
+    {
+      data.append("GST_Registration_No", values.GST_No);
+    }
+    
     if (countryName !== "IN") {
-      console.log("11111");
       data.append("P_A_N_No", "N/A");
       data.append("PAN_Doc", "");
     } else {
       data.append("P_A_N_No", values.PAN_No);
       data.append("PAN_Doc", PAN_Doc);
+    }
+    if (GST_type === "Registered") {
+      data.append("GST_Doc", GST_Doc);
+      data.append("fileDisclosure", "");
+    } else {
+      data.append("GST_Doc", "");
+      data.append("fileDisclosure", fileDisclosure);
     }
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
@@ -656,9 +662,9 @@ export default function Statutory(props) {
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
     data.append("Tax_residency_No", values.Tax_residency_No);
-    data.append("fileDisclosure", fileDisclosure);
     if (params.userId) {
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        setstatRes(res.data.status)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -680,23 +686,25 @@ export default function Statutory(props) {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const statdata = new FormData();
-        statdata.append("GST_Doc", GST_Doc);
         statdata.append("GST_Vendor_Type", GST_type);
         statdata.append("GST_Registration_No", values.GST_No);
         if (countryName !== "IN") {
-          console.log("11111");
           statdata.append("P_A_N_No", values.PAN_No);
           statdata.append("PAN_Doc", PAN_Doc);
         } else {
           statdata.append("P_A_N_No", "N/A");
           statdata.append("PAN_Doc", "");
         }
-       
+        if (GST_type === "Registered") {
+          statdata.append("GST_Doc", GST_Doc);
+          statdata.append("fileDisclosure", "");
+        } else {
+          statdata.append("GST_Doc", "");
+          statdata.append("fileDisclosure", fileDisclosure);
+        }
         statdata.append("form_10f_Doc", form_10f_Doc);
         statdata.append("TAN_Doc", TAN_Doc);
         statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -711,8 +719,8 @@ export default function Statutory(props) {
         statdata.append("TAN_No", values.TAN_No);
         statdata.append("userId", newuser);
         statdata.append("Tax_residency_No", values.Tax_residency_No);
-        statdata.append("fileDisclosure", fileDisclosure);
         apiService.saveStatutoryDetail(statdata).then((res) => {
+          setstatRes(res.data.status)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -735,6 +743,7 @@ export default function Statutory(props) {
         });
       } else {
         apiService.saveStatutoryDetail(data).then((res) => {
+          setstatRes(res.data.status)
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data saved",
@@ -762,11 +771,28 @@ export default function Statutory(props) {
     e.preventDefault();
 
     const data = new FormData();
-    data.append("GST_Doc", GST_Doc);
     data.append("GST_Vendor_Type", GST_type);
-    data.append("GST_Registration_No", values.GST_No);
-    data.append("P_A_N_No", values.PAN_No);
-    data.append("PAN_Doc", PAN_Doc);
+    if (GST_type === "UnRegistered") {
+      data.append("GST_Registration_No", "N/A"); 
+    }
+    else
+    {
+      data.append("GST_Registration_No", values.GST_No);
+    }
+    if (countryName !== "IN") {
+      data.append("P_A_N_No", "N/A");
+      data.append("PAN_Doc", "");
+    } else {
+      data.append("P_A_N_No", values.PAN_No);
+      data.append("PAN_Doc", PAN_Doc);
+    }
+    if (GST_type === "Registered") {
+      data.append("GST_Doc", GST_Doc);
+      data.append("fileDisclosure", "");
+    } else {
+      data.append("GST_Doc", "");
+      data.append("fileDisclosure", fileDisclosure);
+    }
     data.append("form_10f_Doc", form_10f_Doc);
     data.append("TAN_Doc", TAN_Doc);
     data.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -781,21 +807,9 @@ export default function Statutory(props) {
     data.append("TAN_No", values.TAN_No);
     data.append("userId", params.userId);
     data.append("Tax_residency_No", values.Tax_residency_No);
-    data.append("fileDisclosure", fileDisclosure);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     if (params.userId) {
-      console.log("11111----------->");
-
-      if (countryName !== "IN") {
-        console.log("11111");
-        console.log("data.P_A_N_No", data.P_A_N_No);
-        console.log("data.PAN_Doc", data.PAN_Doc);
-        data.P_A_N_No = "N/A";
-        data.PAN_Doc = "";
-      }
       apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+        setstatRes(res.data.status)
         if (res.data.status === "success") {
           Swal.fire({
             title: "Data Updated",
@@ -865,7 +879,8 @@ export default function Statutory(props) {
                 // });
               } else if (event === "fileDisclosure") {
                 setfileDisclosure("");
-              } else if (event === "PAN_Doc") {
+              }
+              else if (event === "PAN_Doc") {
                 setPAN_Doc("");
                 // setValues({
                 //   PAN_Doc: "",
@@ -947,99 +962,267 @@ export default function Statutory(props) {
                         </Form.Group>
 
                         {HideImport && hideunRegisteredField ? (
-                          <Row>
-                            <Col>
-                              <Form.Group
-                                className="mb-3"
-                                controlId="formBasicEmail"
-                              >
-                                <Form.Label>GST no*</Form.Label>
-                                <InputGroup className="statutoryInput">
-                                  <Form.Control
-                                    style={{
-                                      border: "none",
-                                      borderRadius: "25px",
-                                      outline: "none",
-                                      outlineOffset: "none",
-                                    }}
-                                    className="statInput"
-                                    type="text"
-                                    value={values.GST_No}
-                                    onChange={handleChange("GST_No")}
-                                  />
-                                  <InputGroup.Text style={{ border: "none" }}>
-                                    <Tooltip title={gstNo}>
-                                      <InfoIcon />
-                                    </Tooltip>
-                                  </InputGroup.Text>
-                                </InputGroup>
-                                {errors.GST_No ? (
-                                  <p className="text text-danger small">
-                                    {errors.GST_No}
-                                  </p>
-                                ) : (
-                                  ""
-                                )}
-                              </Form.Group>
-                            </Col>
-                            <Col>
-                              {/* {values.GST_Doc!='' ? (
-                                <div className="frame-input">
-                                <label htmlFor="fileupload">GST Uploaded</label>
-                                <input
-                                  type="file"
-                                  id="fileupload"
-                                  value={values.GST_Doc}
-                                  onChange={onFileChange}
-                                  required
-                                  disabled={style==='notEditable'? true:false}
-                                />
-                                
-                                </div>
-                            ):(
-                              <div className="frame-input">
-                              <label htmlFor="fileupload">Upload GST</label>
-                              <input
-                                type="file"
-                                id="fileupload"
-                                value={values.GST_Doc}
-                                onChange={onFileChange}
-                                required
-                              />
-                            </div>
-                            )} */}
-
-                              {GST_Doc !== "" &&
-                              GST_Doc !== "null" &&
-                              GST_Doc !== undefined ? (
-                                <div className="frame-input">
-                                  <button
-                                    type="button"
-                                    className="deleteFile"
-                                    onClick={() => {
-                                      deleteFile("GST_Doc");
-                                    }}
+                          <>
+                            {GST_type === "UnRegistered" ? (
+                              <Row>
+                                <Col>
+                                  <Form.Group
+                                    className="mb-3"
+                                    controlId="formBasicEmail"
                                   >
-                                    Delete GST
-                                  </button>
-                                </div>
-                              ) : (
-                                <div className="frame-input">
-                                  <label htmlFor="fileupload">Upload GST</label>
-                                  <input
-                                    type="file"
-                                    id="fileupload"
-                                    // value={values.GST_Doc}
-                                    onChange={onFileChange}
-                                    required
-                                    disabled={
-                                      style === "notEditable" ? true : false
-                                    }
-                                  />
-                                </div>
-                              )}
-                            </Col>
-                          </Row>
+                                    <Form.Label>GST no*</Form.Label>
+                                    <Form.Control
+                                      className="statutoryInput"
+                                      type="text"
+                                      value="N/A"
+                                      // onChange={handleChange("GST_No")}
+                                      disabled="true"
+                                    />
+                                    {errors.GST_No ? (
+                                      <p className="text text-danger small">
+                                        {errors.GST_No}
+                                      </p>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </Form.Group>
+                                </Col>
+                                <Col>
+                                  {!HideImport && hideunRegisteredField ? (
+                                    <Row></Row>
+                                  ) : (
+                                    <Row>
+                                      {/* <div className="frame-input">
+                                    <label htmlFor="fileupload">
+                                      Upload UnRegister Gst
+                                    </label>
+                                    <input
+                                      type="file"
+                                      id="fileupload"
+                                      handleChange={onFileDisclosurechange}
+                                      name="fileDisclosure"
+                                      required
+                                    />
+                                  </div>{" "} */}
+
+                                      {fileDisclosure !== "" &&
+                                        fileDisclosure !== "null" &&
+                                        fileDisclosure !== undefined ? (
+                                        <div className="frame-input">
+                                          <button
+                                            type="button"
+                                            className="deleteFile"
+                                            onClick={() => {
+                                              deleteFile("fileDisclosure");
+                                            }}
+                                          >
+                                            Delete UnRegister Gst
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <div className="frame-input">
+                                          <label htmlFor="fileupload">
+                                            Upload UnRegister Gst
+                                          </label>
+                                          <input
+                                            type="file"
+                                            id="fileupload"
+                                            onChange={onFileDisclosurechange}
+                                            name="fileDisclosure"
+                                            required
+                                          />
+                                        </div>
+                                      )}
+                                    </Row>
+                                  )}
+                                </Col>
+                              </Row>
+                            ) : (
+                              <>
+                                {GST_type === "Import" ? (
+                                  <Row>
+                                    <Col>
+                                      <Form.Group
+                                        className="mb-3"
+                                        controlId="formBasicEmail"
+                                      >
+                                        <Form.Label>GST no*</Form.Label>
+                                        <Form.Control
+                                          className="statutoryInput"
+                                          type="text"
+                                          value="N/A"
+                                          // onChange={handleChange("GST_No")}
+                                          disabled="true"
+                                        />
+                                        {errors.GST_No ? (
+                                          <p className="text text-danger small">
+                                            {errors.GST_No}
+                                          </p>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </Form.Group>
+                                    </Col>
+                                    <Col></Col>
+                                  </Row>
+                                ) : (
+
+                                  <>
+
+                                    {GST_type === "Registered" ? (
+                                      <>
+                                        <Row>
+                                          <Col>
+                                            <Form.Group
+                                              className="mb-3"
+                                              controlId="formBasicEmail"
+                                            >
+                                              <Form.Label>GST no*</Form.Label>
+                                              <InputGroup className="statutoryInput">
+                                                <Form.Control
+                                                  style={{
+                                                    border: "none",
+                                                    borderRadius: "25px",
+                                                    outline: "none",
+                                                    outlineOffset: "none",
+                                                  }}
+                                                  className="statInput"
+                                                  type="text"
+                                                  value={values.GST_No}
+                                                  onChange={handleChange("GST_No")}
+                                                />
+                                                <InputGroup.Text style={{ border: "none" }}>
+                                                  <Tooltip title={gstNo}>
+                                                    <InfoIcon />
+                                                  </Tooltip>
+                                                </InputGroup.Text>
+                                              </InputGroup>
+                                              {errors.GST_No ? (
+                                                <p className="text text-danger small">
+                                                  {errors.GST_No}
+                                                </p>
+                                              ) : (
+                                                ""
+                                              )}
+                                            </Form.Group>
+                                          </Col>
+                                          <Col>
+
+
+                                            {GST_Doc !== "" &&
+                                              GST_Doc !== "null" &&
+                                              GST_Doc !== undefined ? (
+                                              <div className="frame-input">
+                                                <button
+                                                  type="button"
+                                                  className="deleteFile"
+                                                  onClick={() => {
+                                                    deleteFile("GST_Doc");
+                                                  }}
+                                                >
+                                                  Delete GST
+                                                </button>
+                                              </div>
+                                            ) : (
+                                              <div className="frame-input">
+                                                <label htmlFor="fileupload">Upload GST</label>
+                                                <input
+                                                  type="file"
+                                                  id="fileupload"
+                                                  // value={values.GST_Doc}
+                                                  onChange={onFileChange}
+                                                  required
+                                                  disabled={
+                                                    style === "notEditable" ? true : false
+                                                  }
+                                                />
+                                              </div>
+                                            )}
+                                          </Col>
+                                        </Row>
+                                      </>
+                                    ) : (
+
+                                      <Row>
+                                        <Col>
+                                          <Form.Group
+                                            className="mb-3"
+                                            controlId="formBasicEmail"
+                                          >
+                                            <Form.Label>GST no*</Form.Label>
+                                            <InputGroup className="statutoryInput">
+                                              <Form.Control
+                                                style={{
+                                                  border: "none",
+                                                  borderRadius: "25px",
+                                                  outline: "none",
+                                                  outlineOffset: "none",
+                                                }}
+                                                className="statInput"
+                                                type="text"
+                                                value={values.GST_No}
+                                                onChange={handleChange("GST_No")}
+                                              />
+                                              <InputGroup.Text style={{ border: "none" }}>
+                                                <Tooltip title={gstNo}>
+                                                  <InfoIcon />
+                                                </Tooltip>
+                                              </InputGroup.Text>
+                                            </InputGroup>
+                                            {errors.GST_No ? (
+                                              <p className="text text-danger small">
+                                                {errors.GST_No}
+                                              </p>
+                                            ) : (
+                                              ""
+                                            )}
+                                          </Form.Group>
+                                        </Col>
+                                        <Col>
+
+
+                                          {GST_Doc !== "" &&
+                                            GST_Doc !== "null" &&
+                                            GST_Doc !== undefined ? (
+                                            <div className="frame-input">
+                                              <button
+                                                type="button"
+                                                className="deleteFile"
+                                                onClick={() => {
+                                                  deleteFile("GST_Doc");
+                                                }}
+                                              >
+                                                Delete GST
+                                              </button>
+                                            </div>
+                                          ) : (
+                                            <div className="frame-input">
+                                              <label htmlFor="fileupload">Upload GST</label>
+                                              <input
+                                                type="file"
+                                                id="fileupload"
+                                                // value={values.GST_Doc}
+                                                onChange={onFileChange}
+                                                required
+                                                disabled={
+                                                  style === "notEditable" ? true : false
+                                                }
+                                              />
+                                            </div>
+                                          )}
+                                        </Col>
+                                      </Row>
+                                    )}
+
+
+                                  </>
+                                )}
+
+
+                              </>
+                            )}
+
+                          </>
                         ) : (
                           <Row>
                             <Col>
@@ -1051,7 +1234,7 @@ export default function Statutory(props) {
                                 <Form.Control
                                   className="statutoryInput"
                                   type="text"
-                                  // value="N/A"
+                                  value="N/A"
                                   // onChange={handleChange("GST_No")}
                                   disabled="true"
                                 />
@@ -1069,22 +1252,11 @@ export default function Statutory(props) {
                                 <Row></Row>
                               ) : (
                                 <Row>
-                                  {/* <div className="frame-input">
-                                    <label htmlFor="fileupload">
-                                      Upload UnRegister Gst
-                                    </label>
-                                    <input
-                                      type="file"
-                                      id="fileupload"
-                                      handleChange={onFileDisclosurechange}
-                                      name="fileDisclosure"
-                                      required
-                                    />
-                                  </div>{" "} */}
+
 
                                   {fileDisclosure !== "" &&
-                                  fileDisclosure !== "null" &&
-                                  fileDisclosure !== undefined ? (
+                                    fileDisclosure !== "null" &&
+                                    fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
@@ -1115,38 +1287,21 @@ export default function Statutory(props) {
                             </Col>
                           </Row>
                         )}
-                        {/* {hideunRegisteredField ?
-                          <Col>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                              <Form.Label>GST no*</Form.Label>
-                              <Form.Control className="statutoryInput" type="text" value={values.GST_No} onChange={handleChange('GST_No')} />
-                              {errors.GST_No ? <p className="text text-danger small">{errors.GST_No}</p> : ""}
-                            </Form.Group>
-                          </Col>
-                          : null}
-                        {hideunRegisteredField ?
-                          <Col>
-                            <div className="frame-input">
-                              <label for="fileupload">Upload GST</label>
-                              <input type="file" id="fileupload" value={values.GST_Doc} onChange={onFileChange} required />
-                            </div>
-                          </Col>
-                          : null} */}
+
                       </Row>
                       <Row>
-                        {GST_type === "Import" ? (
-                          <Col>
+                        {GST_type === "Import" ?
+                          <Col >
                             <Form.Group
+
                               sx={{ mb: 3 }}
                               controlId="formBasicEmail"
                             >
                               <Form.Label>PAN no*</Form.Label>
                               <InputGroup className="statutoryInput">
                                 <Form.Control
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "25px",
-                                  }}
+
+                                  style={{ border: "none", borderRadius: "25px" }}
                                   type="text"
                                   value="N/A"
                                   disabled="true"
@@ -1166,9 +1321,9 @@ export default function Statutory(props) {
                                 ""
                               )}
                             </Form.Group>
-                          </Col>
-                        ) : (
-                          <Col>
+                          </Col> :
+
+                          <Col >
                             <Form.Group
                               sx={{ mb: 3 }}
                               controlId="formBasicEmail"
@@ -1176,15 +1331,12 @@ export default function Statutory(props) {
                               <Form.Label>PAN no*</Form.Label>
                               <InputGroup className="statutoryInput">
                                 <Form.Control
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "25px",
-                                  }}
+                                  style={{ border: "none", borderRadius: "25px" }}
                                   type="text"
                                   value={
                                     countryName !== "IN" ? "N/A" : values.PAN_No
                                   }
-                                  disabled={countryName !== "IN"}
+                                  disabled={countryName !== 'IN'}
                                   onChange={handleChange("PAN_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
@@ -1201,37 +1353,14 @@ export default function Statutory(props) {
                                 ""
                               )}
                             </Form.Group>
-                          </Col>
-                        )}
+                          </Col>}
                         <Col>
-                          {/* {values.PAN_Doc!='' ? (
-                          <div className="frame-input">
-                          <label htmlFor="fileuploadPan">PAN Uploaded</label>
-                          <input
-                            type="file"
-                            id="fileuploadPan"
-                            value={values.PAN_Doc}
-                            onChange={onFileChangePAN_Doc}
-                            required
-                            disabled={style==='notEditable'? true:false}
-                          />
-                        </div>
-                        ):(
-                          <div className="frame-input">
-                          <label htmlFor="fileuploadPan">Upload PAN</label>
-                          <input
-                            type="file"
-                            id="fileuploadPan"
-                            value={values.PAN_Doc}
-                            onChange={onFileChangePAN_Doc}
-                            required
-                          />
-                        </div>
-                        )} */}
+
+
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
-                            PAN_Doc !== "null" &&
-                            PAN_Doc !== undefined ? (
+                              PAN_Doc !== "null" &&
+                              PAN_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1259,8 +1388,7 @@ export default function Statutory(props) {
                               </div>
                             ) : (
                               ""
-                            )
-                          ) : (
+                            )) : (
                             ""
                           )}
                         </Col>
@@ -1292,27 +1420,7 @@ export default function Statutory(props) {
                         </Col>
                         <Col></Col>
                       </Row>
-                      {/* {!hideunRegisteredField ?
-                        <Row>
-                          <Col sm={8}>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                              <Form.Label>Declaration Form for Non-Registered in GST*</Form.Label>
-                              <FileUploader className="financial_fileupload"
-                                required
-                                type="file"
-                                handleChange={onFileDisclosurechange}
-                                name="fileDisclosure"
-                              />
-                              <span>{fileDisclosure ? `File name: ${fileDisclosure.name}` : "No File Chosen"}</span>
-                            </Form.Group>
-                          </Col>
-                          <Col sm={2}>
-                            <a href={url} download>
-                              <Button className="DownloadDisclosure">Download</Button>
-                            </a>
-                          </Col>
-                        </Row>
-                        : null} */}
+
                       <Row>
                         <Col>
                           {countryName !== "IN" ? (
@@ -1325,8 +1433,8 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {Editform_10f_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <span>File name:{Editform_10f_Doc}</span>
 
@@ -1386,8 +1494,8 @@ export default function Statutory(props) {
                               <Form.Label>No PE declaration*</Form.Label>
                               {(params.userId &&
                                 EditPE_Declaration_Doc != "") ||
-                              undefined ||
-                              null ? (
+                                undefined ||
+                                null ? (
                                 <div>
                                   <span>
                                     File name:{EditPE_Declaration_Doc}
@@ -1462,96 +1570,128 @@ export default function Statutory(props) {
                         </Col>
                       </Row>
                       {hideMSMEunRegisteredField ? (
-                        <Row>
-                          <Col>
-                            <Form.Group
-                              className="mb-3"
-                              controlId="formBasicEmail"
-                            >
-                              <Form.Label>MSME no*</Form.Label>
-                              <InputGroup className="statutoryInput">
-                                <Form.Control
-                                  style={{
-                                    border: "none",
-                                    borderRadius: "25px",
-                                  }}
-                                  type="text"
-                                  value={values.MSME_No}
-                                  onChange={handleChange("MSME_No")}
-                                />
-                                <InputGroup.Text style={{ border: "none" }}>
-                                  <Tooltip title={msmeNo}>
-                                    <InfoIcon />
-                                  </Tooltip>
-                                </InputGroup.Text>
-                              </InputGroup>
-                            </Form.Group>
-                          </Col>
-                          <Col>
-                            {/* {values.MSME_Doc!='' ? (
-                             <div className="frame-input">
-                             <label htmlFor="fileuploadMSME">
-                               Upload MSME
-                             </label>
-                             <input
-                               type="file"
-                               id="fileuploadMSME"
-                               value={values.MSME_Doc}
-                               onChange={onFileChangeMSME_Doc}
-                               required
-                               disabled={style==='notEditable'? true:false}
-                             />
-                           </div>
-                          ):(
-                            <div className="frame-input">
-                            <label htmlFor="fileuploadMSME">
-                               MSME Uploaded
-                            </label>
-                            <input
-                              type="file"
-                              id="fileuploadMSME"
-                              value={values.MSME_Doc}
-                              onChange={onFileChangeMSME_Doc}
-                              required
-                            />
-                          </div>
-                          )} */}
 
-                            {MSME_Doc !== "" &&
-                            MSME_Doc !== "null" &&
-                            MSME_Doc !== undefined ? (
-                              <div className="frame-input">
-                                <button
-                                  type="button"
-                                  className="deleteFile"
-                                  onClick={() => {
-                                    deleteFile("MSME_Doc");
-                                  }}
+                        <>
+
+                          {MSME_status === "UnRegistered" ? (
+                            <Row>
+                              <Col>
+                                <Form.Group
+                                  className="mb-3"
+                                  controlId="formBasicEmail"
                                 >
-                                  Delete MSME
-                                </button>
-                              </div>
-                            ) : MSME_status === "Registered" ? (
-                              <div className="frame-input">
-                                <label htmlFor="fileuploadMSME">
-                                  Upload MSME
-                                </label>
-                                <input
-                                  type="file"
-                                  id="fileuploadMSME"
-                                  // value={values.MSME_Doc}
-                                  onChange={onFileChangeMSME_Doc}
-                                  required
-                                  disabled={
-                                    style === "notEditable" ? true : false
-                                  }
-                                />
-                              </div>
-                            ) : (
-                              <></>
-                            )}
-                          </Col>
-                        </Row>
+                                  <Form.Label>MSME no*</Form.Label>
+                                  <Form.Control
+                                    className="statutoryInput"
+                                    type="text"
+                                    value="N/A"
+                                    disabled="true"
+                                  />
+                                </Form.Group>
+                              </Col>
+                              <Col>
+                                {MSME_Doc !== "" &&
+                                  MSME_Doc !== "null" &&
+                                  MSME_Doc !== undefined &&
+                                  MSME_status === "Registered" ? (
+                                  <div className="frame-input">
+                                    <button
+                                      type="button"
+                                      className="deleteFile"
+                                      onClick={() => {
+                                        deleteFile("MSME_Doc");
+                                      }}
+                                    >
+                                      Delete MSME
+                                    </button>
+                                  </div>
+                                ) : MSME_status === "Registered" ? (
+                                  <div className="frame-input">
+                                    <label htmlFor="fileuploadMSME">
+                                      Upload MSME
+                                    </label>
+                                    <input
+                                      type="file"
+                                      id="fileuploadMSME"
+                                      // value={values.MSME_Doc}
+                                      onChange={onFileChangeMSME_Doc}
+                                      disabled="true"
+                                    />
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
+                              </Col>
+                            </Row>
+                          ) : (
+
+                            <Row>
+                              <Col>
+                                <Form.Group
+                                  className="mb-3"
+                                  controlId="formBasicEmail"
+                                >
+                                  <Form.Label>MSME no*</Form.Label>
+                                  <InputGroup className="statutoryInput">
+                                    <Form.Control
+                                      style={{
+                                        border: "none",
+                                        borderRadius: "25px",
+                                      }}
+                                      type="text"
+                                      value={values.MSME_No}
+                                      onChange={handleChange("MSME_No")}
+                                    />
+                                    <InputGroup.Text style={{ border: "none" }}>
+                                      <Tooltip title={msmeNo}>
+                                        <InfoIcon />
+                                      </Tooltip>
+                                    </InputGroup.Text>
+                                  </InputGroup>
+                                </Form.Group>
+                              </Col>
+                              <Col>
+
+
+                                {MSME_Doc !== "" &&
+                                  MSME_Doc !== "null" &&
+                                  MSME_Doc !== undefined ? (
+                                  <div className="frame-input">
+                                    <button
+                                      type="button"
+                                      className="deleteFile"
+                                      onClick={() => {
+                                        deleteFile("MSME_Doc");
+                                      }}
+                                    >
+                                      Delete MSME
+                                    </button>
+                                  </div>
+                                ) : (
+                                  MSME_status === "Registered" ? (
+                                    <div className="frame-input">
+                                      <label htmlFor="fileuploadMSME">
+                                        Upload MSME
+                                      </label>
+                                      <input
+                                        type="file"
+                                        id="fileuploadMSME"
+                                        // value={values.MSME_Doc}
+                                        onChange={onFileChangeMSME_Doc}
+                                        required
+                                        disabled={
+                                          style === "notEditable" ? true : false
+                                        }
+                                      />
+                                    </div>
+                                  ) : (<></>)
+                                )}
+                              </Col>
+                            </Row>
+                          )}
+
+
+                        </>
                       ) : (
                         <Row>
                           <Col>
@@ -1570,9 +1710,9 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             {MSME_Doc !== "" &&
-                            MSME_Doc !== "null" &&
-                            MSME_Doc !== undefined &&
-                            MSME_status === "Registered" ? (
+                              MSME_Doc !== "null" &&
+                              MSME_Doc !== undefined &&
+                              MSME_status === "Registered" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1584,21 +1724,22 @@ export default function Statutory(props) {
                                   Delete MSME
                                 </button>
                               </div>
-                            ) : MSME_status === "Registered" ? (
-                              <div className="frame-input">
-                                <label htmlFor="fileuploadMSME">
-                                  Upload MSME
-                                </label>
-                                <input
-                                  type="file"
-                                  id="fileuploadMSME"
-                                  // value={values.MSME_Doc}
-                                  onChange={onFileChangeMSME_Doc}
-                                  disabled="true"
-                                />
-                              </div>
                             ) : (
-                              <></>
+                              MSME_status === "Registered" ? (
+                                <div className="frame-input">
+                                  <label htmlFor="fileuploadMSME">
+                                    Upload MSME
+                                  </label>
+                                  <input
+                                    type="file"
+                                    id="fileuploadMSME"
+                                    // value={values.MSME_Doc}
+                                    onChange={onFileChangeMSME_Doc}
+                                    disabled="true"
+                                  />
+                                </div>
+                              ) : (<></>)
+
                             )}
                           </Col>
                         </Row>
@@ -1625,7 +1766,7 @@ export default function Statutory(props) {
                                       : false
                                   }
                                 />{" "}
-                                Micro1
+                                Micro
                               </Col>
                               <Col sm={4}>
                                 <input
@@ -1700,8 +1841,8 @@ export default function Statutory(props) {
                           </div> */}
 
                           {TAN_Doc !== "" &&
-                          TAN_Doc !== "null" &&
-                          TAN_Doc !== undefined ? (
+                            TAN_Doc !== "null" &&
+                            TAN_Doc !== undefined ? (
                             <div className="frame-input">
                               <button
                                 type="button"
@@ -1740,8 +1881,8 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {editTax_residency_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
                                       <span>File name:{Tax_residency_Doc}</span>
                                       <ClearIcon
@@ -1803,8 +1944,8 @@ export default function Statutory(props) {
                 </Row>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
+          </Col >
+        </Row >
         {!hideunRegisteredField ? (
           <Row>
             <Col>
@@ -1815,7 +1956,8 @@ export default function Statutory(props) {
               </a>
             </Col>
           </Row>
-        ) : null}
+        ) : null
+        }
         <br />
         <Row>
           <Col>
@@ -1836,9 +1978,7 @@ export default function Statutory(props) {
             >
               Cancel
             </button>
-            {params.userId &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-              "Admin" ? (
+            {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
               <>
                 <button
                   type="button"
@@ -1859,6 +1999,8 @@ export default function Statutory(props) {
                 >
                   Save
                 </button>
+
+
               </>
             )}
 
@@ -1871,7 +2013,7 @@ export default function Statutory(props) {
             </button>
           </div>
         </Row>
-      </Container>
-    </div>
+      </Container >
+    </div >
   );
 }

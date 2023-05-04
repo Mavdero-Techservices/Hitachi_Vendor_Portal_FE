@@ -268,5 +268,8 @@ class apiService {
   rejectAccStatementDetail(data, No) {
     return axios.post(`http://localhost:5000/rejectAccStatementDetail/${No}`, data);
   }
+  resetPasswordByCurrentPassword(data) {
+    return http.put("/resetPasswordByCurrentPassword", data);
+  }
 }
 export default new apiService();

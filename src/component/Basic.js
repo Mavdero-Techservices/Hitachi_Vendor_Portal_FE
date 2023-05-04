@@ -125,7 +125,6 @@ export class Basic extends React.Component {
   next = (e) => {
     e.preventDefault();
     if (this.state.editStatutory.length <= 0 || "" || undefined) {
-      this.handleSubmit(e);
       this.props.navigate("/statutory");
     } else {
       this.props.navigate(`/statutory/${this.props.params.userId}`);

@@ -285,7 +285,7 @@ const BankDetails = (props) => {
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                <label className="banklabel">Name as per Bank A/c</label>
+                <label className="banklabel">Name as per Bank A/c*</label>
                 <input
                   type="text"
                   className="mb-4 inputbox"

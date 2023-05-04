@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
 import { Navigate } from "react-router-dom";
 function App() {
   const [Edit, setEdit] = useState(true);
@@ -15,6 +18,15 @@ function App() {
   const [editsubUser, seteditsubUser] = useState();
   const navigate = useNavigate();
   const params = useParams();
+  const userName = JSON.parse(window.sessionStorage.getItem("jwt")).result.userName;
+const userInitial = userName.charAt(0);
+const handleUserHover = (e) => {
+  document.getElementById("basic-nav-dropdown").classList.add("show");
+};
+
+const handleUserLeave = (e) => {
+  document.getElementById("basic-nav-dropdown").classList.remove("show");
+};
   const handleClickOpen = () => {
     Swal.fire({
       title: "are You sure?",
@@ -194,10 +206,29 @@ function App() {
               <Nav.Link onClick={bankDetails}>Bank Details</Nav.Link>
               <Nav.Link onClick={financialDetails}>Financial Details</Nav.Link>
               <Nav.Link onClick={contactDetails}>Contact Team</Nav.Link>
-              <Nav.Link onClick={handleClickOpen} id="b3">
-                logOut
-              </Nav.Link>
             </Nav>
+            <Nav>
+            <NavDropdown className="me-auto" onMouseOver={handleUserHover} onMouseLeave={handleUserLeave}
+              align="end"
+              title={<div className="user-initial">{userInitial}</div>}
+              id="basic-nav-dropdown"
+            >
+               <NavDropdown.Item>
+                 {userName}
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#">
+               <PersonIcon /> Account
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/passwordGeneration">
+               <LockIcon /> Password
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleClickOpen} id="b3">
+              <LogoutIcon/> Logout
+              </NavDropdown.Item>
+</NavDropdown>
+          </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

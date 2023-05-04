@@ -171,7 +171,9 @@ export default function Signin(props) {
                   setValues({ ...values, error: "", redirectToReferrer: true });
                 });
               });
-          } else {
+          }
+          else
+          if (data?.result?.verifiedUser === "Pending") {
             Swal.fire({
               title: "Please verify your email address.",
               icon: "warning",
@@ -180,6 +182,8 @@ export default function Signin(props) {
               allowOutsideClick: false,
               allowEscapeKey: false,
             })
+          }
+           else {  
             setValues({ ...values, error: "Please verify your email" });
           }
         }
@@ -259,21 +263,6 @@ export default function Signin(props) {
         );
       }
     } 
-  if (verifiedUser === "Pending") {
-                    Swal.fire({
-                title: "Please verify your email address before logging in.",
-                icon: "success",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  return <Navigate to={"/"} />; 
-                }
-              }
-              )
-    }
     if (role === "financial") {
       return <Navigate to={`/documents/${userName}`} />;
     }
