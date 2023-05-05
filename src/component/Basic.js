@@ -90,13 +90,18 @@ export class Basic extends React.Component {
     apiService
       .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
       .then((response) => {
+        if (response.data.data.postalcodes.length === 0) {           
+          this.setState({ getCityAndState: "" });
+          this.setState({ state:"" });
+          this.setState({ City: "" });
+        } else {                  
         this.setState({ getCityAndState: response.data.data.postalcodes[0] });
         this.setState({ state: response.data.data.postalcodes[0].adminName1 });
         if (response.data.data.postalcodes[0].adminName3) {
           this.setState({ City: response.data.data.postalcodes[0].adminName3 });
-        }
-        else {
+        } else {
           this.setState({ City: response.data.data.postalcodes[0].placeName });
+        }
         }
 
       });
@@ -118,11 +123,11 @@ export class Basic extends React.Component {
   }
   next = (e) => {
     e.preventDefault();
+    console.log("this.state.editStatutory",this.state.editStatutory);
     if (this.state.editStatutory.length <= 0 || "" || undefined) {
-      this.handleSubmit(e);
       this.props.navigate("/statutory");
     } else {
-      this.props.navigate(`/statutory/${this.props.params.userId}`);
+      this.props.navigate(`/statutory/${this.state.editStatutory[0].userId}`);
     }
   };
 
@@ -189,6 +194,10 @@ export class Basic extends React.Component {
   };
   handleChange(e) {
     this.setState({ Country_Region_Code: e.target.value });
+    this.setState({ getCityAndState: "" });
+    this.setState({ state:"" });
+    this.setState({ City: "" });
+    this.setState({ Post_Code: "" });
   }
   formValChange = (e) => {
     e.preventDefault();
@@ -566,8 +575,7 @@ export class Basic extends React.Component {
       });
       apiService.getAllCollection(this.props.params.userId).then((res) => {
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
+          res.data.basicInfo[0].submitStatus === "Submitted"
         ) {
           this.setState({ setStyle: "notEditable" });
         }
@@ -578,7 +586,7 @@ export class Basic extends React.Component {
           this.setState({
             companyName: value.companyName,
             Address: value.Address,
-            Address_2: value.Address_2,
+            Address_2: value.Address_2 === 'null' ? "": value.Address_2,
             City: value.City,
             state: value.state,
             Country_Region_Code: value.Country_Region_Code,
@@ -601,22 +609,22 @@ export class Basic extends React.Component {
             financeSpocdesignation: value.financeSpocdesignation,
             financeSpocphoneNo: value.financeSpocphoneNo,
             financeSpocemail: value.financeSpocemail,
-            operationSpoccontactName: value.operationSpoccontactName,
-            operationSpocdesignation: value.operationSpocdesignation,
-            operationSpocphoneNo: value.operationSpocphoneNo,
-            operationSpocemail: value.operationSpocemail,
-            collectionSpoccontactName: value.collectionSpoccontactName,
-            collectionSpocdesignation: value.collectionSpocdesignation,
-            collectionSpocphoneNo: value.collectionSpocphoneNo,
-            collectionSpocemail: value.collectionSpocemail,
-            managementSpoccontactName: value.managementSpoccontactName,
-            managementSpocdesignation: value.managementSpocdesignation,
-            managementSpocphoneNo: value.managementSpocphoneNo,
-            managementSpocemail: value.managementSpocemail,
-            contactName: value.contactName,
-            designation: value.designation,
-            phoneNo: value.phoneNo,
-            email: value.email,
+            operationSpoccontactName: value.operationSpoccontactName === 'null' ? "": value.operationSpoccontactName,
+            operationSpocdesignation: value.operationSpocdesignation === 'null' ? "": value.operationSpocdesignation,
+            operationSpocphoneNo: value.operationSpocphoneNo=== 'null' ? "" : value.operationSpocphoneNo,
+            operationSpocemail: value.operationSpocemail === 'null' ? "" : value.operationSpocemail,
+            collectionSpoccontactName: value.collectionSpoccontactName === 'null' ? "" : value.collectionSpoccontactName,
+            collectionSpocdesignation: value.collectionSpocdesignation  === 'null' ? "" : value.collectionSpocdesignation,
+            collectionSpocphoneNo: value.collectionSpocphoneNo === 'null' ? "" : value.collectionSpocphoneNo,
+            collectionSpocemail: value.collectionSpocemail === 'null' ? "" : value.collectionSpocemail,
+            managementSpoccontactName: value.managementSpoccontactName === 'null' ? "" : value.managementSpoccontactName,
+            managementSpocdesignation: value.managementSpocdesignation === 'null' ? "" : value.managementSpocdesignation,
+            managementSpocphoneNo: value.managementSpocphoneNo === 'null' ? "" : value.managementSpocphoneNo,
+            managementSpocemail: value.managementSpocemail === 'null' ? "" : value.managementSpocemail,
+            contactName: value.contactName  === 'null' ? "" : value.contactName,
+            designation: value.designation  === 'null' ? "" : value.designation,
+            phoneNo: value.phoneNo  === 'null' ? "" : value.phoneNo,
+            email: value.email  === 'null' ? "" : value.email,
             mastervendor_email: value.mastervendor_email,
           });
         });
@@ -667,6 +675,11 @@ export class Basic extends React.Component {
       });
     } else {
       this.edit = false;
+      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        this.setState({
+          editStatutory: res.data.Statutory,
+        });
+      })
     }
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
@@ -729,9 +742,9 @@ export class Basic extends React.Component {
       <>
         <div className="vendor-det">
           <Navbar1 />
-          <div class="container-fluid ribbonMain">
+          <div className="container-fluid ribbonMain">
             <div
-              class="ribbon basic-information-label left"
+              className="ribbon basic-information-label left"
               onClick={this.togglebutton}
             >
               {" "}
@@ -739,17 +752,17 @@ export class Basic extends React.Component {
               <label className="labelName">Basic information</label>
             </div>
             <div
-              class="ribbon basic-information-label right"
+              className="ribbon basic-information-label right"
               onClick={this.togglebuttonCommu}
             >
               <span className={commu ? "dotActive" : "dotInActive"}></span>
               <label className="labelName">communication Details</label>
             </div>
           </div>
-          <div class="container">
+          <div className="container">
             <div className="mx-auto mt-5">
               {open && (
-                <div class="container-fluid">
+                <div className="container-fluid">
                   <MDBTypography tag="h5" className="mb-0 info">
                     Basic information
                   </MDBTypography>
@@ -757,7 +770,7 @@ export class Basic extends React.Component {
                   <MDBRow>
                     <MDBCol md="12" className="mb-12 g">
                       <MDBCard className="mb-12">
-                        <div class="container-fluid">
+                        <div className="container-fluid">
                           <MDBRow>
                             <MDBCol md="8" className="mb-4">
                               <MDBCard className="mb-4 basic">
@@ -1017,7 +1030,7 @@ export class Basic extends React.Component {
                 </div>
               )}
               {commu && (
-                <div class="container-fluid">
+                <div className="container-fluid">
                   <MDBTypography tag="h5" className="mb-0 info">
                     Communication Details*
                   </MDBTypography>
@@ -1025,7 +1038,7 @@ export class Basic extends React.Component {
                   <MDBRow>
                     <MDBCol md="12" className="mb-12">
                       <MDBCard className="mb-12">
-                        <div class="container-fluid">
+                        <div className="container-fluid">
                           <form>
                             <form className={this.state.setStyle}>
                               <label className="fieldHeader">

@@ -8,6 +8,7 @@
 }
 
 .content {
+  text-align: center;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -15,12 +16,14 @@
 }
 
 .userTitle {
-  text-align: center !important;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .agreebtn {
-  position: relative;
-  left: 25%;
+  display: block;
+  margin: 0 auto;
 }
 
 .redirectButton.Yes {
@@ -61,4 +64,12 @@
   max-width: 100%;
   background-color: black;
   color: white;
+}
+
+.hitachi-logo-icon {
+  max-width: 40%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }

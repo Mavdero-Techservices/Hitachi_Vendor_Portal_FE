@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 const ComplianceDetails = () => {
+  const [redirectUrl, setredirectUrl] = useState();
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const ComplianceDetails = () => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
+
 
   const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
@@ -229,29 +231,27 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => {});
+    apiService.downloadPdf(user).then((response) => { });
   };
   function next(e) {
     // saveComplianceDetail(e);
-    if (params.userId) {
-      navigate(`/bank/${params.userId}`);
+    if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+      navigate("/bank");    
     } else {
-      navigate("/bank");
+      navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
     }
   }
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
+        setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
+          res.data.basicInfo[0].submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -277,9 +277,9 @@ const ComplianceDetails = () => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
+        setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
+          res.data.basicInfo[0].submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -300,8 +300,12 @@ const ComplianceDetails = () => {
             setEditCompliance(true);
           });
         }
+
       });
     } else {
+      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        setredirectUrl(res.data);
+      })
       setEditCompliance(false);
     }
     const user = {
@@ -310,9 +314,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => {});
-    apiService.createCocPdf(user).then((res) => {});
-    apiService.createNDAPdf(user).then((res) => {});
+    apiService.createRelatedDisclosurePdf(user).then((res) => { });
+    apiService.createCocPdf(user).then((res) => { });
+    apiService.createNDAPdf(user).then((res) => { });
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -357,9 +361,7 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const compdata = new FormData();
         compdata.append("RPD_Doc", fileRPD);
@@ -615,7 +617,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {editVlauefileNDA ? (
+                        { editVlauefileNDA? (
                           <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>
@@ -692,9 +694,7 @@ const ComplianceDetails = () => {
                 >
                   Cancel
                 </button>
-                {params.userId &&
-                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                  "Admin" ? (
+                {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
                   <>
                     <button
                       type="button"
@@ -706,15 +706,16 @@ const ComplianceDetails = () => {
                   </>
                 ) : (
                   <>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        saveComplianceDetail();
-                      }}
-                      className="btn bankbtn btn-md m-1"
-                    >
-                      Save
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          saveComplianceDetail();
+                        }}
+                        className="btn bankbtn btn-md m-1"
+                      >
+                        Save
+                      </button>
+                    
                   </>
                 )}
 

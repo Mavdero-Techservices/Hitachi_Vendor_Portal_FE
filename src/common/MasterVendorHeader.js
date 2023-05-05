@@ -51,7 +51,6 @@ function MasterVendorHeader() {
                             variant="h6"
                             noWrap
                             component="a"
-                            href="/"
                             sx={{
                                 mr: 2, my: 2,
                                 display: { xs: 'none', sm: 'flex' },

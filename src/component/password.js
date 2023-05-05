@@ -134,7 +134,7 @@ export default function Password(props) {
           </Row>
           <MDBCol>
             <div>
-              <label htmlFor="userName">userName*</label>
+              <label htmlFor="userName">Username*</label>
             </div>
             <div>
               <input

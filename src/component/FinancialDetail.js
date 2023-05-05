@@ -9,6 +9,7 @@ import apiService from "../services/api.service";
 import { useParams } from "react-router-dom";
 import { TroubleshootSharp } from "@mui/icons-material";
 const FinancialDetails = () => {
+  const [redirectUrl, setredirectUrl] = useState();
   const params = useParams();
   const navigate = useNavigate();
   const [style, setStyle] = useState("editable");
@@ -28,8 +29,8 @@ const FinancialDetails = () => {
     netWorth: "",
     currentAssets: "",
     directorDetails: "",
-    organisationType: "",
-    shareholderName: "",
+    organisationType:"",
+    shareholderName:"",
   });
   function onFileChangeFD(e) {
     if (e.target) {
@@ -165,10 +166,10 @@ const FinancialDetails = () => {
   }
   function next(e) {
     // saveFinancialDetail(e);
-    if (params.userId) {
-      navigate(`/ContactTeam/${params.userId}`);
+    if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+      navigate("/ContactTeam");    
     } else {
-      navigate("/ContactTeam");
+      navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
     }
   }
   const handleChange = (name) => (event) => {
@@ -241,17 +242,12 @@ const FinancialDetails = () => {
         });
       }
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const financedata = new FormData();
         financedata.append("financial_data", fileFD);
         financedata.append("financial_data2", fileFD2);
-        financedata.append(
-          "yearOfAuditedFinancial",
-          values.yearOfAuditedFinancial
-        );
+        financedata.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
         financedata.append("Revenue", values.Revenue);
         financedata.append("Profit", values.Profit);
         financedata.append("netWorth", values.netWorth);
@@ -269,7 +265,8 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {});
+            }).then((res) => {
+            });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -288,7 +285,8 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {});
+            }).then((res) => {
+            });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -339,19 +337,17 @@ const FinancialDetails = () => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
+        setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
           if (
-            res.data.basicInfo[0].submitStatus === "Submitted" &&
-            finalstatus !== "Approved"
+            res.data.basicInfo[0].submitStatus === "Submitted"
           ) {
             setStyle("notEditable");
           }
@@ -384,16 +380,17 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    } else if (newuser) {
+    }
+    else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
+        setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
           if (
-            res.data.basicInfo[0].submitStatus === "Submitted" &&
-            finalstatus !== "Approved"
+            res.data.basicInfo[0].submitStatus === "Submitted"
           ) {
             setStyle("notEditable");
           }
@@ -426,7 +423,11 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    } else {
+    }
+    else {
+      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        setredirectUrl(res.data);
+      })
       setEditfinancialDetail(false);
     }
   }, []);
@@ -511,7 +512,7 @@ const FinancialDetails = () => {
                   id="Distributors"
                   name="Organisationtype"
                   aria-label="Disabled select example"
-                  value={values.organisationType}
+                  value={values.organisationType} 
                   disabled={style === "notEditable" ? true : false}
                   onChange={handleChange("organisationType")}
                 >
@@ -669,15 +670,15 @@ const FinancialDetails = () => {
                   </button>
                 ) : (
                   <div className="finance-input">
-                    <label htmlFor="fileupload">upload files</label>
-                    <input
-                      type="file"
-                      id="fileupload"
-                      onChange={onFileChangeFD2}
-                      required
-                      disabled={style === "notEditable" ? true : false}
-                    />
-                  </div>
+                  <label htmlFor="fileupload">upload files</label>
+                  <input
+                    type="file"
+                    id="fileupload"
+                    onChange={onFileChangeFD2}
+                    required
+                    disabled={style === "notEditable" ? true : false}
+                  />
+                </div>
                 )}{" "}
               </div>
               <div className="col-sm-2 col-xs-12"></div>
@@ -690,9 +691,7 @@ const FinancialDetails = () => {
               >
                 Cancel
               </button>
-              {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                "Admin" ? (
+              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ?(
                 <>
                   <button
                     type="submit"
@@ -704,15 +703,16 @@ const FinancialDetails = () => {
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      saveFinancialDetail();
-                    }}
-                    className="btn financialbtn btn-md m-3"
-                  >
-                    Save
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveFinancialDetail();
+                      }}
+                      className="btn financialbtn btn-md m-3"
+                    >
+                      Save
+                    </button>
+                  
                 </>
               )}
 

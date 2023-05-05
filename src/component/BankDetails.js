@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
 const BankDetails = (props) => {
+  const [redirectUrl, setredirectUrl] = useState();
   const [EditBank, setEditBank] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
@@ -23,7 +24,7 @@ const BankDetails = (props) => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [style, setStyle] = useState("editable");
 
-  const [saveButton, setSaveButton] = useState(true);
+
 
   const onFileChange = (file) => {
     if (file.target) {
@@ -101,10 +102,10 @@ const BankDetails = (props) => {
     });
   }
   function next(e) {
-    if (params.userId) {
-      navigate(`/FinancialDetail/${params.userId}`);
+    if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+      navigate("/FinancialDetail");    
     } else {
-      navigate("/FinancialDetail");
+      navigate(`/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`);
     }
   }
 
@@ -124,7 +125,6 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
-        setSaveButton(true);
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -133,7 +133,7 @@ const BankDetails = (props) => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          });
+          })
           // .then((res) => {
           //   navigate(`/FinancialDetail/${params.userId}`);
           // });
@@ -146,9 +146,7 @@ const BankDetails = (props) => {
         }
       });
     } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
       if (newuser) {
         const bankdata = new FormData();
         bankdata.append("userId", newuser);
@@ -168,6 +166,7 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
+
             });
           } else {
             Swal.fire({
@@ -179,7 +178,6 @@ const BankDetails = (props) => {
         });
       } else {
         apiService.savebankdetail(data).then((response) => {
-          setSaveButton(true);
           if (response) {
             Swal.fire({
               title: "Data saved",
@@ -188,7 +186,7 @@ const BankDetails = (props) => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            });
+            })
             // .then((res) => {
             //   navigate(`/FinancialDetail`);
             // });
@@ -217,7 +215,6 @@ const BankDetails = (props) => {
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
-        setSaveButton(true);
         if (response) {
           Swal.fire({
             title: "Data updated",
@@ -238,18 +235,16 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
+        setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
+          res.data.basicInfo[0].submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -273,9 +268,9 @@ const BankDetails = (props) => {
         finalstatus = res.data.result.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
+        setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted" &&
-          finalstatus !== "Approved"
+          res.data.basicInfo[0].submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -293,7 +288,11 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
         });
       });
-    } else {
+    }
+    else {
+      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+        setredirectUrl(res.data);
+      })
       setEditBank(false);
     }
   }, []);
@@ -306,7 +305,7 @@ const BankDetails = (props) => {
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                <label className="banklabel">Name as per Bank A/c</label>
+                <label className="banklabel">Name as per Bank A/c*</label>
                 <input
                   type="text"
                   className="mb-4 inputbox"
@@ -430,9 +429,7 @@ const BankDetails = (props) => {
                 )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 ">
-                {fileBank !== "" &&
-                fileBank !== undefined &&
-                fileBank !== null ? (
+                {fileBank !== "" && fileBank !== undefined && fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}
@@ -467,9 +464,7 @@ const BankDetails = (props) => {
               >
                 Cancel
               </button>
-              {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
-                "Admin" ? (
+              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
                 <>
                   <button
                     type="submit"
@@ -481,26 +476,16 @@ const BankDetails = (props) => {
                 </>
               ) : (
                 <>
-                  {saveButton === true ? (
                     <button
                       type="button"
                       className="btn bankbtn btn-md m-1"
                       onClick={() => {
                         saveBankDetail();
-                        setSaveButton(false);
                       }}
                     >
                       Save
                     </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn bankbtn btn-md m-1"
-                      disabled
-                    >
-                      Save
-                    </button>
-                  )}
+                  
                 </>
               )}
 

@@ -171,7 +171,18 @@ export default function Signin(props) {
                   setValues({ ...values, error: "", redirectToReferrer: true });
                 });
               });
-          } else {
+          }
+          else if (data?.result?.verifiedUser === "Pending") {
+            Swal.fire({
+              title: "Please verify your email address.",
+              icon: "warning",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            })
+          }
+          else {
             setValues({ ...values, error: "Please verify your email" });
           }
         }
@@ -287,7 +298,7 @@ export default function Signin(props) {
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <div>
-                        <label htmlFor="userName">user name*</label>
+                        <label htmlFor="userName">Username*</label>
                       </div>
                       <div>
                         <input
@@ -337,8 +348,8 @@ export default function Signin(props) {
                   <MDBRow>
                     <MDBCol>
                       {!showPasswordTab &&
-                      showLoginTab &&
-                      !showforgetPassowrd ? (
+                        showLoginTab &&
+                        !showforgetPassowrd ? (
                         <div className="form-group form-remember">
                           <button
                             className="ForgetBtn"
@@ -373,7 +384,7 @@ export default function Signin(props) {
                   <MDBRow className="mb-4">
                     <MDBCol>
                       <div>
-                        <label htmlFor="userName">user name*</label>
+                        <label htmlFor="userName">Username*</label>
                       </div>
                       <div>
                         <input

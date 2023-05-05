@@ -162,6 +162,9 @@ function UserCreation() {
   }
   const UpdateMasterVendor = (e) => {
     e.preventDefault();
+
+    
+
     const user = {
       SubUserId: subUserId.SubUserId,
       Name: Name,
@@ -173,20 +176,36 @@ function UserCreation() {
       password: password,
       roles: roles,
     };
-    apiService.UpdateMasterVendorSubUserById(user).then((response) => {
-      apiService.getAllMasterVendorSubUser().then((res) => {
-        const modifiedUsers = res.data.result.map((user) => {
-          return {
-            ...user,
-            password: "*****",
-          };
+
+
+    apiService.UpdateMasterSubUserById(user).then((res) => {
+      if (res) {
+        Swal.fire({
+          title: "Data Updated",
+          icon: "success",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result) => {
+        if(result.isConfirmed) {
+          setEditModalShow(false)
+
+        }
         });
-        setgetAllUser(modifiedUsers);
-        setEditModalShow(false);
-      });
-    });
+      } else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    })
+      
+    
   };
   const saveMasterVendor = (e) => {
+ 
     console.log("Name--->", Name);
     if (Name?.length === 0) {
       setuserNameErr("Username is required");
@@ -228,6 +247,7 @@ function UserCreation() {
           setgetAllUser(modifiedUsers);
           setModalShow(false);
         });
+        
       });
     } else {
       Swal.fire({
@@ -287,19 +307,24 @@ function UserCreation() {
     Swal.fire({
       title: "Are You sure You want to delete?",
       icon: "warning",
-      confirmButtonText: "OK",
+      confirmButtonText: "Ok",
+      cancelButtonText:'Cancel',
+      showCancelButton: true,
     }).then((ClearData) => {
-      apiService.deleteMasterVendorSubUserById(id).then((res) => {
-        apiService.getAllMasterVendorSubUser().then((res) => {
-          const modifiedUsers = res.data.result.map((user) => {
-            return {
-              ...user,
-              password: "*****",
-            };
+      if(ClearData.isConfirmed){
+        apiService.deleteMasterVendorSubUserById(id).then((res) => {
+          apiService.getAllMasterVendorSubUser().then((res) => {
+            const modifiedUsers = res.data.result.map((user) => {
+              return {
+                ...user,
+                password: "*****",
+              };
+            });
+            setgetAllUser(modifiedUsers);
           });
-          setgetAllUser(modifiedUsers);
         });
-      });
+      }
+      
     });
   };
   // const toastInfo = () => toast.info('Clue Mediator - The way to write your code');
@@ -307,7 +332,16 @@ function UserCreation() {
   // const toastWarn = () => toast.warn('Clue Mediator - The way to write your code');
   // const toastError = () => toast.error('Clue Mediator - The way to write your code');
   // const toastDark = () => toast.dark('Clue Mediator - The way to write your code');
-
+  
+  const handleAddClick = (e) =>{
+    setName("")
+    setdesignation("")
+    setDepartment("")
+    setemailId("")
+    setmobileNo("")
+    setroles("")
+    setModalShow(true)
+  }
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: "#f3f4f7" }}>
@@ -325,7 +359,7 @@ function UserCreation() {
                   <Button
                     className="add_vendor"
                     variant="primary"
-                    onClick={() => setModalShow(true)}
+                    onClick={(e) => handleAddClick(e)}
                   >
                     <AddIcon sx={{ color: "black" }} /> Add
                   </Button>

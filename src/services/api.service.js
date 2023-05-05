@@ -147,9 +147,13 @@ class apiService {
   getMasterVendorSubUserById(data) {
     return http.post('/getMasterVendorSubUserById', data);
   }
-  UpdateMasterVendorSubUserById(data) {
-    return http.put('/UpdateMasterVendorSubUserById', data);
+
+  UpdateMasterSubUserById(data) {
+    return http.put('/UpdateMasterSubUserById', data);
   }
+
+
+
   deleteMasterVendorSubUserById(id) {
     return http.delete(`/deleteMasterVendorSubUserById/${id}`);
   }
@@ -267,6 +271,9 @@ class apiService {
 
   rejectAccStatementDetail(data, No) {
     return axios.post(`http://localhost:12707/rejectAccStatementDetail/${No}`, data);
+  }
+  saveMasterLogin(data) {
+    return http.post('/saveMasterLogin', data);
   }
 }
 export default new apiService();

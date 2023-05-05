@@ -91,3 +91,6 @@
 .option {
   border-radius: 50px;
 }
+input[readonly] {
+  background-color: #f6f6f6;
+}
