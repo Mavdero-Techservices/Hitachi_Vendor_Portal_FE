@@ -240,11 +240,8 @@ function AdminPage() {
                           justifyContent: "flex-start",
                         }}
                       >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/2.jpg"
-                        />
-                        <Typography>&nbsp;{item.userId}</Typography>
+                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}> {item.companyName?.charAt(0)}</Typography>}
+                        <Typography >&nbsp;{item.companyName}</Typography>
                       </IconButton>
                       <Typography
                         textAlign="center"

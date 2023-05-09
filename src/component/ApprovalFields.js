@@ -121,8 +121,10 @@ function ApprovalFields(props) {
         setGST_No(res.data.Statutory[0].GST_Registration_No);
         setGST_Doc(res.data.Statutory[0].GST_Doc);
         setfileDisclosure(res.data.Statutory[0].fileDisclosure);
-        setPAN_No(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].P_A_N_No : "N/A");
-        setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc:"" );
+        if (res.data.basicInfo[0]?.Country_Region_Code){
+          setPAN_No(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].P_A_N_No : "N/A");
+          setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc : "");
+        }
         setCIN_No(res.data.Statutory[0].CIN_No);
         setform_10f(res.data.Statutory[0].form_10f_Doc);
         setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);

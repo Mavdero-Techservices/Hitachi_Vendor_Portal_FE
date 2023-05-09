@@ -13,12 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Logo1 from '../img/logo1.png';
+import Swal from "sweetalert2";
+import auth from "../auth/auth-helper";
+import { useNavigate } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const pages = ['Home', 'Admin', 'Master'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Change password', 'Logout'];
 function AdminHeader(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -28,8 +33,26 @@ function AdminHeader(props) {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
+    if (e==='Logout'){
+      Swal.fire({
+        title: "are You sure?",
+        text: "You Want to Logout!",
+        icon: "warning",
+        dangerMode: true,
+        confirmButtonText: "Yes",
+        showCloseButton: true,
+        cancelButtonText: "No",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          auth.clearJWT(() => navigate("/login"));
+        }
+      });
+    }
   };
   const darkTheme = createTheme({
     palette: {
@@ -49,7 +72,7 @@ function AdminHeader(props) {
               variant="h6"
               noWrap
               component="a"
-              href="/"
+              // href="/"
               sx={{
                 mr: 2,
                 display: { xs: 'none', sm: 'flex' },
@@ -240,7 +263,8 @@ function AdminHeader(props) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <AccountCircleIcon />
+                  {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -257,10 +281,10 @@ function AdminHeader(props) {
                   horizontal: 'right',
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={(e) => {handleCloseUserMenu(e)}}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={(e) => { handleCloseUserMenu(setting)}}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}

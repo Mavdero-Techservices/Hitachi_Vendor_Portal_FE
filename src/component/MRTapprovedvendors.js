@@ -95,8 +95,8 @@ function MRTapprovedvendors() {
                                     id={"panel1bh-header"}
                                 >
                                     <IconButton sx={{ p: 0, width: '18%', justifyContent: 'flex-start' }} >
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                                        <Typography >&nbsp;{item.userId}</Typography>
+                                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4"> {item.companyName?.charAt(0)}</Typography>}
+                                        <Typography >&nbsp;{item.companyName}</Typography>
                                     </IconButton>
                                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
                                     <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.level3Date}</Typography>
