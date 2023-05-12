@@ -275,5 +275,9 @@ class apiService {
   saveMasterLogin(data) {
     return http.post('/saveMasterLogin', data);
   }
+  getErpPurchaseOrdersLists()
+  {
+    return http.get('/getErpPurchaseOrdersLists');
+  }
 }
 export default new apiService();

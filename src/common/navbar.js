@@ -4,12 +4,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
 import auth from "../auth/auth-helper";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
 import { Navigate } from "react-router-dom";
 function App() {
+  const response = JSON.parse(window.sessionStorage.getItem("newregUser"));
+  const hasValue = response?.newregUser !== undefined && response?.newregUser !== null;
+  const location = useLocation();
   const [Edit, setEdit] = useState(true);
   const [editUser, seteditUser] = useState(); 
   const [editsubUser, seteditsubUser] = useState();
@@ -128,6 +131,10 @@ function App() {
       navigate("/FinancialDetail", { state: { editUser } });
     }
   };
+  const redirectToMaster =(e)=>{
+    navigate("/userCreation");
+
+  }
   const contactDetails = (e) => {
     if (
       editUser?.contactDetail?.length > 0 &&
@@ -148,6 +155,8 @@ function App() {
     }
   };
   useEffect(() => {
+     const queryParams = new URLSearchParams(location.search);
+     const isMaster = queryParams.get("master") === "true";
     (async () => {
    await apiService
       .getAllCollection(
@@ -174,7 +183,7 @@ function App() {
       });
     })();
     
-  }, []);
+  }, [location.search]);
   return (
     <>
       <Navbar collapseOnSelect expand="lg">
@@ -197,6 +206,9 @@ function App() {
               <Nav.Link onClick={handleClickOpen} id="b3">
                 logOut
               </Nav.Link>
+              {hasValue && (
+                <Nav.Link onClick={redirectToMaster}>Back To Master</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

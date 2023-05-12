@@ -35,14 +35,38 @@ export const MasterVendorSidemenu = (props) => {
   const [vendorDetails, setvendorDetails] = useState([]);
   const [vendorComDetails, setvendorComDetails] = useState([]);
   const [UserId, setUserId] = useState("");
-  const [City, setCity] = useState();
-  const [Post_Code, setPincode] = useState();
   const [state, setState] = useState();
   const [adminEmail, setAdminEmail] = useState();
   const [getAllvendorcode,setgetAllvendorcode] = useState([]);
   const [VendorId, setVendorId] = useState("");
+  const [City, setCity] = useState('');
+const [Post_Code, setPostCode] = useState('');
+const [pincodeOptions, setPincodeOptions] = useState([]);
 
   useEffect(() => {
+    if (City) {
+      const filteredOptions = getAllvendorcode
+        ?.filter((item) => {
+          return item.City === City;
+        })
+        ?.map((item) => {
+          return {
+            id: item.id,
+            value: item.Post_Code,
+          };
+        });
+  
+      setPincodeOptions(filteredOptions);
+    } else {
+      const allOptions = getAllvendorcode?.map((item) => {
+        return {
+          id: item.id,
+          value: item.Post_Code,
+        };
+      });
+  
+      setPincodeOptions(allOptions);
+    }
     apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
       if (vendorCode.message === "No record found for the given Ticket_ID") {
       setgetAllvendorcode("");
@@ -64,33 +88,42 @@ export const MasterVendorSidemenu = (props) => {
     apiService.getAllUserDetail().then((res) => {
       setvendorComDetails(res.data.CommunicationDetails[0]);
     });
-  }, []);
+  }, [City]);
 
-  const handlePincode = (e) => {
-    if (City) {
-      setPincode(e);
-      const id = vendorDetails?.filter((item) => {
-        return item.Post_Code === e && item.City === City;
-      });
-
-      setUserId(id[0].userId);
-      setCity(id[0].City);
-    } else {
-      setPincode(e);
-
-      const id = vendorDetails?.filter((item) => {
-        return item.Post_Code === e;
-      });
-
-      setUserId(id[0].userId);
-      setCity(id[0].City);
-    }
-  };
-  const handleUserId = (e) => {
-    setVendorId(e);
-  };
   const handleCity = (e) => {
     setCity(e);
+    console.log('City', e);
+    const postcodes = getAllvendorcode
+    ?.filter((item) => {
+      return item.City === e;
+    })
+    .map((item) => item.Post_Code);
+    console.log("id::",postcodes);
+    setPostCode(postcodes);
+    const vendorcodes = getAllvendorcode
+    ?.filter((item) => {
+      return item.City === e;
+    })
+    .map((item) => item.No);
+    console.log("id::",vendorcodes);
+    setVendorId(vendorcodes);
+  };
+  
+  const handlePincode = (e) => {
+    setPostCode(e);
+    console.log("pincode::",e);
+    const vendorcodes = getAllvendorcode
+    ?.filter((item) => {
+      return item.Post_Code === e;
+    })
+    .map((item) => item.No);
+    console.log("id::",vendorcodes);
+    setVendorId(vendorcodes);
+
+  };
+  
+  const handleUserId = (e) => {
+    setVendorId(e);
   };
 
   const openModelShow = () => {
@@ -317,7 +350,7 @@ export const MasterVendorSidemenu = (props) => {
                 >
                   <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                      Select City,Pincode and Vendor Code
+                      Select City,Pincode and Vendor Code1
                     </Modal.Title>
                   </Modal.Header>
                   <Container sx={{ mt: 5 }}>
@@ -340,13 +373,23 @@ export const MasterVendorSidemenu = (props) => {
                               }
                             >
                               <option>Select City</option>
-                              {vendorDetails?.map((item) => {
+                              {getAllvendorcode?.map((item) => {
+                                    return (
+                                      <option
+                                        key={item.No}
+                                        value={item.City}
+                                      >
+                                        {item.City}
+                                      </option>
+                                    );
+                                  })}
+                              {/* {vendorDetails?.map((item) => {
                                 return (
                                   <option key={item.id} value={item.City}>
                                     {item.City}
                                   </option>
                                 );
-                              })}
+                              })} */}
                             </Select>
                           </FormControl>
                         </Box>
@@ -371,7 +414,7 @@ export const MasterVendorSidemenu = (props) => {
                             >
                               <option>Select Pincode</option>
                               {City
-                                ? vendorDetails
+                                ? getAllvendorcode
                                     ?.filter((item) => {
                                       return item.City === City;
                                     })
@@ -385,7 +428,7 @@ export const MasterVendorSidemenu = (props) => {
                                         </option>
                                       );
                                     })
-                                : vendorDetails?.map((item) => {
+                                : getAllvendorcode ?.map((item) => {
                                     return (
                                       <option
                                         key={item.id}
