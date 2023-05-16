@@ -1,654 +1,352 @@
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ThemeProvider } from '@mui/material';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import { createTheme } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
-import * as React from 'react';
-import VendorPortalHeader from '../common/VendorPortalHeader';
-import VendorPortSidemenu from '../common/VendorPortSidemenu';
-import Button from '@mui/material/Button';
-import '../css/ApprovalFields.css';
-function createData(
-  id,
-  paymentterms,
-  poDate,
-  address,
-  custom,
-  billto,
-  shipto,
-  totalpo,
-  billedamt,
-  unbilledamt,
-  mfgcode,
-  quoteno,
-  purspoc,
-  other
-) {
-  return {
-    id,
-    paymentterms,
-    poDate,
-    address,
-    custom,
-    billto,
-    shipto,
-    totalpo,
-    billedamt,
-    unbilledamt,
-    mfgcode,
-    quoteno,
-    purspoc,
-    other,
-    history: [
-      {
-        ItemCodewithDescription: 'MR44-HW Meraki ',
-        qty: 11,
-        amount: 5000,
-      },
-      {
-        ItemCodewithDescription: 'Meraki MR Enterprise License',
-        qty: 11,
-        amount: 5000,
-      },
-      {
-        ItemCodewithDescription: 'MS225-24P-HW Meraki MS225-24P ',
-        qty: 11,
-        amount: 5000,
-      },
-    ],
-  };
-}
+import styled from "@emotion/styled";
+import { createTheme } from "@material-ui/core/styles";
+import { Button, ThemeProvider } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+import MUIDataTable from "mui-datatables";
+import React, { useEffect, useState } from "react";
+import VendorPortalHeader from "../common/VendorPortalHeader";
+import VendorPortSidemenu from "../common/VendorPortSidemenu";
+import "../css/ApprovalFields.css";
+import apiService from "../services/api.service";
 
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell
-          component="th"
-          scope="row"
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.id}
-        </TableCell>
-
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.paymentterms}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.poDate}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.address}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.custom}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.billto}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.shipto}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.totalpo}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.billedamt}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.unbilledamt}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.mfgcode}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.quoteno}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.purspoc}
-        </TableCell>
-        <TableCell
-          sx={{
-            width: 200,
-            textAlign: 'center',
-          }}
-        >
-          {row.other}
-        </TableCell>
-        <TextField type="date" sx={{ width: '8.5rem' }}></TextField>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box>
-              <Typography
-                variant="h6"
-                gutterBottom
-                component="div"
-                sx={{ width: 200, fontWeight: 'bold', color: '#B1000E' }}
-              >
-                Details:
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      Item Code with Description
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      Quantity
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      Amount
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      EDD
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      Start Period
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        width: 200,
-                        fontWeight: 'bold',
-                        color: '#B1000E',
-                        textAlign: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      End Period
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.ItemCodewithDescription}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {historyRow.ItemCodewithDescription}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {historyRow.qty}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {historyRow.amount}
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        <Box>
-                          <TextField
-                            id="outlined-basic"
-                            type="date"
-                            variant="outlined"
-                          />
-                        </Box>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        <Box>
-                          <TextField
-                            id="outlined-basic"
-                            type="date"
-                            variant="outlined"
-                          />
-                        </Box>
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          textAlign: 'center',
-                        }}
-                      >
-                        <Box>
-                          <TextField
-                            id="outlined-basic"
-                            type="date"
-                            variant="outlined"
-                          />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-}
-
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-const rows = [
-  createData(
-    22114455,
-    'Cheque',
-    '12/01/2023',
-    'chennai',
-    'ABC',
-    'xyz',
-    'Mumbai',
-    '20000',
-    '15000',
-    '5000',
-    'efgt45',
-    '67895',
-    'Don quixote',
-    'others'
-  ),
-  createData(
-    22114455,
-    'Cheque',
-    '12/01/2023',
-    'chennai',
-    'ABC',
-    'xyz',
-    'Mumbai',
-    '20000',
-    '15000',
-    '5000',
-    'efgt45',
-    '67895',
-    'Don quixote',
-    'others'
-  ),
-];
 const theme = createTheme({
   Link: {
-    textTransform: 'none',
+    textTransform: "none",
   },
 });
 
-export default function EstimateDeliveryDate() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box style={{ backgroundColor: '#f3f4f7' }}>
-        <CssBaseline />
-        <VendorPortalHeader />
-        <Box sx={{ display: 'flex' }}>
-          <VendorPortSidemenu />
-          <Box sx={{ mt: 2, width: '100%', overflowX: 'auto' }}>
-            {' '}
-            <Box>
-              <TableContainer
-                stickyHeader
-                component={Paper}
-                sx={{ overflowX: 'auto', width: '100%' }}
-              >
-                <Table aria-label="collapsible table">
-                  <TableHead>
+const EstimateDeliveryDate = () => {
+ 
+
+  const columns = [
+    "PO_Number",
+    "PO_Date",
+    "Payment_Terms",
+    "Vendor_Address",
+    "Customer_Name",
+    "Bill_To",
+    "Ship_To",
+    "Total_PO_Amount",
+    "Billed_Amount",
+    "Unbilled_Amount",
+    "Manufacturing_Code",
+    "Quote_No",
+    "Purchase_Spoc",
+  ];
+
+  useEffect(() => {
+
+  }, []);
+  
+
+  const data = [
+    {
+      PO_Number: "BGL202223PO0007",
+      PO_Date: "2022-05-09T00:00:00",
+      Payment_Terms: "30-D",
+      Vendor_Address: "Plot No.93, 4th, &, 10th St MCN Nagar",
+      Customer_Name: "Aravind",
+      Bill_To: "VOTH-4745",
+      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
+      Total_PO_Amount: "61880.01",
+      Billed_Amount: "0",
+      Unbilled_Amount: "0",
+      Manufacturing_Code: "ATH22",
+      Quote_No: "Mail",
+      Purchase_Spoc: "DELMARA",
+    },
+    {
+      PO_Number: "BGL202223POAMC0002",
+      PO_Date: "2022-05-09T00:00:00",
+      Payment_Terms: "PT-023",
+      Vendor_Address: "Laxmipura Main Road, Abbigere",
+      Customer_Name: "Sekar",
+      Bill_To: "VLOC-3679",
+      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
+      Total_PO_Amount: "15783210.82",
+      Billed_Amount: "0",
+      Unbilled_Amount: "0",
+      Manufacturing_Code: "ATH22",
+      Quote_No: "Mail",
+      Purchase_Spoc: "DELMARA",
+    },
+    {
+      PO_Number: "DEL202223PO4604",
+      PO_Date: "2022-05-09T00:00:00",
+      Payment_Terms: "100%A",
+      Vendor_Address: "No.6, NAL Wind Tunnel Road, Murugeshpalya",
+      Customer_Name: "Moorthy",
+      Bill_To: "VLOC-3679",
+      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
+      Total_PO_Amount: "15783210.82",
+      Billed_Amount: "0",
+      Unbilled_Amount: "0",
+      Manufacturing_Code: "ATH22",
+      Quote_No: "Mail",
+      Purchase_Spoc: "DELMARA",
+    },
+  ];
+
+  const rows = [
+    {
+      Document_Type: "Order",
+      Document_No: "BGL202223PO0007",
+      Line_No: "10000",
+      Type: "Item",
+      Description: "INDIAN OIL  CORPORATION LTD- BANGALORE-IN428807",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "BGL202223PO0007",
+      Line_No: "20000",
+      Type: "G/L Account",
+      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "BGL202223PO0007",
+      Line_No: "300000",
+      Type: "G/L Account",
+      Description: "INTERNET PROBLEM  ISSUE",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "BGL202223POAMC0002",
+      Line_No: "40000",
+      Type: "Item",
+      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "BGL202223PO0007",
+      Line_No: "50000",
+      Type: "G/L Account",
+      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "DEL202223PO4604",
+      Line_No: "60000",
+      Type: "G/L Account",
+      Description: "AMC/Support/Installation/service charges",
+    },
+    {
+      Document_Type: "Order",
+      Document_No: "DEL202223PO4604",
+      Line_No: "60000",
+      Type: "Item",
+      Description: "Spare/service charges",
+    },
+  ];
+
+  let purchList = [];
+  let purchLine = [];
+  // setpurchList([])
+  const onRowSelectionChange = (ev, ex, ez) => {
+    purchList = [];
+    purchLine = [];
+    // setpurchLine([])
+      for (let i = 0; i < ex.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if (j === ex[i].index) {
+            // setpurchList([])
+            purchList.push(data[ex[i].index]);
+            for (let k = 0; k < rows.length; k++) {
+              if (data[j].PO_Number === rows[k].Document_No) {
+                purchLine.push(rows[k]);
+              }
+            }
+          }
+        }
+      } 
+  };
+
+  
+  
+
+  const options = {
+    filter: true,
+    filterType: "dropdown",
+    responsive: "standard",
+    rowsPerPage: 5,
+    rowsPerPageOptions: [1, 3, 5, 6],
+    jumpToPage: true,
+    textLabels: {
+      pagination: {
+        next: "Next >",
+        previous: "< Previous",
+        rowsPerPage: "Total items Per Page",
+        displayRows: "OF",
+      },
+    },
+    selectableRowsHeader: false,
+    expandableRowsHeader: false,
+    selectableRows: "multiple",
+    rowHove: false,
+    sort: true,
+    search: true,
+    onRowSelectionChange,
+
+  
+
+    expandableRows: true,
+    renderExpandableRow: (rowData, rowMeta) => {
+      return (
+        <React.Fragment>
+          <tr>
+            <td colSpan={6}>
+              <TableContainer component={Paper}>
+                <Table style={{ minWidth: "1000" }} aria-label="simple table">
+                  <TableHead sx={{ backgroundColor: "#0001" }}>
                     <TableRow>
-                      <TableCell />
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        PO Number
-                      </TableCell>
-                      <TableCell
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Payment Terms
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        PO Date
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Vendor Address
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Customer Name
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Bill To
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Ship To
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Total PoAmt
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Billed Amt
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Unbilled Amt
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Manufacturing code
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Quote No
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Purchase spoc
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        Others
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          width: 200,
-                          fontWeight: 'bold',
-                          color: '#B1000E',
-                          textAlign: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        EDD
-                      </TableCell>
+                      <TableCell align="center">Document_Type</TableCell>
+                      <TableCell align="center">Document_No</TableCell>
+                      <TableCell align="center">Line_No</TableCell>
+                      <TableCell align="center">Type</TableCell>
+                      <TableCell align="center">Description</TableCell>
+                      <TableCell align="center">EDD</TableCell>
+                      <TableCell align="center">Start Period</TableCell>
+                      <TableCell align="center">End Period</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
-                      <Row key={row.name} row={row} />
-                    ))}
+                    {rows
+                      .filter((row) => {
+                        return row.Document_No === rowData[0];
+                      })
+                      .map((item) => (
+                        <TableRow key={item.Line_No}>
+                          <TableCell align="center">
+                            {item.Document_Type}
+                          </TableCell>
+                          <TableCell align="center">
+                            {item.Document_No}
+                          </TableCell>
+                          <TableCell align="center">{item.Line_No}</TableCell>
+                          <TableCell align="center">{item.Type}</TableCell>
+                          <TableCell align="center">
+                            {item.Description}
+                          </TableCell>
+                          <TableCell>
+                            {item.Type === "Item" ? (
+                              <Box>
+                                <TextField
+                                  id="outlined-basic"
+                                  type="date"
+                                  variant="outlined"
+                                  sx={{
+                                    border: "1px solid black",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </Box>
+                            ) : (
+                              <></>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {item.Type === "G/L Account" ? (
+                              <Box>
+                                <TextField
+                                  id="outlined-basic"
+                                  type="date"
+                                  variant="outlined"
+                                  sx={{
+                                    border: "1px solid black",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </Box>
+                            ) : (
+                              <></>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {item.Type === "G/L Account" ? (
+                              <Box>
+                                <TextField
+                                  id="outlined-basic"
+                                  type="date"
+                                  variant="outlined"
+                                  sx={{
+                                    border: "1px solid black",
+                                    borderRadius: "4px",
+                                  }}
+                                />
+                              </Box>
+                            ) : (
+                              <></>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Box>
-            <Box sx={{ display: 'flex' }}>
-              <Button variant="contained" sx={{ ml: 110, mt: 5 }} size="large">
-                Save
-              </Button>
-            </Box>
-          </Box>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    },
+  };
+
+  const DataTableContainer = styled("div")(() => ({
+    width: "1000px",
+    height: "100px",
+    margin: "10px",
+    label: {
+      "& .tss-1akey0g-MUIDataTableHeadCell-data": {
+        fontSize: "14px",
+        color: "red",
+      },
+      ".css-102h9k5-MuiTableCell-root": { width: "100px" },
+    },
+  }));
+
+  const submitPOdetails = () => {
+    console.log("1111111111", purchList, purchLine);
+    apiService.postErpPurchaseOrderList(purchList);
+    apiService.postErpPurchaseOrderLine(purchLine);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Box style={{ backgroundColor: "#f3f4f7" }}>
+        <CssBaseline />
+        <VendorPortalHeader />
+        <Box sx={{ display: "flex" }}>
+          <VendorPortSidemenu />
+          {/* <MuiThemeProvider theme={getMuiTheme}> */}
+          <DataTableContainer>
+            <MUIDataTable
+              title={"EDD list"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+
+            <Button
+              variant="contained"
+              sx={{ float: "right", top: "5px" }}
+              onClick={submitPOdetails}
+            >
+              Submit
+            </Button>
+          </DataTableContainer>
+          {/* </MuiThemeProvider> */}
         </Box>
       </Box>
     </ThemeProvider>
   );
-}
+};
+
+export default EstimateDeliveryDate;

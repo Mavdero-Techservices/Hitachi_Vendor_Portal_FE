@@ -232,6 +232,12 @@ class apiService {
   postErpResourcePortalVendorlist(data) {
     return http.post('/postErpResourcePortalVendorlist', data);
   }
+  postErpPurchaseOrderList(data) {
+    return http.post('/postErpPurchaseOrderList', data);
+  }
+  postErpPurchaseOrderLine(data) {
+    return http.post('/postErpPurchaseOrderLine', data);
+  }
   getErpResourcePortalVendorlist() {
     return http.get("/getErpResourcePortalVendorlist");
   }

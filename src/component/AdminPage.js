@@ -27,9 +27,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Button from "@mui/material/Button";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+
 function getModalStyle() {
   const top = 50;
   const left = 75;
@@ -59,12 +57,10 @@ const useStyles = makeStyles((theme) => ({
 function AdminPage() {
   const [expanded, setExpanded] = useState(false);
   const [vendors, setvendors] = useState([]);
-
-  console.log("vendors--->", vendors);
-
   const [filter, setFilter] = useState([]);
+  const [submitDate, setsubmitDate] = useState();
+  const [approveList, setapproveList] = useState([]);
 
-  console.log("filter--->", filter);
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
@@ -93,6 +89,7 @@ function AdminPage() {
   const getApprovalList = async () => {
     let applist = [];
     apiService.getApprovalList().then((res) => {
+      setapproveList(res.data.result)
       applist = res.data.result;
     });
 
@@ -136,24 +133,37 @@ function AdminPage() {
     }
   };
 
-  const [submitDate, setsubmitDate] = useState();
+  
 
-  // console.log("submitDate--->", submitDate);
 
   const filterHandler = (e) => {
+    
     setOpen(false);
-    console.log("submitDate--->", submitDate);
     let newFilteredSuggestions;
+    let newFilteredSuggestions1;
 
     if (submitDate) {
       newFilteredSuggestions = filter?.filter(
         (suggestion) =>
-          suggestion.submitDate == submitDate &&
-          suggestion.submitStatus == "Submitted"
+          suggestion.submitDate === submitDate &&
+          suggestion.submitStatus === "Submitted" 
       );
 
-      console.log("newFilteredSuggestions--------->", newFilteredSuggestions);
-      setvendors(newFilteredSuggestions);
+      if(newFilteredSuggestions) {
+        console.log("newFilteredSuggestions---------->", newFilteredSuggestions);
+      }
+
+
+      newFilteredSuggestions1 = newFilteredSuggestions?.filter(
+        (suggestion) =>
+        !approveList?.find((item1) => item1.userId === suggestion.userId)    
+      );
+
+      if(newFilteredSuggestions1) {
+        console.log("newFilteredSuggestions1---------->", newFilteredSuggestions1);
+      }
+      
+      setvendors(newFilteredSuggestions1);
     } else {
     }
   };
@@ -305,7 +315,7 @@ function AdminPage() {
             <HighlightOffIcon
               sx={{ float: "right", marginTop: "-31px", fontSize: "20px" }}
               onClick={() => {
-                setOpen(false);;
+                setOpen(false);
               }}
             />
           </Box>
