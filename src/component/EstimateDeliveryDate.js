@@ -25,28 +25,120 @@ const theme = createTheme({
 });
 
 const EstimateDeliveryDate = () => {
- 
-
   const columns = [
-    "PO_Number",
-    "PO_Date",
-    "Payment_Terms",
-    "Vendor_Address",
-    "Customer_Name",
-    "Bill_To",
-    "Ship_To",
-    "Total_PO_Amount",
-    "Billed_Amount",
-    "Unbilled_Amount",
-    "Manufacturing_Code",
-    "Quote_No",
-    "Purchase_Spoc",
+    {
+      name: "PO_Number",
+      label: "PO Number",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Payment_Terms",
+      label: "Payment Terms",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Vendor_Address",
+      label: "Vendor Address",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Customer_Name",
+      label: "Customer Name",
+      options: {
+        setCellProps: () => ({
+        }),
+       
+      },
+    },
+    {
+      name: "Bill_To",
+      label: "Bill To",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Ship_To",
+      label: "Ship To",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Total_PO_Amount",
+      label: "Total PO Amount",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Billed_Amount",
+      label: "Billed Amount",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Unbilled_Amount",
+      label: "Unbilled Amount",
+      options: {
+        setCellProps: () => ({
+        }),
+       
+      },
+    },
+    {
+      name: "Manufacturing_Code",
+      label: "Manufacturing Code",
+      options: {
+        setCellProps: () => ({
+        }),
+        
+      },
+    },
+    {
+      name: "Quote_No",
+      label: "Quote No",
+      options: {
+        setCellProps: () => ({
+        }),
+       
+      },
+    },
+    {
+      name: "Purchase_Spoc",
+      label: "Purchase Spoc",
+      options: {
+        setCellProps: () => ({
+          
+        }),
+        
+      },
+    },
   ];
 
-  useEffect(() => {
 
-  }, []);
-  
+  useEffect(() => {}, []);
 
   const data = [
     {
@@ -94,6 +186,7 @@ const EstimateDeliveryDate = () => {
       Quote_No: "Mail",
       Purchase_Spoc: "DELMARA",
     },
+    
   ];
 
   const rows = [
@@ -103,6 +196,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "10000",
       Type: "Item",
       Description: "INDIAN OIL  CORPORATION LTD- BANGALORE-IN428807",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -110,6 +206,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "20000",
       Type: "G/L Account",
       Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -117,6 +216,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "300000",
       Type: "G/L Account",
       Description: "INTERNET PROBLEM  ISSUE",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -124,6 +226,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "40000",
       Type: "Item",
       Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -131,6 +236,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "50000",
       Type: "G/L Account",
       Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -138,6 +246,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "60000",
       Type: "G/L Account",
       Description: "AMC/Support/Installation/service charges",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
     {
       Document_Type: "Order",
@@ -145,6 +256,9 @@ const EstimateDeliveryDate = () => {
       Line_No: "60000",
       Type: "Item",
       Description: "Spare/service charges",
+      Edd_Date: "",
+      Start_Date: "",
+      End_Date: "",
     },
   ];
 
@@ -155,26 +269,34 @@ const EstimateDeliveryDate = () => {
     purchList = [];
     purchLine = [];
     // setpurchLine([])
-      for (let i = 0; i < ex.length; i++) {
-        for (let j = 0; j < data.length; j++) {
-          if (j === ex[i].index) {
-            // setpurchList([])
-            purchList.push(data[ex[i].index]);
-            for (let k = 0; k < rows.length; k++) {
-              if (data[j].PO_Number === rows[k].Document_No) {
-                purchLine.push(rows[k]);
-              }
+    for (let i = 0; i < ex.length; i++) {
+      for (let j = 0; j < data.length; j++) {
+        if (j === ex[i].index) {
+          // setpurchList([])
+          purchList.push(data[ex[i].index]);
+          for (let k = 0; k < rows.length; k++) {
+            if (data[j].PO_Number === rows[k].Document_No) {
+              purchLine.push(rows[k]);
             }
           }
         }
-      } 
+      }
+    }
   };
 
-  
-  
+  const handleEddDate = (e, item) => {
+    item.Edd_Date = e;
+  }
+
+  const handleStartDate = (e, item) => {
+    item.Start_Date = e;
+  }
+
+  const handleEndDate = (e, item) => {
+    item.End_Date = e;
+  }
 
   const options = {
-    filter: true,
     filterType: "dropdown",
     responsive: "standard",
     rowsPerPage: 5,
@@ -188,15 +310,14 @@ const EstimateDeliveryDate = () => {
         displayRows: "OF",
       },
     },
-    selectableRowsHeader: false,
+    filter: false,
+    download: false,
+    print: false,
+    selectableRowsHeader: true,
     expandableRowsHeader: false,
     selectableRows: "multiple",
-    rowHove: false,
-    sort: true,
-    search: true,
-    onRowSelectionChange,
 
-  
+    onRowSelectionChange,
 
     expandableRows: true,
     renderExpandableRow: (rowData, rowMeta) => {
@@ -243,6 +364,7 @@ const EstimateDeliveryDate = () => {
                                   id="outlined-basic"
                                   type="date"
                                   variant="outlined"
+                                  onChange={(e) => handleEddDate(e.target.value, item)}
                                   sx={{
                                     border: "1px solid black",
                                     borderRadius: "4px",
@@ -260,6 +382,7 @@ const EstimateDeliveryDate = () => {
                                   id="outlined-basic"
                                   type="date"
                                   variant="outlined"
+                                  onChange={(e) => handleStartDate(e.target.value, item)}
                                   sx={{
                                     border: "1px solid black",
                                     borderRadius: "4px",
@@ -277,6 +400,7 @@ const EstimateDeliveryDate = () => {
                                   id="outlined-basic"
                                   type="date"
                                   variant="outlined"
+                                  onChange={(e) => handleEndDate(e.target.value, item)}
                                   sx={{
                                     border: "1px solid black",
                                     borderRadius: "4px",
@@ -300,16 +424,7 @@ const EstimateDeliveryDate = () => {
   };
 
   const DataTableContainer = styled("div")(() => ({
-    width: "1000px",
-    height: "100px",
     margin: "10px",
-    label: {
-      "& .tss-1akey0g-MUIDataTableHeadCell-data": {
-        fontSize: "14px",
-        color: "red",
-      },
-      ".css-102h9k5-MuiTableCell-root": { width: "100px" },
-    },
   }));
 
   const submitPOdetails = () => {
