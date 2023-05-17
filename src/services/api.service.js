@@ -285,5 +285,13 @@ class apiService {
   {
     return http.get('/getErpPurchaseOrdersLists');
   }
+
+  saveInvoiceInfo(data) {
+    return axios.post('http://localhost:12707/saveInvoiceInfo', data);
+  }
+
+  getInvoiceinfo() {
+    return http.get('/getInvoiceinfo');
+  }
 }
 export default new apiService();

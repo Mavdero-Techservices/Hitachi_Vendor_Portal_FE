@@ -1,138 +1,295 @@
-import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
-import { MDBRow } from "mdb-react-ui-kit";
-import apiService from "../services/api.service";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "../css/ApprovalFields.css";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-export default function InvoicePortalTable(props) {
-  const handleApprove = (event) => {
-    Swal.fire({
-      heightAuto: true,
+import apiService from "../services/api.service";
+import { TextField } from "@material-ui/core";
 
-      html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
-      <div class="approvestyle">
-      <form>
-      <label style="margin-left:0.5rem;" >Email:</label>
-      <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
-      <option value="" hidden>Select EmailId</option>
-        <option value="hitachi">hitachi@gmail.com</option>
-        <option value="hitachy">hitachi@yahoo.com</option>
-      </select><br>
-      <label >User Name:</label>
-      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
-      <option value="" hidden>Select User Name</option>
-        <option value="Hello" >Hello</option>
-        <option value="Hello1">Hello1</option>
-      </select><br>
-      <label >Location:</label>
-      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
-      <option value="" hidden>Select Location</option>
-        <option value="chennai" >Chennai</option>
-        <option value="trichy" >trichy</option>
-      </select>
-      </form>
-    </div>
-    </div> `,
-      confirmButtonText: "Approve",
-      confirmButtonColor: "#B1000E",
-      showCancelButton: true,
-      focusConfirm: false,
-      customClass: "swal-wide",
-      preConfirm: () => {
-        const email = Swal.getPopup().querySelector("#email").value;
-        const username = Swal.getPopup().querySelector("#username").value;
-        const location = Swal.getPopup().querySelector("#location").value;
-        if (!email && !username && !location) {
-          Swal.showValidationMessage(
-            `Please choose EmailId,User Name and Location`
-          );
-        } else if (!location && !username) {
-          Swal.showValidationMessage(`Please choose  User Name and Location.`);
-        } else if (!location && !email) {
-          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
-        } else if (!username && !email) {
-          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
-        } else if (!email) {
-          Swal.showValidationMessage(`Please choose EmailId.`);
-        } else if (!username) {
-          Swal.showValidationMessage(`Please choose User Name.`);
-        } else if (!location) {
-          Swal.showValidationMessage(`Please choose Location.`);
-        } else {
-          Swal.fire("Approved Successfully!", "", "success");
-        }
-      },
+export default function InvoicePortalTable(props) {
+  const [invoiceInfo, setinvoiceInfo] = useState("");
+
+  const [poinvoiceInfo, setPoinvoiceInfo] = useState();
+
+  useEffect(() => {
+    apiService.getInvoiceinfo().then((response) => {
+      console.log("response", response);
+      setPoinvoiceInfo(response.data.result);
     });
+  }, []);
+
+  const invoiceUpload = (event, file, row) => {
+    row.invoiceFile = event.target.files[0];
   };
-  const handleReject = (event) => {
-    Swal.fire({
-      heightAuto: true,
-      // title: 'Review vendor details',
-      html: `<div class="rejectstyle">
-      <textarea rows="50" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
-      <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
- </div> `,
-      confirmButtonText: "Reject",
-      confirmButtonColor: "#B1000E",
-      showCancelButton: true,
-      focusConfirm: false,
-      customClass: "swal-wide",
-      preConfirm: () => {
-        const comment = Swal.getPopup().querySelector("#comment").value;
-        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-        if (!comment && !rejectdoc) {
-          Swal.showValidationMessage(`Please enter comments and Upload file`);
-        } else if (!comment) {
-          Swal.showValidationMessage(`Please give Comments`);
-        } else if (!rejectdoc) {
-          Swal.showValidationMessage(`Please Upload File`);
-        } else {
-          Swal.fire("Rejected Successfully!", "", "success");
-        }
-      },
-    });
+
+  const document1Upload = (event, file, row) => {
+    row.document1 = event.target.files[0];
   };
+
+  const document2Upload = (event, file, row) => {
+    row.document2 = event.target.files[0];
+  };
+
+  const document3Upload = (event, file, row) => {
+    row.document3 = event.target.files[0];
+  };
+
+  const document4Upload = (event, file, row) => {
+    row.document4 = event.target.files[0];
+  };
+
+  const document5Upload = (event, file, row) => {
+    row.document5 = event.target.files[0];
+  };
+
+  const document6Upload = (event, file, row) => {
+    row.document6 = event.target.files[0];
+  };
+
+  const renderInvoiceFile = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              invoiceUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument1 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document1Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument2 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document2Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument3 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document3Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument4 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document4Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument5 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document5Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderDocument6 = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              document6Upload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const handleInvoiceChange = (event,row) => {
+    row.vendorInvoiceNo = event.target.value;
+  }
+
   const columns = [
-    { field: "id", headerName: "PO Number", width: 90 },
+    { field: "poNumber", headerName: "PO Number", width: 90 },
     {
-      field: "poDate",
+      field: "docDate",
       headerName: "DocDate",
       width: 110,
       editable: true,
     },
     {
-      field: "EnterInvoiceno",
+      field: "vendorInvoiceNo",
       headerName: "Vendor Invoice No ",
       width: 210,
-      editable: true,
+      // editable: true,
+      renderCell: (params) => {
+        return (
+            <>
+                <TextField onChange={(event) => handleInvoiceChange(event,params.row)}>{params.row.vendorInvoiceNo} </TextField>
+            </>
+        );
+    },
     },
     {
-      field: "srno",
+      field: "srNo",
       headerName: "Sr No of Po",
       type: "string",
       width: 110,
-      editable: true,
     },
     {
-      field: "glcode",
+      field: "glCode",
       headerName: "Item/GL Code",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "startdate",
+      field: "startDate",
       headerName: "Start Date",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "enddate",
+      field: "endDate",
       headerName: "End Date",
       type: "number",
       width: 110,
@@ -153,214 +310,129 @@ export default function InvoicePortalTable(props) {
       editable: true,
     },
     {
-      field: "baseamt",
+      field: "baseAmount",
       headerName: "Base amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "taxamt",
+      field: "taxAmount",
       headerName: "Tax amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "grossamt",
+      field: "grossAmount",
       headerName: "Gross amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "status",
-      headerName: "Status",
-      type: "number",
-      width: 110,
-      editable: true,
-    },
-    {
-      field: "invoiceupload",
+      field: "invoiceFile",
       headerName: "Invoice Upload",
-      // type: 'number',
-      width: 110,
-      // editable: true,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
+      width: 120,
+      editable: true,
+      renderCell: renderInvoiceFile,
     },
     {
-      field: "doc1upload",
+      field: "document1",
       headerName: "Doc 1 Upload",
       type: "number",
-      width: 110,
-      // editable: true,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
+      width: 120,
+      renderCell: renderDocument1,
     },
     {
-      field: "doc2upload",
+      field: "document2",
       headerName: "Doc 2 Upload",
       type: "number",
       width: 110,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
+      renderCell: renderDocument2,
     },
     {
-      field: "doc3upload",
+      field: "document3",
       headerName: "Doc 3 Upload",
       type: "number",
       width: 110,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
+      renderCell: renderDocument3,
     },
     {
-      field: "doc4upload",
+      field: "document4",
       headerName: "Doc 4 Upload",
       type: "number",
       width: 110,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
+      renderCell: renderDocument4,
     },
     {
-      field: "doc5upload",
+      field: "document5",
       headerName: "Doc 5 Upload",
       type: "number",
       width: 110,
-      renderCell: (params) => (
-        <>
-          <Button
-            variant="contained"
-            component="label"
-            size="small"
-            sx={{
-              "&:hover": { backgroundColor: "#4f4f4f" },
-              textTransform: "capitalize",
-              backgroundColor: "#4f4f4f",
-            }}
-            color="primary"
-            style={{ marginLeft: 16 }}
-          >
-            Upload
-          </Button>
-        </>
-      ),
-    },
-  ];
-  const rows = [
-    {
-      id: "1",
-      poDate: "12/12/2023",
-      EnterInvoiceno: "Invoice no",
-
-      srno: "24",
-      glcode: "223344",
-      startdate: "12/01/2023",
-      enddate: "12/12/2023",
-      qty: "20000",
-      rate: "15000",
-      baseamt: "5000",
-      taxamt: "efgt45",
-      grossamt: "67895",
-      status: "In review",
+      renderCell: renderDocument5,
     },
     {
-      id: "2",
-      poDate: "12/12/2023",
-      EnterInvoiceno: "Invoice no",
-
-      srno: "24",
-      glcode: "223344",
-      startdate: "12/01/2023",
-      enddate: "12/12/2023",
-      qty: "20000",
-      rate: "15000",
-      baseamt: "5000",
-      taxamt: "efgt45",
-      grossamt: "67895",
-      status: "In review",
+      field: "document6",
+      headerName: "Doc 5 Upload",
+      type: "number",
+      width: 110,
+      renderCell: renderDocument6,
     },
   ];
+
+  const handleRequest = (e) => {
+    e.preventDefault();
+    if (invoiceInfo.length > 0) {
+      console.log("invoiceInfo------------>", invoiceInfo);
+
+      for (let i = 0; i < invoiceInfo.length; i++) {
+        const data = new FormData();
+        data.append("poNumber", invoiceInfo[i].poNumber);
+        data.append("docDate", invoiceInfo[i].docDate);
+        data.append("vendorInvoiceNo", invoiceInfo[i].vendorInvoiceNo);
+        data.append("srNo", invoiceInfo[i].srNo);
+        data.append("glCode", invoiceInfo[i].glCode);
+        data.append("startDate", invoiceInfo[i].startDate);
+        data.append("endDate", invoiceInfo[i].endDate);
+        data.append("qty", invoiceInfo[i].qty);
+        data.append("rate", invoiceInfo[i].rate);
+        data.append("baseAmount", invoiceInfo[i].baseAmount);
+        data.append("taxAmount", invoiceInfo[i].taxAmount);
+        data.append("grossAmount", invoiceInfo[i].grossAmount);
+        data.append("invoiceFile", invoiceInfo[i].invoiceFile);
+        data.append("document1", invoiceInfo[i].document1);
+        data.append("document2", invoiceInfo[i].document2);
+        data.append("document3", invoiceInfo[i].document3);
+        data.append("document4", invoiceInfo[i].document4);
+        data.append("document5", invoiceInfo[i].document5);
+        data.append("document6", invoiceInfo[i].document6);
+
+        apiService.saveInvoiceInfo(data).then((response) => {
+
+          if (response) {
+            Swal.fire({
+              title: "Data Saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        });
+      }
+    }
+  };
 
   return (
     <Box>
@@ -371,13 +443,33 @@ export default function InvoicePortalTable(props) {
             borderRadius: 0,
             fontSize: "14px",
           }}
-          rows={rows}
+          rows={poinvoiceInfo ? poinvoiceInfo : ""}
+          getRowId={(rows) => rows.poNumber}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          checkboxSelection
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
+          onSelectionModelChange={(ids) => {
+            const selectedIDs = new Set(ids);
+            const selectedRowData = poinvoiceInfo.filter((row) =>
+              selectedIDs.has(row.poNumber)
+            );
+            if (selectedRowData) {
+              setinvoiceInfo(selectedRowData);
+            }
+          }}
         />
+      </div>
+      <div className="float-end">
+        <button
+          type="button"
+          onClick={(e) => handleRequest(e)}
+          className="btn bankbtn btn-primary btn-md m-2"
+        >
+          Submit
+        </button>
       </div>
     </Box>
   );
