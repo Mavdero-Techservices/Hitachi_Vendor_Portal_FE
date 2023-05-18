@@ -96,7 +96,8 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendereWayBill = (params) => {
-    return (
+    return params.row.poNumber === "230010" ||
+      params.row.poNumber === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -120,11 +121,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const rendertransportDocument = (params) => {
-    return (
+    return params.row.poNumber === "230010" ? (
       <strong>
         <Button
           variant="contained"
@@ -148,11 +151,19 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const rendermiscDocs = (params) => {
-    return (
+    return params.row.poNumber === "230010" ||
+      params.row.poNumber === "249812" ||
+      params.row.poNumber === "220020" ||
+      params.row.poNumber === "220031" ||
+      params.row.poNumber === "220030" ||
+      params.row.poNumber === "220024" ||
+      params.row.poNumber === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -176,11 +187,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderboe = (params) => {
-    return (
+    return params.row.poNumber === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -204,11 +217,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderawb = (params) => {
-    return (
+    return params.row.poNumber === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -232,11 +247,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderserviceAgreement = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -260,11 +277,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderlic = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -288,11 +307,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderlicDeliveryProof = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -316,11 +337,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderwarrantyCertificate = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -348,11 +371,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderirWcc = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -376,11 +401,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const rendersignOffFromCustomer = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -408,11 +435,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const rendercoc = (params) => {
-    return (
+    return params.row.poNumber === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -436,11 +465,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderesiPayementChallan = (params) => {
-    return (
+    return params.row.poNumber === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -468,11 +499,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderpfPayementChallan = (params) => {
-    return (
+    return params.row.poNumber === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -496,11 +529,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderemployeeSummary = (params) => {
-    return (
+    return params.row.poNumber === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -524,11 +559,14 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+    ) : (
+      <></>
     );
   };
 
   const renderarWorking = (params) => {
     return (
+      params.row.poNumber === "220023" ?
       <strong>
         <Button
           variant="contained"
@@ -552,11 +590,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+      : <></>
     );
   };
 
   const renderdeliveryProof = (params) => {
     return (
+      params.row.poNumber === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -580,11 +620,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+      : <></>
     );
   };
 
   const rendercalculation = (params) => {
     return (
+      params.row.poNumber === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -608,11 +650,13 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+      : <></>
     );
   };
 
   const rendercustomExRate = (params) => {
     return (
+      params.row.poNumber === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -636,6 +680,7 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
+      : <></>
     );
   };
 
@@ -930,7 +975,7 @@ export default function InvoicePortalTable(props) {
 
   return (
     <Box>
-      <div style={{ height: 350, width: "100%" }}>
+      <div style={{ height: 450, width: "100%" }}>
         <DataGrid
           sx={{
             boxShadow: 10,
