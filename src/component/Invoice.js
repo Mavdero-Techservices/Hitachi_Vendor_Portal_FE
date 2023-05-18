@@ -140,6 +140,13 @@ export default function Invoice(props) {
     }
   };
 
+  const Handlestartdate = (e, item) => {
+    item.startdate = e.target.value;
+  };
+  const Handleenddate = (e, item) => {
+    item.enddate = e.target.value;
+  };
+
   const columns = [
     { field: "id", headerName: "PO Number", width: 90 },
     {
@@ -152,39 +159,76 @@ export default function Invoice(props) {
       field: "EnterInvoiceno",
       headerName: "Vendor Invoice No ",
       width: 210,
-      editable: true,
     },
     {
       field: "srno",
       headerName: "Sr No of Po",
       type: "string",
       width: 110,
-      editable: true,
     },
     {
       field: "glcode",
       headerName: "Item/Gl Code",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
       field: "startdate",
       headerName: "Start Date",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 210,
+      // editable: true,
+      renderCell: (params) =>
+        params.row.glcode === "G/L Account" ? (
+          <>
+            <TextField
+              id="outlined-basic"
+              type="date"
+              variant="outlined"
+              onChange={(e) => Handlestartdate(e, params.row)}
+              sx={{
+                border: "1px solid black",
+                borderRadius: "4px",
+              }}
+            />
+          </>
+        ) : (
+          <></>
+        ),
     },
     {
       field: "enddate",
       headerName: "End Date",
       type: "number",
-      width: 110,
+      width: 210,
       editable: true,
+      renderCell: (params) =>
+        params.row.glcode === "G/L Account" ? (
+          <>
+            <TextField
+              id="outlined-basic"
+              type="date"
+              variant="outlined"
+              onChange={(e) => Handleenddate(e, params.row)}
+              sx={{
+                border: "1px solid black",
+                borderRadius: "4px",
+              }}
+            />
+          </>
+        ) : (
+          <></>
+        ),
     },
     {
       field: "qty",
-      headerName: "Qty",
+      headerName: "Quantity",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "qtyDelivered",
+      headerName: "Quantity delivered",
       type: "number",
       width: 110,
       editable: true,

@@ -19,35 +19,83 @@ export default function InvoicePortalTable(props) {
     });
   }, []);
 
-  const invoiceUpload = (event, file, row) => {
-    row.invoiceFile = event.target.files[0];
+  const ewayBillUpload = (event, file, row) => {
+    row.eWayBill = event.target.files[0];
   };
 
-  const document1Upload = (event, file, row) => {
-    row.document1 = event.target.files[0];
+  const transportDocumentUpload = (event, file, row) => {
+    row.transportDocument = event.target.files[0];
   };
 
-  const document2Upload = (event, file, row) => {
-    row.document2 = event.target.files[0];
+  const miscDocsUpload = (event, file, row) => {
+    row.miscDocs = event.target.files[0];
   };
 
-  const document3Upload = (event, file, row) => {
-    row.document3 = event.target.files[0];
+  const boeUpload = (event, file, row) => {
+    row.boe = event.target.files[0];
   };
 
-  const document4Upload = (event, file, row) => {
-    row.document4 = event.target.files[0];
+  const awbUpload = (event, file, row) => {
+    row.awb = event.target.files[0];
   };
 
-  const document5Upload = (event, file, row) => {
-    row.document5 = event.target.files[0];
+  const serviceAgreementUpload = (event, file, row) => {
+    row.serviceAgreement = event.target.files[0];
   };
 
-  const document6Upload = (event, file, row) => {
-    row.document6 = event.target.files[0];
+  const licUpload = (event, file, row) => {
+    row.lic = event.target.files[0];
   };
 
-  const renderInvoiceFile = (params) => {
+  const licDeliveryProofUpload = (event, file, row) => {
+    row.licDeliveryProof = event.target.files[0];
+  };
+
+  const warrantyCertificateUpload = (event, file, row) => {
+    row.warrantyCertificate = event.target.files[0];
+  };
+
+  const irWccUpload = (event, file, row) => {
+    row.irWcc = event.target.files[0];
+  };
+
+  const signOffFromCustomerUpload = (event, file, row) => {
+    row.signOffFromCustomer = event.target.files[0];
+  };
+
+  const cocUpload = (event, file, row) => {
+    row.coc = event.target.files[0];
+  };
+
+  const esiPayementChallanUpload = (event, file, row) => {
+    row.esiPayementChallan = event.target.files[0];
+  };
+
+  const pfPayementChallanUpload = (event, file, row) => {
+    row.pfPayementChallan = event.target.files[0];
+  };
+
+  const employeeSummaryUpload = (event, file, row) => {
+    row.employeeSummary = event.target.files[0];
+  };
+
+  const arWorkingUpload = (event, file, row) => {
+    row.arWorking = event.target.files[0];
+  };
+
+  const deliveryProofUpload = (event, file, row) => {
+    row.deliveryProof = event.target.files[0];
+  };
+
+  const calculationUpload = (event, file, row) => {
+    row.calculation = event.target.files[0];
+  };
+
+  const customExRateUpload = (event, file, row) => {
+    row.customExRate = event.target.files[0];
+  };
+
+  const rendereWayBill = (params) => {
     return (
       <strong>
         <Button
@@ -66,7 +114,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              invoiceUpload(event, event.target.files[0], params.row);
+              ewayBillUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -75,7 +123,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument1 = (params) => {
+  const rendertransportDocument = (params) => {
     return (
       <strong>
         <Button
@@ -94,7 +142,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document1Upload(event, event.target.files[0], params.row);
+              transportDocumentUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -103,7 +151,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument2 = (params) => {
+  const rendermiscDocs = (params) => {
     return (
       <strong>
         <Button
@@ -122,7 +170,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document2Upload(event, event.target.files[0], params.row);
+              miscDocsUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -131,7 +179,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument3 = (params) => {
+  const renderboe = (params) => {
     return (
       <strong>
         <Button
@@ -150,7 +198,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document3Upload(event, event.target.files[0], params.row);
+              boeUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -159,7 +207,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument4 = (params) => {
+  const renderawb = (params) => {
     return (
       <strong>
         <Button
@@ -178,7 +226,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document4Upload(event, event.target.files[0], params.row);
+              awbUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -187,7 +235,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument5 = (params) => {
+  const renderserviceAgreement = (params) => {
     return (
       <strong>
         <Button
@@ -206,7 +254,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document5Upload(event, event.target.files[0], params.row);
+              serviceAgreementUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -215,7 +263,7 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const renderDocument6 = (params) => {
+  const renderlic = (params) => {
     return (
       <strong>
         <Button
@@ -234,7 +282,7 @@ export default function InvoicePortalTable(props) {
             style={{ backgroundColor: "red" }}
             type="file"
             onChange={(event) => {
-              document6Upload(event, event.target.files[0], params.row);
+              licUpload(event, event.target.files[0], params.row);
             }}
             hidden
           />
@@ -243,9 +291,357 @@ export default function InvoicePortalTable(props) {
     );
   };
 
-  const handleInvoiceChange = (event,row) => {
+  const renderlicDeliveryProof = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              licDeliveryProofUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderwarrantyCertificate = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              warrantyCertificateUpload(
+                event,
+                event.target.files[0],
+                params.row
+              );
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderirWcc = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              irWccUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const rendersignOffFromCustomer = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              signOffFromCustomerUpload(
+                event,
+                event.target.files[0],
+                params.row
+              );
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const rendercoc = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              cocUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderesiPayementChallan = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              esiPayementChallanUpload(
+                event,
+                event.target.files[0],
+                params.row
+              );
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderpfPayementChallan = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              pfPayementChallanUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderemployeeSummary = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              employeeSummaryUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderarWorking = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              arWorkingUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const renderdeliveryProof = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              deliveryProofUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const rendercalculation = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              calculationUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const rendercustomExRate = (params) => {
+    return (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          Upload File
+          <input
+            style={{ backgroundColor: "red" }}
+            type="file"
+            onChange={(event) => {
+              customExRateUpload(event, event.target.files[0], params.row);
+            }}
+            hidden
+          />
+        </Button>
+      </strong>
+    );
+  };
+
+  const handleInvoiceChange = (event, row) => {
     row.vendorInvoiceNo = event.target.value;
-  }
+  };
 
   const columns = [
     { field: "poNumber", headerName: "PO Number", width: 90 },
@@ -253,7 +649,6 @@ export default function InvoicePortalTable(props) {
       field: "docDate",
       headerName: "DocDate",
       width: 110,
-      editable: true,
     },
     {
       field: "vendorInvoiceNo",
@@ -262,11 +657,15 @@ export default function InvoicePortalTable(props) {
       // editable: true,
       renderCell: (params) => {
         return (
-            <>
-                <TextField onChange={(event) => handleInvoiceChange(event,params.row)}>{params.row.vendorInvoiceNo} </TextField>
-            </>
+          <>
+            <TextField
+              onChange={(event) => handleInvoiceChange(event, params.row)}
+            >
+              {params.row.vendorInvoiceNo}{" "}
+            </TextField>
+          </>
         );
-    },
+      },
     },
     {
       field: "srNo",
@@ -279,7 +678,6 @@ export default function InvoicePortalTable(props) {
       headerName: "Item/GL Code",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
       field: "startDate",
@@ -297,7 +695,13 @@ export default function InvoicePortalTable(props) {
     },
     {
       field: "qty",
-      headerName: "Qty",
+      headerName: "Quantity",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "qtyDelivered",
+      headerName: "Quantity delivered",
       type: "number",
       width: 110,
       editable: true,
@@ -307,77 +711,156 @@ export default function InvoicePortalTable(props) {
       headerName: "Rate",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
       field: "baseAmount",
       headerName: "Base amt",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
       field: "taxAmount",
       headerName: "Tax amt",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
       field: "grossAmount",
       headerName: "Gross amt",
       type: "number",
       width: 110,
-      editable: true,
     },
     {
-      field: "invoiceFile",
-      headerName: "Invoice Upload",
+      field: "eWayBill",
+      headerName: "E-Way Bill",
       width: 120,
-      editable: true,
-      renderCell: renderInvoiceFile,
+      renderCell: rendereWayBill,
     },
     {
-      field: "document1",
-      headerName: "Doc 1 Upload",
+      field: "transportDocument",
+      headerName: "Transport Document",
       type: "number",
       width: 120,
-      renderCell: renderDocument1,
+      renderCell: rendertransportDocument,
     },
     {
-      field: "document2",
-      headerName: "Doc 2 Upload",
+      field: "miscDocs",
+      headerName: "MISC Docs",
       type: "number",
       width: 110,
-      renderCell: renderDocument2,
+      renderCell: rendermiscDocs,
     },
     {
-      field: "document3",
-      headerName: "Doc 3 Upload",
+      field: "boe",
+      headerName: "BOE",
       type: "number",
       width: 110,
-      renderCell: renderDocument3,
+      renderCell: renderboe,
     },
     {
-      field: "document4",
-      headerName: "Doc 4 Upload",
+      field: "awb",
+      headerName: "AWB",
       type: "number",
       width: 110,
-      renderCell: renderDocument4,
+      renderCell: renderawb,
     },
     {
-      field: "document5",
-      headerName: "Doc 5 Upload",
+      field: "serviceAgreement",
+      headerName: "Service Agreement",
       type: "number",
       width: 110,
-      renderCell: renderDocument5,
+      renderCell: renderserviceAgreement,
     },
     {
-      field: "document6",
-      headerName: "Doc 5 Upload",
+      field: "lic",
+      headerName: "LIC",
       type: "number",
       width: 110,
-      renderCell: renderDocument6,
+      renderCell: renderlic,
+    },
+    {
+      field: "licDeliveryProof",
+      headerName: "LIC Delivery Proof",
+      type: "number",
+      width: 110,
+      renderCell: renderlicDeliveryProof,
+    },
+    {
+      field: "warrantyCertificate",
+      headerName: "Warranty Certificate",
+      type: "number",
+      width: 110,
+      renderCell: renderwarrantyCertificate,
+    },
+    {
+      field: "irWcc",
+      headerName: "IR/WCC",
+      type: "number",
+      width: 110,
+      renderCell: renderirWcc,
+    },
+    {
+      field: "signOffFromCustomer",
+      headerName: "Sign off from customer",
+      type: "number",
+      width: 110,
+      renderCell: rendersignOffFromCustomer,
+    },
+    {
+      field: "coc",
+      headerName: "COC",
+      type: "number",
+      width: 110,
+      renderCell: rendercoc,
+    },
+    {
+      field: "esiPayementChallan",
+      headerName: "ESI Payment Challan",
+      type: "number",
+      width: 110,
+      renderCell: renderesiPayementChallan,
+    },
+    {
+      field: "pfPayementChallan",
+      headerName: "PF Payment Challan",
+      type: "number",
+      width: 110,
+      renderCell: renderpfPayementChallan,
+    },
+    {
+      field: "employeeSummary",
+      headerName: "Employee Summary",
+      type: "number",
+      width: 110,
+      renderCell: renderemployeeSummary,
+    },
+    {
+      field: "arWorking",
+      headerName: "AR Working",
+      type: "number",
+      width: 110,
+      renderCell: renderarWorking,
+    },
+    {
+      field: "deliveryProof",
+      headerName: "Deliver Proof",
+      type: "number",
+      width: 110,
+      renderCell: renderdeliveryProof,
+    },
+    {
+      field: "calculation",
+      headerName: "Calculation",
+      type: "number",
+      width: 110,
+      renderCell: rendercalculation,
+    },
+    {
+      field: "customExRate",
+      headerName: "Custom's EX Rate",
+      type: "number",
+      width: 110,
+      renderCell: rendercustomExRate,
     },
   ];
 
@@ -400,16 +883,27 @@ export default function InvoicePortalTable(props) {
         data.append("baseAmount", invoiceInfo[i].baseAmount);
         data.append("taxAmount", invoiceInfo[i].taxAmount);
         data.append("grossAmount", invoiceInfo[i].grossAmount);
-        data.append("invoiceFile", invoiceInfo[i].invoiceFile);
-        data.append("document1", invoiceInfo[i].document1);
-        data.append("document2", invoiceInfo[i].document2);
-        data.append("document3", invoiceInfo[i].document3);
-        data.append("document4", invoiceInfo[i].document4);
-        data.append("document5", invoiceInfo[i].document5);
-        data.append("document6", invoiceInfo[i].document6);
+        data.append("eWayBill", invoiceInfo[i].eWayBill);
+        data.append("transportDocument", invoiceInfo[i].transportDocument);
+        data.append("miscDocs", invoiceInfo[i].miscDocs);
+        data.append("boe", invoiceInfo[i].boe);
+        data.append("awb", invoiceInfo[i].awb);
+        data.append("serviceAgreement", invoiceInfo[i].serviceAgreement);
+        data.append("lic", invoiceInfo[i].lic);
+        data.append("licDeliveryProof", invoiceInfo[i].licDeliveryProof);
+        data.append("warrantyCertificate", invoiceInfo[i].warrantyCertificate);
+        data.append("irWcc", invoiceInfo[i].irWcc);
+        data.append("signOffFromCustomer", invoiceInfo[i].signOffFromCustomer);
+        data.append("coc", invoiceInfo[i].coc);
+        data.append("esiPayementChallan", invoiceInfo[i].esiPayementChallan);
+        data.append("pfPayementChallan", invoiceInfo[i].pfPayementChallan);
+        data.append("employeeSummary", invoiceInfo[i].employeeSummary);
+        data.append("arWorking", invoiceInfo[i].arWorking);
+        data.append("deliveryProof", invoiceInfo[i].deliveryProof);
+        data.append("calculation", invoiceInfo[i].calculation);
+        data.append("customExRate", invoiceInfo[i].customExRate);
 
         apiService.saveInvoiceInfo(data).then((response) => {
-
           if (response) {
             Swal.fire({
               title: "Data Saved",
