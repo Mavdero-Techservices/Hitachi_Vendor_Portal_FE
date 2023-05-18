@@ -23,7 +23,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import { MDBRow } from "mdb-react-ui-kit";
 import { format, differenceInDays } from 'date-fns';
-export default function PoReject() {
+export default function FinanceTeamApproved() {
   const [expanded, setExpanded] = useState(false);
   const [Document_Type,setDocument_Type]=useState("");
   const [accordionData, setAccordionData] = useState([]);
@@ -140,7 +140,7 @@ const endIndex = page * itemsPerPage;
   ];
   useEffect(() => {
     apiService.getPo().then((res) => {
-      const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Rejected");
+      const filteredData = res.data.result.filter((item) => item.level2ApprovalStatus === "Approved");
       setAccordionData(filteredData);
     });
   }, []);
@@ -153,9 +153,9 @@ const endIndex = page * itemsPerPage;
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: '#f3f4f7' }}>
         <CssBaseline />
-        <AdminHeader team="PurchaseTeam" />
+        <AdminHeader team="FinanceTeam" />
         <Box sx={{ display: 'flex' }}>
-          <SideBar poTeam="PurchaseApproval" />
+          <SideBar FinanceTeam="PurchaseApproval" />
           <Box sx={{ mt: 2, width: '100%' }}>
             <Container>
               <Accordion className="accordion1" sx={{ mt: 1 }}>
@@ -400,4 +400,3 @@ const endIndex = page * itemsPerPage;
     </ThemeProvider>
   );
 }
-

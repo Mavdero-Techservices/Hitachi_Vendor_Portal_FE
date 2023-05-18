@@ -4,7 +4,7 @@ import { Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SignUp from './component/signUp';
 import Login from './component/login';
-import { AdminRoute, UserRoute, CommonRoute,FinanceRoute,OtherRoute,VCTRoute,MRTRoute,JapanRoute } from './auth/PrivateRoute';
+import { AdminRoute, UserRoute, CommonRoute,FinanceRoute,OtherRoute,VCTRoute,MRTRoute,JapanRoute,TDSTeamRoute,AggrementTeamRoute,FinanceTeamRoute,PurchaseTeamRoute } from './auth/PrivateRoute';
 import Navbar1 from './common/navbar';
 import Spinner from './common/spinner';
 import Basic from './component/Basic.js';
@@ -42,7 +42,9 @@ import InvoiceApproved from './component/InvoiceApproved';
 import InvoiceRejected from './component/InvoiceRejected';
 import InvoicePortal from './component/InvoicePortal';
 import VendorHomePage from './component/VendorHomePage';
-
+import FinanceTeam from './component/FinanceTeam';
+import FinanceTeamApproved from './component/FinanceTeamApproved';
+import FinanceTeamRejected from './component/FinanceTeamReject';
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus);
   const [state, setState] = useState({
@@ -145,11 +147,7 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
-       
         <Route path="/acStatement" element={<AccountStatements />} />
-        <Route path="/poTeam" element={<PoApproval />} />
-        <Route path="/poApproved" element={<PoApproved />} />
-        <Route path="/poRejected" element={<PoReject />} />
         <Route path="/estimateDD" element={<EstimateDeliveryDate />} />
         <Route path="/povendor" element={<PoVendor />} />
         <Route path="/invoiceTeam" element={<InvoiceTeam />} />
@@ -157,6 +155,26 @@ const MainRouter = () => {
         <Route path="/invoiceRejected" element={<InvoiceRejected />} />
         <Route path="/invoicePortal" element={<InvoicePortal />} />
         <Route path="/Homesidemenu" element={<VendorHomePage />} />
+             {/* TDSTeamRoute */}
+             <Route element={<TDSTeamRoute />}>
+          {/* <Route path="/test" element={<tds />} /> */}
+          </Route>
+          {/* AggrementTeamRoute */}
+          <Route element={<AggrementTeamRoute />}>
+          {/* <Route path="/agree" element={<Agres />} /> */}
+          </Route>
+          {/* financeTeam */}
+          <Route element={<FinanceTeamRoute />}>
+          <Route path="/FinanceTeam" element={<FinanceTeam />} />
+        <Route path="/FinanceTeamApproved" element={<FinanceTeamApproved />} />
+        <Route path="/FinanceTeamRejected" element={<FinanceTeamRejected />} />
+          </Route>
+          {/* PurchaseTeamRoute */}
+          <Route element={<PurchaseTeamRoute />}>
+          <Route path="/poTeam" element={<PoApproval />} />
+        <Route path="/poApproved" element={<PoApproved />} />
+        <Route path="/poRejected" element={<PoReject />} />
+          </Route>
       </Routes>
     </div>
   );

@@ -275,6 +275,18 @@ export default function Signin(props) {
     if (role === "Japan") {
       return <Navigate to={"/japanTeam"} />;
     }
+    if (role === "TDSTeam") {
+      return <Navigate to={"/"} />;
+    }
+    if (role === "AggrementTeam") {
+      return <Navigate to={"/"} />;
+    }
+    if (role === "FinanceTeam") {
+      return <Navigate to={"/FinanceTeam"} />;
+    }
+    if (role === "PurchaseTeam") {
+      return <Navigate to={"/poTeam"} />;
+    }
   }
   return (
     <div className="login">

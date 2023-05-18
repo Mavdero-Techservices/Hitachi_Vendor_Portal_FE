@@ -235,6 +235,29 @@ function AdminHeader(props) {
             ) : (
               ''
             )}
+               {props.team === 'FinanceTeam' ? (
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', my: 2 } }}
+              >
+                <Button
+                  style={{ textTransform: 'capitalize' }}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 3,
+                    mr: 2,
+                    color: '#B1000E',
+                    fontWeight: '700',
+                    display: 'block',
+                  }}
+                >
+                  Finance Team
+                </Button>
+              </Box>
+            ) : (
+              ''
+            )}
 
             {props.team === 'InvoiceTeam' ? (
               <Box

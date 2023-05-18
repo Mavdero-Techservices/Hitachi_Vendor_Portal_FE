@@ -292,6 +292,41 @@ class apiService {
 
   getInvoiceinfo() {
     return http.get('/getInvoiceinfo');
-  }
+}
+getPo()
+{
+  return http.get('/getPo');
+}
+updatePo(data) {
+  return axios.put('http://localhost:12707/updatePo', data);
+}
+savePO(data)
+{
+  return axios.post('http://localhost:12707/savePo', data);
+}
+getMailIdbyvendorNo(No)
+{
+  return http.get(`/getMailIdbyvendorNo/${No}`);
+}
+updatePoInvoice(data)
+{
+  return axios.put('http://localhost:12707/updatePoInvoice', data);
+}
+mailApprovePo_Invoice(data)
+{
+  return axios.post('http://localhost:12707/mailApprovePo_Invoice', data);
+}
+mailApproveFinance_order(data)
+{
+  return axios.post('http://localhost:12707/mailApprovePo_Invoice', data);
+}
+updateFinanceInvoiceApproval(data)
+{
+  return http.put(`/updateFinanceInvoiceApproval`,data);
+}
+updateFinanceInvoiceReject(data)
+{
+  return axios.put('http://localhost:12707/updateFinanceInvoiceReject', data);
+}
 }
 export default new apiService();

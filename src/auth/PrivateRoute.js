@@ -24,14 +24,6 @@ const AdminRoute = ({ component: Component, ...rest }) => {
   return (
     auth?.isAuthenticated()?.result?.role === "Admin" ? <Outlet /> : auth.clearJWT(() => navigate('/login'))
   )
-  // return (
-  //   auth?.isAuthenticated()?.result?.role === "Admin" ?
-  //     <>
-  //       <AdminLandingPage />
-  //       <Outlet />
-  //     </> :
-  //     <LoginLanding />
-  // );
 }
 const UserRoute = ({ component: Component, ...rest }) => {
   console.log('userRoute')
@@ -75,5 +67,33 @@ const MRTRoute = ({ component: Component, ...rest }) => {
     auth?.isAuthenticated()?.result?.role === "MRT" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
   )
 }
+const TDSTeamRoute = ({ component: Component, ...rest }) => {
+  console.log('TDSTeam')
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "TDSTeam" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
+}
+const AggrementTeamRoute = ({ component: Component, ...rest }) => {
+  console.log('AggrementTeam')
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "AggrementTeam" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
+}
+const FinanceTeamRoute = ({ component: Component, ...rest }) => {
+  console.log('FinanceTeam')
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "FinanceTeam" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
+}
+const PurchaseTeamRoute = ({ component: Component, ...rest }) => {
+  console.log('PurchaseTeam')
+  const navigate = useNavigate();
+  return (
+    auth?.isAuthenticated()?.result?.role === "PurchaseTeam" ? <Outlet /> : auth?.clearJWT(() => navigate('/login'))
+  )
+}
 
-export {CommonRoute, AdminRoute, UserRoute,FinanceRoute,OtherRoute,VCTRoute,JapanRoute,MRTRoute }
+export {CommonRoute, AdminRoute, UserRoute,FinanceRoute,OtherRoute,VCTRoute,JapanRoute,MRTRoute,TDSTeamRoute,AggrementTeamRoute,FinanceTeamRoute,PurchaseTeamRoute }
