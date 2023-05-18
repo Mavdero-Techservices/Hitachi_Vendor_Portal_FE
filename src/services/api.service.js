@@ -314,7 +314,7 @@ updatePoInvoice(data)
 }
 mailApprovePo_Invoice(data)
 {
-  return axios.post('http://localhost:12707/mailApprovePo_Invoice', data);
+  return axios.post('http://localhost:12707/POInvoiceMailApprove', data);
 }
 mailApproveFinance_order(data)
 {

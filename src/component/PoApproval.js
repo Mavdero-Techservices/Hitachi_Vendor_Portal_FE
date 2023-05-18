@@ -40,8 +40,6 @@ const endIndex = page * itemsPerPage;
             setExpanded(isExpanded ? panel : false);          
             const number = panel.substring(5);
             const filteredAccordionData = accordionData.filter((item) => item.No === number);
-            
-      console.log("accy677::",number,filteredAccordionData);
       setRows(filteredAccordionData);
     
       // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
@@ -56,158 +54,234 @@ const endIndex = page * itemsPerPage;
 
   const handleApprove = (event,Document_Type) => {
     //savePo
-    
-    console.log("event::",event,Document_Type,rows);
-    if(Document_Type==="Invoice")
-    {
-console.log("proceed with mail");
-    }
-    else if (Document_Type === "Order")
-    {
-      Swal.fire({
-        heightAuto: true,
-  
-        html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
-        <div class="approvestyle">
-        <form>
-        <label style="margin-left:0.5rem;" >Email:</label>
-        <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
-        <option value="" hidden>Select EmailId</option>
-          <option value="karthigapalani4@gmail.com">hitachi@gmail.com</option>
-          <option value="apitestmail4@gmail.com">hitachi@yahoo.com</option>
-        </select><br>
-        <label >User Name:</label>
-        <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
-        <option value="" hidden>Select User Name</option>
-          <option value="PO Team1" >PO Team1</option>
-          <option value="PO Team2">PO Team2</option>
-        </select><br>
-        <label >Location:</label>
-        <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
-        <option value="" hidden>Select Location</option>
-          <option value="chennai" >Chennai</option>
-          <option value="trichy" >trichy</option>
-        </select>
-        </form>
-      </div>
-      </div> `,
-        confirmButtonText: "Approve",
-        confirmButtonColor: "#B1000E",
-        showCancelButton: true,
-        focusConfirm: false,
-        customClass: "swal-wide",
-        preConfirm: () => {
-          const email = Swal.getPopup().querySelector("#email").value;
-          const username = Swal.getPopup().querySelector("#username").value;
-          const location = Swal.getPopup().querySelector("#location").value;
-          if (!email && !username && !location) {
-            Swal.showValidationMessage(
-              `Please choose EmailId,User Name and Location`
-            );
-          } else if (!location && !username) {
-            Swal.showValidationMessage(`Please choose  User Name and Location.`);
-          } else if (!location && !email) {
-            Swal.showValidationMessage(`Please choose  EmailId and Location.`);
-          } else if (!username && !email) {
-            Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
-          } else if (!email) {
-            Swal.showValidationMessage(`Please choose EmailId.`);
-          } else if (!username) {
-            Swal.showValidationMessage(`Please choose User Name.`);
-          } else if (!location) {
-            Swal.showValidationMessage(`Please choose Location.`);
-          } else {
-            console.log("valueofemail::",email,username,location);
-            const savePO={
-              Document_Type:rows[0].Document_Type,
-              No:event,
-              Order_Date:rows[0].Order_Date,
-              Payment_Terms_Code:rows[0].Payment_Terms_Code,
-              Buy_from_Vendor_Name:rows[0].Buy_from_Vendor_Name,
-              Customer_Name:rows[0].Customer_Name,
-              Buy_from_Vendor_No:rows[0].Buy_from_Vendor_No,
-              Ship_to_Name:rows[0].Ship_to_Name,
-              Amount_to_Vendor:rows[0].Amount_to_Vendor,
-              Billed_Amount:rows[0].Billed_Amount,
-              Unbilled_Amount:rows[0].Unbilled_Amount,
-              level1ApprovalStatus:"Approved",
-              username:username,
-              email:email,
-              location:location,
-            }
+    Swal.fire({
+      heightAuto: true,
 
-
-            apiService.savePO(savePO).then((res) => {
-              if (res.data.msg === 'success') {
-                Swal.fire({
-                  title: res.data.result,
-                  icon: "success",
-                  confirmButtonText: "OK",
-                }).then((res =>{
-                  Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
-                    ([poRes, erpRes]) => {
-                      // Process getPo response
-                      const poValues = poRes.data.result.map((item) => item.No); // Modify 'someValue' to the actual property name you want to filter on
-                      const filteredErpData = erpRes.data.result.filter(
-                        (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
-                      );
-                
-                      // Process getErpPurchaseOrdersLists response
-                      const rowsWithIds = filteredErpData.map((row) => ({
-                        ...row,
-                        id: uuidv4(),
-                      }));
-                
-                      setRows(rowsWithIds);
-                      console.log("Data:");
-                      console.log(rowsWithIds);
-                
-                      setAccordionData(rowsWithIds);
-                    }
-                  );
-                }))
-              } else {
-                Swal.fire({
-                  title: res.data.message,
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            
-
-            })
-
-        //     apiService.updatePo(purchaseOrder).then((res) => {
-        // if (res.data.msg === 'success') {
-        //   Swal.fire({
-        //     title: "Approved Successfully",
-        //     icon: "success",
-        //     confirmButtonText: "OK",
-        //   }).then((result)=>{
-        //     apiService.getPo().then((res) => {
-        //       const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-        //       setAccordionData(filteredData);
-        //     });
-        //   })
-        // } else {
-        //   Swal.fire({
-        //     title: res.data.message,
-        //     icon: "error",
-        //     confirmButtonText: "OK",
-        //   });
-        // }
-        //     })
-           
+      html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
+      <div class="approvestyle">
+      <form>
+      <label style="margin-left:0.5rem;" >Email:</label>
+      <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
+      <option value="" hidden>Select EmailId</option>
+        <option value="karthigapalani4@gmail.com">hitachi@gmail.com</option>
+        <option value="apitestmail4@gmail.com">hitachi@yahoo.com</option>
+      </select><br>
+      <label >User Name:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
+      <option value="" hidden>Select User Name</option>
+        <option value="PO Team1" >PO Team1</option>
+        <option value="PO Team2">PO Team2</option>
+      </select><br>
+      <label >Location:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
+      <option value="" hidden>Select Location</option>
+        <option value="chennai" >Chennai</option>
+        <option value="trichy" >trichy</option>
+      </select>
+      </form>
+    </div>
+    </div> `,
+      confirmButtonText: "Approve",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const email = Swal.getPopup().querySelector("#email").value;
+        const username = Swal.getPopup().querySelector("#username").value;
+        const location = Swal.getPopup().querySelector("#location").value;
+        if (!email && !username && !location) {
+          Swal.showValidationMessage(
+            `Please choose EmailId,User Name and Location`
+          );
+        } else if (!location && !username) {
+          Swal.showValidationMessage(`Please choose  User Name and Location.`);
+        } else if (!location && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
+        } else if (!username && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
+        } else if (!email) {
+          Swal.showValidationMessage(`Please choose EmailId.`);
+        } else if (!username) {
+          Swal.showValidationMessage(`Please choose User Name.`);
+        } else if (!location) {
+          Swal.showValidationMessage(`Please choose Location.`);
+        } else {
+          console.log("valueofemail::",email,username,location);
+          const savePO={
+            Document_Type:rows[0].Document_Type,
+            No:event,
+            Order_Date:rows[0].Order_Date,
+            Payment_Terms_Code:rows[0].Payment_Terms_Code,
+            Buy_from_Vendor_Name:rows[0].Buy_from_Vendor_Name,
+            Customer_Name:rows[0].Customer_Name,
+            Buy_from_Vendor_No:rows[0].Buy_from_Vendor_No,
+            Ship_to_Name:rows[0].Ship_to_Name,
+            Amount_to_Vendor:rows[0].Amount_to_Vendor,
+            Billed_Amount:rows[0].Billed_Amount,
+            Unbilled_Amount:rows[0].Unbilled_Amount,
+            level1ApprovalStatus:"Approved",
+            username:username,
+            email:email,
+            location:location,
           }
-        },
-      });
-    }
+          apiService.savePO(savePO).then((res) => {
+            if (res.data.msg === 'success') {
+              Swal.fire({
+                title: res.data.result,
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((res =>{
+                Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
+                  ([poRes, erpRes]) => {
+                    const poValues = poRes.data.result.map((item) => item.No); 
+                    const filteredErpData = erpRes.data.result.filter(
+                      (item) => !poValues.includes(item.No)
+                    );
+              
+                    const rowsWithIds = filteredErpData.map((row) => ({
+                      ...row,
+                      id: uuidv4(),
+                    }));
+              
+                    setRows(rowsWithIds);
+                    console.log("Data:");
+                    console.log(rowsWithIds);
+              
+                    setAccordionData(rowsWithIds);
+                  }
+                );
+              }))
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          
+
+          })           
+        }
+      },
+    });
 
    
   };
+  const handleApprovalOnMail= (event,Document_Type) => {
+    console.log("event::",event,Document_Type,rows);
+    Swal.fire({
+      heightAuto: true,
+
+      html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
+      <div class="approvestyle">
+      <form>
+      <label style="margin-left:0.5rem;" >Email:</label>
+      <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
+      <option value="" hidden>Select EmailId</option>
+        <option value="karthigapalani4@gmail.com">hitachi@gmail.com</option>
+        <option value="apitestmail4@gmail.com">hitachi@yahoo.com</option>
+      </select><br>
+      <label >User Name:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
+      <option value="" hidden>Select User Name</option>
+        <option value="PO Team1" >PO Team1</option>
+        <option value="PO Team2">PO Team2</option>
+      </select><br>
+      <label >Location:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
+      <option value="" hidden>Select Location</option>
+        <option value="chennai" >Chennai</option>
+        <option value="trichy" >trichy</option>
+      </select>
+      </form>
+    </div>
+    </div> `,
+      confirmButtonText: "Approve",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const email = Swal.getPopup().querySelector("#email").value;
+        const username = Swal.getPopup().querySelector("#username").value;
+        const location = Swal.getPopup().querySelector("#location").value;
+        if (!email && !username && !location) {
+          Swal.showValidationMessage(
+            `Please choose EmailId,User Name and Location`
+          );
+        } else if (!location && !username) {
+          Swal.showValidationMessage(`Please choose  User Name and Location.`);
+        } else if (!location && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
+        } else if (!username && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
+        } else if (!email) {
+          Swal.showValidationMessage(`Please choose EmailId.`);
+        } else if (!username) {
+          Swal.showValidationMessage(`Please choose User Name.`);
+        } else if (!location) {
+          Swal.showValidationMessage(`Please choose Location.`);
+        } else {
+          const purchaseOrder={
+            Document_Type:rows[0].Document_Type,
+            No:event,
+            Order_Date:rows[0].Order_Date,
+            Payment_Terms_Code:rows[0].Payment_Terms_Code,
+            Buy_from_Vendor_Name:rows[0].Buy_from_Vendor_Name,
+            Customer_Name:rows[0].Customer_Name,
+            Buy_from_Vendor_No:rows[0].Buy_from_Vendor_No,
+            Ship_to_Name:rows[0].Ship_to_Name,
+            Amount_to_Vendor:rows[0].Amount_to_Vendor,
+            Billed_Amount:rows[0].Billed_Amount,
+            Unbilled_Amount:rows[0].Unbilled_Amount,
+            username:username,
+            email:email,
+            location:location,
+          }
+          apiService.mailApprovePo_Invoice(purchaseOrder).then((res) => {
+      if (res.data.status === 'success') {
+        Swal.fire({
+          title: "Email sent for approval to proceed",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then((result)=>{
+          Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
+            ([poRes, erpRes]) => {
+              const poValues = poRes.data.result.map((item) => item.No); 
+              const filteredErpData = erpRes.data.result.filter(
+                (item) => !poValues.includes(item.No)
+              );
+        
+              const rowsWithIds = filteredErpData.map((row) => ({
+                ...row,
+                id: uuidv4(),
+              }));
+        
+              setRows(rowsWithIds);
+              console.log("Data:");
+              console.log(rowsWithIds);
+        
+              setAccordionData(rowsWithIds);
+            }
+          );
+        })
+      } else {
+        Swal.fire({
+          title: res.data.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+          })
+         
+        }
+      },
+    });
+
+
+  }
   const handleReject = (event,Document_Type) => {
-    console.log("Document_Type::",Document_Type);
-    if (Document_Type === "Order") {
       Swal.fire({
         heightAuto: true,
         // title: 'Review vendor details',
@@ -259,12 +333,10 @@ console.log("proceed with mail");
                   Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
                     ([poRes, erpRes]) => {
                       // Process getPo response
-                      const poValues = poRes.data.result.map((item) => item.No); // Modify 'someValue' to the actual property name you want to filter on
+                      const poValues = poRes.data.result.map((item) => item.No); 
                       const filteredErpData = erpRes.data.result.filter(
-                        (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
+                        (item) => !poValues.includes(item.No) 
                       );
-                
-                      // Process getErpPurchaseOrdersLists response
                       const rowsWithIds = filteredErpData.map((row) => ({
                         ...row,
                         id: uuidv4(),
@@ -288,36 +360,11 @@ console.log("proceed with mail");
             
 
             })
-        //     apiService.updatePo(data).then((res) => {
-        // if (res.data.msg === 'success') {
-        //   Swal.fire({
-        //     title: "Rejected Successfully",
-        //     icon: "success",
-        //     confirmButtonText: "OK",
-        //   }).then((result)=>{
-        //     apiService.getPo().then((res) => {
-        //       const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-        //       setAccordionData(filteredData);
-        //     });
-        //   })
-        // } else {
-        //   Swal.fire({
-        //     title: res.data.message,
-        //     icon: "error",
-        //     confirmButtonText: "OK",
-        //   });
-        // }
-        //     })
-       
-   
           }
         },
       });
-    }
-    else if(Document_Type==="Invoice")
-    {
-      console.log("proceed with mail");
-    }
+    
+  
   };
   const [rows, setRows] = useState([]);
   const columns = [
@@ -605,27 +652,38 @@ console.log("proceed with mail");
           experimentalFeatures={{ newEditingApi: false}}
         />
       </Box>
-      <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
-          <MDBRow className="mb-4">
-            <div className="float-end">
-              <button
-                type="button"
-                onClick={(e) => handleReject(item.No,item.Document_Type)}
-                className="btn basicbtn btn-md m-3"
-              >
-                Reject
-              </button>
+      <div className="float-end">
+      {item.Document_Type === "Order" ? (
+        <>
+         <button
+            type="button"
+            onClick={(e) => handleReject(item.No, item.Document_Type)}
+            className="btn basicbtn btn-md m-3"
+          >
+            Reject
+          </button>
 
-              <button
-                type="button"
-                className="btn basicbtn btn-md m-3"
-                onClick={(e) => handleApprove(item.No,item.Document_Type)}
-              >
-                Approve
-              </button>
-            </div>
-          </MDBRow>
-        </div>  
+          <button
+            type="button"
+            className="btn basicbtn btn-md m-3"
+            onClick={(e) => handleApprove(item.No, item.Document_Type)}
+          >
+            Approve
+          </button>
+         
+        </>
+      ) : (
+        <>
+          <button
+          type="button"
+          className="btn basicbtn btn-md m-3"
+          onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
+        >
+          Send
+        </button>
+       </>
+      )}
+    </div> 
     </Box>
 </AccordionDetails>
   </Accordion>
