@@ -51,7 +51,6 @@ function UserAccess() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const [selectedValues, setSelectedValues] = useState([]);
   const [getAllUser, setgetAllUser] = useState(null);
   const [getAllvendorcode, setgetAllvendorcode] = useState(null);
   const [subUserId, setsubUserId] = useState(null);
@@ -90,8 +89,6 @@ function UserAccess() {
   let vendorCode = vcode;
 
   function UpdateMasterVendor(id, Name, city_vendorCode_Pincode) {
-    console.log("id::",)
-
     const user = {
       SubUserId: id || undefined,
       city_vendorCode_Pincode: city_vendorCode_Pincode || undefined,
@@ -117,16 +114,15 @@ function UserAccess() {
         }
       
       });
-    });
    
-    //   // apiService.getAllMasterVendorSubUser().then((res) => {
-    //   //   setEdit(true);
-    //   //   setgetAllUser(res.data.result);
-    //   // });
-    //   // apiService.getAllVendorSubUser().then((res) => {
-    //   //   setvcityPincode(res.data.result)
-    //   // });
-    // });
+      // apiService.getAllMasterVendorSubUser().then((res) => {
+      //   setEdit(true);
+      //   setgetAllUser(res.data.result);
+      // });
+      // apiService.getAllVendorSubUser().then((res) => {
+      //   setvcityPincode(res.data.result)
+      // });
+    });
   }
   useEffect(() => {
     setgetAllvendorcode([]);
@@ -142,7 +138,7 @@ function UserAccess() {
       setvcityPincode(res.data.result)
     });
   }, []);
-  {console.log("vcityPincode--------->>>",vcityPincode)}
+  {console.log("test--------->>>",getAllvendorcode)}
   const handleVendorCodeChange = (event, value, data) => {
     console.log("dropdpwn--------->>>",value)
     setVcode(value);
@@ -187,7 +183,7 @@ function UserAccess() {
                             <TableCell align="center">{row.Name}</TableCell>
 
                             <TableCell align="center">
-                            {!Edit[row.id] && vcityPincode && vcityPincode.some(item => item.SubUserId === row.SubUserId && item.Pincode!="null"||null||undefined && item.City!="null"||null||undefined)  ? (                              
+                              {!Edit[row.id] ? (                                
                                 <>
                                 {vcityPincode?.filter((vcity) => {
                                   return vcity.SubUserId === row.SubUserId
@@ -240,7 +236,7 @@ function UserAccess() {
                             </TableCell>
 
                             <TableCell align="left">
-                              {!Edit[row.id] && vcityPincode && vcityPincode.some(item => item.SubUserId === row.SubUserId && item.Pincode!="null"||null||undefined && item.City!="null"||null||undefined)  ? (
+                              {!Edit[row.id] ? (
                                 <button
                                   type="button"
                                   onClick={() =>

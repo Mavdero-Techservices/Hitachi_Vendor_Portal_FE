@@ -32,6 +32,7 @@ function AdminHeader(props) {
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    
   };
   const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
@@ -286,7 +287,7 @@ function AdminHeader(props) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <AccountCircleIcon />
+                <AccountCircleIcon />
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                 </IconButton>
               </Tooltip>

@@ -7,9 +7,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
+import env from '../env';
 const NewUser = () => {
   const navigate = useNavigate();
   const onYesButtonClick = useCallback(() => {
+    console.log("env::", env.apiUrl);
+console.log("process.env::",process.env);
+    console.log("envhost:",process.env.REACT_APP_NODE_ENV,process.env.REACT_APP_API_URL);
     navigate("/login");
   }, [navigate]);
 

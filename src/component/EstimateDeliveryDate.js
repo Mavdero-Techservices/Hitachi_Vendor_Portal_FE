@@ -11,12 +11,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
-import MUIDataTable from "mui-datatables";
 import React, { useEffect, useState } from "react";
 import VendorPortalHeader from "../common/VendorPortalHeader";
 import VendorPortSidemenu from "../common/VendorPortSidemenu";
 import "../css/ApprovalFields.css";
 import apiService from "../services/api.service";
+import MUIDataTable from "mui-datatables";
 
 const theme = createTheme({
   Link: {
@@ -25,282 +25,129 @@ const theme = createTheme({
 });
 
 const EstimateDeliveryDate = () => {
+
+  const [poData, setPoData] = useState();
+  const [edd, setEdd] = useState();
+
   const columns = [
     {
-      name: "PO_Number",
+      name: "No",
       label: "PO Number",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
     },
     {
-      name: "Payment_Terms",
+      name: "Payment_Terms_Code",
       label: "Payment Terms",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
     },
     {
-      name: "Vendor_Address",
+      name: "Order_Date",
+      label: "PO Date",
+    },
+    {
+      name: "Buy_from_Vendor_Name",
       label: "Vendor Address",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
     },
     {
       name: "Customer_Name",
       label: "Customer Name",
-      options: {
-        setCellProps: () => ({
-        }),
-       
-      },
     },
     {
-      name: "Bill_To",
+      name: "Buy_from_Vendor_No",
       label: "Bill To",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
     },
     {
-      name: "Ship_To",
+      name: "Ship_to_Name",
       label: "Ship To",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
     },
     {
-      name: "Total_PO_Amount",
-      label: "Total PO Amount",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
+      name: "Amount_to_Vendor",
+      label: "Total PoAmt",
     },
     {
       name: "Billed_Amount",
-      label: "Billed Amount",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
+      label: "Billed Amt",
     },
     {
       name: "Unbilled_Amount",
-      label: "Unbilled Amount",
-      options: {
-        setCellProps: () => ({
-        }),
-       
-      },
+      label: "Unbilled Amt",
     },
     {
-      name: "Manufacturing_Code",
-      label: "Manufacturing Code",
-      options: {
-        setCellProps: () => ({
-        }),
-        
-      },
+      name: "PO_Status",
+      label: "Manufacturing code",
     },
     {
-      name: "Quote_No",
+      name: "quoteno",
       label: "Quote No",
-      options: {
-        setCellProps: () => ({
-        }),
-       
-      },
     },
     {
-      name: "Purchase_Spoc",
-      label: "Purchase Spoc",
-      options: {
-        setCellProps: () => ({
-          
-        }),
-        
-      },
+      name: "Purchaser_Code",
+      label: "Purchase spoc",
+    },
+    {
+      name: "Workflow_Status",
+      label: "Others",
+    },
+    {
+      name: "Status",
+      label: "EDD",
     },
   ];
 
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+     apiService.getErpPurchaseOrder_API().then((res) => {
+      setPoData(res.data.value)
+    })
+     apiService.getErpPurchaseOrderLineEDD_API().then((res) => {
+      setEdd(res.data.value)
+    })
 
-  const data = [
-    {
-      PO_Number: "BGL202223PO0007",
-      PO_Date: "2022-05-09T00:00:00",
-      Payment_Terms: "30-D",
-      Vendor_Address: "Plot No.93, 4th, &, 10th St MCN Nagar",
-      Customer_Name: "Aravind",
-      Bill_To: "VOTH-4745",
-      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
-      Total_PO_Amount: "61880.01",
-      Billed_Amount: "0",
-      Unbilled_Amount: "0",
-      Manufacturing_Code: "ATH22",
-      Quote_No: "Mail",
-      Purchase_Spoc: "DELMARA",
-    },
-    {
-      PO_Number: "BGL202223POAMC0002",
-      PO_Date: "2022-05-09T00:00:00",
-      Payment_Terms: "PT-023",
-      Vendor_Address: "Laxmipura Main Road, Abbigere",
-      Customer_Name: "Sekar",
-      Bill_To: "VLOC-3679",
-      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
-      Total_PO_Amount: "15783210.82",
-      Billed_Amount: "0",
-      Unbilled_Amount: "0",
-      Manufacturing_Code: "ATH22",
-      Quote_No: "Mail",
-      Purchase_Spoc: "DELMARA",
-    },
-    {
-      PO_Number: "DEL202223PO4604",
-      PO_Date: "2022-05-09T00:00:00",
-      Payment_Terms: "100%A",
-      Vendor_Address: "No.6, NAL Wind Tunnel Road, Murugeshpalya",
-      Customer_Name: "Moorthy",
-      Bill_To: "VLOC-3679",
-      Ship_To: "HITACHI SYSTEMS INDIA PVT.LTD",
-      Total_PO_Amount: "15783210.82",
-      Billed_Amount: "0",
-      Unbilled_Amount: "0",
-      Manufacturing_Code: "ATH22",
-      Quote_No: "Mail",
-      Purchase_Spoc: "DELMARA",
-    },
-    
-  ];
+  }, []);
 
-  const rows = [
-    {
-      Document_Type: "Order",
-      Document_No: "BGL202223PO0007",
-      Line_No: "10000",
-      Type: "Item",
-      Description: "INDIAN OIL  CORPORATION LTD- BANGALORE-IN428807",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "BGL202223PO0007",
-      Line_No: "20000",
-      Type: "G/L Account",
-      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "BGL202223PO0007",
-      Line_No: "300000",
-      Type: "G/L Account",
-      Description: "INTERNET PROBLEM  ISSUE",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "BGL202223POAMC0002",
-      Line_No: "40000",
-      Type: "Item",
-      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "BGL202223PO0007",
-      Line_No: "50000",
-      Type: "G/L Account",
-      Description: "CISCO SWITCH  INSTALLATION ACTIVITY",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "DEL202223PO4604",
-      Line_No: "60000",
-      Type: "G/L Account",
-      Description: "AMC/Support/Installation/service charges",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-    {
-      Document_Type: "Order",
-      Document_No: "DEL202223PO4604",
-      Line_No: "60000",
-      Type: "Item",
-      Description: "Spare/service charges",
-      Edd_Date: "",
-      Start_Date: "",
-      End_Date: "",
-    },
-  ];
+  const data = poData ? poData : [];
+
+  const rows = edd ? edd : [];
 
   let purchList = [];
   let purchLine = [];
-  // setpurchList([])
-  const onRowSelectionChange = (ev, ex, ez) => {
+
+  const onRowSelectionChange = async (ev, ex, ez) => {
     purchList = [];
     purchLine = [];
-    // setpurchLine([])
     for (let i = 0; i < ex.length; i++) {
-      for (let j = 0; j < data.length; j++) {
+      for (let j = 0; j < poData.length; j++) {
         if (j === ex[i].index) {
-          // setpurchList([])
-          purchList.push(data[ex[i].index]);
-          for (let k = 0; k < rows.length; k++) {
-            if (data[j].PO_Number === rows[k].Document_No) {
-              purchLine.push(rows[k]);
+          purchList.push(poData[ex[i].index]);
+          for (let k = 0; k < edd.length; k++) {
+            if (poData[j].No === edd[k].Document_No) {
+               purchLine.push(edd[k]);
             }
           }
         }
       }
     }
+    
   };
 
   const handleEddDate = (e, item) => {
+    console.log("item---------->", e);
     item.Edd_Date = e;
   }
 
   const handleStartDate = (e, item) => {
+    console.log("item---------->", e);
     item.Start_Date = e;
   }
 
   const handleEndDate = (e, item) => {
+    console.log("item---------->", e);
     item.End_Date = e;
   }
 
   const options = {
     filterType: "dropdown",
     responsive: "standard",
-    rowsPerPage: 5,
-    rowsPerPageOptions: [1, 3, 5, 6],
+    rowsPerPage: 10,
+    rowsPerPageOptions: [1, 3, 5, 6, 10],
     jumpToPage: true,
     textLabels: {
       pagination: {
@@ -424,6 +271,7 @@ const EstimateDeliveryDate = () => {
   };
 
   const DataTableContainer = styled("div")(() => ({
+    width: "1010px",
     margin: "10px",
   }));
 
@@ -431,6 +279,9 @@ const EstimateDeliveryDate = () => {
     console.log("1111111111", purchList, purchLine);
     apiService.postErpPurchaseOrderList(purchList);
     apiService.postErpPurchaseOrderLine(purchLine);
+    for (let i = 0; i < purchLine.length; i++) {
+      apiService.postEddDetails(purchLine[i]);
+    }
   };
 
   return (
@@ -440,7 +291,6 @@ const EstimateDeliveryDate = () => {
         <VendorPortalHeader />
         <Box sx={{ display: "flex" }}>
           <VendorPortSidemenu />
-          {/* <MuiThemeProvider theme={getMuiTheme}> */}
           <DataTableContainer>
             <MUIDataTable
               title={"EDD list"}
@@ -457,7 +307,6 @@ const EstimateDeliveryDate = () => {
               Submit
             </Button>
           </DataTableContainer>
-          {/* </MuiThemeProvider> */}
         </Box>
       </Box>
     </ThemeProvider>

@@ -25,25 +25,22 @@ import { MDBRow } from "mdb-react-ui-kit";
 import { format, differenceInDays } from 'date-fns';
 export default function PoReject() {
   const [expanded, setExpanded] = useState(false);
-  const [Document_Type,setDocument_Type]=useState("");
+  const [Document_Type, setDocument_Type] = useState("");
   const [accordionData, setAccordionData] = useState([]);
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
-const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
-const startIndex = (page - 1) * itemsPerPage;
-const endIndex = page * itemsPerPage;
+  const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
 
 
   const handleChange =
-        (panel) => (event, isExpanded) => {
-          console.log("panel::",panel);
-            setExpanded(isExpanded ? panel : false);          
-            const number = panel.substring(5);
-            const filteredAccordionData = accordionData.filter((item) => item.No === number);
-            
-      console.log("accy677::",number,filteredAccordionData);
+    (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+      const number = panel.substring(5);
+      const filteredAccordionData = accordionData.filter((item) => item.No === number);
       setRows(filteredAccordionData);
-        };
+    };
 
   const theme = createTheme({
     Link: {
@@ -71,7 +68,7 @@ const endIndex = page * itemsPerPage;
       type: "string",
       width: 110,
       editable: true,
-      
+
     },
     {
       field: "Customer_Name",
@@ -204,15 +201,15 @@ const endIndex = page * itemsPerPage;
               </Accordion>
 
               <>
-              {accordionData?.slice(startIndex, endIndex).map((item, key)  => <>
-              
- <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
-   <AccordionSummary
-      expandIcon={<ExpandMoreIcon />}
-      aria-controls={`${item.No}-content`}
-      id={`${item.No}-header`}
-    >
-         <IconButton
+                {accordionData?.slice(startIndex, endIndex).map((item, key) => <>
+
+                  <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={`${item.No}-content`}
+                      id={`${item.No}-header`}
+                    >
+                      <IconButton
                         sx={{
                           p: 0,
                           width: "18%",
@@ -231,7 +228,7 @@ const endIndex = page * itemsPerPage;
                           fontWeight: "bold",
                         }}
                       >
-                      {item.Document_Type === "Order" ? "Review PO" : "Review Invoice"}
+                        {item.Document_Type === "Order" ? "Review PO" : "Review Invoice"}
                       </Typography>
                       <Typography
                         textAlign="right"
@@ -243,7 +240,7 @@ const endIndex = page * itemsPerPage;
                         }}
                       >
                         {format(new Date(item.Order_Date), 'dd MMM')}
-                       
+
                       </Typography>
                       <Typography
                         textAlign="right"
@@ -254,61 +251,61 @@ const endIndex = page * itemsPerPage;
                           fontWeight: "bold",
                         }}
                       >
-                      {differenceInDays(new Date(), new Date(item.Order_Date))} {differenceInDays(new Date(), new Date(item.Order_Date)) > 1 ? "Days" : "Day"}
+                        {differenceInDays(new Date(), new Date(item.Order_Date))} {differenceInDays(new Date(), new Date(item.Order_Date)) > 1 ? "Days" : "Day"}
                       </Typography>
-    </AccordionSummary>
-    <AccordionDetails>
-    <Box>
-      <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
-      <Box
-        sx={{
-          height: 300,
-          width: "100%",
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box>
+                        <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
+                        <Box
+                          sx={{
+                            height: 300,
+                            width: "100%",
 
-          "& .super-app-theme--header": {
-            backgroundColor: "#808080",
-            color: "#ffffff",
-          },
-          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
-            fontSize: 15,
-            fontWeight: "bold",
-          },
-          ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
-            fontSize: 13,
-          },
-          ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-            {
-              backgroundColor: "#330033",
-              color: "#ffffff",
-            },
-          ".css-h4y409-MuiList-root": {
-            display: "grid",
-          },
-          ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-            {
-              backgroundColor: "#808080",
-            },
-        }}
-      >
-        <DataGrid
-          sx={{
-            boxShadow: 10,
-            borderRadius: 0,
-            fontSize: "14px",
-          }}
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          //   checkboxSelection="none"
-          disableSelectionOnClick
-          experimentalFeatures={{ newEditingApi: true }}
-        />
-      </Box> 
-    </Box>
-</AccordionDetails>
-  </Accordion>
-  </>)}
+                            "& .super-app-theme--header": {
+                              backgroundColor: "#808080",
+                              color: "#ffffff",
+                            },
+                            "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                              fontSize: 15,
+                              fontWeight: "bold",
+                            },
+                            ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+                              fontSize: 13,
+                            },
+                            ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                            {
+                              backgroundColor: "#330033",
+                              color: "#ffffff",
+                            },
+                            ".css-h4y409-MuiList-root": {
+                              display: "grid",
+                            },
+                            ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                            {
+                              backgroundColor: "#808080",
+                            },
+                          }}
+                        >
+                          <DataGrid
+                            sx={{
+                              boxShadow: 10,
+                              borderRadius: 0,
+                              fontSize: "14px",
+                            }}
+                            rows={rows}
+                            columns={columns}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            //   checkboxSelection="none"
+                            disableSelectionOnClick
+                            experimentalFeatures={{ newEditingApi: true }}
+                          />
+                        </Box>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                </>)}
 
                 {/* <Accordion
                   expanded={expanded === 'panel'}
@@ -386,12 +383,12 @@ const endIndex = page * itemsPerPage;
                     <PurchaseOrder />
                   </AccordionDetails>
                 </Accordion> */}
-                <Pagination  style={{ float: 'right', marginTop: '1rem' }}
-            count={pageCount}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-          />
+                <Pagination style={{ float: 'right', marginTop: '1rem' }}
+                  count={pageCount}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
               </>
             </Container>
           </Box>

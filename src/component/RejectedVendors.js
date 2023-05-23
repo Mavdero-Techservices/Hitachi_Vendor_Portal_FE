@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function RejectedVendors() {
+
   const [expanded, setExpanded] = useState(false);
   const [vendors, setvendors] = useState([]);
   const [submitDate, setsubmitDate] = useState();
@@ -128,7 +129,7 @@ function RejectedVendors() {
     let input;
     let newFilteredSuggestions;
 
-    if (e.target.value) {
+    if (e.target.value.length > 3) {
       input = e.currentTarget.value;
       newFilteredSuggestions = vendors?.filter(
         (suggestion) =>
@@ -196,8 +197,8 @@ function RejectedVendors() {
                     id={"panel1bh-header"}
                   >
                     <IconButton sx={{ p: 0, width: '18%',justifyContent: 'flex-start'  }} >
-                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                      <Typography >&nbsp;{item.userId}</Typography>
+                    {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width:'40px',backgroundColor:'#0001', borderRadius: '50%',textTransform:'uppercase' }}> {item.companyName?.charAt(0)}</Typography>}
+                      <Typography >&nbsp;{item.companyName}</Typography>
                     </IconButton>
                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
                     <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>

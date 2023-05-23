@@ -534,10 +534,6 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => { });
   }
   componentDidMount() {
-    const { location } = this.props;
-    const searchParams = new URLSearchParams(location.search);
-    const masterValue = searchParams.get('master');
-    console.log("masterValue",masterValue);
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });

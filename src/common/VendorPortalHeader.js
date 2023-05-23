@@ -47,12 +47,10 @@ function VendorPortalHeader(props) {
   // console.log("vendoCode---------------->>>>",vendoCode)
   useEffect(() => {
     apiService.getErpResourcePortalVendorlist().then((res) => {
-      console.log("getErpResourcePortalVendorlist---------------->>>>",res.data.value)
       setvendoCode(res.data.value)
     })
 
     apiService.getErpVendor_API().then((res) => {
-      console.log("getErpVendor_API---------------->>>>",res.data.value)
     })
     let arr=[]
     apiService.getErpVendor_API().then((res) => {

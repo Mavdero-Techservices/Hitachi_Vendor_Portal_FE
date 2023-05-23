@@ -233,7 +233,87 @@ export const SideBar = (props) => {
               </ListItem>
             </List>
           </>
-        ) : props.poTeam ? (
+        ) : props.FinanceTeam ? (
+          <>
+            <List sx={{ my: 3 }}>
+              <ListItem
+                disablePadding
+                component={Link}
+                to="/FinanceTeam"
+                sx={{
+                  backgroundColor: pathname === '/FinanceTeam' ? 'gray' : '',
+                  borderRadius: '20px',
+                  color: 'white',
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon>
+                    <HourglassBottomIcon sx={{ color: 'white' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Inprogress"
+                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                disablePadding
+                component={Link}
+                to="/FinanceTeamApproved"
+                sx={{
+                  backgroundColor: pathname === '/FinanceTeamApproved' ? 'gray' : '',
+                  borderRadius: '20px',
+                  color: 'white',
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon>
+                    <AssignmentTurnedInIcon sx={{ color: 'white' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Approved"
+                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                disablePadding
+                component={Link}
+                to="/FinanceTeamRejected"
+                sx={{
+                  backgroundColor: pathname === '/FinanceTeamRejected' ? 'gray' : '',
+                  borderRadius: '20px',
+                  color: 'white',
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon>
+                    <EventBusyIcon sx={{ color: 'white' }} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Rejected"
+                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </>
+            ) :props.poTeam ? (
           <>
             <List sx={{ my: 3 }}>
               <ListItem
@@ -313,87 +393,7 @@ export const SideBar = (props) => {
               </ListItem>
             </List>
           </>
-            ): props.FinanceTeam ? (
-              <>
-                <List sx={{ my: 3 }}>
-                  <ListItem
-                    disablePadding
-                    component={Link}
-                    to="/FinanceTeam"
-                    sx={{
-                      backgroundColor: pathname === '/FinanceTeam' ? 'gray' : '',
-                      borderRadius: '20px',
-                      color: 'white',
-                    }}
-                  >
-                    <ListItemButton
-                      sx={{
-                        '&:hover': { backgroundColor: 'gray' },
-                        borderRadius: '20px',
-                      }}
-                    >
-                      <ListItemIcon>
-                        <HourglassBottomIcon sx={{ color: 'white' }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Inprogress"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem
-                    disablePadding
-                    component={Link}
-                    to="/FinanceTeamApproved"
-                    sx={{
-                      backgroundColor: pathname === '/FinanceTeamApproved' ? 'gray' : '',
-                      borderRadius: '20px',
-                      color: 'white',
-                    }}
-                  >
-                    <ListItemButton
-                      sx={{
-                        '&:hover': { backgroundColor: 'gray' },
-                        borderRadius: '20px',
-                      }}
-                    >
-                      <ListItemIcon>
-                        <AssignmentTurnedInIcon sx={{ color: 'white' }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Approved"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem
-                    disablePadding
-                    component={Link}
-                    to="/FinanceTeamRejected"
-                    sx={{
-                      backgroundColor: pathname === '/FinanceTeamRejected' ? 'gray' : '',
-                      borderRadius: '20px',
-                      color: 'white',
-                    }}
-                  >
-                    <ListItemButton
-                      sx={{
-                        '&:hover': { backgroundColor: 'gray' },
-                        borderRadius: '20px',
-                      }}
-                    >
-                      <ListItemIcon>
-                        <EventBusyIcon sx={{ color: 'white' }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Rejected"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-              </>
-                ) : props.invoiceTeam ? (
+            ) : props.invoiceTeam ? (
               <>
                 <List sx={{ my: 3 }}>
                   <ListItem

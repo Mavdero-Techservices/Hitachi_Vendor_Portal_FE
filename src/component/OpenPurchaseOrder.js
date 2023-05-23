@@ -1,76 +1,91 @@
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-
-import React from "react";
-
+import React,{useState,useEffect } from "react";
+import apiService from "../services/api.service";
 import Button from "@mui/material/Button";
 import "../css/ApprovalFields.css";
 
+
+
 export default function OpenPurchaseOrder(props) {
+  const [poData, setpoData] = useState();
+  const getPOdownload =(e)=>{
+    apiService.getPOfileDownload().then((response) => {
+      console.log("res=============>>>>>>",response)
+    })
+  }
   const columns = [
-    { field: "id", headerName: "PO Number", width: 90 },
+    { field: "No", headerName: "PO Number", width: 90 },
     {
-      field: "poDate",
+      field: "Order_Date",
       headerName: "PO Date",
       width: 110,
       editable: true,
     },
     {
-      field: "paymentterms",
+      field: "Payment_Terms_Code",
       headerName: "Payment Terms",
       width: 110,
       editable: true,
     },
     {
-      field: "address",
+      field: "Buy_from_Vendor_Name",
+      // Buy_from_Address, Buy_from_Address_2
       headerName: "Vendor Address",
       type: "string",
       width: 110,
       editable: true,
     },
     {
-      field: "custom",
+      field: "Customer_Name",
+                // "Cusstomer Add1"
+                // "Cusstomer Add2"
+                // "Customer GST"
+                // "Contact Person Name"
+                // "Contact No"
+                // "Customer E-mail"
       headerName: "Customer Name",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "billto",
+      field: "Buy_from_Vendor_No",
       headerName: "Bill to",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "shipto",
+      field: "Ship_to_Name",
       headerName: "Ship to",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "totalpo",
+      field: "Amount_to_Vendor",
       headerName: "Total Po Amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "billedamt",
+      field: "Billed_Amount",
       headerName: "Billed amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "unbilledamt",
+      field: "Unbilled_Amount",
       headerName: "Unbilled amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
+      // NO
       field: "mfgcode",
       headerName: "Manufacturing code",
       type: "number",
@@ -78,6 +93,7 @@ export default function OpenPurchaseOrder(props) {
       editable: true,
     },
     {
+       // NO
       field: "quoteno",
       headerName: "Quote No",
       type: "number",
@@ -85,7 +101,7 @@ export default function OpenPurchaseOrder(props) {
       editable: true,
     },
     {
-      field: "purspoc",
+      field: "Purchaser_Code",
       headerName: "Purchase spoc",
       type: "number",
       width: 110,
@@ -107,6 +123,7 @@ export default function OpenPurchaseOrder(props) {
               textTransform: "capitalize",
               backgroundColor: "#4F4F4F",
             }}
+            onClick={getPOdownload}
             color="primary"
             style={{ marginLeft: 16 }}
           >
@@ -116,38 +133,46 @@ export default function OpenPurchaseOrder(props) {
       ),
     },
   ];
-  const rows = [
-    {
-      id: "22114455",
-      paymentterms: "Cheque",
-      poDate: "12/12/2023",
-      address: "chennai",
-      custom: "ABC",
-      billto: "xyz",
-      shipto: "Mumbai",
-      totalpo: "20000",
-      billedamt: "15000",
-      unbilledamt: "5000",
-      mfgcode: "efgt45",
-      quoteno: "67895",
-      purspoc: "Don quixote",
-    },
-    {
-      id: "22114455",
-      paymentterms: "Cheque",
-      poDate: "12/12/2023",
-      address: "chennai",
-      custom: "ABC",
-      billto: "xyz",
-      shipto: "Mumbai",
-      totalpo: "20000",
-      billedamt: "15000",
-      unbilledamt: "5000",
-      mfgcode: "efgt45",
-      quoteno: "67895",
-      purspoc: "Don quixote",
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: "22114455",
+  //     paymentterms: "Cheque",
+  //     poDate: "12/12/2023",
+  //     address: "chennai",
+  //     custom: "ABC",
+  //     billto: "xyz",
+  //     shipto: "Mumbai",
+  //     totalpo: "20000",
+  //     billedamt: "15000",
+  //     unbilledamt: "5000",
+  //     mfgcode: "efgt45",
+  //     quoteno: "67895",
+  //     purspoc: "Don quixote",
+  //   },
+  //   {
+  //     id: "22114455",
+  //     paymentterms: "Cheque",
+  //     poDate: "12/12/2023",
+  //     address: "chennai",
+  //     custom: "ABC",
+  //     billto: "xyz",
+  //     shipto: "Mumbai",
+  //     totalpo: "20000",
+  //     billedamt: "15000",
+  //     unbilledamt: "5000",
+  //     mfgcode: "efgt45",
+  //     quoteno: "67895",
+  //     purspoc: "Don quixote",
+  //   },
+  // ];
+
+  useEffect(() => {
+    console.log("response------PO order------000000----->>>>>>>>>")
+    apiService.getErpPurchaseOrder_API().then((res) => {
+      setpoData(res.data.value)
+      console.log("response------PO order----111111111111------->>>>>>>>>",res.data.value)
+    })
+  },[poData])
 
   return (
     <Box>
@@ -158,7 +183,8 @@ export default function OpenPurchaseOrder(props) {
             borderRadius: 0,
             fontSize: "14px",
           }}
-          rows={rows}
+          rows={poData?poData:[]}
+          getRowId={(rows) => rows?.No}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}

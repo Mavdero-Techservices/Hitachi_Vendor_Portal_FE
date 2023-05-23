@@ -250,6 +250,7 @@ function AccountStatements() {
     const filetype =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;Charset=UTF-8";
     apiService.downloadCurrentAccountStatement().then((response) => {
+      console.log("response------------------------------>>>>>",response.data)
       const data = new Blob([response.data], { type: filetype });
       saveAs(data, "CurrentAccountStatement.xlsx");
     });

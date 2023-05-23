@@ -45,6 +45,7 @@ import VendorHomePage from './component/VendorHomePage';
 import FinanceTeam from './component/FinanceTeam';
 import FinanceTeamApproved from './component/FinanceTeamApproved';
 import FinanceTeamRejected from './component/FinanceTeamReject';
+
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus);
   const [state, setState] = useState({
@@ -147,6 +148,7 @@ const MainRouter = () => {
           path="/MasterVendorSidemenu"
           element={<MasterVendorSidemenu />}
         />
+       
         <Route path="/acStatement" element={<AccountStatements />} />
         <Route path="/estimateDD" element={<EstimateDeliveryDate />} />
         <Route path="/povendor" element={<PoVendor />} />
@@ -155,8 +157,8 @@ const MainRouter = () => {
         <Route path="/invoiceRejected" element={<InvoiceRejected />} />
         <Route path="/invoicePortal" element={<InvoicePortal />} />
         <Route path="/Homesidemenu" element={<VendorHomePage />} />
-             {/* TDSTeamRoute */}
-             <Route element={<TDSTeamRoute />}>
+                {/* TDSTeamRoute */}
+                <Route element={<TDSTeamRoute />}>
           {/* <Route path="/test" element={<tds />} /> */}
           </Route>
           {/* AggrementTeamRoute */}

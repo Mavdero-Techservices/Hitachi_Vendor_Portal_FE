@@ -5,10 +5,6 @@ import { MDBRow } from "mdb-react-ui-kit";
 import React from "react";
 import Swal from "sweetalert2";
 import "../css/ApprovalFields.css";
-import { useEffect, useState } from "react";
-import apiService from "../services/api.service";
-import { v4 as uuidv4 } from "uuid";
-import "../css/ApprovalFields.css";
 export default function PurchaseOrder(props) {
   const handleApprove = (event) => {
     Swal.fire({
@@ -105,104 +101,153 @@ export default function PurchaseOrder(props) {
       },
     });
   };
-  const [rows, setRows] = useState([]);
   const columns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "id", headerName: "PO Number", width: 90 },
     {
-      field: "Order_Date",
+      field: "poDate",
       headerName: "PO Date",
       width: 110,
       editable: true,
     },
     {
-      field: "Payment_Terms_Code",
+      field: "paymentterms",
       headerName: "Payment Terms",
       width: 110,
       editable: true,
     },
     {
-      field: "Buy_from_Vendor_Name",
+      field: "address",
       headerName: "Vendor Address",
       type: "string",
       width: 110,
       editable: true,
-      
     },
     {
-      field: "Customer_Name",
+      field: "custom",
       headerName: "Customer Name",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "Buy_from_Vendor_No",
+      field: "billto",
       headerName: "Bill to",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "Ship_to_Name",
+      field: "shipto",
       headerName: "Ship to",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "Amount_to_Vendor",
+      field: "totalpo",
       headerName: "Total Po Amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "Billed_Amount",
+      field: "billedamt",
       headerName: "Billed amt",
       type: "number",
       width: 110,
       editable: true,
     },
     {
-      field: "Unbilled_Amount",
+      field: "unbilledamt",
       headerName: "Unbilled amt",
       type: "number",
       width: 110,
       editable: true,
     },
-    // {
-    //   field: "",
-    //   headerName: "Manufacturing code",
-    //   type: "number",
-    //   width: 110,
-    //   editable: true,
-    // },
-    // {
-    //   field: "",
-    //   headerName: "Quote No",
-    //   type: "number",
-    //   width: 110,
-    //   editable: true,
-    // },
-    // {
-    //   field: "",
-    //   headerName: "Purchase spoc",
-    //   type: "number",
-    //   width: 110,
-    //   editable: true,
-    // },
-
+    {
+      field: "mfgcode",
+      headerName: "Manufacturing code",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "quoteno",
+      headerName: "Quote No",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "purspoc",
+      headerName: "Purchase spoc",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
   ];
-
-  useEffect(() => {
-    apiService.getPo().then((res) => {
-      const rowsWithIds = res.data.result.map((row) => ({
-        ...row,
-        id: uuidv4(),
-      }));
-      setRows(rowsWithIds);
-    });
-  }, []);
+  const rows = [
+    {
+      id: "22114455",
+      paymentterms: "Cheque",
+      poDate: "12/12/2023",
+      address: "chennai",
+      custom: "ABC",
+      billto: "xyz",
+      shipto: "Mumbai",
+      totalpo: "20000",
+      billedamt: "15000",
+      unbilledamt: "5000",
+      mfgcode: "efgt45",
+      quoteno: "67895",
+      purspoc: "Don quixote",
+    },
+    {
+      id: "22114455",
+      paymentterms: "Cheque",
+      poDate: "12/12/2023",
+      address: "chennai",
+      custom: "ABC",
+      billto: "xyz",
+      shipto: "Mumbai",
+      totalpo: "20000",
+      billedamt: "15000",
+      unbilledamt: "5000",
+      mfgcode: "efgt45",
+      quoteno: "67895",
+      purspoc: "Don quixote",
+    },
+    {
+      id: "22114455",
+      paymentterms: "Cheque",
+      poDate: "12/12/2023",
+      address: "chennai",
+      custom: "ABC",
+      billto: "xyz",
+      shipto: "Mumbai",
+      totalpo: "20000",
+      billedamt: "15000",
+      unbilledamt: "5000",
+      mfgcode: "efgt45",
+      quoteno: "67895",
+      purspoc: "Don quixote",
+    },
+    {
+      id: "22114455",
+      paymentterms: "Cheque",
+      poDate: "12/12/2023",
+      address: "chennai",
+      custom: "ABC",
+      billto: "xyz",
+      shipto: "Mumbai",
+      totalpo: "20000",
+      billedamt: "15000",
+      unbilledamt: "5000",
+      mfgcode: "efgt45",
+      quoteno: "67895",
+      purspoc: "Don quixote",
+    },
+  ];
 
   return (
     <Box>
