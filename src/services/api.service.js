@@ -43,31 +43,31 @@ class apiService {
     return http.get(`/getStateAndcityByzipcode/${code}/${Post_Code}`);
   }
   saveStatutoryDetail(data) {
-    return axios.post('http://localhost:12707/saveStatutoryDetail', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveStatutoryDetail`, data);
   }
   saveComplianceDetail(data) {
-    return axios.post('http://localhost:12707/saveComplianceDetail', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveComplianceDetail`, data);
   }
   savebankdetail(data) {
-    return axios.post('http://localhost:12707/saveBankDetail', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveBankDetail`, data);
   }
   saveFinacialDetail(data) {
-    return axios.post('http://localhost:12707/saveFinacialDetail', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveFinacialDetail`, data);
   }
   createRelatedDisclosurePdf(data) {
     return axios.post(
-      'http://localhost:12707/createRelatedDisclosurePdf',
+      `${process.env.REACT_APP_API_URL}:12707/createRelatedDisclosurePdf`,
       data
     );
   }
   createCocPdf(data) {
-    return axios.post('http://localhost:12707/createCompliancePdf', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/createCompliancePdf`, data);
   }
   createNDAPdf(data) {
-    return axios.post('http://localhost:12707/createnonDisclosure', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/createnonDisclosure`, data);
   }
   downloadPdf(data) {
-    return axios.post('http://localhost:12707/downloadPdf', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/downloadPdf`, data);
   }
   readPdf() {
     return http.get('/readPdf');
@@ -92,49 +92,49 @@ class apiService {
   }
   updateAllCollection(userId, data) {
     return axios.put(
-      `http://localhost:12707/updateAllCollection/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updateAllCollection/${userId}`,
       data
     );
   }
   saveApproval(data) {
-    return axios.post('http://localhost:12707/saveApproval', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveApproval`, data);
   }
   updateApprovalStatus(userId, data) {
     return axios.put(
-      `http://localhost:12707/updateApprovalStatus/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updateApprovalStatus/${userId}`,
       data
     );
   }
   getApprovedStatus() {
-    return axios.get('http://localhost:12707/getApprovedStatus');
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getApprovedStatus`);
   }
   getRejectStatus() {
-    return axios.get('http://localhost:12707/getRejectStatus');
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getRejectStatus`);
   }
   getApprovalList() {
-    return axios.get('http://localhost:12707/getApprovalList');
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getApprovalList`);
   }
   updateCommunicationdetail(userId, data) {
     return http.put(`/updateCommunication/${userId}`, data);
   }
   updateStatutoryDetail(userId, data) {
     return axios.put(
-      `http://localhost:12707/updateStatutoryDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updateStatutoryDetail/${userId}`,
       data
     );
   }
   updateComplianceDetail(userId, data) {
     return axios.put(
-      `http://localhost:12707/updateComplianceDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updateComplianceDetail/${userId}`,
       data
     );
   }
   updateBankDetail(userId, data) {
-    return axios.put(`http://localhost:12707/updateBankDetail/${userId}`, data);
+    return axios.put(`${process.env.REACT_APP_API_URL}:12707/updateBankDetail/${userId}`, data);
   }
   updateFinacialDetail(userId, data) {
     return axios.put(
-      `http://localhost:12707/updateFinacialDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updateFinacialDetail/${userId}`,
       data
     );
   }
@@ -181,46 +181,46 @@ class apiService {
     return http.get('/getAllMasterVendorUserAccess');
   }
   savePeriodicReq(data) {
-    return axios.post('http://localhost:12707/savePeriodicReq', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/savePeriodicReq`, data);
   }
   getPeriodicReq() {
-    return axios.get('http://localhost:12707/getPeriodicReq');
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getPeriodicReq`);
   }
   deletePeriodicReq(id) {
-    return axios.delete(`http://localhost:12707/deletePeriodicReq/${id}`);
+    return axios.delete(`${process.env.REACT_APP_API_URL}:12707/deletePeriodicReq/${id}`);
   }
   updatePeriodicReq(userId, data) {
     return axios.put(
-      `http://localhost:12707/updatePeriodicReq/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/updatePeriodicReq/${userId}`,
       data
     );
   }
   saveVendorApproval(data) {
-    return axios.post('http://localhost:12707/accountStatementApproval', data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/accountStatementApproval`, data);
   }
   updatevendorApprovalStatus(userId, data) {
     return axios.put(
-      `http://localhost:12707/accountStatementApproval/update/${userId}`,
+      `${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/update/${userId}`,
       data
     );
   }
   vendorApprovalList() {
-    return axios.get('http://localhost:12707/accountStatementApproval/findAll');
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/findAll`);
   }
   downloadVendorApprovalList(vendorCode) {
     return axios.get(
-      `http://localhost:12707/accountStatementApproval/exportExcel/${vendorCode}`,
+      `${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/exportExcel/${vendorCode}`,
       { responseType: 'blob' }
     );
   }
   VendorregList() {
-    return axios.get(`http://localhost:12707/vendorCodeDetail/findAll`);
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/vendorCodeDetail/findAll`);
   }
   vendorIdList(vendorId) {
-    return axios.get(`http://localhost:12707/vendorIdList/${vendorId}`);
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/vendorIdList/${vendorId}`);
   }
   AllRejectVendorList() {
-    return axios.get(`http://localhost:12707/AllRejectVendorList`);
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/AllRejectVendorList`);
   }
   //ERP
   getErpVendor_API() {
@@ -234,10 +234,10 @@ class apiService {
   }
   postErpPurchaseOrderList(data) {
     return http.post('/postErpPurchaseOrderList', data);
-  }
+  } 
   postErpPurchaseOrderLine(data) {
     return http.post('/postErpPurchaseOrderLine', data);
-  }
+  } 
   getErpResourcePortalVendorlist() {
     return http.get("/getErpResourcePortalVendorlist");
   }
@@ -259,50 +259,54 @@ class apiService {
 
   downloadCurrentAccountStatement() {
     return axios.get(
-      `http://localhost:12707/downloadCurrentAccountStatement/exportExcel`,
+      `${process.env.REACT_APP_API_URL}:12707/downloadCurrentAccountStatement/exportExcel`,
       { responseType: 'blob' }
     );
   }
 
   downloadAccStatementConfirmation() {
     return axios.get(
-      `http://localhost:12707/downloadAccStatementConfirmation/exportExcel`,
+      `${process.env.REACT_APP_API_URL}:12707/downloadAccStatementConfirmation/exportExcel`,
       { responseType: 'blob' }
     );
   }
 
   approveAccStatementDetail(value) {
-    return axios.post('http://localhost:12707/approveAccStatementDetail', value);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/approveAccStatementDetail`, value);
   }
 
   rejectAccStatementDetail(data, No) {
-    return axios.post(`http://localhost:12707/rejectAccStatementDetail/${No}`, data);
+    return axios.post(`${process.env.REACT_APP_API_URL}:12707/rejectAccStatementDetail/${No}`, data);
   }
   saveMasterLogin(data) {
     return http.post('/saveMasterLogin', data);
+  }
+
+  getErpPurchaseOrder_API() {
+    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getErpPurchaseOrder_API`);
+  }
+
+  getErpPurchaseOrderLineEDD_API() {
+    return http.get(`${process.env.REACT_APP_API_URL}:12707/getErpPurchaseOrderLineEDD_API`);
+  }
+  getPOfileDownload(){
+    return http.get(`${process.env.REACT_APP_API_URL}:12707/getPOfileDownload`, { responseType: 'blob' });
   }
   getErpPurchaseOrdersLists()
   {
     return http.get('/getErpPurchaseOrdersLists');
   }
-
-  saveInvoiceInfo(data) {
-    return axios.post('http://localhost:12707/saveInvoiceInfo', data);
-  }
-
-  getInvoiceinfo() {
-    return http.get('/getInvoiceinfo');
-}
-getPo()
+  
+  getPo()
 {
   return http.get('/getPo');
 }
 updatePo(data) {
-  return axios.put('http://localhost:12707/updatePo', data);
+  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updatePo`, data);
 }
 savePO(data)
 {
-  return axios.post('http://localhost:12707/savePo', data);
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/savePo`, data);
 }
 getMailIdbyvendorNo(No)
 {
@@ -310,15 +314,15 @@ getMailIdbyvendorNo(No)
 }
 updatePoInvoice(data)
 {
-  return axios.put('http://localhost:12707/updatePoInvoice', data);
+  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updatePoInvoice`, data);
 }
 mailApprovePo_Invoice(data)
 {
-  return axios.post('http://localhost:12707/POInvoiceMailApprove', data);
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/POInvoiceMailApprove`, data);
 }
 mailApproveFinance_order(data)
 {
-  return axios.post('http://localhost:12707/mailApprovePo_Invoice', data);
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/mailApprovePo_Invoice`, data);
 }
 updateFinanceInvoiceApproval(data)
 {
@@ -326,7 +330,21 @@ updateFinanceInvoiceApproval(data)
 }
 updateFinanceInvoiceReject(data)
 {
-  return axios.put('http://localhost:12707/updateFinanceInvoiceReject', data);
+  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updateFinanceInvoiceReject`, data);
 }
+
+saveInvoiceInfo(data) {
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveInvoiceInfo`, data);
+}
+
+getInvoiceinfo() {
+  return http.get('/getInvoiceinfo');
+}
+
+postEddDetails(data) {
+  console.log("data------>", data);
+  return http.post('/postEddDetails', data);
+}
+
 }
 export default new apiService();

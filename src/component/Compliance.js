@@ -321,13 +321,13 @@ const ComplianceDetails = () => {
       setfinancialYearEnd(res.data.endDate);
     });
     seturlRPD(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
     );
     seturlCoc(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}COC.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}COC.pdf`
     );
     seturlNDA(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
 

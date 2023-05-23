@@ -153,7 +153,7 @@ function ApprovalRequest() {
             let text = event
             let paths = text.split("/");
             let name = paths[1]
-            fetch(`http://localhost:12707/downloadPdfUploads/${name}`)
+            fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${name}`)
                 .then((response) => {
                     response.blob().then((blob) => {
                         let url = URL.createObjectURL(blob, "application/pdf");

@@ -123,7 +123,7 @@ export default function Invoice(props) {
     if (event) {
       let text = event;
       let fname = text.split("/");
-      fetch(`http://localhost:12707/downloadPdfUploads/${fname[1]}`).then(
+      fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
         (response) => {
           response.blob().then((blob) => {
             let url = URL.createObjectURL(blob, "application/pdf");
