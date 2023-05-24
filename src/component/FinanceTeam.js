@@ -1,56 +1,107 @@
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, Container, ThemeProvider } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
-import { createTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import apiService from "../services/api.service";
-import { React, useEffect, useState } from 'react';
-import AdminHeader from '../common/AdminHeader';
-import Pagination from '@mui/material/Pagination';
-import SideBar from './SideBar';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Modal from "@material-ui/core/Modal";
+import TextField from "@material-ui/core/TextField";
+import TextField1 from "@mui/material/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, Container, ThemeProvider } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import IconButton from "@mui/material/IconButton";
+import Pagination from "@mui/material/Pagination";
+import Typography from "@mui/material/Typography";
+import { createTheme } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
-import Swal from "sweetalert2";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { differenceInDays, format } from "date-fns";
 import { MDBRow } from "mdb-react-ui-kit";
-import { format, differenceInDays } from 'date-fns';
-import axios from 'axios';
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import AdminHeader from "../common/AdminHeader";
+import apiService from "../services/api.service";
+import SideBar from "./SideBar";
+import Grid from "@mui/material/Grid";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 75;
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    position: "fixed",
+    width: 500,
+    height: 200,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    borderRadius: 10,
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
 export default function FinanceTeamApproval() {
   const [expanded, setExpanded] = useState(false);
-  const [Document_Type,setDocument_Type]=useState("");
   const [accordionData, setAccordionData] = useState([]);
+  const [filterData, setfilterData] = useState([]);
+  const [submitDate, setsubmitDate] = useState();
+  const [dueDay, setdueDay] = useState();
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
-const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
-const startIndex = (page - 1) * itemsPerPage;
-const endIndex = page * itemsPerPage;
+  const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
 
+  // const handleChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  //   const number = panel.substring(5);
+  //   const filteredAccordionData = accordionData.filter(
+  //     (item) => item.No === number
+  //   );
+  //   setRows(filteredAccordionData);
+  // };
 
-  const handleChange =
-        (panel) => (event, isExpanded) => {
-          console.log("panel::",panel);
-            setExpanded(isExpanded ? panel : false);          
-            const number = panel.substring(5);
-            const filteredAccordionData = accordionData.filter((item) => item.No === number);
-            
-      console.log("accy677::",number,filteredAccordionData);
-      setRows(filteredAccordionData);
-        };
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const theme = createTheme({
     Link: {
-      textTransform: 'none',
+      textTransform: "none",
     },
   });
 
-  const handleApprovalOnMail= (event,Document_Type) => {
-    console.log("event::",event,Document_Type,rows);
+  const handleApprovalOnMail = (event, Document_Type) => {
+    console.log("event::", event, Document_Type, rows);
     Swal.fire({
       heightAuto: true,
 
@@ -104,53 +155,56 @@ const endIndex = page * itemsPerPage;
         } else if (!location) {
           Swal.showValidationMessage(`Please choose Location.`);
         } else {
-          const purchaseOrder={
-            Document_Type:rows[0].Document_Type,
-            No:event,
-            Order_Date:rows[0].Order_Date,
-            Payment_Terms_Code:rows[0].Payment_Terms_Code,
-            Buy_from_Vendor_Name:rows[0].Buy_from_Vendor_Name,
-            Customer_Name:rows[0].Customer_Name,
-            Buy_from_Vendor_No:rows[0].Buy_from_Vendor_No,
-            Ship_to_Name:rows[0].Ship_to_Name,
-            Amount_to_Vendor:rows[0].Amount_to_Vendor,
-            Billed_Amount:rows[0].Billed_Amount,
-            Unbilled_Amount:rows[0].Unbilled_Amount,
-            level1ApprovalStatus:rows[0].level1ApprovalStatus,
-            username:username,
-            email:email,
-            location:location,
-          }
+          const purchaseOrder = {
+            Document_Type: rows[0].Document_Type,
+            No: event,
+            Order_Date: rows[0].Order_Date,
+            Payment_Terms_Code: rows[0].Payment_Terms_Code,
+            Buy_from_Vendor_Name: rows[0].Buy_from_Vendor_Name,
+            Customer_Name: rows[0].Customer_Name,
+            Buy_from_Vendor_No: rows[0].Buy_from_Vendor_No,
+            Ship_to_Name: rows[0].Ship_to_Name,
+            Amount_to_Vendor: rows[0].Amount_to_Vendor,
+            Billed_Amount: rows[0].Billed_Amount,
+            Unbilled_Amount: rows[0].Unbilled_Amount,
+            level1ApprovalStatus: rows[0].level1ApprovalStatus,
+            username: username,
+            email: email,
+            location: location,
+          };
           apiService.mailApproveFinance_order(purchaseOrder).then((res) => {
-      if (res.data.status === 'success') {
-        Swal.fire({
-          title: "Email sent for approval to proceed",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result)=>{
-          apiService.getPo().then((res) => {
-            const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Approved" && item.level2ApprovalStatus !== "Approved" && item.level2ApprovalStatus !== "Rejected");
-            setAccordionData(filteredData);
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Email sent for approval to proceed",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                apiService.getPo().then((res) => {
+                  const filteredData = res.data.result.filter(
+                    (item) =>
+                      item.level1ApprovalStatus === "Approved" &&
+                      item.level2ApprovalStatus !== "Approved" &&
+                      item.level2ApprovalStatus !== "Rejected"
+                  );
+                  setAccordionData(filteredData);
+                  setfilterData(filteredData);
+                });
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
           });
-        })
-      } else {
-        Swal.fire({
-          title: res.data.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-          })
-         
         }
       },
     });
+  };
 
-
-  }
-
-  const handleApprove = (event,Document_Type) => {
-    console.log("event::",event,Document_Type);
+  const handleApprove = (event, Document_Type) => {
+    console.log("event::", event, Document_Type);
     Swal.fire({
       heightAuto: true,
 
@@ -204,43 +258,45 @@ const endIndex = page * itemsPerPage;
         } else if (!location) {
           Swal.showValidationMessage(`Please choose Location.`);
         } else {
-          console.log("valueofemail::",email,username,location);
-          const purchaseOrder={
-            No:event,
-            level2ApprovalStatus:"Approved",
-            username:username,
-            email:email,
-            location:location
-          }
+          console.log("valueofemail::", email, username, location);
+          const purchaseOrder = {
+            No: event,
+            level2ApprovalStatus: "Approved",
+            username: username,
+            email: email,
+            location: location,
+          };
           apiService.updateFinanceInvoiceApproval(purchaseOrder).then((res) => {
-      if (res.data.msg === 'success') {
-        Swal.fire({
-          title: "Approved Successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result)=>{
-          apiService.getPo().then((res) => {
-            const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Approved" && item.level2ApprovalStatus !== "Approved" && item.level2ApprovalStatus !== "Rejected");
-            setAccordionData(filteredData);
+            if (res.data.msg === "success") {
+              Swal.fire({
+                title: "Approved Successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                apiService.getPo().then((res) => {
+                  const filteredData = res.data.result.filter(
+                    (item) =>
+                      item.level1ApprovalStatus === "Approved" &&
+                      item.level2ApprovalStatus !== "Approved" &&
+                      item.level2ApprovalStatus !== "Rejected"
+                  );
+                  setAccordionData(filteredData);
+                });
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
           });
-        })
-      } else {
-        Swal.fire({
-          title: res.data.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-          })
-         
         }
       },
     });
-
-   
   };
-  const handleReject = (event,Document_Type) => {
-    console.log("Document_Type::",Document_Type);
+  const handleReject = (event, Document_Type) => {
+    console.log("Document_Type::", Document_Type);
     Swal.fire({
       heightAuto: true,
       // title: 'Review vendor details',
@@ -264,32 +320,35 @@ const endIndex = page * itemsPerPage;
           Swal.showValidationMessage(`Please Upload File`);
         } else {
           const data = new FormData();
-          data.append('level2rejectpodoc',rejectdoc);
-          data.append('comment',comment);
-          data.append('No',event);
-          data.append("level2ApprovalStatus","Rejected");
+          data.append("level2rejectpodoc", rejectdoc);
+          data.append("comment", comment);
+          data.append("No", event);
+          data.append("level2ApprovalStatus", "Rejected");
           apiService.updateFinanceInvoiceReject(data).then((res) => {
-      if (res.data.msg === 'success') {
-        Swal.fire({
-          title: "Rejected Successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result)=>{
-          apiService.getPo().then((res) => {
-            const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Approved" && item.level2ApprovalStatus !== "Approved" && item.level2ApprovalStatus !== "Rejected");
-            setAccordionData(filteredData);
+            if (res.data.msg === "success") {
+              Swal.fire({
+                title: "Rejected Successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                apiService.getPo().then((res) => {
+                  const filteredData = res.data.result.filter(
+                    (item) =>
+                      item.level1ApprovalStatus === "Approved" &&
+                      item.level2ApprovalStatus !== "Approved" &&
+                      item.level2ApprovalStatus !== "Rejected"
+                  );
+                  setAccordionData(filteredData);
+                });
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
           });
-        })
-      } else {
-        Swal.fire({
-          title: res.data.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-          })
-     
- 
         }
       },
     });
@@ -315,7 +374,6 @@ const endIndex = page * itemsPerPage;
       type: "string",
       width: 110,
       editable: true,
-      
     },
     {
       field: "Customer_Name",
@@ -380,32 +438,96 @@ const endIndex = page * itemsPerPage;
     //   width: 110,
     //   editable: true,
     // },
-
   ];
   useEffect(() => {
+    getPoList();
+  }, []);
+
+  const getPoList = async () => {
     apiService.getPo().then((res) => {
-      // const rowsWithIds = res.data.result.map((row) => ({
-      //   ...row,
-      //   id: uuidv4(),
-      // }));
-      // setRows(rowsWithIds);
-      const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Approved" && item.level2ApprovalStatus !== "Approved" && item.level2ApprovalStatus !== "Rejected");
+      const filteredData = res.data.result.filter(
+        (item) =>
+          item.level1ApprovalStatus === "Approved" &&
+          item.level2ApprovalStatus !== "Approved" &&
+          item.level2ApprovalStatus !== "Rejected"
+      );
       setAccordionData(filteredData);
     });
-  }, []);
+  };
+
   const handlePageChange = (event, value) => {
     setPage(value);
     setExpanded(1);
   };
 
+  const searchHandler = (e) => {
+    let input;
+    let newFilteredSuggestions;
+
+    if (e.target.value.length > 3) {
+      input = e.currentTarget.value;
+      newFilteredSuggestions = accordionData?.filter(
+        (suggestion) =>
+          suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(
+            input.toLowerCase()
+          ) > -1
+      );
+      setAccordionData(newFilteredSuggestions);
+    } else {
+      getPoList();
+    }
+  };
+
+  const filterHandler = async (e) => {
+    setOpen(false);
+    let newFilteredSuggestions;
+
+    if (submitDate) {
+      newFilteredSuggestions = accordionData?.filter(
+        (suggestion) =>
+          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+      );
+
+      setAccordionData(newFilteredSuggestions);
+    } else {
+    }
+
+    let newFilteredSuggestions2;
+    if (dueDay) {
+      newFilteredSuggestions2 = accordionData?.filter(
+        (suggestion) =>
+          // console.log("differenceInDays",differenceInDays(
+          //   new Date(),
+          //   new Date(suggestion.Order_Date)
+          // )),
+          differenceInDays(new Date(), new Date(suggestion.Order_Date)) ==
+          dueDay
+      );
+
+      console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
+      setAccordionData(newFilteredSuggestions2);
+    } else {
+      // getApprovalList();
+    }
+  };
+
+  const dateHandler = (e) => {
+    console.log("e-------->", e);
+    setsubmitDate(moment(e.$d).format("MMM DD"));
+  };
+
+  const dueDayHandler = (e) => {
+    console.log("setdueDay", e.target.value);
+    setdueDay(e.target.value);
+  };
   return (
     <ThemeProvider theme={theme}>
-      <Box style={{ backgroundColor: '#f3f4f7' }}>
+      <Box style={{ backgroundColor: "#f3f4f7" }}>
         <CssBaseline />
         <AdminHeader team="FinanceTeam" />
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: "flex" }}>
           <SideBar FinanceTeam="PurchaseApproval" />
-          <Box sx={{ mt: 2, width: '100%' }}>
+          <Box sx={{ mt: 2, width: "100%" }}>
             <Container>
               <Accordion className="accordion1" sx={{ mt: 1 }}>
                 <AccordionSummary
@@ -414,11 +536,11 @@ const endIndex = page * itemsPerPage;
                 >
                   <Typography
                     variant="h5"
-                    sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
+                    sx={{ width: "40%", flexShrink: 0, fontWeight: "bold" }}
                   >
                     Approvals
                   </Typography>
-                  <Typography sx={{ width: '36%' }}></Typography>
+                  <Typography sx={{ width: "36%" }}></Typography>
                   <TextField
                     InputProps={{
                       endAdornment: (
@@ -429,6 +551,14 @@ const endIndex = page * itemsPerPage;
                         </InputAdornment>
                       ),
                     }}
+                    onChange={searchHandler}
+                  />
+                  <FilterAltIcon
+                    sx={{ marginTop: 1 }}
+                    onClick={() => {
+                      filterHandler();
+                      handleOpen();
+                    }}
                   />
                 </AccordionSummary>
               </Accordion>
@@ -438,250 +568,280 @@ const endIndex = page * itemsPerPage;
                   id="panel3a-header"
                 >
                   <Typography
-                    sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
+                    sx={{ width: "40%", flexShrink: 0, fontWeight: "bold" }}
                   >
                     Vendor name
                   </Typography>
-                  <Typography sx={{ width: '36%', fontWeight: 'bold' }}>
+                  <Typography sx={{ width: "36%", fontWeight: "bold" }}>
                     Task
                   </Typography>
-                  <Typography sx={{ width: '12%', fontWeight: 'bold' }}>
+                  <Typography sx={{ width: "12%", fontWeight: "bold" }}>
                     Submit date
                   </Typography>
-                  <Typography sx={{ fontWeight: 'bold' }}>Age</Typography>
+                  <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
                 </AccordionSummary>
               </Accordion>
 
               <>
-              {accordionData?.slice(startIndex, endIndex).map((item, key)  => <>
-              
- <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
-   <AccordionSummary
-      expandIcon={<ExpandMoreIcon />}
-      aria-controls={`${item.No}-content`}
-      id={`${item.No}-header`}
-    >
-         <IconButton
-                        sx={{
-                          p: 0,
-                          width: "18%",
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name?.charAt(0)}</Typography>}
-                        <Typography >&nbsp;{item.Buy_from_Vendor_Name}</Typography>
-                      </IconButton>
-                      <Typography
-                        textAlign="center"
-                        sx={{
-                          width: "55%",
-                          flexShrink: 0,
-                          my: "auto",
-                          fontWeight: "bold",
-                        }}
-                      >
-                      {item.Document_Type === "Order" ? "Review PO" : "Review Invoice"}
-                      </Typography>
-                      <Typography
-                        textAlign="right"
-                        sx={{
-                          width: "10%",
-                          flexShrink: 0,
-                          my: "auto",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {format(new Date(item.Order_Date), 'dd MMM')}
-                       
-                      </Typography>
-                      <Typography
-                        textAlign="right"
-                        sx={{
-                          width: "10%",
-                          flexShrink: 0,
-                          my: "auto",
-                          fontWeight: "bold",
-                        }}
-                      >
-                      {differenceInDays(new Date(), new Date(item.Order_Date))} {differenceInDays(new Date(), new Date(item.Order_Date)) > 1 ? "Days" : "Day"}
-                      </Typography>
-    </AccordionSummary>
-    <AccordionDetails>
-    <Box>
-      <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
-      <Box
-        sx={{
-          height: 300,
-          width: "100%",
-
-          "& .super-app-theme--header": {
-            backgroundColor: "#808080",
-            color: "#ffffff",
-          },
-          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
-            fontSize: 15,
-            fontWeight: "bold",
-          },
-          ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
-            fontSize: 13,
-          },
-          ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-            {
-              backgroundColor: "#330033",
-              color: "#ffffff",
-            },
-          ".css-h4y409-MuiList-root": {
-            display: "grid",
-          },
-          ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-            {
-              backgroundColor: "#808080",
-            },
-        }}
-      >
-        <DataGrid
-          sx={{
-            boxShadow: 10,
-            borderRadius: 0,
-            fontSize: "14px",
-          }}
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          //   checkboxSelection="none"
-          disableSelectionOnClick
-          experimentalFeatures={{ newEditingApi: false}}
-        />
-      </Box>
-      <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
-  <MDBRow className="mb-4">
-    <div className="float-end">
-      {item.Document_Type === "Order" ? (
-        <>
-            <button
-          type="button"
-          className="btn basicbtn btn-md m-3"
-          onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
-        >
-          Send
-        </button>
-        </>
-      ) : (
-        <>
-        <button
-            type="button"
-            onClick={(e) => handleReject(item.No, item.Document_Type)}
-            className="btn basicbtn btn-md m-3"
-          >
-            Reject
-          </button>
-
-          <button
-            type="button"
-            className="btn basicbtn btn-md m-3"
-            onClick={(e) => handleApprove(item.No, item.Document_Type)}
-          >
-            Approve
-          </button>
-       </>
-      )}
-    </div>
-  </MDBRow>
-</div>
- 
-    </Box>
-</AccordionDetails>
-  </Accordion>
-  </>)}
-
-                {/* <Accordion
-                  expanded={expanded === 'panel'}
-                  onChange={handleChange('panel')}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panelbh-content"
-                    id={'panel1bh-header'}
-                  >
-                    <IconButton
-                      sx={{
-                        p: 0,
-                        width: '18%',
-                        justifyContent: 'flex-start',
-                      }}
+                {accordionData?.slice(startIndex, endIndex).map((item, key) => (
+                  <>
+                    <Accordion
+                      expanded={expanded === "panel" + item.No}
+                      key={key}
+                      onChange={handleChange("panel" + item.No)}
                     >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/2.jpg"
-                      />
-                      <Typography>&nbsp;{'xyz'}</Typography>
-                    </IconButton>
-                    {Document_Type === 'order' ? (
-    <Typography
-      textAlign="center"
-      sx={{
-        width: '55%',
-        flexShrink: 0,
-        my: 'auto',
-        fontWeight: 'bold',
-      }}
-    >
-      Review Po
-    </Typography>
-  ) : (
-    <Typography
-      textAlign="center"
-      sx={{
-        width: '55%',
-        flexShrink: 0,
-        my: 'auto',
-        fontWeight: 'bold',
-      }}
-    >
-      Review Invoice
-    </Typography>
-  )}
-                    <Typography
-                      textAlign="right"
-                      sx={{
-                        width: '10%',
-                        flexShrink: 0,
-                        my: 'auto',
-                        fontWeight: 'bold',
-                        ml: 2,
-                      }}
-                    >
-                      Dec 30
-                    </Typography>
-                    <Typography
-                      textAlign="right"
-                      sx={{
-                        width: '10%',
-                        flexShrink: 0,
-                        my: 'auto',
-                        fontWeight: 'bold',
-                        ml: 2,
-                      }}
-                    >
-                      2 days
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <PurchaseOrder />
-                  </AccordionDetails>
-                </Accordion> */}
-                <Pagination  style={{ float: 'right', marginTop: '1rem' }}
-            count={pageCount}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-          />
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`${item.No}-content`}
+                        id={`${item.No}-header`}
+                      >
+                        <IconButton
+                          sx={{
+                            p: 0,
+                            width: "18%",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          {item.image && item.image !== "null" ? (
+                            <Avatar
+                              alt="Remy Sharp"
+                              src={`data:image/jpeg;base64, ${item.image}`}
+                            />
+                          ) : (
+                            <Typography
+                              variant="h4"
+                              sx={{ textTransform: "uppercase" }}
+                            >
+                              {" "}
+                              {item.Buy_from_Vendor_Name?.charAt(0)}
+                            </Typography>
+                          )}
+                          <Typography>
+                            &nbsp;{item.Buy_from_Vendor_Name}
+                          </Typography>
+                        </IconButton>
+                        <Typography
+                          textAlign="center"
+                          sx={{
+                            width: "55%",
+                            flexShrink: 0,
+                            my: "auto",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.Document_Type === "Order"
+                            ? "Review PO"
+                            : "Review Invoice"}
+                        </Typography>
+                        <Typography
+                          textAlign="right"
+                          sx={{
+                            width: "10%",
+                            flexShrink: 0,
+                            my: "auto",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {format(new Date(item.Order_Date), "dd MMM")}
+                        </Typography>
+                        <Typography
+                          textAlign="right"
+                          sx={{
+                            width: "10%",
+                            flexShrink: 0,
+                            my: "auto",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {differenceInDays(
+                            new Date(),
+                            new Date(item.Order_Date)
+                          )}{" "}
+                          {differenceInDays(
+                            new Date(),
+                            new Date(item.Order_Date)
+                          ) > 1
+                            ? "Days"
+                            : "Day"}
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Box>
+                          <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+                            Purchase Order
+                          </Typography>
+                          <Box
+                            sx={{
+                              height: 300,
+                              width: "100%",
+
+                              "& .super-app-theme--header": {
+                                backgroundColor: "#808080",
+                                color: "#ffffff",
+                              },
+                              "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                                fontSize: 15,
+                                fontWeight: "bold",
+                              },
+                              ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent":
+                                {
+                                  fontSize: 13,
+                                },
+                              ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                                {
+                                  backgroundColor: "#330033",
+                                  color: "#ffffff",
+                                },
+                              ".css-h4y409-MuiList-root": {
+                                display: "grid",
+                              },
+                              ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                                {
+                                  backgroundColor: "#808080",
+                                },
+                            }}
+                          >
+                            <DataGrid
+                              sx={{
+                                boxShadow: 10,
+                                borderRadius: 0,
+                                fontSize: "14px",
+                              }}
+                              rows={rows}
+                              columns={columns}
+                              pageSize={5}
+                              rowsPerPageOptions={[5]}
+                              //   checkboxSelection="none"
+                              disableSelectionOnClick
+                              experimentalFeatures={{ newEditingApi: false }}
+                            />
+                          </Box>
+                          <div
+                            className="d-flex justify-content-end"
+                            sx={{ ml: 10 }}
+                          >
+                            <MDBRow className="mb-4">
+                              <div className="float-end">
+                                {item.Document_Type === "Order" ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      className="btn basicbtn btn-md m-3"
+                                      onClick={(e) =>
+                                        handleApprovalOnMail(
+                                          item.No,
+                                          item.Document_Type
+                                        )
+                                      }
+                                    >
+                                      Send
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={(e) =>
+                                        handleReject(
+                                          item.No,
+                                          item.Document_Type
+                                        )
+                                      }
+                                      className="btn basicbtn btn-md m-3"
+                                    >
+                                      Reject
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      className="btn basicbtn btn-md m-3"
+                                      onClick={(e) =>
+                                        handleApprove(
+                                          item.No,
+                                          item.Document_Type
+                                        )
+                                      }
+                                    >
+                                      Approve
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </MDBRow>
+                          </div>
+                        </Box>
+                      </AccordionDetails>
+                    </Accordion>
+                  </>
+                ))}
+
+                <Pagination
+                  style={{ float: "right", marginTop: "1rem" }}
+                  count={pageCount}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
               </>
             </Container>
           </Box>
         </Box>
       </Box>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <Box>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontSize: "16px", fontWeight: 600 }}
+            >
+              Filter Results For Approval
+            </Typography>
+
+            <HighlightOffIcon
+              sx={{ float: "right", marginTop: "-31px", fontSize: "20px" }}
+              onClick={() => {
+                setOpen(false);
+              }}
+            />
+          </Box>
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Submit Date" onChange={dateHandler} />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField1
+                id="outlined-number"
+                placeholder="Due Day"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(e) => dueDayHandler(e)}
+                sx={{ top: "9px" }}
+              />
+            </Grid>
+          </Grid>
+
+          <Button
+            variant="contained"
+            sx={{ float: "right", top: "25px" }}
+            onClick={filterHandler}
+          >
+            Apply Filter
+          </Button>
+        </div>
+      </Modal>
     </ThemeProvider>
   );
 }

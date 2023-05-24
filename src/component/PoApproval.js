@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import apiService from "../services/api.service";
-import { React, useEffect, useState } from 'react';
+import React ,{ useEffect, useState } from 'react';
 import AdminHeader from '../common/AdminHeader';
 import { v4 as uuidv4 } from "uuid";
 import PurchaseOrder from './PurchaseOrder';
@@ -23,10 +23,51 @@ import Swal from "sweetalert2";
 import { MDBRow } from "mdb-react-ui-kit";
 import { format, differenceInDays } from 'date-fns';
 import axios from 'axios';
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import Button from "@mui/material/Button";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import moment from "moment";
+import Grid from "@mui/material/Grid";
+import TextField1 from "@mui/material/TextField";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 75;
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    position: "fixed",
+    width: 500,
+    height: 200,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    borderRadius: 10,
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
 export default function PoApproval() {
   const [expanded, setExpanded] = useState(false);
   const [Document_Type, setDocument_Type] = useState("");
   const [accordionData, setAccordionData] = useState([]);
+  const [dueDay, setdueDay] = useState();
+  const [submitDate, setsubmitDate] = useState();
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
   const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
@@ -34,26 +75,46 @@ export default function PoApproval() {
   const endIndex = page * itemsPerPage;
 
 
-  const handleChange =
-    (panel) => (event, isExpanded) => {
-      console.log("panel::", panel);
-      setExpanded(isExpanded ? panel : false);
-      const number = panel.substring(5);
-      const filteredAccordionData = accordionData.filter((item) => item.No === number);
+  // const handleChange =
+  //   (panel) => (event, isExpanded) => {
+  //     console.log("panel::", panel);
+  //     setExpanded(isExpanded ? panel : false);
+  //     const number = panel.substring(5);
+  //     const filteredAccordionData = accordionData.filter((item) => item.No === number);
 
-      console.log("accy677::", number, filteredAccordionData);
-      setRows(filteredAccordionData);
+  //     console.log("accy677::", number, filteredAccordionData);
+  //     setRows(filteredAccordionData);
 
-      // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-      // setAccordionData(filteredData);
-    };
+  //     // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+  //     // setAccordionData(filteredData);
+  //   };
+
+  // const theme = createTheme({
+  //   Link: {
+  //     textTransform: 'none',
+  //   },
+  // });
+
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const theme = createTheme({
     Link: {
-      textTransform: 'none',
+      textTransform: "none",
     },
   });
-
+  
   const handleApprove = (event, Document_Type) => {
     //savePo
 
@@ -626,6 +687,10 @@ export default function PoApproval() {
     },
   ];
   useEffect(() => {
+    getPoList()
+  }, []);
+
+  const getPoList = async () => {
     Promise.all([apiService.getInvoiceinfo()]).then(
       ([invoiceRes]) => {
         // Process getPo response
@@ -735,23 +800,69 @@ export default function PoApproval() {
         setAccordionData(rowsWithIds);
       }
     );
-  }, []);
 
-  // useEffect(() => {
-  //   apiService.getErpPurchaseOrdersLists().then((res) => {
-  //     const rowsWithIds = res.data.result.map((row) => ({
-  //       ...row,
-  //       id: uuidv4(),
-  //     }));
-  //     setRows(rowsWithIds);
-  //     console.log("data::")
-  //     const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-  //     setAccordionData(rowsWithIds);
-  //   });
-  // }, []);
+  }
   const handlePageChange = (event, value) => {
     setPage(value);
     setExpanded(1);
+  };
+
+  const searchHandler = (e) => {
+    let input;
+    let newFilteredSuggestions;
+
+    if (e.target.value) {
+      input = e.currentTarget.value;
+      newFilteredSuggestions = accordionData?.filter(
+        (suggestion) =>
+          suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(input.toLowerCase()) > -1
+      );
+      setAccordionData(newFilteredSuggestions);
+    } else {
+      getPoList();
+    }
+  };
+
+  const filterHandler = async (e) => {
+    setOpen(false);
+    let newFilteredSuggestions;
+
+    if (submitDate) {
+      newFilteredSuggestions = accordionData?.filter(
+        (suggestion) =>
+          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+      );
+
+      setAccordionData(newFilteredSuggestions);
+    } else {
+    }
+
+    let newFilteredSuggestions2;
+    if (dueDay) {
+      newFilteredSuggestions2 = accordionData?.filter(
+        (suggestion) =>
+          // console.log("differenceInDays",differenceInDays(
+          //   new Date(),
+          //   new Date(suggestion.Order_Date)
+          // )),
+          differenceInDays(new Date(), new Date(suggestion.Order_Date)) ==
+          dueDay
+      );
+
+      console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
+      setAccordionData(newFilteredSuggestions2);
+    } else {
+      // getApprovalList();
+    }
+  };
+
+  const dateHandler = (e) => {
+    setsubmitDate(moment(e.$d).format("MMM DD"));
+  };
+
+  const dueDayHandler = (e) => {
+    console.log("setdueDay", e.target.value);
+    setdueDay(e.target.value);
   };
 
   return (
@@ -784,6 +895,14 @@ export default function PoApproval() {
                           </IconButton>
                         </InputAdornment>
                       ),
+                    }}
+                    onChange={searchHandler}
+                  />
+                  <FilterAltIcon
+                    sx={{ marginTop: 1 }}
+                    onClick={() => {
+                      filterHandler();
+                      handleOpen();
                     }}
                   />
                 </AccordionSummary>
@@ -1018,82 +1137,7 @@ export default function PoApproval() {
                   </Accordion>
                 </>)}
 
-                {/* <Accordion
-                  expanded={expanded === 'panel'}
-                  onChange={handleChange('panel')}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panelbh-content"
-                    id={'panel1bh-header'}
-                  >
-                    <IconButton
-                      sx={{
-                        p: 0,
-                        width: '18%',
-                        justifyContent: 'flex-start',
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/2.jpg"
-                      />
-                      <Typography>&nbsp;{'xyz'}</Typography>
-                    </IconButton>
-                    {Document_Type === 'order' ? (
-    <Typography
-      textAlign="center"
-      sx={{
-        width: '55%',
-        flexShrink: 0,
-        my: 'auto',
-        fontWeight: 'bold',
-      }}
-    >
-      Review Po
-    </Typography>
-  ) : (
-    <Typography
-      textAlign="center"
-      sx={{
-        width: '55%',
-        flexShrink: 0,
-        my: 'auto',
-        fontWeight: 'bold',
-      }}
-    >
-      Review Invoice
-    </Typography>
-  )}
-                    <Typography
-                      textAlign="right"
-                      sx={{
-                        width: '10%',
-                        flexShrink: 0,
-                        my: 'auto',
-                        fontWeight: 'bold',
-                        ml: 2,
-                      }}
-                    >
-                      Dec 30
-                    </Typography>
-                    <Typography
-                      textAlign="right"
-                      sx={{
-                        width: '10%',
-                        flexShrink: 0,
-                        my: 'auto',
-                        fontWeight: 'bold',
-                        ml: 2,
-                      }}
-                    >
-                      2 days
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <PurchaseOrder />
-                  </AccordionDetails>
-                </Accordion> */}
+
                 <Pagination style={{ float: 'right', marginTop: '1rem' }}
                   count={pageCount}
                   page={page}
@@ -1105,6 +1149,61 @@ export default function PoApproval() {
           </Box>
         </Box>
       </Box>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <Box>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontSize: "16px", fontWeight: 600 }}
+            >
+              Filter Results For Approval
+            </Typography>
+
+            <HighlightOffIcon
+              sx={{ float: "right", marginTop: "-31px", fontSize: "20px" }}
+              onClick={() => {
+                setOpen(false);
+              }}
+            />
+          </Box>
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Submit Date" onChange={dateHandler} />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField1
+                id="outlined-number"
+                placeholder="Due Day"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(e) => dueDayHandler(e)}
+                sx={{ top: "9px" }}
+              />
+            </Grid>
+          </Grid>
+
+          <Button
+            variant="contained"
+            sx={{ float: "right", top: "25px" }}
+            onClick={filterHandler}
+          >
+            Apply Filter
+          </Button>
+        </div>
+      </Modal>
     </ThemeProvider>
   );
 }
