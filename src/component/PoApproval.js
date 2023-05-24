@@ -399,17 +399,331 @@ export default function PoApproval() {
     // },
 
   ];
+  const Invoicecolumns = [
+    { field: "No", headerName: "PO Number", width: 90 },
+    // {
+    //   field: "Document_Type",
+    //   headerName: "Document Type",
+    //   width: 110,
+    // },
+    {
+      field: "docDate",
+      headerName: "DocDate",
+      width: 110,
+    },
+    {
+      field: "vendorInvoiceNo",
+      headerName: "Vendor Invoice No ",
+      width: 210,
+      // editable: true,
+      // renderCell: (params) => {
+      //   return (
+      //     <>
+      //       <TextField
+      //         // onChange={(event) => handleInvoiceChange(event, params.row)}
+      //       >
+      //         {params.row.vendorInvoiceNo}{" "}
+      //       </TextField>
+      //     </>
+      //   );
+      // },
+    },
+    {
+      field: "srNo",
+      headerName: "Sr No of Po",
+      type: "string",
+      width: 110,
+
+    },
+    {
+      field: "glCode",
+      headerName: "Item/GL Code",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "startDate",
+      headerName: "Start Date",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "endDate",
+      headerName: "End Date",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "qty",
+      headerName: "Quantity",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "qtyDelivered",
+      headerName: "Quantity delivered",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "rate",
+      headerName: "Rate",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "baseAmount",
+      headerName: "Base amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "taxAmount",
+      headerName: "Tax amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "grossAmount",
+      headerName: "Gross amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "eWayBill",
+      headerName: "E-Way Bill",
+      width: 120,
+      // renderCell: rendereWayBill,
+    },
+    {
+      field: "transportDocument",
+      headerName: "Transport Document",
+      type: "number",
+      width: 120,
+      // renderCell: rendertransportDocument,
+    },
+    {
+      field: "miscDocs",
+      headerName: "MISC Docs",
+      type: "number",
+      width: 110,
+      // renderCell: rendermiscDocs,
+    },
+    {
+      field: "boe",
+      headerName: "BOE",
+      type: "number",
+      width: 110,
+      // renderCell: renderboe,
+    },
+    {
+      field: "awb",
+      headerName: "AWB",
+      type: "number",
+      width: 110,
+      // renderCell: renderawb,
+    },
+    {
+      field: "serviceAgreement",
+      headerName: "Service Agreement",
+      type: "number",
+      width: 110,
+      // renderCell: renderserviceAgreement,
+    },
+    {
+      field: "lic",
+      headerName: "LIC",
+      type: "number",
+      width: 110,
+      // renderCell: renderlic,
+    },
+    {
+      field: "licDeliveryProof",
+      headerName: "LIC Delivery Proof",
+      type: "number",
+      width: 110,
+      // renderCell: renderlicDeliveryProof,
+    },
+    {
+      field: "warrantyCertificate",
+      headerName: "Warranty Certificate",
+      type: "number",
+      width: 110,
+      // renderCell: renderwarrantyCertificate,
+    },
+    {
+      field: "irWcc",
+      headerName: "IR/WCC",
+      type: "number",
+      width: 110,
+      // renderCell: renderirWcc,
+    },
+    {
+      field: "signOffFromCustomer",
+      headerName: "Sign off from customer",
+      type: "number",
+      width: 110,
+      // renderCell: rendersignOffFromCustomer,
+    },
+    {
+      field: "coc",
+      headerName: "COC",
+      type: "number",
+      width: 110,
+      // renderCell: rendercoc,
+    },
+    {
+      field: "esiPayementChallan",
+      headerName: "ESI Payment Challan",
+      type: "number",
+      width: 110,
+      // renderCell: renderesiPayementChallan,
+    },
+    {
+      field: "pfPayementChallan",
+      headerName: "PF Payment Challan",
+      type: "number",
+      width: 110,
+      // renderCell: renderpfPayementChallan,
+    },
+    {
+      field: "employeeSummary",
+      headerName: "Employee Summary",
+      type: "number",
+      width: 110,
+      // renderCell: renderemployeeSummary,
+    },
+    {
+      field: "arWorking",
+      headerName: "AR Working",
+      type: "number",
+      width: 110,
+      // renderCell: renderarWorking,
+    },
+    {
+      field: "deliveryProof",
+      headerName: "Deliver Proof",
+      type: "number",
+      width: 110,
+      // renderCell: renderdeliveryProof,
+    },
+    {
+      field: "calculation",
+      headerName: "Calculation",
+      type: "number",
+      width: 110,
+      // renderCell: rendercalculation,
+    },
+    {
+      field: "customExRate",
+      headerName: "Custom's EX Rate",
+      type: "number",
+      width: 110,
+      // renderCell: rendercustomExRate,
+    },
+  ];
   useEffect(() => {
-    Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
-      ([poRes, erpRes]) => {
+    Promise.all([apiService.getInvoiceinfo()]).then(
+      ([invoiceRes]) => {
         // Process getPo response
-        const poValues = poRes.data.result.map((item) => item.No);
-        const filteredErpData = erpRes.data.result.filter(
-          (item) => !poValues.includes(item.No)
+        // const poValues = poRes.data.result.map((item) => item.No); // Modify 'someValue' to the actual property name you want to filter on
+        // const filteredErpData = erpRes.data.result.filter(
+        //   (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
+        // );
+        const invoiceValues = invoiceRes.data.result
+        let erpDATA = [{
+          Document_Type: "Order",
+          No: "BGL202223PO0007",
+          Posting_Date: "2023-01-23T00:00:00",
+          Case_Id_No: "IN603779",
+          Buy_from_Vendor_No: "VLOC-2948",
+          Order_Address_Code: "",
+          Buy_from_Vendor_Name: "PROCURRI INDIA PRIVATE LIMITED",
+          Vendor_Authorization_No: "",
+          Buy_from_Post_Code: "560001",
+          Buy_from_Country_Region_Code: "IND",
+          Buy_from_Address: "Office No.312/3 Barton Centre, Mahatma Gandhi Road",
+          Buy_from_Address_2: "Bangalore, Karnataka",
+          Buy_from_Contact: "",
+          Pay_to_Vendor_No: "VLOC-2948",
+          Pay_to_Name: "PROCURRI INDIA PRIVATE LIMITED",
+          Pay_to_Post_Code: "560001",
+          Pay_to_Country_Region_Code: "IND",
+          Pay_to_Contact: "",
+          Ship_to_Code: "",
+          Requested_Receipt_Date: "0001-01-01T00:00:00",
+          Expected_Receipt_Date: "0001-01-01T00:00:00",
+          Promised_Receipt_Date: "2022-11-25T00:00:00",
+          Ship_to_Name: "HITACHI SYSTEMS INDIA PVT.LTD.",
+          Ship_to_Post_Code: "560025",
+          Ship_to_Country_Region_Code: "IND",
+          Ship_to_Contact: "KM Akshay,08022456167,9686446905",
+          Gen_Journal_Template_Code: "BGL-PO",
+          Purchase_Order_Type: "Spares",
+          Purchase_Order_Sub_Categories: "Product Support (H/w & S/w)",
+          PO_Status: "Active",
+          Shortcut_Dimension_1_Code: "11000",
+          Shortcut_Dimension_2_Code: "DEL201508SOSLS0002",
+          Turn_Over_Branch: "11000",
+          Location_Code: "BGL-AMC",
+          Purchaser_Code: "DELSARG",
+          Bid_No: "NIL",
+          Assigned_User_ID: "",
+          Currency_Code: "",
+          Document_Date: "2023-01-20T00:00:00",
+          Status: "Released",
+          Workflow_Status: "Approved",
+          MSME_Vendor_Type: "Registered",
+          Payment_Terms_Code: "30-D",
+          Due_Date: "2023-02-19T00:00:00",
+          Payment_Discount_Percent: "0",
+          Payment_Method_Code: "",
+          Shipment_Method_Code: "",
+          Job_Queue_Status: " ",
+          Unbilled_Amount: "21000",
+          Billed_Amount: "0",
+          Amount: "21000",
+          Amount_to_Vendor: "24780",
+          GST_Vendor_Type: "Registered",
+          Created_by_ID: "MCIPL\\Y0017",
+          Approver_Person_User_ID: "MCIPL\\M1546",
+          Order_Date: "2022-11-24T00:00:00",
+          CRM_ID: "",
+          Salesperson_Code: "",
+          Salesperson_Name: "",
+          Pre_Sales_Person_Code: "",
+          Pre_Salesperson_Name: "",
+          Project_Manager_EMP_Code: "",
+          Project_Manager_Name: "",
+          Remarks: "",
+          Customer_Name: "",
+          Customer_Add1: "",
+          Customer_Add2: "",
+          Customer_GST: "",
+          Contact_Person_Name: "",
+          Contact_No: "",
+          Customer_Email: "",
+          ETag: "64;JgAAAACLAQAAAAJ7/0IARwBMADIAMAAyADIAMgAzAFAATwAwADAAMAA3AAAAAAA=10;59647679890;"
+        }]
+        let filteredErpData = [];
+        filteredErpData.push(erpDATA[0])
+        console.log("erpDATA[0]--------------", erpDATA[0])
+        let filteredErpData2 = filteredErpData.filter(
+          (item) => item.PO_Status === 'Active' // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
         );
+        let arrayData = []
+        for (let x in filteredErpData2) {
+          arrayData.push(filteredErpData2[x])
+        }
+        for (let y in invoiceValues) {
+          arrayData.push(invoiceValues[y])
+        }
 
         // Process getErpPurchaseOrdersLists response
-        const rowsWithIds = filteredErpData.map((row) => ({
+        const rowsWithIds = arrayData.map((row) => ({
           ...row,
           id: uuidv4(),
         }));
@@ -510,8 +824,8 @@ export default function PoApproval() {
                           justifyContent: "flex-start",
                         }}
                       >
-                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name?.charAt(0)}</Typography>}
-                        <Typography >&nbsp;{item.Buy_from_Vendor_Name}</Typography>
+                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name.charAt(0) : item.vendorName.charAt(0)}</Typography>}
+                        <Typography >&nbsp;{item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name : item.vendorName}</Typography>
                       </IconButton>
                       <Typography
                         textAlign="center"
@@ -533,7 +847,7 @@ export default function PoApproval() {
                           fontWeight: "bold",
                         }}
                       >
-                        {format(new Date(item.Order_Date), 'dd MMM')}
+                        {/* {format(new Date(item.Order_Date), 'dd MMM')} */}
 
                       </Typography>
                       <Typography
@@ -548,77 +862,159 @@ export default function PoApproval() {
                         {differenceInDays(new Date(), new Date(item.Order_Date))} {differenceInDays(new Date(), new Date(item.Order_Date)) > 1 ? "Days" : "Day"}
                       </Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
-                      <Box>
-                        <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
-                        <Box
-                          sx={{
-                            height: 300,
-                            width: "100%",
-
-                            "& .super-app-theme--header": {
-                              backgroundColor: "#808080",
-                              color: "#ffffff",
-                            },
-                            "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
-                              fontSize: 15,
-                              fontWeight: "bold",
-                            },
-                            ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
-                              fontSize: 13,
-                            },
-                            ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-                            {
-                              backgroundColor: "#330033",
-                              color: "#ffffff",
-                            },
-                            ".css-h4y409-MuiList-root": {
-                              display: "grid",
-                            },
-                            ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
-                            {
-                              backgroundColor: "#808080",
-                            },
-                          }}
-                        >
-                          <DataGrid
+                    {item.Document_Type === 'Order' ?
+                      <AccordionDetails>
+                        <Box>
+                          <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
+                          <Box
                             sx={{
-                              boxShadow: 10,
-                              borderRadius: 0,
-                              fontSize: "14px",
-                            }}
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            //   checkboxSelection="none"
-                            disableSelectionOnClick
-                            experimentalFeatures={{ newEditingApi: false }}
-                          />
-                        </Box>
-                        <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
-                          <MDBRow className="mb-4">
-                            <div className="float-end">
-                              <button
-                                type="button"
-                                onClick={(e) => handleReject(item.No, item.Document_Type)}
-                                className="btn basicbtn btn-md m-3"
-                              >
-                                Reject
-                              </button>
+                              height: 300,
+                              width: "100%",
 
-                              <button
+                              "& .super-app-theme--header": {
+                                backgroundColor: "#808080",
+                                color: "#ffffff",
+                              },
+                              "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                                fontSize: 15,
+                                fontWeight: "bold",
+                              },
+                              ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+                                fontSize: 13,
+                              },
+                              ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#330033",
+                                color: "#ffffff",
+                              },
+                              ".css-h4y409-MuiList-root": {
+                                display: "grid",
+                              },
+                              ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#808080",
+                              },
+                            }}
+                          >
+                            <DataGrid
+                              sx={{
+                                boxShadow: 10,
+                                borderRadius: 0,
+                                fontSize: "14px",
+                              }}
+                              rows={rows}
+                              columns={columns}
+                              pageSize={5}
+                              rowsPerPageOptions={[5]}
+                              //   checkboxSelection="none"
+                              disableSelectionOnClick
+                              experimentalFeatures={{ newEditingApi: false }}
+                            />
+                          </Box>
+                          <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
+                            <MDBRow className="mb-4">
+                              <div className="float-end">
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleReject(item.No, item.Document_Type)}
+                                  className="btn basicbtn btn-md m-3"
+                                >
+                                  Reject
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="btn basicbtn btn-md m-3"
+                                  onClick={(e) => handleApprove(item.No, item.Document_Type)}
+                                >
+                                  Approve
+                                </button>
+                              </div>
+                            </MDBRow>
+                          </div>
+                        </Box>
+                      </AccordionDetails>
+                      : <></>}
+                    {item.Document_Type === 'Invoice' ?
+                      <AccordionDetails>
+                        <Box>
+                          {/* <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography> */}
+                          <Box
+                            sx={{
+                              height: 300,
+                              width: "100%",
+
+                              "& .super-app-theme--header": {
+                                backgroundColor: "#808080",
+                                color: "#ffffff",
+                              },
+                              "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                                fontSize: 15,
+                                fontWeight: "bold",
+                              },
+                              ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+                                fontSize: 13,
+                              },
+                              ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#330033",
+                                color: "#ffffff",
+                              },
+                              ".css-h4y409-MuiList-root": {
+                                display: "grid",
+                              },
+                              ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#808080",
+                              },
+                            }}
+                          >
+                            <DataGrid
+                              sx={{
+                                boxShadow: 10,
+                                borderRadius: 0,
+                                fontSize: "14px",
+                              }}
+                              rows={rows}
+                              columns={Invoicecolumns}
+                              pageSize={5}
+                              rowsPerPageOptions={[5]}
+                              //   checkboxSelection="none"
+                              disableSelectionOnClick
+                              experimentalFeatures={{ newEditingApi: true }}
+                            />
+                          </Box>
+                          <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
+                            <MDBRow className="mb-4">
+                              <div className="float-end">
+                                {/* <button
                                 type="button"
+                                // onClick={(e) => handlesave(item.No, item.Document_Type)}
                                 className="btn basicbtn btn-md m-3"
-                                onClick={(e) => handleApprove(item.No, item.Document_Type)}
                               >
-                                Approve
-                              </button>
-                            </div>
-                          </MDBRow>
-                        </div>
-                      </Box>
-                    </AccordionDetails>
+                                Save
+                              </button> */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleReject(item.No, item.Document_Type)}
+                                  className="btn basicbtn btn-md m-3"
+                                >
+                                  Reject
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="btn basicbtn btn-md m-3"
+                                  onClick={(e) => handleApprove(item.No, item.Document_Type)}
+                                >
+                                  Approve
+                                </button>
+                              </div>
+                            </MDBRow>
+                          </div>
+                        </Box>
+                      </AccordionDetails>
+                      : <></>}
                   </Accordion>
                 </>)}
 
