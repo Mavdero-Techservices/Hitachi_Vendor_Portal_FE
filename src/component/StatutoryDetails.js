@@ -484,11 +484,11 @@ export default function Statutory(props) {
     (async () => {
       await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
         setredirectUrl(res.data);
-        let cName = res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : ""
+        let cName = res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : ""
         if (cName !== 'IN' && cName !== null && cName !== undefined) {
           setValues({ PAN_No: 'N/A' })
         }
-        setCountryName(res.data.basicInfo ? res.data.basicInfo[0].Country_Region_Code : "")
+        setCountryName(res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : "")
       }).then((result) => {
       })
 
