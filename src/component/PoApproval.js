@@ -75,19 +75,19 @@ export default function PoApproval() {
   const endIndex = page * itemsPerPage;
 
 
-  // const handleChange =
-  //   (panel) => (event, isExpanded) => {
-  //     console.log("panel::", panel);
-  //     setExpanded(isExpanded ? panel : false);
-  //     const number = panel.substring(5);
-  //     const filteredAccordionData = accordionData.filter((item) => item.No === number);
+  const handleChange =
+    (panel) => (event, isExpanded) => {
+      console.log("panel::", panel);
+      setExpanded(isExpanded ? panel : false);
+      const number = panel.substring(5);
+      const filteredAccordionData = accordionData.filter((item) => item.No === number);
 
-  //     console.log("accy677::", number, filteredAccordionData);
-  //     setRows(filteredAccordionData);
+      console.log("accy677::", number, filteredAccordionData);
+      setRows(filteredAccordionData);
 
-  //     // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-  //     // setAccordionData(filteredData);
-  //   };
+      // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+      // setAccordionData(filteredData);
+    };
 
   // const theme = createTheme({
   //   Link: {
@@ -105,9 +105,9 @@ export default function PoApproval() {
     setOpen(false);
   };
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  // const handleChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
 
   const theme = createTheme({
     Link: {
