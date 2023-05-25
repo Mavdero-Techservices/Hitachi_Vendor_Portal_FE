@@ -850,7 +850,7 @@ export default function FinanceTeamApproval() {
                             fontWeight: "bold",
                           }}
                         >
-                          {/* {format(new Date(item.Order_Date), "dd MMM")} */}
+                          {format(new Date(item.Order_Date ? item.Order_Date : item.createdAt), 'dd MMM')}
                         </Typography>
                         <Typography
                           textAlign="right"
@@ -861,16 +861,7 @@ export default function FinanceTeamApproval() {
                             fontWeight: "bold",
                           }}
                         >
-                          {differenceInDays(
-                            new Date(),
-                            new Date(item.Order_Date)
-                          )}{" "}
-                          {differenceInDays(
-                            new Date(),
-                            new Date(item.Order_Date)
-                          ) > 1
-                            ? "Days"
-                            : "Day"}
+                          {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt))} {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt)) > 1 ? "Days" : "Day"}
                         </Typography>
                       </AccordionSummary>
                       {item.Document_Type === 'Order' ?

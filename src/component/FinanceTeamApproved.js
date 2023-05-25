@@ -534,7 +534,7 @@ export default function FinanceTeamApproved() {
                   <Typography sx={{ width: "12%", fontWeight: "bold" }}>
                     Submit date
                   </Typography>
-                  <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
+                  {/* <Typography sx={{ fontWeight: "bold" }}>Age</Typography> */}
                 </AccordionSummary>
               </Accordion>
 
@@ -583,9 +583,9 @@ export default function FinanceTeamApproved() {
                             fontWeight: "bold",
                           }}
                         >
-                          {/* {format(new Date(item.Order_Date), "dd MMM")} */}
+                          {format(new Date(item.Order_Date ? item.Order_Date : item.createdAt), 'dd MMM')}
                         </Typography>
-                        <Typography
+                        {/* <Typography
                           textAlign="right"
                           sx={{
                             width: "10%",
@@ -594,17 +594,8 @@ export default function FinanceTeamApproved() {
                             fontWeight: "bold",
                           }}
                         >
-                          {differenceInDays(
-                            new Date(),
-                            new Date(item.Order_Date)
-                          )}{" "}
-                          {differenceInDays(
-                            new Date(),
-                            new Date(item.Order_Date)
-                          ) > 1
-                            ? "Days"
-                            : "Day"}
-                        </Typography>
+                          {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt))} {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt)) > 1 ? "Days" : "Day"}
+                        </Typography> */}
                       </AccordionSummary>
                       {item.Document_Type === 'Order' ?
                         <AccordionDetails>
