@@ -246,7 +246,7 @@ function ApprovalFields(props) {
         setTicketID("");
       }
     });
-  }, []);
+  }, [props.userid]);
 
   const [Address, setaddress1] = useState("");
   const [Address_2, setaddress2] = useState("");

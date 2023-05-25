@@ -4,22 +4,13 @@ import uploa from "../img/camera-plus.png";
 import Navbar1 from "../common/navbar.js";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
-import Container from "react-bootstrap/Container";
 import withRouter from "../component/withRouter";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {
-  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCardHeader,
-  MDBCheckbox,
   MDBCol,
-  MDBInput,
-  MDBListGroup,
-  MDBListGroupItem,
   MDBRow,
-  MDBTextArea,
   MDBTypography,
 } from "mdb-react-ui-kit";
 export class Basic extends React.Component {
@@ -87,7 +78,8 @@ export class Basic extends React.Component {
       [name]: value,
     });
     this.setState({ Post_Code: e.target.value });
-    apiService
+    if (this.state.Country_Region_Code && this.state.Post_Code) {
+      apiService
       .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
       .then((response) => {
         if (response.data.data.postalcodes.length === 0) {           
@@ -105,16 +97,15 @@ export class Basic extends React.Component {
         }
 
       });
+    }
   }
   togglebutton() {
-    const { open } = this.state;
     this.setState({
       open: true,
       commu: false,
     });
   }
   togglebuttonCommu() {
-    const { commu } = this.state;
     this.setState({
       open: false,
       commu: true,
@@ -516,7 +507,7 @@ export class Basic extends React.Component {
   };
   handleFileRead = async (event) => {
     const file = event.target.files[0];
-    const base64 = await this.convertBase64(file);
+    // const base64 = await this.convertBase64(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = this.onreaderLoad.bind(this);
@@ -593,6 +584,7 @@ export class Basic extends React.Component {
             Post_Code: value.Post_Code,
             image: value.image,
           });
+          return null;
         });
         console.log(
           "commuDetail2222",
@@ -627,6 +619,7 @@ export class Basic extends React.Component {
             email: value.email  === 'null' ? "" : value.email,
             mastervendor_email: value.mastervendor_email,
           });
+          return null;
         });
       });
     } else if (newuser) {
@@ -646,6 +639,7 @@ export class Basic extends React.Component {
             Post_Code: value.Post_Code,
             image: value.image,
           });
+          return null;
         });
         Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
           this.setState({
@@ -671,6 +665,7 @@ export class Basic extends React.Component {
             email: value.email,
             mastervendor_email: value.mastervendor_email,
           });
+          return null;
         });
       });
     } else {
@@ -684,7 +679,7 @@ export class Basic extends React.Component {
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
-    if (this.state.country && this.state.pinCode) {
+    if (this.state.Country_Region_Code && this.state.Post_Code) {
       apiService
         .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
         .then((response) => {
@@ -694,16 +689,11 @@ export class Basic extends React.Component {
   }
   render() {
     const {
-      vendorId,
       Address,
       Address_2,
-      City,
-      state,
-      Country_Region_Code,
       Post_Code,
       contactName,
       companyName,
-      image,
       open,
       commu
     } = this.state;
@@ -924,7 +914,7 @@ export class Basic extends React.Component {
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image != "" ||
+                                  {this.state.image !== "" ||
                                     undefined ||
                                     null ? (
                                     <div>

@@ -251,7 +251,7 @@ const ComplianceDetails = () => {
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -279,7 +279,7 @@ const ComplianceDetails = () => {
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }

@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "../css/NewUser.css";
 import template from "../img/userBg.jpg";
 import Logo from "../img/logo1.png";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import env from '../env';
 const NewUser = () => {

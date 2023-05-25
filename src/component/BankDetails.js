@@ -6,13 +6,12 @@ import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
+// const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
 const BankDetails = (props) => {
   const [redirectUrl, setredirectUrl] = useState();
   const [EditBank, setEditBank] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
-  const [errors, setErrors] = useState({});
   const [acName, setAcName] = useState("");
   const [bankname, setBankname] = useState("");
   const [acno, setAcno] = useState("");
@@ -237,6 +236,7 @@ const BankDetails = (props) => {
   useEffect(() => {
     let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
     if (params.userId) {
+              // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result.finalStatus;
@@ -244,7 +244,7 @@ const BankDetails = (props) => {
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -260,9 +260,11 @@ const BankDetails = (props) => {
           setbranchAdd(value.Bank_Address);
           setfileBank(initialUrlbankDoc);
           seteditValuefileBank(bankdetailDoc);
+          return null;
         });
       });
     } else if (newuser) {
+       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
@@ -270,7 +272,7 @@ const BankDetails = (props) => {
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -286,6 +288,7 @@ const BankDetails = (props) => {
           setbranchAdd(value.Bank_Address);
           setfileBank(initialUrlbankDoc);
           seteditValuefileBank(bankdetailDoc);
+          return null;
         });
       });
     }
@@ -295,7 +298,7 @@ const BankDetails = (props) => {
       })
       setEditBank(false);
     }
-  }, []);
+  }, [params.userId]);
   return (
     <div className="bank-details">
       <Navbar1 />
@@ -387,7 +390,7 @@ const BankDetails = (props) => {
               <div className="col-md-6 col-sm-12 col-xs-12 my-auto">
                 {EditBank ? (
                   <div>
-                    {editValuefileBank != "" ? (
+                    {editValuefileBank !== "" ? (
                       <div>
                         <span>File name:{editValuefileBank}</span>
                       </div>

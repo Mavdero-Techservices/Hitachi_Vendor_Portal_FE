@@ -1,17 +1,16 @@
 import Logo1 from "../img/logo1.png";
 import "../css/navbar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import Swal from "sweetalert2";
 import auth from "../auth/auth-helper";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
-import { Navigate } from "react-router-dom";
 function App() {
   const [Edit, setEdit] = useState(true);
-  const [editUser, seteditUser] = useState(); 
+  const [editUser, seteditUser] = useState();
   const [editsubUser, seteditsubUser] = useState();
   const navigate = useNavigate();
   const params = useParams();
@@ -45,7 +44,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.basicInfo?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.basicInfo?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/basic/${params.userId}`, { state: { editUser } });
     } else {
@@ -64,7 +64,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.Statutory?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.Statutory?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/statutory/${params.userId}`, { state: { editUser } });
     } else {
@@ -83,7 +84,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.ComplianceDetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.ComplianceDetail?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/ComplianceDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -102,7 +104,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.Bankdetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.Bankdetail?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/bank/${params.userId}`, { state: { editUser } });
     } else {
@@ -121,7 +124,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.FinancialDetail?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.FinancialDetail?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/FinancialDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -140,7 +144,8 @@ function App() {
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.contactDetail?.length > 0 &&  JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      editsubUser?.contactDetail?.length > 0 &&
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/ContactTeam/${params.userId}`, { state: { editUser } });
     } else {
@@ -149,22 +154,20 @@ function App() {
   };
   useEffect(() => {
     (async () => {
-   await apiService
-      .getAllCollection(
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-      )
-      .then((res) => {
-        if (res.data.status === "success") {
-          setEdit(true);
-          seteditUser(res.data);
-        } else {
-          setEdit(false);
-        }
-      });
+      await apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          if (res.data.status === "success") {
+            setEdit(true);
+            seteditUser(res.data);
+          } else {
+            setEdit(false);
+          }
+        });
 
-   await apiService
-      .getAllCollection(params.userId)
-      .then((res) => {
+      await apiService.getAllCollection(params.userId).then((res) => {
         if (res.data.status === "success") {
           setEdit(true);
           seteditsubUser(res.data);
@@ -173,8 +176,7 @@ function App() {
         }
       });
     })();
-    
-  }, []);
+  }, [params.userId]);
   return (
     <>
       <Navbar collapseOnSelect expand="lg">
