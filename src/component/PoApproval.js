@@ -114,19 +114,13 @@ export default function PoApproval() {
       textTransform: "none",
     },
   });
-  
+
   const handleApprove = (event, Document_Type) => {
     //savePo
+    Swal.fire({
+      heightAuto: true,
 
-    console.log("event::", event, Document_Type, rows);
-    if (Document_Type === "Invoice") {
-      console.log("proceed with mail");
-    }
-    else if (Document_Type === "Order") {
-      Swal.fire({
-        heightAuto: true,
-
-        html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
+      html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
         <div class="approvestyle">
         <form>
         <label style="margin-left:0.5rem;" >Email:</label>
@@ -150,226 +144,280 @@ export default function PoApproval() {
         </form>
       </div>
       </div> `,
-        confirmButtonText: "Approve",
-        confirmButtonColor: "#B1000E",
-        showCancelButton: true,
-        focusConfirm: false,
-        customClass: "swal-wide",
-        preConfirm: () => {
-          const email = Swal.getPopup().querySelector("#email").value;
-          const username = Swal.getPopup().querySelector("#username").value;
-          const location = Swal.getPopup().querySelector("#location").value;
-          if (!email && !username && !location) {
-            Swal.showValidationMessage(
-              `Please choose EmailId,User Name and Location`
-            );
-          } else if (!location && !username) {
-            Swal.showValidationMessage(`Please choose  User Name and Location.`);
-          } else if (!location && !email) {
-            Swal.showValidationMessage(`Please choose  EmailId and Location.`);
-          } else if (!username && !email) {
-            Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
-          } else if (!email) {
-            Swal.showValidationMessage(`Please choose EmailId.`);
-          } else if (!username) {
-            Swal.showValidationMessage(`Please choose User Name.`);
-          } else if (!location) {
-            Swal.showValidationMessage(`Please choose Location.`);
-          } else {
-            console.log("valueofemail::", email, username, location);
-            const savePO = {
-              Document_Type: rows[0].Document_Type,
-              No: event,
-              Order_Date: rows[0].Order_Date,
-              Payment_Terms_Code: rows[0].Payment_Terms_Code,
-              Buy_from_Vendor_Name: rows[0].Buy_from_Vendor_Name,
-              Customer_Name: rows[0].Customer_Name,
-              Buy_from_Vendor_No: rows[0].Buy_from_Vendor_No,
-              Ship_to_Name: rows[0].Ship_to_Name,
-              Amount_to_Vendor: rows[0].Amount_to_Vendor,
-              Billed_Amount: rows[0].Billed_Amount,
-              Unbilled_Amount: rows[0].Unbilled_Amount,
-              level1ApprovalStatus: "Approved",
-              username: username,
-              email: email,
-              location: location,
-            }
+      confirmButtonText: "Approve",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const email = Swal.getPopup().querySelector("#email").value;
+        const username = Swal.getPopup().querySelector("#username").value;
+        const location = Swal.getPopup().querySelector("#location").value;
+        if (!email && !username && !location) {
+          Swal.showValidationMessage(
+            `Please choose EmailId,User Name and Location`
+          );
+        } else if (!location && !username) {
+          Swal.showValidationMessage(`Please choose  User Name and Location.`);
+        } else if (!location && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
+        } else if (!username && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
+        } else if (!email) {
+          Swal.showValidationMessage(`Please choose EmailId.`);
+        } else if (!username) {
+          Swal.showValidationMessage(`Please choose User Name.`);
+        } else if (!location) {
+          Swal.showValidationMessage(`Please choose Location.`);
+        } else {
+          console.log("valueofemail::", email, username, location);
+          const savePO = {
+            Document_Type: rows[0].Document_Type,
+            No: event,
+            Order_Date: rows[0].Order_Date,
+            Payment_Terms_Code: rows[0].Payment_Terms_Code,
+            Buy_from_Vendor_Name: rows[0].Buy_from_Vendor_Name,
+            Customer_Name: rows[0].Customer_Name,
+            Buy_from_Vendor_No: rows[0].Buy_from_Vendor_No,
+            Ship_to_Name: rows[0].Ship_to_Name,
+            Amount_to_Vendor: rows[0].Amount_to_Vendor,
+            Billed_Amount: rows[0].Billed_Amount,
+            Unbilled_Amount: rows[0].Unbilled_Amount,
+            level1ApprovalStatus: "Approved",
+            username: username,
+            email: email,
+            location: location,
+          };
 
-
-            apiService.savePO(savePO).then((res) => {
-              if (res.data.msg === 'success') {
-                Swal.fire({
-                  title: res.data.result,
-                  icon: "success",
-                  confirmButtonText: "OK",
-                }).then((res => {
-                  Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
-                    ([poRes, erpRes]) => {
-                      const poValues = poRes.data.result.map((item) => item.No);
-                      const filteredErpData = erpRes.data.result.filter(
-                        (item) => !poValues.includes(item.No)
-                      );
-                      const rowsWithIds = filteredErpData.map((row) => ({
-                        ...row,
-                        id: uuidv4(),
-                      }));
-
-                      setRows(rowsWithIds);
-                      console.log("Data:");
-                      console.log(rowsWithIds);
-
-                      setAccordionData(rowsWithIds);
-                    }
+          apiService.savePO(savePO).then((res) => {
+            if (res.data.msg === "success") {
+              Swal.fire({
+                title: res.data.result,
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((res) => {
+                Promise.all([
+                  apiService.getPo(),
+                  apiService.getErpPurchaseOrdersLists(),
+                ]).then(([poRes, erpRes]) => {
+                  const poValues = poRes.data.result.map((item) => item.No);
+                  const filteredErpData = erpRes.data.result.filter(
+                    (item) => !poValues.includes(item.No)
                   );
-                }))
-              } else {
-                Swal.fire({
-                  title: res.data.message,
-                  icon: "error",
-                  confirmButtonText: "OK",
+                  const rowsWithIds = filteredErpData.map((row) => ({
+                    ...row,
+                    id: uuidv4(),
+                  }));
+
+                  setRows(rowsWithIds);
+                  console.log("Data:");
+                  console.log(rowsWithIds);
+
+                  setAccordionData(rowsWithIds);
                 });
-              }
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      },
+    });
+  };
+  const handleApprovalOnMail = (event, Document_Type) => {
+   
 
+    Swal.fire({
+      heightAuto: true,
 
-            })
+      html: `<div style="margin-left:1rem;margin:2rem;height:10rem;width:40rem;flex:0 0 150px;">
+      <div class="approvestyle">
+      <form>
+      <label style="margin-left:0.5rem;" >Email:</label>
+      <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
+      <option value="" hidden>Select EmailId</option>
+        <option value="ajayaravind797@gmail.com">hitachi@gmail.com</option>
+        <option value="ajayaravind797@gmail.com">hitachi@yahoo.com</option>
+      </select><br>
+      <label >User Name:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
+      <option value="" hidden>Select User Name</option>
+        <option value="PO Team1" >PO Team1</option>
+        <option value="PO Team2">PO Team2</option>
+      </select><br>
+      <label >Location:</label>
+      <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:45"  id="location" >
+      <option value="" hidden>Select Location</option>
+        <option value="chennai" >Chennai</option>
+        <option value="trichy" >trichy</option>
+      </select>
+      </form>
+    </div>
+    </div> `,
+      confirmButtonText: "Approve",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const email = Swal.getPopup().querySelector("#email").value;
+        const username = Swal.getPopup().querySelector("#username").value;
+        const location = Swal.getPopup().querySelector("#location").value;
+        if (!email && !username && !location) {
+          Swal.showValidationMessage(
+            `Please choose EmailId,User Name and Location`
+          );
+        } else if (!location && !username) {
+          Swal.showValidationMessage(`Please choose  User Name and Location.`);
+        } else if (!location && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and Location.`);
+        } else if (!username && !email) {
+          Swal.showValidationMessage(`Please choose  EmailId and User Name.`);
+        } else if (!email) {
+          Swal.showValidationMessage(`Please choose EmailId.`);
+        } else if (!username) {
+          Swal.showValidationMessage(`Please choose User Name.`);
+        } else if (!location) {
+          Swal.showValidationMessage(`Please choose Location.`);
+        } else {
+          const purchaseOrder = {
+            Document_Type: rows[0].Document_Type,
+            No: event,
+            srNo: rows[0].srNo,
+            glCode: rows[0].glCode,
+            qty: rows[0].qty,
+            qtyDelivered: rows[0].qtyDelivered,
+            rate: rows[0].rate,
+            baseAmount: rows[0].baseAmount,
+            taxAmount: rows[0].taxAmount,
+            username: username,
+            email: email,
+            location: location,
+            level1ApprovalStatus: "Approved"
+          };
+          apiService.mailApprovePo_Invoice(purchaseOrder).then((res) => {
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Email sent for approval to proceed",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                Promise.all([
+                  apiService.getPo(),
+                  apiService.getErpPurchaseOrdersLists(),
+                ]).then(([poRes, erpRes]) => {
+                  const poValues = poRes.data.result.map((item) => item.No);
+                  const filteredErpData = erpRes.data.result.filter(
+                    (item) => !poValues.includes(item.No)
+                  );
 
-            //     apiService.updatePo(purchaseOrder).then((res) => {
-            // if (res.data.msg === 'success') {
-            //   Swal.fire({
-            //     title: "Approved Successfully",
-            //     icon: "success",
-            //     confirmButtonText: "OK",
-            //   }).then((result)=>{
-            //     apiService.getPo().then((res) => {
-            //       const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-            //       setAccordionData(filteredData);
-            //     });
-            //   })
-            // } else {
-            //   Swal.fire({
-            //     title: res.data.message,
-            //     icon: "error",
-            //     confirmButtonText: "OK",
-            //   });
-            // }
-            //     })
+                  const rowsWithIds = filteredErpData.map((row) => ({
+                    ...row,
+                    id: uuidv4(),
+                  }));
 
-          }
-        },
-      });
-    }
+                  setRows(rowsWithIds);
+                  console.log("Data:");
+                  console.log(rowsWithIds);
 
-
+                  setAccordionData(rowsWithIds);
+                });
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      },
+    });
   };
   const handleReject = (event, Document_Type) => {
-    console.log("Document_Type::", Document_Type);
-    if (Document_Type === "Order") {
-      Swal.fire({
-        heightAuto: true,
-        // title: 'Review vendor details',
-        html: `<div class="rejectstyle">
+    Swal.fire({
+      heightAuto: true,
+      // title: 'Review vendor details',
+      html: `<div class="rejectstyle">
         <textarea rows="50" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
         <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
    </div> `,
-        confirmButtonText: "Reject",
-        confirmButtonColor: "#B1000E",
-        showCancelButton: true,
-        focusConfirm: false,
-        customClass: "swal-wide",
-        preConfirm: () => {
-          const comment = Swal.getPopup().querySelector("#comment").value;
-          const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-          if (!comment && !rejectdoc) {
-            Swal.showValidationMessage(`Please enter comments and Upload file`);
-          } else if (!comment) {
-            Swal.showValidationMessage(`Please give Comments`);
-          } else if (!rejectdoc) {
-            Swal.showValidationMessage(`Please Upload File`);
-          }
-          else {
-            console.log("rejectdoc::", rejectdoc);
-            const data = new FormData();
-            data.append('level1rejectpodoc', rejectdoc);
-            data.append('comment', comment);
-            data.append('No', event);
-            data.append("level1ApprovalStatus", "Rejected");
-            data.append("Document_Type", rows[0].Document_Type);
-            data.append("Order_Date", rows[0].Order_Date);
-            data.append("Payment_Terms_Code", rows[0].Payment_Terms_Code);
-            data.append("Buy_from_Vendor_Name", rows[0].Buy_from_Vendor_Name);
-            data.append("Customer_Name", rows[0].Customer_Name);
-            data.append("Buy_from_Vendor_No", rows[0].Buy_from_Vendor_No);
-            data.append("Ship_to_Name", rows[0].Ship_to_Name);
-            data.append("Amount_to_Vendor", rows[0].Amount_to_Vendor);
-            data.append("Billed_Amount", rows[0].Billed_Amount);
-            data.append("Unbilled_Amount", rows[0].Unbilled_Amount);
+      confirmButtonText: "Reject",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const comment = Swal.getPopup().querySelector("#comment").value;
+        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
+        if (!comment && !rejectdoc) {
+          Swal.showValidationMessage(`Please enter comments and Upload file`);
+        } else if (!comment) {
+          Swal.showValidationMessage(`Please give Comments`);
+        } else if (!rejectdoc) {
+          Swal.showValidationMessage(`Please Upload File`);
+        } else {
+          console.log("rejectdoc::", rejectdoc);
+          const data = new FormData();
+          data.append("level1rejectpodoc", rejectdoc);
+          data.append("comment", comment);
+          data.append("No", event);
+          data.append("level1ApprovalStatus", "Rejected");
+          data.append("Document_Type", rows[0].Document_Type);
+          data.append("Order_Date", rows[0].Order_Date);
+          data.append("Payment_Terms_Code", rows[0].Payment_Terms_Code);
+          data.append("Buy_from_Vendor_Name", rows[0].Buy_from_Vendor_Name);
+          data.append("Customer_Name", rows[0].Customer_Name);
+          data.append("Buy_from_Vendor_No", rows[0].Buy_from_Vendor_No);
+          data.append("Ship_to_Name", rows[0].Ship_to_Name);
+          data.append("Amount_to_Vendor", rows[0].Amount_to_Vendor);
+          data.append("Billed_Amount", rows[0].Billed_Amount);
+          data.append("Unbilled_Amount", rows[0].Unbilled_Amount);
 
-            apiService.savePO(data).then((res) => {
-              console.log("rejected::", data)
-              if (res.data.msg === 'success') {
-                Swal.fire({
-                  title: res.data.result,
-                  icon: "success",
-                  confirmButtonText: "OK",
-                }).then((res => {
-                  Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists()]).then(
-                    ([poRes, erpRes]) => {
-                      const poValues = poRes.data.result.map((item) => item.No);
-                      const filteredErpData = erpRes.data.result.filter(
-                        (item) => !poValues.includes(item.No)
-                      );
-                      const rowsWithIds = filteredErpData.map((row) => ({
-                        ...row,
-                        id: uuidv4(),
-                      }));
-
-                      setRows(rowsWithIds);
-                      console.log("Data:");
-                      console.log(rowsWithIds);
-
-                      setAccordionData(rowsWithIds);
-                    }
+          apiService.savePO(data).then((res) => {
+            console.log("rejected::", data);
+            if (res.data.msg === "success") {
+              Swal.fire({
+                title: res.data.result,
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((res) => {
+                Promise.all([
+                  apiService.getPo(),
+                  apiService.getErpPurchaseOrdersLists(),
+                ]).then(([poRes, erpRes]) => {
+                  const poValues = poRes.data.result.map((item) => item.No);
+                  const filteredErpData = erpRes.data.result.filter(
+                    (item) => !poValues.includes(item.No)
                   );
-                }))
-              } else {
-                Swal.fire({
-                  title: res.data.message,
-                  icon: "error",
-                  confirmButtonText: "OK",
+                  const rowsWithIds = filteredErpData.map((row) => ({
+                    ...row,
+                    id: uuidv4(),
+                  }));
+
+                  setRows(rowsWithIds);
+                  console.log("Data:");
+                  console.log(rowsWithIds);
+
+                  setAccordionData(rowsWithIds);
                 });
-              }
-
-
-            })
-            //     apiService.updatePo(data).then((res) => {
-            // if (res.data.msg === 'success') {
-            //   Swal.fire({
-            //     title: "Rejected Successfully",
-            //     icon: "success",
-            //     confirmButtonText: "OK",
-            //   }).then((result)=>{
-            //     apiService.getPo().then((res) => {
-            //       const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-            //       setAccordionData(filteredData);
-            //     });
-            //   })
-            // } else {
-            //   Swal.fire({
-            //     title: res.data.message,
-            //     icon: "error",
-            //     confirmButtonText: "OK",
-            //   });
-            // }
-            //     })
-
-
-          }
-        },
-      });
-    }
-    else if (Document_Type === "Invoice") {
-      console.log("proceed with mail");
-    }
+              });
+            } else {
+              Swal.fire({
+                title: res.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      },
+    });
   };
   const [rows, setRows] = useState([]);
   const columns = [
@@ -1101,7 +1149,7 @@ export default function PoApproval() {
                                 <button
                                   type="button"
                                   className="btn basicbtn btn-md m-3"
-                                // onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
+                                onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
                                 >
                                   Send
                                 </button>
