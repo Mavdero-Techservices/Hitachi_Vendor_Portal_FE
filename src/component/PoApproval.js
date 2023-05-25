@@ -698,7 +698,7 @@ export default function PoApproval() {
         // const filteredErpData = erpRes.data.result.filter(
         //   (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
         // );
-        const invoiceValues = invoiceRes.data.result
+        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
         let erpDATA = [{
           Document_Type: "Order",
           No: "BGL202223PO0007",
@@ -775,7 +775,6 @@ export default function PoApproval() {
         }]
         let filteredErpData = [];
         filteredErpData.push(erpDATA[0])
-        console.log("erpDATA[0]--------------", erpDATA[0])
         let filteredErpData2 = filteredErpData.filter(
           (item) => item.PO_Status === 'Active' // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
         );
@@ -815,7 +814,7 @@ export default function PoApproval() {
       input = e.currentTarget.value;
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(input.toLowerCase()) > -1
+          suggestion.Buy_from_Vendor_Name ? suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(input.toLowerCase()) > -1 : suggestion.vendorName.toLowerCase().indexOf(input.toLowerCase()) > -1 
       );
       setAccordionData(newFilteredSuggestions);
     } else {
@@ -841,15 +840,9 @@ export default function PoApproval() {
     if (dueDay) {
       newFilteredSuggestions2 = accordionData?.filter(
         (suggestion) =>
-          // console.log("differenceInDays",differenceInDays(
-          //   new Date(),
-          //   new Date(suggestion.Order_Date)
-          // )),
           differenceInDays(new Date(), new Date(suggestion.Order_Date)) ==
           dueDay
       );
-
-      console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
       setAccordionData(newFilteredSuggestions2);
     } else {
       // getApprovalList();
@@ -861,7 +854,6 @@ export default function PoApproval() {
   };
 
   const dueDayHandler = (e) => {
-    console.log("setdueDay", e.target.value);
     setdueDay(e.target.value);
   };
 
@@ -955,7 +947,7 @@ export default function PoApproval() {
                           fontWeight: "bold",
                         }}
                       >
-                        {item.Document_Type === "Order" ? "Review PO" : "Review Invoice"}
+                        {item.Document_Type === "Order" ? "Review Advance Payment PO" : "Review Invoice"}
                       </Typography>
                       <Typography
                         textAlign="right"
@@ -1106,27 +1098,12 @@ export default function PoApproval() {
                           <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
                             <MDBRow className="mb-4">
                               <div className="float-end">
-                                {/* <button
-                                type="button"
-                                // onClick={(e) => handlesave(item.No, item.Document_Type)}
-                                className="btn basicbtn btn-md m-3"
-                              >
-                                Save
-                              </button> */}
-                                <button
-                                  type="button"
-                                  onClick={(e) => handleReject(item.No, item.Document_Type)}
-                                  className="btn basicbtn btn-md m-3"
-                                >
-                                  Reject
-                                </button>
-
                                 <button
                                   type="button"
                                   className="btn basicbtn btn-md m-3"
-                                  onClick={(e) => handleApprove(item.No, item.Document_Type)}
+                                // onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
                                 >
-                                  Approve
+                                  Send
                                 </button>
                               </div>
                             </MDBRow>

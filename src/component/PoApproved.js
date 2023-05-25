@@ -69,13 +69,13 @@ export default function PoApproved() {
   const endIndex = page * itemsPerPage;
 
 
-  // const handleChange =
-  //   (panel) => (event, isExpanded) => {
-  //     setExpanded(isExpanded ? panel : false);
-  //     const number = panel.substring(5);
-  //     const filteredAccordionData = accordionData.filter((item) => item.No === number);
-  //     setRows(filteredAccordionData);
-  //   };
+  const handleChange =
+    (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+      const number = panel.substring(5);
+      const filteredAccordionData = accordionData.filter((item) => item.No === number);
+      setRows(filteredAccordionData);
+    };
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
@@ -87,9 +87,9 @@ export default function PoApproved() {
     setOpen(false);
   };
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  // const handleChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
 
   const theme = createTheme({
     Link: {
@@ -185,15 +185,255 @@ export default function PoApproved() {
     // },
 
   ];
+  const Invoicecolumns = [
+    { field: "No", headerName: "PO Number", width: 90 },
+    // {
+    //   field: "Document_Type",
+    //   headerName: "Document Type",
+    //   width: 110,
+    // },
+    {
+      field: "docDate",
+      headerName: "DocDate",
+      width: 110,
+    },
+    {
+      field: "vendorInvoiceNo",
+      headerName: "Vendor Invoice No ",
+      width: 210,
+      // editable: true,
+      // renderCell: (params) => {
+      //   return (
+      //     <>
+      //       <TextField
+      //         // onChange={(event) => handleInvoiceChange(event, params.row)}
+      //       >
+      //         {params.row.vendorInvoiceNo}{" "}
+      //       </TextField>
+      //     </>
+      //   );
+      // },
+    },
+    {
+      field: "srNo",
+      headerName: "Sr No of Po",
+      type: "string",
+      width: 110,
+
+    },
+    {
+      field: "glCode",
+      headerName: "Item/GL Code",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "startDate",
+      headerName: "Start Date",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "endDate",
+      headerName: "End Date",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "qty",
+      headerName: "Quantity",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "qtyDelivered",
+      headerName: "Quantity delivered",
+      type: "number",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "rate",
+      headerName: "Rate",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "baseAmount",
+      headerName: "Base amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "taxAmount",
+      headerName: "Tax amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "grossAmount",
+      headerName: "Gross amt",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "eWayBill",
+      headerName: "E-Way Bill",
+      width: 120,
+      // renderCell: rendereWayBill,
+    },
+    {
+      field: "transportDocument",
+      headerName: "Transport Document",
+      type: "number",
+      width: 120,
+      // renderCell: rendertransportDocument,
+    },
+    {
+      field: "miscDocs",
+      headerName: "MISC Docs",
+      type: "number",
+      width: 110,
+      // renderCell: rendermiscDocs,
+    },
+    {
+      field: "boe",
+      headerName: "BOE",
+      type: "number",
+      width: 110,
+      // renderCell: renderboe,
+    },
+    {
+      field: "awb",
+      headerName: "AWB",
+      type: "number",
+      width: 110,
+      // renderCell: renderawb,
+    },
+    {
+      field: "serviceAgreement",
+      headerName: "Service Agreement",
+      type: "number",
+      width: 110,
+      // renderCell: renderserviceAgreement,
+    },
+    {
+      field: "lic",
+      headerName: "LIC",
+      type: "number",
+      width: 110,
+      // renderCell: renderlic,
+    },
+    {
+      field: "licDeliveryProof",
+      headerName: "LIC Delivery Proof",
+      type: "number",
+      width: 110,
+      // renderCell: renderlicDeliveryProof,
+    },
+    {
+      field: "warrantyCertificate",
+      headerName: "Warranty Certificate",
+      type: "number",
+      width: 110,
+      // renderCell: renderwarrantyCertificate,
+    },
+    {
+      field: "irWcc",
+      headerName: "IR/WCC",
+      type: "number",
+      width: 110,
+      // renderCell: renderirWcc,
+    },
+    {
+      field: "signOffFromCustomer",
+      headerName: "Sign off from customer",
+      type: "number",
+      width: 110,
+      // renderCell: rendersignOffFromCustomer,
+    },
+    {
+      field: "coc",
+      headerName: "COC",
+      type: "number",
+      width: 110,
+      // renderCell: rendercoc,
+    },
+    {
+      field: "esiPayementChallan",
+      headerName: "ESI Payment Challan",
+      type: "number",
+      width: 110,
+      // renderCell: renderesiPayementChallan,
+    },
+    {
+      field: "pfPayementChallan",
+      headerName: "PF Payment Challan",
+      type: "number",
+      width: 110,
+      // renderCell: renderpfPayementChallan,
+    },
+    {
+      field: "employeeSummary",
+      headerName: "Employee Summary",
+      type: "number",
+      width: 110,
+      // renderCell: renderemployeeSummary,
+    },
+    {
+      field: "arWorking",
+      headerName: "AR Working",
+      type: "number",
+      width: 110,
+      // renderCell: renderarWorking,
+    },
+    {
+      field: "deliveryProof",
+      headerName: "Deliver Proof",
+      type: "number",
+      width: 110,
+      // renderCell: renderdeliveryProof,
+    },
+    {
+      field: "calculation",
+      headerName: "Calculation",
+      type: "number",
+      width: 110,
+      // renderCell: rendercalculation,
+    },
+    {
+      field: "customExRate",
+      headerName: "Custom's EX Rate",
+      type: "number",
+      width: 110,
+      // renderCell: rendercustomExRate,
+    },
+  ];
+
   useEffect(() => {
     getPoList()
   }, []);
 
   const getPoList = async () => {
-    apiService.getPo().then((res) => {
-      const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus === "Approved");
-      setAccordionData(filteredData);
-    });
+    setAccordionData([])
+    Promise.all([apiService.getPo(), apiService.getInvoiceinfo()]).then(
+      ([poRes, invoiceRes]) => {
+        const filteredData = poRes.data.result.filter((item) => item.level1ApprovalStatus === "Approved");
+        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus === "Approved");
+        let arrayData = []
+        for (let x in filteredData) {
+          arrayData.push(filteredData[x])
+        }
+        for (let y in invoiceValues) {
+          arrayData.push(invoiceValues[y])
+        }
+        if (arrayData.length > 0) {
+          setAccordionData((item) => [...item, ...arrayData]);
+        }
+      }
+    );
   }
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -204,11 +444,11 @@ export default function PoApproved() {
     let input;
     let newFilteredSuggestions;
 
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 3 ) {
       input = e.currentTarget.value;
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(input.toLowerCase()) > -1
+          suggestion.Buy_from_Vendor_Name ? suggestion.Buy_from_Vendor_Name.toLowerCase().indexOf(input.toLowerCase()) > -1 : suggestion.vendorName.toLowerCase().indexOf(input.toLowerCase()) > -1 
       );
       setAccordionData(newFilteredSuggestions);
     } else {
@@ -313,8 +553,8 @@ export default function PoApproved() {
                           justifyContent: "flex-start",
                         }}
                       >
-                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name?.charAt(0)}</Typography>}
-                        <Typography >&nbsp;{item.Buy_from_Vendor_Name}</Typography>
+                        {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h4" sx={{ textTransform: 'uppercase' }}>  {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name.charAt(0) : item.vendorName.charAt(0)}</Typography>}
+                        <Typography >&nbsp;{item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name : item.vendorName}</Typography>
                       </IconButton>
                       <Typography
                         textAlign="center"
@@ -325,7 +565,7 @@ export default function PoApproved() {
                           fontWeight: "bold",
                         }}
                       >
-                        {item.Document_Type === "Order" ? "Review PO" : "Review Invoice"}
+                        {item.Document_Type === "Order" ? "Review Advance Payment PO" : "Review Invoice"}
                       </Typography>
                       <Typography
                         textAlign="right"
@@ -336,7 +576,7 @@ export default function PoApproved() {
                           fontWeight: "bold",
                         }}
                       >
-                        {format(new Date(item.Order_Date), 'dd MMM')}
+                        {/* {format(new Date(item.Order_Date), 'dd MMM')} */}
 
                       </Typography>
                       <Typography
@@ -351,6 +591,7 @@ export default function PoApproved() {
                         {differenceInDays(new Date(), new Date(item.Order_Date))} {differenceInDays(new Date(), new Date(item.Order_Date)) > 1 ? "Days" : "Day"}
                       </Typography>
                     </AccordionSummary>
+                    {item.Document_Type === 'Order' ?
                     <AccordionDetails>
                       <Box>
                         <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography>
@@ -401,6 +642,59 @@ export default function PoApproved() {
                         </Box>
                       </Box>
                     </AccordionDetails>
+                      : <></>}
+                    {item.Document_Type === 'Invoice' ?
+                      <AccordionDetails>
+                        <Box>
+                          {/* <Typography sx={{ ml: 1, fontWeight: "bold" }}>Purchase Order</Typography> */}
+                          <Box
+                            sx={{
+                              height: 300,
+                              width: "100%",
+
+                              "& .super-app-theme--header": {
+                                backgroundColor: "#808080",
+                                color: "#ffffff",
+                              },
+                              "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                                fontSize: 15,
+                                fontWeight: "bold",
+                              },
+                              ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+                                fontSize: 13,
+                              },
+                              ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#330033",
+                                color: "#ffffff",
+                              },
+                              ".css-h4y409-MuiList-root": {
+                                display: "grid",
+                              },
+                              ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                              {
+                                backgroundColor: "#808080",
+                              },
+                            }}
+                          >
+                            <DataGrid
+                              sx={{
+                                boxShadow: 10,
+                                borderRadius: 0,
+                                fontSize: "14px",
+                              }}
+                              rows={rows}
+                              columns={Invoicecolumns}
+                              pageSize={5}
+                              rowsPerPageOptions={[5]}
+                              //   checkboxSelection="none"
+                              disableSelectionOnClick
+                              experimentalFeatures={{ newEditingApi: true }}
+                            />
+                          </Box>
+                        </Box>
+                      </AccordionDetails>
+                      : <></>}
                   </Accordion>
                 </>)}
 
