@@ -1262,7 +1262,7 @@ export default function FinanceTeamApproval() {
     if (submitDate) {
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+          format(new Date(suggestion.level1Date), 'dd MMM') == submitDate
       );
 
       setAccordionData(newFilteredSuggestions);
@@ -1273,7 +1273,7 @@ export default function FinanceTeamApproval() {
     if (dueDay) {
       newFilteredSuggestions2 = accordionData?.filter(
         (suggestion) =>
-          differenceInDays(new Date(), new Date(suggestion.Order_Date)) ==
+          differenceInDays(new Date(), new Date(suggestion.level1Date)) ==
           dueDay
       );
       setAccordionData(newFilteredSuggestions2);
@@ -1283,7 +1283,7 @@ export default function FinanceTeamApproval() {
   };
 
   const dateHandler = (e) => {
-    setsubmitDate(moment(e.$d).format("MMM DD"));
+    setsubmitDate(moment(e.$d).format("DD MMM"));
   };
 
   const dueDayHandler = (e) => {
@@ -1394,7 +1394,7 @@ export default function FinanceTeamApproval() {
                             fontWeight: "bold",
                           }}
                         >
-                          {format(new Date(item.Order_Date ? item.Order_Date : item.createdAt), 'dd MMM')}
+                          {format(new Date(item.level1Date), 'dd MMM')}
                         </Typography>
                         <Typography
                           textAlign="right"
@@ -1405,7 +1405,7 @@ export default function FinanceTeamApproval() {
                             fontWeight: "bold",
                           }}
                         >
-                          {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt))} {differenceInDays(new Date(), new Date(item.Order_Date ? item.Order_Date : item.createdAt)) > 1 ? "Days" : "Day"}
+                          {differenceInDays(new Date(), new Date(item.level1Date))} {differenceInDays(new Date(), new Date(item.level1Date)) > 1 ? "Days" : "Day"}
                         </Typography>
                       </AccordionSummary>
                       {item.Document_Type === 'Order' ?

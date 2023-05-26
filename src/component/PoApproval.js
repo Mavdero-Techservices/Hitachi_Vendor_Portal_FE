@@ -1420,7 +1420,7 @@ export default function PoApproval() {
     if (submitDate) {
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+          moment(suggestion.Order_Date ? suggestion.Order_Date : suggestion.createdAt).format("MMM DD") === submitDate
       );
 
       setAccordionData(newFilteredSuggestions);
@@ -1431,8 +1431,8 @@ export default function PoApproval() {
     if (dueDay) {
       newFilteredSuggestions2 = accordionData?.filter(
         (suggestion) =>
-          differenceInDays(new Date(), new Date(suggestion.Order_Date)) ==
-          dueDay
+
+          differenceInDays(new Date(), new Date(suggestion.Order_Date ? suggestion.Order_Date : suggestion.createdAt)) == dueDay
       );
       setAccordionData(newFilteredSuggestions2);
     } else {

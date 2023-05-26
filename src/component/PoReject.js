@@ -1012,7 +1012,7 @@ export default function PoReject() {
     if (submitDate) {
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+          format(new Date(suggestion.level1Date), 'dd MMM') == submitDate
       );
 
       setAccordionData(newFilteredSuggestions);
@@ -1021,7 +1021,7 @@ export default function PoReject() {
   };
 
   const dateHandler = (e) => {
-    setsubmitDate(moment(e.$d).format("MMM DD"));
+    setsubmitDate(moment(e.$d).format('DD MMM'));
   };
 
   return (
@@ -1125,7 +1125,7 @@ export default function PoReject() {
                           fontWeight: "bold",
                         }}
                       >
-                        {format(new Date(item.Order_Date ? item.Order_Date : item.createdAt), 'dd MMM')}
+                        {format(new Date(item.level1Date), 'dd MMM')}
 
                       </Typography>
                       {/* <Typography

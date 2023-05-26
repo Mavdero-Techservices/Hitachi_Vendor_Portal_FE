@@ -1008,7 +1008,7 @@ export default function FinanceTeamApproved() {
     if (submitDate) {
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          moment(suggestion.Order_Date).format("MMM DD") === submitDate
+          format(new Date(suggestion.level2Date), 'dd MMM') === submitDate
       );
 
       setAccordionData(newFilteredSuggestions);
@@ -1017,7 +1017,7 @@ export default function FinanceTeamApproved() {
   };
 
   const dateHandler = (e) => {
-    setsubmitDate(moment(e.$d).format("MMM DD"));
+    setsubmitDate(moment(e.$d).format("DD MMM"));
   };
 
   return (
@@ -1127,7 +1127,7 @@ export default function FinanceTeamApproved() {
                             fontWeight: "bold",
                           }}
                         >
-                          {format(new Date(item.Order_Date ? item.Order_Date : item.createdAt), 'dd MMM')}
+                          {format(new Date(item.level2Date), 'dd MMM')}
                         </Typography>
                         {/* <Typography
                           textAlign="right"
