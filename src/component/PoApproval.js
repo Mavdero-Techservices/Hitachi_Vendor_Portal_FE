@@ -1282,102 +1282,127 @@ export default function PoApproval() {
   }, []);
 
   const getPoList = async () => {
-    Promise.all([apiService.getInvoiceinfo()]).then(
-      ([invoiceRes]) => {
-        // Process getPo response
-        // const poValues = poRes.data.result.map((item) => item.No); // Modify 'someValue' to the actual property name you want to filter on
-        // const filteredErpData = erpRes.data.result.filter(
-        //   (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
-        // );
-        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-        let erpDATA = [{
-          Document_Type: "Order",
-          No: "BGL202223PO0007",
-          Posting_Date: "2023-01-23T00:00:00",
-          Case_Id_No: "IN603779",
-          Buy_from_Vendor_No: "VLOC-2948",
-          Order_Address_Code: "",
-          Buy_from_Vendor_Name: "PROCURRI INDIA PRIVATE LIMITED",
-          Vendor_Authorization_No: "",
-          Buy_from_Post_Code: "560001",
-          Buy_from_Country_Region_Code: "IND",
-          Buy_from_Address: "Office No.312/3 Barton Centre, Mahatma Gandhi Road",
-          Buy_from_Address_2: "Bangalore, Karnataka",
-          Buy_from_Contact: "",
-          Pay_to_Vendor_No: "VLOC-2948",
-          Pay_to_Name: "PROCURRI INDIA PRIVATE LIMITED",
-          Pay_to_Post_Code: "560001",
-          Pay_to_Country_Region_Code: "IND",
-          Pay_to_Contact: "",
-          Ship_to_Code: "",
-          Requested_Receipt_Date: "0001-01-01T00:00:00",
-          Expected_Receipt_Date: "0001-01-01T00:00:00",
-          Promised_Receipt_Date: "2022-11-25T00:00:00",
-          Ship_to_Name: "HITACHI SYSTEMS INDIA PVT.LTD.",
-          Ship_to_Post_Code: "560025",
-          Ship_to_Country_Region_Code: "IND",
-          Ship_to_Contact: "KM Akshay,08022456167,9686446905",
-          Gen_Journal_Template_Code: "BGL-PO",
-          Purchase_Order_Type: "Spares",
-          Purchase_Order_Sub_Categories: "Product Support (H/w & S/w)",
-          PO_Status: "Active",
-          Shortcut_Dimension_1_Code: "11000",
-          Shortcut_Dimension_2_Code: "DEL201508SOSLS0002",
-          Turn_Over_Branch: "11000",
-          Location_Code: "BGL-AMC",
-          Purchaser_Code: "DELSARG",
-          Bid_No: "NIL",
-          Assigned_User_ID: "",
-          Currency_Code: "",
-          Document_Date: "2023-01-20T00:00:00",
-          Status: "Released",
-          Workflow_Status: "Approved",
-          MSME_Vendor_Type: "Registered",
-          Payment_Terms_Code: "30-D",
-          Due_Date: "2023-02-19T00:00:00",
-          Payment_Discount_Percent: "0",
-          Payment_Method_Code: "",
-          Shipment_Method_Code: "",
-          Job_Queue_Status: " ",
-          Unbilled_Amount: "21000",
-          Billed_Amount: "0",
-          Amount: "21000",
-          Amount_to_Vendor: "24780",
-          GST_Vendor_Type: "Registered",
-          Created_by_ID: "MCIPL\\Y0017",
-          Approver_Person_User_ID: "MCIPL\\M1546",
-          Order_Date: "2022-11-24T00:00:00",
-          CRM_ID: "",
-          Salesperson_Code: "",
-          Salesperson_Name: "",
-          Pre_Sales_Person_Code: "",
-          Pre_Salesperson_Name: "",
-          Project_Manager_EMP_Code: "",
-          Project_Manager_Name: "",
-          Remarks: "",
-          Customer_Name: "",
-          Customer_Add1: "",
-          Customer_Add2: "",
-          Customer_GST: "",
-          Contact_Person_Name: "",
-          Contact_No: "",
-          Customer_Email: "",
-          ETag: "64;JgAAAACLAQAAAAJ7/0IARwBMADIAMAAyADIAMgAzAFAATwAwADAAMAA3AAAAAAA=10;59647679890;"
-        }]
-        let filteredErpData = [];
-        filteredErpData.push(erpDATA[0])
-        let filteredErpData2 = filteredErpData.filter(
-          (item) => item.PO_Status === 'Active' // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
+    // Promise.all([apiService.getInvoiceinfo()]).then(
+    //   ([invoiceRes]) => {
+    //     const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+    //     let erpDATA = [{
+    //       Document_Type: "Order",
+    //       No: "BGL202223PO0007",
+    //       Posting_Date: "2023-01-23T00:00:00",
+    //       Case_Id_No: "IN603779",
+    //       Buy_from_Vendor_No: "VLOC-2948",
+    //       Order_Address_Code: "",
+    //       Buy_from_Vendor_Name: "PROCURRI INDIA PRIVATE LIMITED",
+    //       Vendor_Authorization_No: "",
+    //       Buy_from_Post_Code: "560001",
+    //       Buy_from_Country_Region_Code: "IND",
+    //       Buy_from_Address: "Office No.312/3 Barton Centre, Mahatma Gandhi Road",
+    //       Buy_from_Address_2: "Bangalore, Karnataka",
+    //       Buy_from_Contact: "",
+    //       Pay_to_Vendor_No: "VLOC-2948",
+    //       Pay_to_Name: "PROCURRI INDIA PRIVATE LIMITED",
+    //       Pay_to_Post_Code: "560001",
+    //       Pay_to_Country_Region_Code: "IND",
+    //       Pay_to_Contact: "",
+    //       Ship_to_Code: "",
+    //       Requested_Receipt_Date: "0001-01-01T00:00:00",
+    //       Expected_Receipt_Date: "0001-01-01T00:00:00",
+    //       Promised_Receipt_Date: "2022-11-25T00:00:00",
+    //       Ship_to_Name: "HITACHI SYSTEMS INDIA PVT.LTD.",
+    //       Ship_to_Post_Code: "560025",
+    //       Ship_to_Country_Region_Code: "IND",
+    //       Ship_to_Contact: "KM Akshay,08022456167,9686446905",
+    //       Gen_Journal_Template_Code: "BGL-PO",
+    //       Purchase_Order_Type: "Spares",
+    //       Purchase_Order_Sub_Categories: "Product Support (H/w & S/w)",
+    //       PO_Status: "Active",
+    //       Shortcut_Dimension_1_Code: "11000",
+    //       Shortcut_Dimension_2_Code: "DEL201508SOSLS0002",
+    //       Turn_Over_Branch: "11000",
+    //       Location_Code: "BGL-AMC",
+    //       Purchaser_Code: "DELSARG",
+    //       Bid_No: "NIL",
+    //       Assigned_User_ID: "",
+    //       Currency_Code: "",
+    //       Document_Date: "2023-01-20T00:00:00",
+    //       Status: "Released",
+    //       Workflow_Status: "Approved",
+    //       MSME_Vendor_Type: "Registered",
+    //       Payment_Terms_Code: "30-D",
+    //       Due_Date: "2023-02-19T00:00:00",
+    //       Payment_Discount_Percent: "0",
+    //       Payment_Method_Code: "",
+    //       Shipment_Method_Code: "",
+    //       Job_Queue_Status: " ",
+    //       Unbilled_Amount: "21000",
+    //       Billed_Amount: "0",
+    //       Amount: "21000",
+    //       Amount_to_Vendor: "24780",
+    //       GST_Vendor_Type: "Registered",
+    //       Created_by_ID: "MCIPL\\Y0017",
+    //       Approver_Person_User_ID: "MCIPL\\M1546",
+    //       Order_Date: "2022-11-24T00:00:00",
+    //       CRM_ID: "",
+    //       Salesperson_Code: "",
+    //       Salesperson_Name: "",
+    //       Pre_Sales_Person_Code: "",
+    //       Pre_Salesperson_Name: "",
+    //       Project_Manager_EMP_Code: "",
+    //       Project_Manager_Name: "",
+    //       Remarks: "",
+    //       Customer_Name: "",
+    //       Customer_Add1: "",
+    //       Customer_Add2: "",
+    //       Customer_GST: "",
+    //       Contact_Person_Name: "",
+    //       Contact_No: "",
+    //       Customer_Email: "",
+    //       ETag: "64;JgAAAACLAQAAAAJ7/0IARwBMADIAMAAyADIAMgAzAFAATwAwADAAMAA3AAAAAAA=10;59647679890;"
+    //     }]
+    //     let filteredErpData = [];
+    //     filteredErpData.push(erpDATA[0])
+    //     let filteredErpData2 = filteredErpData.filter(
+    //       (item) => item.PO_Status === 'Active'
+    //     );
+    //     let arrayData = []
+    //     for (let x in filteredErpData2) {
+    //       arrayData.push(filteredErpData2[x])
+    //     }
+    //     for (let y in invoiceValues) {
+    //       arrayData.push(invoiceValues[y])
+    //     }
+    //     const rowsWithIds = arrayData.map((row) => ({
+    //       ...row,
+    //       id: uuidv4(),
+    //     }));
+
+    //     setRows(rowsWithIds);
+    //     console.log("Data:");
+    //     console.log(rowsWithIds);
+
+    //     setAccordionData(rowsWithIds);
+    //   }
+    // );
+
+    Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists(), apiService.getInvoiceinfo()]).then(
+      ([poRes, erpRes, invoiceRes]) => {
+
+        const poValues = poRes.data.result.map((item) => item.No);
+        const filteredErpData = erpRes.data.result.filter(
+          (item) => !poValues.includes(item.No) && item.PO_Status === 'Active'
         );
+        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+
         let arrayData = []
-        for (let x in filteredErpData2) {
-          arrayData.push(filteredErpData2[x])
+
+        for (let x in filteredErpData) {
+          arrayData.push(filteredErpData[x])
         }
         for (let y in invoiceValues) {
           arrayData.push(invoiceValues[y])
         }
 
-        // Process getErpPurchaseOrdersLists response
+
         const rowsWithIds = arrayData.map((row) => ({
           ...row,
           id: uuidv4(),
