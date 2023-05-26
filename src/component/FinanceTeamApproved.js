@@ -185,6 +185,550 @@ export default function FinanceTeamApproved() {
     //   editable: true,
     // },
   ];
+
+  const viewFile = (event, file, row) => {
+    if (event) {
+
+      console.log("event", event);
+      let text = event;
+      let fname = text.split("/");
+      fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
+        (response) => {
+          response.blob().then((blob) => {
+            let url = URL.createObjectURL(blob, "application/pdf");
+            window.open(url, "_blank");
+          });
+        }
+      );
+    } else {
+      Swal.fire({
+        title: "File not found",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  const rendereWayBill = (params) => {
+    return (params.row.No === "230010" && params.row.eWayBill) ||
+      (params.row.No === "249812"  && params.row.eWayBill) ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.eWayBill)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const rendertransportDocument = (params) => {
+    return params.row.No === "230010" && params.row.transportDocument ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.transportDocument)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const rendermiscDocs = (params) => {
+    return (params.row.No === "230010" && params.row.miscDocs) ||
+      (params.row.No === "249812" && params.row.miscDocs) ||
+      (params.row.No === "220020" && params.row.miscDocs) ||
+      (params.row.No === "220031" && params.row.miscDocs) ||
+      (params.row.No === "220030" && params.row.miscDocs) ||
+      (params.row.No === "220024" && params.row.miscDocs) ||
+      (params.row.No === "220021" && params.row.miscDocs) ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.miscDocs)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderboe = (params) => {
+    return params.row.No === "249812" && params.row.boe ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.boe)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderawb = (params) => {
+    return params.row.No === "249812" && params.row.awb ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.boe)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderserviceAgreement = (params) => {
+    return params.row.No === "220020" && params.row.serviceAgreement ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.serviceAgreement)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderlic = (params) => {
+    return params.row.No === "220020" && params.row.lic ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.lic)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderlicDeliveryProof = (params) => {
+    return params.row.No === "220020" && params.row.licDeliveryProof ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.licDeliveryProof)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderwarrantyCertificate = (params) => {
+    return params.row.No === "220020" && params.row.warrantyCertificate ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.warrantyCertificate)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderirWcc = (params) => {
+    return params.row.No === "220020" && params.row.irWcc ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.irWcc)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const rendersignOffFromCustomer = (params) => {
+    return params.row.No === "220020" && params.row.signOffFromCustomer ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.signOffFromCustomer)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const rendercoc = (params) => {
+    return params.row.No === "220020" && params.row.coc ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.coc)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderesiPayementChallan = (params) => {
+    return params.row.No === "220021" && params.row.esiPayementChallan ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.esiPayementChallan)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderpfPayementChallan = (params) => {
+    return params.row.No === "220021" && params.row.pfPayementChallan ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.pfPayementChallan)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderemployeeSummary = (params) => {
+    return params.row.No === "220021" && params.row.employeeSummary ? (
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.employeeSummary)}
+            hidden
+          />
+        </Button>
+      </strong>
+    ) : (
+      <></>
+    );
+  };
+
+  const renderarWorking = (params) => {
+    return (
+      params.row.No === "220023" && params.row.arWorking ?
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.arWorking)}
+            hidden
+          />
+        </Button>
+      </strong>
+      : <></>
+    );
+  };
+
+  const renderdeliveryProof = (params) => {
+    return (
+      params.row.No === "220030" && params.row.deliveryProof ?
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.deliveryProof)}
+            hidden
+          />
+        </Button>
+      </strong>
+      : <></>
+    );
+  };
+
+  const rendercalculation = (params) => {
+    return (
+      params.row.No === "220030" && params.row.calculation ?
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.calculation)}
+            hidden
+          />
+        </Button>
+      </strong>
+      : <></>
+    );
+  };
+
+  const rendercustomExRate = (params) => {
+    return (
+      params.row.No === "220030" && params.row.customExRate ?
+      <strong>
+        <Button
+          variant="contained"
+          component="label"
+          size="small"
+          sx={{
+            "&:hover": { backgroundColor: "#B1000E" },
+            textTransform: "capitalize",
+            backgroundColor: "#B1000E",
+          }}
+          color="primary"
+        >
+          View File
+          <input
+            style={{ backgroundColor: "red" }}
+            onClick={(e) => viewFile(params.row.customExRate)}
+            hidden
+          />
+        </Button>
+      </strong>
+      : <></>
+    );
+  };
+
   const Invoicecolumns = [
     { field: "No", headerName: "PO Number", width: 90 },
     // {
@@ -282,133 +826,133 @@ export default function FinanceTeamApproved() {
       field: "eWayBill",
       headerName: "E-Way Bill",
       width: 120,
-      // renderCell: rendereWayBill,
+      renderCell: rendereWayBill,
     },
     {
       field: "transportDocument",
       headerName: "Transport Document",
       type: "number",
       width: 120,
-      // renderCell: rendertransportDocument,
+      renderCell: rendertransportDocument,
     },
     {
       field: "miscDocs",
       headerName: "MISC Docs",
       type: "number",
       width: 110,
-      // renderCell: rendermiscDocs,
+      renderCell: rendermiscDocs,
     },
     {
       field: "boe",
       headerName: "BOE",
       type: "number",
       width: 110,
-      // renderCell: renderboe,
+      renderCell: renderboe,
     },
     {
       field: "awb",
       headerName: "AWB",
       type: "number",
       width: 110,
-      // renderCell: renderawb,
+      renderCell: renderawb,
     },
     {
       field: "serviceAgreement",
       headerName: "Service Agreement",
       type: "number",
       width: 110,
-      // renderCell: renderserviceAgreement,
+      renderCell: renderserviceAgreement,
     },
     {
       field: "lic",
       headerName: "LIC",
       type: "number",
       width: 110,
-      // renderCell: renderlic,
+      renderCell: renderlic,
     },
     {
       field: "licDeliveryProof",
       headerName: "LIC Delivery Proof",
       type: "number",
       width: 110,
-      // renderCell: renderlicDeliveryProof,
+      renderCell: renderlicDeliveryProof,
     },
     {
       field: "warrantyCertificate",
       headerName: "Warranty Certificate",
       type: "number",
       width: 110,
-      // renderCell: renderwarrantyCertificate,
+      renderCell: renderwarrantyCertificate,
     },
     {
       field: "irWcc",
       headerName: "IR/WCC",
       type: "number",
       width: 110,
-      // renderCell: renderirWcc,
+      renderCell: renderirWcc,
     },
     {
       field: "signOffFromCustomer",
       headerName: "Sign off from customer",
       type: "number",
       width: 110,
-      // renderCell: rendersignOffFromCustomer,
+      renderCell: rendersignOffFromCustomer,
     },
     {
       field: "coc",
       headerName: "COC",
       type: "number",
       width: 110,
-      // renderCell: rendercoc,
+      renderCell: rendercoc,
     },
     {
       field: "esiPayementChallan",
       headerName: "ESI Payment Challan",
       type: "number",
       width: 110,
-      // renderCell: renderesiPayementChallan,
+      renderCell: renderesiPayementChallan,
     },
     {
       field: "pfPayementChallan",
       headerName: "PF Payment Challan",
       type: "number",
       width: 110,
-      // renderCell: renderpfPayementChallan,
+      renderCell: renderpfPayementChallan,
     },
     {
       field: "employeeSummary",
       headerName: "Employee Summary",
       type: "number",
       width: 110,
-      // renderCell: renderemployeeSummary,
+      renderCell: renderemployeeSummary,
     },
     {
       field: "arWorking",
       headerName: "AR Working",
       type: "number",
       width: 110,
-      // renderCell: renderarWorking,
+      renderCell: renderarWorking,
     },
     {
       field: "deliveryProof",
       headerName: "Deliver Proof",
       type: "number",
       width: 110,
-      // renderCell: renderdeliveryProof,
+      renderCell: renderdeliveryProof,
     },
     {
       field: "calculation",
       headerName: "Calculation",
       type: "number",
       width: 110,
-      // renderCell: rendercalculation,
+      renderCell: rendercalculation,
     },
     {
       field: "customExRate",
       headerName: "Custom's EX Rate",
       type: "number",
       width: 110,
-      // renderCell: rendercustomExRate,
+      renderCell: rendercustomExRate,
     },
   ];
   useEffect(() => {

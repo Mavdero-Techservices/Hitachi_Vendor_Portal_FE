@@ -39,7 +39,7 @@ export default function PoReject() {
     setExpanded(isExpanded ? panel : false);
     const number = panel.substring(5);
     const filteredAccordionData = accordionData.filter(
-      (item) => item.poNumber === number
+      (item) => item.No === number
     );
 
     // console.log("accy677::", number, filteredAccordionData);
@@ -130,8 +130,8 @@ export default function PoReject() {
   };
 
   const rendereWayBill = (params) => {
-    return params.row.poNumber === "230010" ||
-      params.row.poNumber === "249812" ? (
+    return params.row.No === "230010" ||
+      params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -161,7 +161,7 @@ export default function PoReject() {
   };
 
   const rendertransportDocument = (params) => {
-    return params.row.poNumber === "230010" ? (
+    return params.row.No === "230010" ? (
       <strong>
         <Button
           variant="contained"
@@ -191,13 +191,13 @@ export default function PoReject() {
   };
 
   const rendermiscDocs = (params) => {
-    return params.row.poNumber === "230010" ||
-      params.row.poNumber === "249812" ||
-      params.row.poNumber === "220020" ||
-      params.row.poNumber === "220031" ||
-      params.row.poNumber === "220030" ||
-      params.row.poNumber === "220024" ||
-      params.row.poNumber === "220021" ? (
+    return params.row.No === "230010" ||
+      params.row.No === "249812" ||
+      params.row.No === "220020" ||
+      params.row.No === "220031" ||
+      params.row.No === "220030" ||
+      params.row.No === "220024" ||
+      params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -227,7 +227,7 @@ export default function PoReject() {
   };
 
   const renderboe = (params) => {
-    return params.row.poNumber === "249812" ? (
+    return params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -257,7 +257,7 @@ export default function PoReject() {
   };
 
   const renderawb = (params) => {
-    return params.row.poNumber === "249812" ? (
+    return params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -287,7 +287,7 @@ export default function PoReject() {
   };
 
   const renderserviceAgreement = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -317,7 +317,7 @@ export default function PoReject() {
   };
 
   const renderlic = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -347,7 +347,7 @@ export default function PoReject() {
   };
 
   const renderlicDeliveryProof = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -377,7 +377,7 @@ export default function PoReject() {
   };
 
   const renderwarrantyCertificate = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -411,7 +411,7 @@ export default function PoReject() {
   };
 
   const renderirWcc = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -441,7 +441,7 @@ export default function PoReject() {
   };
 
   const rendersignOffFromCustomer = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -475,7 +475,7 @@ export default function PoReject() {
   };
 
   const rendercoc = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -505,7 +505,7 @@ export default function PoReject() {
   };
 
   const renderesiPayementChallan = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -539,7 +539,7 @@ export default function PoReject() {
   };
 
   const renderpfPayementChallan = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -569,7 +569,7 @@ export default function PoReject() {
   };
 
   const renderemployeeSummary = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -599,7 +599,7 @@ export default function PoReject() {
   };
 
   const renderarWorking = (params) => {
-    return params.row.poNumber === "220023" ? (
+    return params.row.No === "220023" ? (
       <strong>
         <Button
           variant="contained"
@@ -629,7 +629,7 @@ export default function PoReject() {
   };
 
   const renderdeliveryProof = (params) => {
-    return params.row.poNumber === "220030" ? (
+    return params.row.No === "220030" ? (
       <strong>
         <Button
           variant="contained"
@@ -659,7 +659,7 @@ export default function PoReject() {
   };
 
   const rendercalculation = (params) => {
-    return params.row.poNumber === "220030" ? (
+    return params.row.No === "220030" ? (
       <strong>
         <Button
           variant="contained"
@@ -689,7 +689,7 @@ export default function PoReject() {
   };
 
   const rendercustomExRate = (params) => {
-    return params.row.poNumber === "220030" ? (
+    return params.row.No === "220030" ? (
       <strong>
         <Button
           variant="contained"
@@ -723,7 +723,7 @@ export default function PoReject() {
   };
 
   const columns = [
-    { field: "poNumber", headerName: "PO Number", width: 90 },
+    { field: "No", headerName: "PO Number", width: 90 },
     {
       field: "docDate",
       headerName: "DocDate",
@@ -1044,15 +1044,15 @@ export default function PoReject() {
     setExpanded(1);
   };
 
-  const handleApprove = (e, poNumber) => {
+  const handleApprove = (e, No) => {
     console.log("e----------->", e);
-    console.log("item----------->", poNumber);
-    apiService.updateApprovalInvoice(poNumber)
+    console.log("item----------->", No);
+    apiService.updateApprovalInvoice(No)
   };
 
-  const handleReject = (e, poNumber) => {
+  const handleReject = (e, No) => {
     console.log("e----------->", e);
-    console.log("item----------->", poNumber);
+    console.log("item----------->", No);
 
     Swal.fire({
         heightAuto: true,
@@ -1076,7 +1076,7 @@ export default function PoReject() {
             data.append("level1ApprovalStatus", comment);
             data.append("level1rejectInvoicedoc", rejectdoc);
   
-            apiService.updateApprovalInvoice(data, poNumber)
+            apiService.updateApprovalInvoice(data, No)
           }
         },
       });
@@ -1141,14 +1141,14 @@ export default function PoReject() {
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => (
                   <>
                     <Accordion
-                      expanded={expanded === "panel" + item.poNumber}
+                      expanded={expanded === "panel" + item.No}
                       key={key}
-                      onChange={handleChange("panel" + item.poNumber)}
+                      onChange={handleChange("panel" + item.No)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        aria-controls={`${item.poNumber}-content`}
-                        id={`${item.poNumber}-header`}
+                        aria-controls={`${item.No}-content`}
+                        id={`${item.No}-header`}
                       >
                         <IconButton
                           sx={{
@@ -1171,7 +1171,7 @@ export default function PoReject() {
                               {item.Buy_from_Vendor_Name?.charAt(0)}
                             </Typography>
                           )}
-                          <Typography>&nbsp;{item.poNumber}</Typography>
+                          <Typography>&nbsp;{item.No}</Typography>
                         </IconButton>
                         <Typography
                           textAlign="center"
@@ -1281,7 +1281,7 @@ export default function PoReject() {
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={(e) => handleReject(e, item.poNumber)}
+                                  onClick={(e) => handleReject(e, item.No)}
                                   className="btn basicbtn btn-md m-3"
                                 >
                                   Reject
@@ -1290,7 +1290,7 @@ export default function PoReject() {
                                 <button
                                   type="button"
                                   className="btn basicbtn btn-md m-3"
-                                  onClick={(e) => handleApprove(e, item.poNumber)}
+                                  onClick={(e) => handleApprove(e, item.No)}
                                 >
                                   Approve
                                 </button>

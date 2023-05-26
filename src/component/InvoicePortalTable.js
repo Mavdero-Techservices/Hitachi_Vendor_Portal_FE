@@ -96,8 +96,8 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendereWayBill = (params) => {
-    return params.row.poNumber === "230010" ||
-      params.row.poNumber === "249812" ? (
+    return params.row.No === "230010" ||
+      params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -127,7 +127,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendertransportDocument = (params) => {
-    return params.row.poNumber === "230010" ? (
+    return params.row.No === "230010" ? (
       <strong>
         <Button
           variant="contained"
@@ -157,13 +157,13 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendermiscDocs = (params) => {
-    return params.row.poNumber === "230010" ||
-      params.row.poNumber === "249812" ||
-      params.row.poNumber === "220020" ||
-      params.row.poNumber === "220031" ||
-      params.row.poNumber === "220030" ||
-      params.row.poNumber === "220024" ||
-      params.row.poNumber === "220021" ? (
+    return params.row.No === "230010" ||
+      params.row.No === "249812" ||
+      params.row.No === "220020" ||
+      params.row.No === "220031" ||
+      params.row.No === "220030" ||
+      params.row.No === "220024" ||
+      params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -193,7 +193,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderboe = (params) => {
-    return params.row.poNumber === "249812" ? (
+    return params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -223,7 +223,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderawb = (params) => {
-    return params.row.poNumber === "249812" ? (
+    return params.row.No === "249812" ? (
       <strong>
         <Button
           variant="contained"
@@ -253,7 +253,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderserviceAgreement = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -283,7 +283,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderlic = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -313,7 +313,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderlicDeliveryProof = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -343,7 +343,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderwarrantyCertificate = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -377,7 +377,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderirWcc = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -407,7 +407,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendersignOffFromCustomer = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -441,7 +441,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendercoc = (params) => {
-    return params.row.poNumber === "220020" ? (
+    return params.row.No === "220020" ? (
       <strong>
         <Button
           variant="contained"
@@ -471,7 +471,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderesiPayementChallan = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -505,7 +505,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderpfPayementChallan = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -535,7 +535,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const renderemployeeSummary = (params) => {
-    return params.row.poNumber === "220021" ? (
+    return params.row.No === "220021" ? (
       <strong>
         <Button
           variant="contained"
@@ -566,7 +566,7 @@ export default function InvoicePortalTable(props) {
 
   const renderarWorking = (params) => {
     return (
-      params.row.poNumber === "220023" ?
+      params.row.No === "220023" ?
       <strong>
         <Button
           variant="contained"
@@ -596,7 +596,7 @@ export default function InvoicePortalTable(props) {
 
   const renderdeliveryProof = (params) => {
     return (
-      params.row.poNumber === "220030" ?
+      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -626,7 +626,7 @@ export default function InvoicePortalTable(props) {
 
   const rendercalculation = (params) => {
     return (
-      params.row.poNumber === "220030" ?
+      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -656,7 +656,7 @@ export default function InvoicePortalTable(props) {
 
   const rendercustomExRate = (params) => {
     return (
-      params.row.poNumber === "220030" ?
+      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -689,7 +689,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const columns = [
-    { field: "poNumber", headerName: "PO Number", width: 90 },
+    { field: "No", headerName: "PO Number", width: 90 },
     {
       field: "docDate",
       headerName: "DocDate",
@@ -916,7 +916,7 @@ export default function InvoicePortalTable(props) {
 
       for (let i = 0; i < invoiceInfo.length; i++) {
         const data = new FormData();
-        data.append("poNumber", invoiceInfo[i].poNumber);
+        data.append("No", invoiceInfo[i].No);
         data.append("docDate", invoiceInfo[i].docDate);
         data.append("vendorInvoiceNo", invoiceInfo[i].vendorInvoiceNo);
         data.append("srNo", invoiceInfo[i].srNo);
@@ -983,7 +983,7 @@ export default function InvoicePortalTable(props) {
             fontSize: "14px",
           }}
           rows={poinvoiceInfo ? poinvoiceInfo : ""}
-          getRowId={(rows) => rows.poNumber}
+          getRowId={(rows) => rows.No}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
@@ -993,7 +993,7 @@ export default function InvoicePortalTable(props) {
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
             const selectedRowData = poinvoiceInfo.filter((row) =>
-              selectedIDs.has(row.poNumber)
+              selectedIDs.has(row.No)
             );
             if (selectedRowData) {
               setinvoiceInfo(selectedRowData);
