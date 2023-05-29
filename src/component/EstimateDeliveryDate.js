@@ -17,6 +17,7 @@ import VendorPortSidemenu from "../common/VendorPortSidemenu";
 import "../css/ApprovalFields.css";
 import apiService from "../services/api.service";
 import MUIDataTable from "mui-datatables";
+import Swal from "sweetalert2";
 
 const theme = createTheme({
   Link: {
@@ -97,10 +98,10 @@ const EstimateDeliveryDate = () => {
 
 
   useEffect(() => {
-     apiService.getErpPurchaseOrder_API().then((res) => {
+    apiService.getErpPurchaseOrder_API().then((res) => {
       setPoData(res.data.value)
     })
-     apiService.getErpPurchaseOrderLineEDD_API().then((res) => {
+    apiService.getErpPurchaseOrderLineEDD_API().then((res) => {
       setEdd(res.data.value)
     })
 
@@ -120,20 +121,20 @@ const EstimateDeliveryDate = () => {
       for (let j = 0; j < poData.length; j++) {
         if (j === ex[i].index) {
           purchList.push(poData[ex[i].index]);
-          for (let k = 0; k < edd.length; k++) {
-            if (poData[j].No === edd[k].Document_No) {
-               purchLine.push(edd[k]);
+          for (let k = 0; k < rows.length; k++) {
+            if (poData[j].No === rows[k].Document_No) {
+              purchLine.push(rows[k]);
             }
           }
         }
       }
     }
-    
+
   };
 
   const handleEddDate = (e, item) => {
     console.log("item---------->", e);
-    item.Edd_Date = e;
+    item.Expected_Receipt_Date = e;
   }
 
   const handleStartDate = (e, item) => {
@@ -184,6 +185,7 @@ const EstimateDeliveryDate = () => {
                       <TableCell align="center">Line_No</TableCell>
                       <TableCell align="center">Type</TableCell>
                       <TableCell align="center">Description</TableCell>
+                      <TableCell align="center">VendorName</TableCell>
                       <TableCell align="center">EDD</TableCell>
                       <TableCell align="center">Start Period</TableCell>
                       <TableCell align="center">End Period</TableCell>
@@ -206,6 +208,9 @@ const EstimateDeliveryDate = () => {
                           <TableCell align="center">{item.Type}</TableCell>
                           <TableCell align="center">
                             {item.Description}
+                          </TableCell>
+                          <TableCell align="center">
+                            {item.Document_No ? poData?.find((po) => po.No === item.Document_No)?.Buy_from_Vendor_Name : ""}
                           </TableCell>
                           <TableCell>
                             {item.Type === "Item" ? (
@@ -283,7 +288,28 @@ const EstimateDeliveryDate = () => {
     // apiService.postErpPurchaseOrderList(purchList);
     // apiService.postErpPurchaseOrderLine(purchLine);
     for (let i = 0; i < purchLine.length; i++) {
-      apiService.postEddDetails(purchLine[i]);
+      apiService.postEddDetails(purchLine[i]).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data Updated",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+        }
+      });
+
     }
   };
 
