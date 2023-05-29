@@ -29,6 +29,9 @@ const EstimateDeliveryDate = () => {
   const [poData, setPoData] = useState();
   const [edd, setEdd] = useState();
 
+  console.log("poData--->", poData);
+  console.log("edd--->", edd);
+
   const columns = [
     {
       name: "No",
@@ -277,8 +280,8 @@ const EstimateDeliveryDate = () => {
 
   const submitPOdetails = () => {
     console.log("1111111111", purchList, purchLine);
-    apiService.postErpPurchaseOrderList(purchList);
-    apiService.postErpPurchaseOrderLine(purchLine);
+    // apiService.postErpPurchaseOrderList(purchList);
+    // apiService.postErpPurchaseOrderLine(purchLine);
     for (let i = 0; i < purchLine.length; i++) {
       apiService.postEddDetails(purchLine[i]);
     }
