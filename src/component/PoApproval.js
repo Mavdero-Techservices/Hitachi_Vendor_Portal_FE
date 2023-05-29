@@ -15,14 +15,12 @@ import apiService from "../services/api.service";
 import React ,{ useEffect, useState } from 'react';
 import AdminHeader from '../common/AdminHeader';
 import { v4 as uuidv4 } from "uuid";
-import PurchaseOrder from './PurchaseOrder';
 import Pagination from '@mui/material/Pagination';
 import SideBar from './SideBar';
 import { DataGrid } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import { MDBRow } from "mdb-react-ui-kit";
 import { format, differenceInDays } from 'date-fns';
-import axios from 'axios';
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -64,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PoApproval() {
   const [expanded, setExpanded] = useState(false);
-  const [Document_Type, setDocument_Type] = useState("");
   const [accordionData, setAccordionData] = useState([]);
   const [dueDay, setdueDay] = useState();
   const [submitDate, setsubmitDate] = useState();
@@ -1457,7 +1454,7 @@ export default function PoApproval() {
       newFilteredSuggestions2 = accordionData?.filter(
         (suggestion) =>
 
-          differenceInDays(new Date(), new Date(suggestion.Order_Date ? suggestion.Order_Date : suggestion.createdAt)) == dueDay
+          differenceInDays(new Date(), new Date(suggestion.Order_Date ? suggestion.Order_Date : suggestion.createdAt)) === parseInt(dueDay)
       );
       setAccordionData(newFilteredSuggestions2);
     } else {

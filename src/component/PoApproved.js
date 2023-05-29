@@ -22,8 +22,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { differenceInDays, format } from "date-fns";
-import { MDBRow } from "mdb-react-ui-kit";
+import { format } from "date-fns";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -59,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PoApproved() {
   const [expanded, setExpanded] = useState(false);
-  const [Document_Type, setDocument_Type] = useState("");
   const [accordionData, setAccordionData] = useState([]);
   const [submitDate, setsubmitDate] = useState();
   const [page, setPage] = useState(1);
@@ -1007,7 +1005,7 @@ export default function PoApproved() {
     if (submitDate) {
       newFilteredSuggestions = accordionData?.filter(
         (suggestion) =>
-          format(new Date(suggestion.level1Date), 'dd MMM') == submitDate
+          format(new Date(suggestion.level1Date), 'dd MMM') === submitDate
       );
 
       setAccordionData(newFilteredSuggestions);
