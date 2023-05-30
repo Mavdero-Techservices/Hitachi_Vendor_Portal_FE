@@ -301,6 +301,11 @@ savePO(data)
 {
   return axios.post(`${process.env.REACT_APP_API_URL}:12707/savePo`, data);
 }
+RejectPo(data)
+{
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/RejectPo`, data);
+}
+
 getMailIdbyvendorNo(No)
 {
   return http.get(`/getMailIdbyvendorNo/${No}`);

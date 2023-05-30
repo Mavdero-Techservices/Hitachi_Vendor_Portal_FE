@@ -375,7 +375,7 @@ export default function PoApproval() {
           data.append("Billed_Amount", rows[0].Billed_Amount);
           data.append("Unbilled_Amount", rows[0].Unbilled_Amount);
 
-          apiService.savePO(data).then((res) => {
+          apiService.RejectPo(data).then((res) => {
             console.log("rejected::", data);
             if (res.data.msg === "success") {
               Swal.fire({
