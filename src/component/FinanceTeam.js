@@ -1,5 +1,6 @@
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Modal from "@material-ui/core/Modal";
+import { v4 as uuidv4 } from "uuid";
 import TextField from "@material-ui/core/TextField";
 import TextField1 from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -70,12 +71,12 @@ export default function FinanceTeamApproval() {
   const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = page * itemsPerPage;
-
+console.log("accordionData----------->>>>",accordionData)
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
     const number = panel.substring(5);
     const filteredAccordionData = accordionData.filter(
-      (item) => item.No === number
+      (item) => item.rowkey === number
     );
     setRows(filteredAccordionData);
   };
@@ -260,7 +261,7 @@ export default function FinanceTeamApproval() {
         } else {
           console.log("valueofemail::", email, username, location);
           const purchaseOrder = {
-            No: event,
+            id: event,
             level2ApprovalStatus: "Approved",
             username: username,
             email: email,
@@ -322,7 +323,7 @@ export default function FinanceTeamApproval() {
           const data = new FormData();
           data.append("level2rejectpodoc", rejectdoc);
           data.append("comment", comment);
-          data.append("No", event);
+          data.append("id", event);
           data.append("level2ApprovalStatus", "Rejected");
           apiService.updateFinanceInvoiceReject(data).then((res) => {
             if (res.data.msg === "success") {
@@ -984,7 +985,8 @@ export default function FinanceTeamApproval() {
   };
 
   const Invoicecolumns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "Document_No", headerName: "PO Number", width: 180 },
+    { field: "No", headerName: "No", width: 180 },
     // {
     //   field: "Document_Type",
     //   headerName: "Document Type",
@@ -1227,8 +1229,17 @@ export default function FinanceTeamApproval() {
           arrayData.push(invoiceValues[y])
         }
         if (arrayData.length > 0) {
-          console.log("arrayData------->>>", arrayData)
-          setAccordionData((item) => [...item, ...arrayData]);
+          // console.log("arrayData------->>>", arrayData)
+          // setAccordionData((item) => [...item, ...arrayData]);
+          const rowsWithIds = arrayData.map((row) => ({
+            ...row,
+            rowkey: uuidv4(),
+          }));
+  
+          setRows(rowsWithIds);
+         
+  
+          setAccordionData(rowsWithIds);
         }
       }
     );
@@ -1355,9 +1366,9 @@ export default function FinanceTeamApproval() {
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => (
                   <>
                     <Accordion
-                      expanded={expanded === "panel" + item.No}
+                      expanded={expanded === "panel" + item.rowkey}
                       key={key}
-                      onChange={handleChange("panel" + item.No)}
+                      onChange={handleChange("panel" + item.rowkey)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -1451,6 +1462,7 @@ export default function FinanceTeamApproval() {
                                 borderRadius: 0,
                                 fontSize: "14px",
                               }}
+                              getRowId={(row) => row.rowkey}
                               rows={rows}
                               columns={columns}
                               pageSize={5}
@@ -1525,6 +1537,7 @@ export default function FinanceTeamApproval() {
                                   borderRadius: 0,
                                   fontSize: "14px",
                                 }}
+                                getRowId={(row) => row.rowkey}
                                 rows={rows}
                                 columns={Invoicecolumns}
                                 pageSize={5}
@@ -1539,7 +1552,7 @@ export default function FinanceTeamApproval() {
                                 <div className="float-end">
                                   <button
                                     type="button"
-                                    onClick={(e) => handleReject(item.No, item.Document_Type)}
+                                    onClick={(e) => handleReject(item.id, item.Document_Type)}
                                     className="btn basicbtn btn-md m-3"
                                   >
                                     Reject
@@ -1548,7 +1561,7 @@ export default function FinanceTeamApproval() {
                                   <button
                                     type="button"
                                     className="btn basicbtn btn-md m-3"
-                                    onClick={(e) => handleApprove(item.No, item.Document_Type)}
+                                    onClick={(e) => handleApprove(item.id, item.Document_Type)}
                                   >
                                     Approve
                                   </button>

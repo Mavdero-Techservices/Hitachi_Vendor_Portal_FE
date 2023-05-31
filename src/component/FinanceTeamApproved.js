@@ -73,7 +73,7 @@ export default function FinanceTeamApproved() {
     setExpanded(isExpanded ? panel : false);
     const number = panel.substring(5);
     const filteredAccordionData = accordionData.filter(
-      (item) => item.No === number
+      (item) => item.id === number
     );
 
     console.log("accy677::", number, filteredAccordionData);
@@ -730,7 +730,8 @@ export default function FinanceTeamApproved() {
   };
 
   const Invoicecolumns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "Document_No", headerName: "PO Number", width: 180 },
+    { field: "No", headerName: "No", width: 180 },
     // {
     //   field: "Document_Type",
     //   headerName: "Document Type",
@@ -1086,9 +1087,9 @@ export default function FinanceTeamApproved() {
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => (
                   <>
                     <Accordion
-                      expanded={expanded === "panel" + item.No}
+                      expanded={expanded === "panel" + item.id}
                       key={key}
-                      onChange={handleChange("panel" + item.No)}
+                      onChange={handleChange("panel" + item.id)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}

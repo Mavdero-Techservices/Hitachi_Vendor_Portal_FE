@@ -689,7 +689,8 @@ export default function InvoicePortalTable(props) {
   };
 
   const columns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "Document_No", headerName: "PO Number", width: 180 },
+    { field: "No", headerName: "No", width: 180 },
     {
       field: "docDate",
       headerName: "DocDate",
@@ -701,7 +702,9 @@ export default function InvoicePortalTable(props) {
       width: 210,
       // editable: true,
       renderCell: (params) => {
+      
         return (
+          params.row.vendorInvoiceNo && params.row.vendorInvoiceNo !=='null'? params.row.vendorInvoiceNo:
           <>
             <TextField
               onChange={(event) => handleInvoiceChange(event, params.row)}
@@ -916,6 +919,7 @@ export default function InvoicePortalTable(props) {
 
       for (let i = 0; i < invoiceInfo.length; i++) {
         const data = new FormData();
+        data.append("id", invoiceInfo[i].id);
         data.append("No", invoiceInfo[i].No);
         data.append("docDate", invoiceInfo[i].docDate);
         data.append("vendorInvoiceNo", invoiceInfo[i].vendorInvoiceNo);
@@ -983,7 +987,7 @@ export default function InvoicePortalTable(props) {
             fontSize: "14px",
           }}
           rows={poinvoiceInfo ? poinvoiceInfo : ""}
-          getRowId={(rows) => rows.No}
+          getRowId={(rows) => rows.id}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
@@ -993,7 +997,7 @@ export default function InvoicePortalTable(props) {
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
             const selectedRowData = poinvoiceInfo.filter((row) =>
-              selectedIDs.has(row.No)
+              selectedIDs.has(row.id)
             );
             if (selectedRowData) {
               setinvoiceInfo(selectedRowData);

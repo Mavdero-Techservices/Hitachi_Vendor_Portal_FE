@@ -76,7 +76,7 @@ export default function PoApproval() {
     (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
       const number = panel.substring(5);
-      const filteredAccordionData = accordionData.filter((item) => item.No === number);
+      const filteredAccordionData = accordionData.filter((item) => item.rowkey === number);
 
       console.log("accy677::", number, filteredAccordionData);
       setRows(filteredAccordionData);
@@ -202,7 +202,7 @@ export default function PoApproval() {
                   );
                   const rowsWithIds = filteredErpData.map((row) => ({
                     ...row,
-                    id: uuidv4(),
+                    rowkey: uuidv4(),
                   }));
 
                   setRows(rowsWithIds);
@@ -282,6 +282,7 @@ export default function PoApproval() {
         } else {
           const purchaseOrder = {
             Document_Type: rows[0].Document_Type,
+            id: rows[0].id,
             No: event,
             srNo: rows[0].srNo,
             glCode: rows[0].glCode,
@@ -313,7 +314,7 @@ export default function PoApproval() {
 
                   const rowsWithIds = filteredErpData.map((row) => ({
                     ...row,
-                    id: uuidv4(),
+                    rowkey: uuidv4(),
                   }));
 
                   setRows(rowsWithIds);
@@ -416,6 +417,7 @@ export default function PoApproval() {
     });
   };
   const [rows, setRows] = useState([]);
+  console.log("rows----------->", rows);
   const columns = [
     { field: "No", headerName: "PO Number", width: 90 },
     {
@@ -1049,7 +1051,8 @@ export default function PoApproval() {
   };
 
   const Invoicecolumns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "Document_No", headerName: "PO Number", width: 180 },
+    { field: "No", headerName: "No", width: 180 },
     // {
     //   field: "Document_Type",
     //   headerName: "Document Type",
@@ -1384,11 +1387,11 @@ export default function PoApproval() {
     Promise.all([apiService.getPo(), apiService.getErpPurchaseOrdersLists(), apiService.getInvoiceinfo()]).then(
       ([poRes, erpRes, invoiceRes]) => {
 
-        const poValues = poRes.data.result.map((item) => item.No);
-        const filteredErpData = erpRes.data.result.filter(
-          (item) => !poValues.includes(item.No) && item.PO_Status === 'Active'
+        const poValues = poRes.data.result?.map((item) => item.No);
+        const filteredErpData = erpRes.data.result?.filter(
+          (item) => !poValues?.includes(item.No) && item.PO_Status === 'Active'
         );
-        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+        const invoiceValues = invoiceRes.data.result?.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected"&& item.vendorInvoiceNo && item.vendorInvoiceNo !== 'null');
 
         let arrayData = []
 
@@ -1399,10 +1402,11 @@ export default function PoApproval() {
           arrayData.push(invoiceValues[y])
         }
 
+        console.log("arrayData---------->", arrayData);
 
         const rowsWithIds = arrayData.map((row) => ({
           ...row,
-          id: uuidv4(),
+          rowkey: uuidv4(),
         }));
 
         setRows(rowsWithIds);
@@ -1535,7 +1539,7 @@ export default function PoApproval() {
               <>
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => <>
 
-                  <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
+                  <Accordion expanded={expanded === 'panel' + item.rowkey} key={key} onChange={handleChange('panel' + item.rowkey)} >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls={`${item.No}-content`}
@@ -1628,6 +1632,7 @@ export default function PoApproval() {
                                 fontSize: "14px",
                               }}
                               rows={rows}
+                              getRowId={(row) => row.rowkey}
                               columns={columns}
                               pageSize={5}
                               rowsPerPageOptions={[5]}
@@ -1701,6 +1706,7 @@ export default function PoApproval() {
                                 fontSize: "14px",
                               }}
                               rows={rows}
+                              getRowId={(row) => row.rowkey}
                               columns={Invoicecolumns}
                               pageSize={5}
                               rowsPerPageOptions={[5]}

@@ -73,7 +73,7 @@ export default function PoReject() {
     (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
       const number = panel.substring(5);
-      const filteredAccordionData = accordionData.filter((item) => item.No === number);
+      const filteredAccordionData = accordionData.filter((item) => item.id === number);
       setRows(filteredAccordionData);
     };
 
@@ -736,7 +736,8 @@ export default function PoReject() {
   };
 
   const Invoicecolumns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "Document_No", headerName: "PO Number", width: 180 },
+    { field: "No", headerName: "No", width: 180 },
     // {
     //   field: "Document_Type",
     //   headerName: "Document Type",
@@ -1089,7 +1090,7 @@ export default function PoReject() {
               <>
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => <>
 
-                  <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
+                  <Accordion expanded={expanded === 'panel' + item.id} key={key} onChange={handleChange('panel' + item.id)} >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls={`${item.No}-content`}
