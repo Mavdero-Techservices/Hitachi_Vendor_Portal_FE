@@ -282,8 +282,7 @@ export default function PoApproval() {
         } else {
           const purchaseOrder = {
             Document_Type: rows[0].Document_Type,
-            id: rows[0].id,
-            No: event,
+            id: event,
             srNo: rows[0].srNo,
             glCode: rows[0].glCode,
             qty: rows[0].qty,
@@ -1721,7 +1720,7 @@ export default function PoApproval() {
                                 <button
                                   type="button"
                                   className="btn basicbtn btn-md m-3"
-                                onClick={(e) => handleApprovalOnMail(item.No, item.Document_Type)}
+                                onClick={(e) => handleApprovalOnMail(item.id, item.Document_Type)}
                                 >
                                   Send
                                 </button>
