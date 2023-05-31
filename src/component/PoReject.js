@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import SearchIcon from "@mui/icons-material/Search";
+import { v4 as uuidv4 } from "uuid";
 import { Box, Container, ThemeProvider } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -73,7 +74,7 @@ export default function PoReject() {
     (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
       const number = panel.substring(5);
-      const filteredAccordionData = accordionData.filter((item) => item.id === number);
+      const filteredAccordionData = accordionData.filter((item) => item.rowkey === number);
       setRows(filteredAccordionData);
     };
 
@@ -982,6 +983,14 @@ export default function PoReject() {
         if (arrayData.length > 0) {
           setAccordionData((item) => [...item, ...arrayData]);
         }
+        const rowsWithIds = arrayData?.map((row) => ({
+          ...row,
+          rowkey: uuidv4(),
+        }));
+
+        setRows(rowsWithIds);
+        
+        setAccordionData(rowsWithIds);
       }
     );
   }
@@ -1090,7 +1099,7 @@ export default function PoReject() {
               <>
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => <>
 
-                  <Accordion expanded={expanded === 'panel' + item.id} key={key} onChange={handleChange('panel' + item.id)} >
+                  <Accordion expanded={expanded === 'panel' + item.rowkey} key={key} onChange={handleChange('panel' + item.rowkey)} >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls={`${item.No}-content`}
@@ -1181,6 +1190,7 @@ export default function PoReject() {
                               borderRadius: 0,
                               fontSize: "14px",
                             }}
+                            getRowId={(row) => row.rowkey}
                             rows={rows}
                             columns={columns}
                             pageSize={5}
@@ -1233,6 +1243,7 @@ export default function PoReject() {
                                 borderRadius: 0,
                                 fontSize: "14px",
                               }}
+                              getRowId={(row) => row.rowkey}
                               rows={rows}
                               columns={Invoicecolumns}
                               pageSize={5}

@@ -1235,10 +1235,7 @@ console.log("accordionData----------->>>>",accordionData)
             ...row,
             rowkey: uuidv4(),
           }));
-  
           setRows(rowsWithIds);
-         
-  
           setAccordionData(rowsWithIds);
         }
       }

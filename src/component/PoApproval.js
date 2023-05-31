@@ -393,7 +393,7 @@ export default function PoApproval() {
                   );
                   const rowsWithIds = filteredErpData.map((row) => ({
                     ...row,
-                    id: uuidv4(),
+                    rowkey: uuidv4(),
                   }));
 
                   setRows(rowsWithIds);

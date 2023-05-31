@@ -1,5 +1,6 @@
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Modal from "@material-ui/core/Modal";
+import { v4 as uuidv4 } from "uuid";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -73,7 +74,7 @@ export default function FinanceTeamApproved() {
     setExpanded(isExpanded ? panel : false);
     const number = panel.substring(5);
     const filteredAccordionData = accordionData.filter(
-      (item) => item.id === number
+      (item) => item.rowkey === number
     );
 
     console.log("accy677::", number, filteredAccordionData);
@@ -974,8 +975,14 @@ export default function FinanceTeamApproved() {
           arrayData.push(invoiceValues[y])
         }
         if (arrayData.length > 0) {
-          console.log("arrayData------->>>", arrayData)
-          setAccordionData((item) => [...item, ...arrayData]);
+          // console.log("arrayData------->>>", arrayData)
+          // setAccordionData((item) => [...item, ...arrayData]);
+          const rowsWithIds = arrayData.map((row) => ({
+            ...row,
+            rowkey: uuidv4(),
+          }));
+          setRows(rowsWithIds);
+          setAccordionData(rowsWithIds);
         }
       }
     );
@@ -1087,9 +1094,9 @@ export default function FinanceTeamApproved() {
                 {accordionData?.slice(startIndex, endIndex).map((item, key) => (
                   <>
                     <Accordion
-                      expanded={expanded === "panel" + item.id}
+                      expanded={expanded === "panel" + item.rowkey}
                       key={key}
-                      onChange={handleChange("panel" + item.id)}
+                      onChange={handleChange("panel" + item.rowkey)}
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -1185,6 +1192,7 @@ export default function FinanceTeamApproved() {
                                   borderRadius: 0,
                                   fontSize: "14px",
                                 }}
+                                getRowId={(row) => row.rowkey}
                                 rows={rows}
                                 columns={columns}
                                 pageSize={5}
@@ -1237,6 +1245,7 @@ export default function FinanceTeamApproved() {
                                   borderRadius: 0,
                                   fontSize: "14px",
                                 }}
+                                getRowId={(row) => row.rowkey}
                                 rows={rows}
                                 columns={Invoicecolumns}
                                 pageSize={5}
