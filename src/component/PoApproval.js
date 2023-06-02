@@ -236,8 +236,8 @@ export default function PoApproval() {
       <label style="margin-left:0.5rem;" >Email:</label>
       <select  class="select" style="max-width:70%;margin-left:50" id="email" required>
       <option value="" hidden>Select EmailId</option>
-        <option value="ajayaravind797@gmail.com">hitachi@gmail.com</option>
-        <option value="ajayaravind797@gmail.com">hitachi@yahoo.com</option>
+        <option value="apitestmail4@gmail.com">hitachi@gmail.com</option>
+        <option value="apitestmail4@gmail.com">hitachi@yahoo.com</option>
       </select><br>
       <label >User Name:</label>
       <select  class="select" style="max-width:70%;margin-top:1rem;margin-left:15"  id="username" >
@@ -1552,7 +1552,7 @@ export default function PoApproval() {
                         }}
                       >
                          
-                        <Box> {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width: '40px', backgroundColor: '#0001', borderRadius: '50%', textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name.charAt(0) : item.vendorName.charAt(0)}</Typography>}</Box>
+                        <Box> {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width: '40px', backgroundColor: '#0001', borderRadius: '50%', textTransform: 'uppercase' }}> {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name?.charAt(0) : item.vendorName?.charAt(0)}</Typography>}</Box>
                         <Typography >&nbsp;{item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name : item.vendorName}</Typography>
                       </IconButton>
                       <Typography

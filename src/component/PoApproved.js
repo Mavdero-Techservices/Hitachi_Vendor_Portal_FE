@@ -1105,7 +1105,7 @@ export default function PoApproved() {
                           justifyContent: "flex-start",
                         }}
                       >
-                        <Box>{item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width: '40px', backgroundColor: '#0001', borderRadius: '50%',textTransform: 'uppercase' }}>  {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name.charAt(0) : item.vendorName.charAt(0)}</Typography>}</Box>
+                        <Box>{item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width: '40px', backgroundColor: '#0001', borderRadius: '50%',textTransform: 'uppercase' }}>  {item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name?.charAt(0) : item.vendorName?.charAt(0)}</Typography>}</Box>
                         <Typography >&nbsp;{item.Buy_from_Vendor_Name ? item.Buy_from_Vendor_Name : item.vendorName}</Typography>
                       </IconButton>
                       <Typography
