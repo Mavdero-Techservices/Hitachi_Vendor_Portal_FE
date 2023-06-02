@@ -4,40 +4,52 @@ import React,{useState,useEffect } from "react";
 import apiService from "../services/api.service";
 import Button from "@mui/material/Button";
 import "../css/ApprovalFields.css";
-
-
+import Moment from 'moment';
+import { useNavigate } from "react-router-dom";
 
 export default function OpenPurchaseOrder(props) {
   const [poData, setpoData] = useState();
+  const navigate = useNavigate();
   const getPOdownload =(e)=>{
     apiService.getPOfileDownload().then((response) => {
       console.log("res=============>>>>>>",response)
     })
   }
   const columns = [
-    { field: "No", headerName: "PO Number", width: 90 },
+    { field: "No", headerName: "PO Number", width: 200, headerClassName: 'super-app-theme--header',   },
     {
-      field: "Order_Date",
+      // field: "Order_Date",
+      headerClassName: 'super-app-theme--header',
       headerName: "PO Date",
-      width: 110,
-      editable: true,
+      width: 200,
+      renderCell: (params) => (
+        params.row.Order_Date?  Moment(params.row.Order_Date).format('DD-MM-YYYY'):""
+       
+      ),
+      // flex: 1
+      // editable: true,
     },
     {
       field: "Payment_Terms_Code",
+      headerClassName: 'super-app-theme--header',
       headerName: "Payment Terms",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1
+      // editable: true,
     },
     {
       field: "Buy_from_Vendor_Name",
       // Buy_from_Address, Buy_from_Address_2
+      headerClassName: 'super-app-theme--header',
       headerName: "Vendor Address",
       type: "string",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1
+      // editable: true,
     },
     {
       field: "Customer_Name",
+      headerClassName: 'super-app-theme--header',
                 // "Cusstomer Add1"
                 // "Cusstomer Add2"
                 // "Customer GST"
@@ -46,72 +58,91 @@ export default function OpenPurchaseOrder(props) {
                 // "Customer E-mail"
       headerName: "Customer Name",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1
+      // editable: true,
     },
     {
       field: "Buy_from_Vendor_No",
+      headerClassName: 'super-app-theme--header',
       headerName: "Bill to",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1
+      // editable: true,
     },
     {
       field: "Ship_to_Name",
+      headerClassName: 'super-app-theme--header',
       headerName: "Ship to",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       field: "Amount_to_Vendor",
+      headerClassName: 'super-app-theme--header',
       headerName: "Total Po Amt",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       field: "Billed_Amount",
+      headerClassName: 'super-app-theme--header',
       headerName: "Billed amt",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       field: "Unbilled_Amount",
+      headerClassName: 'super-app-theme--header',
       headerName: "Unbilled amt",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       // NO
       field: "mfgcode",
       headerName: "Manufacturing code",
+      headerClassName: 'super-app-theme--header',
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
        // NO
       field: "quoteno",
+      headerClassName: 'super-app-theme--header',
       headerName: "Quote No",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       field: "Purchaser_Code",
+      headerClassName: 'super-app-theme--header',
       headerName: "Purchase spoc",
       type: "number",
-      width: 110,
-      editable: true,
+      width: 200,
+      // flex: 1,
+      // editable: true,
     },
     {
       field: "podownload",
+      headerClassName: 'super-app-theme--header',
       headerName: "PO Download",
       type: "number",
-      width: 110,
+      width: 200,
+      // flex: 1,
       renderCell: (params) => (
         <>
           <Button
@@ -175,8 +206,37 @@ export default function OpenPurchaseOrder(props) {
   },[poData])
 
   return (
-    <Box>
-      <div style={{ height: 350, width: "100%" }}>
+    <Box sx={{
+      height: 300,
+      width: "100%",
+
+      "& .super-app-theme--header": {
+        backgroundColor: "#808080",
+        color: "#ffffff",
+      },
+      "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+        fontSize: 15,
+        fontWeight: "bold",
+      },
+      ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent--alignCenter":
+      {
+        fontSize: 13,
+        textAlign:'center'
+      },
+      ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+      {
+        backgroundColor: "#330033",
+        color: "#ffffff",
+      },
+      ".css-h4y409-MuiList-root": {
+        display: "grid",
+      },
+      ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+      {
+        backgroundColor: "#808080",
+      },
+    }}>
+      <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           sx={{
             boxShadow: 10,
@@ -184,6 +244,9 @@ export default function OpenPurchaseOrder(props) {
             fontSize: "14px",
           }}
           rows={poData?poData:[]}
+          onRowDoubleClick={(item) => {
+            navigate(`/estimateDD`);
+          }}
           getRowId={(rows) => rows?.No}
           columns={columns}
           pageSize={5}
