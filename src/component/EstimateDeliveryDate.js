@@ -1,23 +1,28 @@
-import styled from "@emotion/styled";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
 import { createTheme } from "@material-ui/core/styles";
-import { Button, ThemeProvider } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import SearchIcon from '@mui/icons-material/Search';
+import { Container, ThemeProvider } from "@mui/material";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Avatar from '@mui/material/Avatar';
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
-import VendorPortalHeader from "../common/VendorPortalHeader";
+import IconButton from '@mui/material/IconButton';
+import Pagination from '@mui/material/Pagination';
+import Typography from '@mui/material/Typography';
+import { DataGrid } from "@mui/x-data-grid";
+import { differenceInDays, format } from 'date-fns';
+import { MDBRow } from "mdb-react-ui-kit";
 import VendorPortSidemenu from "../common/VendorPortSidemenu";
+import VendorPortalHeader from "../common/VendorPortalHeader";
 import "../css/ApprovalFields.css";
 import apiService from "../services/api.service";
-import MUIDataTable from "mui-datatables";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from "uuid";
 
 const theme = createTheme({
   Link: {
@@ -27,113 +32,81 @@ const theme = createTheme({
 
 const EstimateDeliveryDate = () => {
 
-  const [poData, setPoData] = useState();
+
+  const [accordionData, setAccordionData] = useState([]);
   const [edd, setEdd] = useState();
 
-  console.log("poData--->", poData);
-  console.log("edd--->", edd);
+  console.log("edd----->", edd);
+  console.log("accordionData----->", accordionData);
 
-  const columns = [
-    {
-      name: "No",
-      label: "PO Number",
-    },
-    {
-      name: "Payment_Terms_Code",
-      label: "Payment Terms",
-    },
-    {
-      name: "Order_Date",
-      label: "PO Date",
-    },
-    {
-      name: "Buy_from_Vendor_Name",
-      label: "Vendor Address",
-    },
-    {
-      name: "Customer_Name",
-      label: "Customer Name",
-    },
-    {
-      name: "Buy_from_Vendor_No",
-      label: "Bill To",
-    },
-    {
-      name: "Ship_to_Name",
-      label: "Ship To",
-    },
-    {
-      name: "Amount_to_Vendor",
-      label: "Total PoAmt",
-    },
-    {
-      name: "Billed_Amount",
-      label: "Billed Amt",
-    },
-    {
-      name: "Unbilled_Amount",
-      label: "Unbilled Amt",
-    },
-    {
-      name: "PO_Status",
-      label: "Manufacturing code",
-    },
-    {
-      name: "quoteno",
-      label: "Quote No",
-    },
-    {
-      name: "Purchaser_Code",
-      label: "Purchase spoc",
-    },
-    {
-      name: "Workflow_Status",
-      label: "Others",
-    },
-    {
-      name: "Status",
-      label: "EDD",
-    },
-  ];
+  const [expanded, setExpanded] = useState(false);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5;
+  const pageCount = Math.ceil(accordionData?.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
+  const [purchOrder, setpurchOrder] = useState([]);
+  console.log("purchOrder----->", purchOrder);
+  const [rows, setRows] = useState([]);
 
 
   useEffect(() => {
-    apiService.getErpPurchaseOrder_API().then((res) => {
-      setPoData(res.data.value)
-    })
-    apiService.getErpPurchaseOrderLineEDD_API().then((res) => {
-      setEdd(res.data.value)
-    })
 
-  }, []);
 
-  const data = poData ? poData : [];
 
-  const rows = edd ? edd : [];
+    const fetchEdd = async () => {
+      let poData = [];
+      await apiService.getErpPurchaseOrder_API().then((res) => {
+        poData = [...res.data.value]
+        setAccordionData(res.data.value)
+      })
 
-  let purchList = [];
-  let purchLine = [];
+      await apiService.getErpPurchaseOrderLineEDD_API().then((res) => {
+        let rowsWithIds = res.data.value.map((row) => ({
+          ...row,
+          rowkey: uuidv4(),
+          key: row.Document_Type + "_" + row.Document_No + "_" + row.Line_No,
+          vendorName: poData.length > 0 ? poData.find((x) => x?.No === row.Document_No)?.Buy_from_Vendor_Name : "sss"
 
-  const onRowSelectionChange = async (ev, ex, ez) => {
-    purchList = [];
-    purchLine = [];
-    for (let i = 0; i < ex.length; i++) {
-      for (let j = 0; j < poData.length; j++) {
-        if (j === ex[i].index) {
-          purchList.push(poData[ex[i].index]);
-          for (let k = 0; k < rows.length; k++) {
-            if (poData[j].No === rows[k].Document_No) {
-              purchLine.push(rows[k]);
-            }
-          }
-        }
-      }
+        }));
+        setEdd(rowsWithIds)
+
+      })
     }
 
+
+    fetchEdd()
+  }, []);
+
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    setExpanded(1);
   };
 
+  const handleChange =
+    (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+      const number = panel.substring(5);
+      const filteredAccordionData = edd.filter((item) => item.Document_No === number);
+
+      setRows(filteredAccordionData);
+
+      // const filteredData = res.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
+      // setAccordionData(filteredData);
+    };
+
+  function getVendorName(params) {
+    return `${params.row.Document_No
+      ? accordionData?.find((x) => x.No === params.row.Document_No)
+        ?.Buy_from_Vendor_Name
+      : ""
+      }`;
+  }
+
   const handleEddDate = (e, item) => {
-    console.log("item---------->", e);
+    console.log("e---------->", e);
+    console.log("item---------->", item);
     item.Expected_Receipt_Date = e;
   }
 
@@ -147,171 +120,95 @@ const EstimateDeliveryDate = () => {
     item.End_Date = e;
   }
 
-  const options = {
-    filterType: "dropdown",
-    responsive: "standard",
-    rowsPerPage: 10,
-    rowsPerPageOptions: [1, 3, 5, 6, 10],
-    jumpToPage: true,
-    textLabels: {
-      pagination: {
-        next: "Next >",
-        previous: "< Previous",
-        rowsPerPage: "Total items Per Page",
-        displayRows: "OF",
-      },
+  const columns = [
+    { field: "Document_Type", headerName: "Document_Type", width: 180 },
+    { field: "Document_No", headerName: "Document_No", width: 180 },
+    { field: "Line_No", headerName: "Line_No", width: 180 },
+    { field: "Type", headerName: "Type", width: 180 },
+    { field: "Description", headerName: "Description", width: 180 },
+    { field: "No", headerName: "Vendor_Name", valueGetter: getVendorName, width: 180 },
+    {
+      field: "Expected_Receipt_Date", headerName: "EDD", width: 180,
+      renderCell: (params) => (
+        <>
+          {
+            params.row.Type === "Item" ? (
+              <>
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    type="date"
+                    variant="outlined"
+                    onChange={(e) => handleEddDate(e.target.value, params.row)}
+                    sx={{
+                      borderRadius: "4px",
+                    }}
+                  />
+                </Box>
+              </>
+            ) : (<></>)
+          }
+        </>
+      )
     },
-    filter: false,
-    download: false,
-    print: false,
-    selectableRowsHeader: true,
-    expandableRowsHeader: false,
-    selectableRows: "multiple",
-
-    onRowSelectionChange,
-
-    expandableRows: true,
-    renderExpandableRow: (rowData, rowMeta) => {
-      return (
-        <React.Fragment>
-          <tr>
-            <td colSpan={6}>
-              <TableContainer component={Paper}>
-                <Table style={{ minWidth: "1000" }} aria-label="simple table">
-                  <TableHead sx={{ backgroundColor: "#0001" }}>
-                    <TableRow>
-                      <TableCell align="center">Document_Type</TableCell>
-                      <TableCell align="center">Document_No</TableCell>
-                      <TableCell align="center">Line_No</TableCell>
-                      <TableCell align="center">Type</TableCell>
-                      <TableCell align="center">Description</TableCell>
-                      <TableCell align="center">VendorName</TableCell>
-                      <TableCell align="center">EDD</TableCell>
-                      <TableCell align="center">Start Period</TableCell>
-                      <TableCell align="center">End Period</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows
-                      .filter((row) => {
-                        return row.Document_No === rowData[0];
-                      })
-                      .map((item) => (
-                        <TableRow key={item.Line_No}>
-                          <TableCell align="center">
-                            {item.Document_Type}
-                          </TableCell>
-                          <TableCell align="center">
-                            {item.Document_No}
-                          </TableCell>
-                          <TableCell align="center">{item.Line_No}</TableCell>
-                          <TableCell align="center">{item.Type}</TableCell>
-                          <TableCell align="center">
-                            {item.Description}
-                          </TableCell>
-                          <TableCell align="center">
-                            {item.Document_No ? poData?.find((po) => po.No === item.Document_No)?.Buy_from_Vendor_Name : ""}
-                          </TableCell>
-                          <TableCell>
-                            {item.Type === "Item" ? (
-                              <Box>
-                                <TextField
-                                  id="outlined-basic"
-                                  type="date"
-                                  variant="outlined"
-                                  onChange={(e) => handleEddDate(e.target.value, item)}
-                                  sx={{
-                                    border: "1px solid black",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                              </Box>
-                            ) : (
-                              <></>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {item.Type === "G/L Account" ? (
-                              <Box>
-                                <TextField
-                                  id="outlined-basic"
-                                  type="date"
-                                  variant="outlined"
-                                  onChange={(e) => handleStartDate(e.target.value, item)}
-                                  sx={{
-                                    border: "1px solid black",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                              </Box>
-                            ) : (
-                              <></>
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {item.Type === "G/L Account" ? (
-                              <Box>
-                                <TextField
-                                  id="outlined-basic"
-                                  type="date"
-                                  variant="outlined"
-                                  onChange={(e) => handleEndDate(e.target.value, item)}
-                                  sx={{
-                                    border: "1px solid black",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                              </Box>
-                            ) : (
-                              <></>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </td>
-          </tr>
-        </React.Fragment>
-      );
+    {
+      field: "Start_Date", headerName: "Start Period", width: 180,
+      renderCell: (params) => (
+        <>
+          {
+            params.row.Type === "G/L Account" ? (
+              <>
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    type="date"
+                    variant="outlined"
+                    onChange={(e) => handleStartDate(e.target.value, params.row)}
+                    sx={{
+                      borderRadius: "4px",
+                    }}
+                  />
+                </Box>
+              </>
+            ) : (<></>)
+          }
+        </>
+      )
     },
-  };
+    {
+      field: "End_Date", headerName: "End Period", width: 180,
+      renderCell: (params) => (
+        <>
+          {
+            params.row.Type === "G/L Account" ? (
+              <>
+                <Box>
+                  <TextField
+                    id="outlined-basic"
+                    type="date"
+                    variant="outlined"
+                    onChange={(e) => handleEndDate(e.target.value, params.row)}
+                    sx={{
+                      borderRadius: "4px",
+                    }}
+                  />
+                </Box>
+              </>
+            ) : (<></>)
+          }
+        </>
+      )
+    },
+  ]
 
-  const DataTableContainer = styled("div")(() => ({
-    width: "1010px",
-    margin: "10px",
-  }));
 
-  const submitPOdetails = () => {
-    console.log("1111111111", purchList, purchLine);
-    // apiService.postErpPurchaseOrderList(purchList);
-    // apiService.postErpPurchaseOrderLine(purchLine);
-    for (let i = 0; i < purchLine.length; i++) {
-      apiService.postEddDetails(purchLine[i]).then((res) => {
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data Updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        }
-      });
+  const postEddDetails = (e) => {
 
+    if (purchOrder.length > 0) {
+      apiService.postEddDetails(purchOrder)
     }
-  };
+
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -320,22 +217,177 @@ const EstimateDeliveryDate = () => {
         <VendorPortalHeader />
         <Box sx={{ display: "flex" }}>
           <VendorPortSidemenu />
-          <DataTableContainer>
-            <MUIDataTable
-              title={"EDD list"}
-              data={data}
-              columns={columns}
-              options={options}
-            />
+          <Box sx={{ mt: 2, width: '100%' }}>
+            <Container>
+              <Accordion className="accordion1" sx={{ mt: 1 }}>
+                <AccordionSummary
+                  aria-controls="panel3a-content"
+                  id="panel3a-header"
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
+                  >
+                    Estimated Delivery Date
+                  </Typography>
+                  <Typography sx={{ width: '36%' }}></Typography>
+                  <TextField
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton>
+                            <SearchIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  // onChange={searchHandler}
+                  />
+                  {/* <FilterAltIcon
+                    sx={{ marginTop: 1 }}
+                    onClick={() => {
+                      filterHandler();
+                      handleOpen();
+                    }}
+                  /> */}
+                </AccordionSummary>
+              </Accordion>
+              <Accordion className="accordion1">
+                <AccordionSummary
+                  aria-controls="panel3a-content"
+                  id="panel3a-header"
+                >
+                  <Typography
+                    sx={{ width: '40%', flexShrink: 0, fontWeight: 'bold' }}
+                  >
+                    Po Number
+                  </Typography>
+                  <Typography sx={{ width: '36%', fontWeight: 'bold' }}>
+                    Customer Name
+                  </Typography>
 
-            <Button
-              variant="contained"
-              sx={{ float: "right", top: "5px" }}
-              onClick={submitPOdetails}
-            >
-              Submit
-            </Button>
-          </DataTableContainer>
+                  <Typography sx={{ fontWeight: 'bold' }}>EDD</Typography>
+                </AccordionSummary>
+              </Accordion>
+
+              <>
+                {accordionData?.slice(startIndex, endIndex).map((item, key) => <>
+
+                  <Accordion expanded={expanded === 'panel' + item.No} key={key} onChange={handleChange('panel' + item.No)} >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={`${item.No}-content`}
+                      id={`${item.No}-header`}
+                    >
+
+
+                      <Typography >&nbsp;{item.No}</Typography>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          width: "55%",
+                          flexShrink: 0,
+                          my: "auto",
+                          fontWeight: "bold",
+                        }}
+                      >
+                      </Typography>
+                      <Typography
+                        textAlign="right"
+                        sx={{
+                          width: "10%",
+                          flexShrink: 0,
+                          my: "auto",
+                          fontWeight: "bold",
+                        }}
+                      >
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box
+                        sx={{
+                          height: 300,
+                          width: "100%",
+
+                          "& .super-app-theme--header": {
+                            backgroundColor: "#808080",
+                            color: "#ffffff",
+                          },
+                          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle": {
+                            fontSize: 15,
+                            fontWeight: "bold",
+                          },
+                          ".css-o8hwua-MuiDataGrid-root .MuiDataGrid-cellContent": {
+                            fontSize: 13,
+                          },
+                          ".css-bfht93-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                          {
+                            backgroundColor: "#330033",
+                            color: "#ffffff",
+                          },
+                          ".css-h4y409-MuiList-root": {
+                            display: "grid",
+                          },
+                          ".css-1omg972-MuiDataGrid-root .MuiDataGrid-columnHeader--alignCenter .MuiDataGrid-columnHeaderTitleContainer":
+                          {
+                            backgroundColor: "#808080",
+                          },
+                        }}
+                      >
+                        <DataGrid
+                          sx={{
+                            boxShadow: 10,
+                            borderRadius: 0,
+                            fontSize: "14px",
+                          }}
+                          rows={rows ? rows : ""}
+                          getRowId={(row) => row.rowkey}
+                          columns={columns}
+                          pageSize={5}
+                          rowsPerPageOptions={[5]}
+                          onSelectionModelChange={(ids) => {
+                            const selectedIDs = new Set(ids);
+                            const selectedRowData = rows.filter((row) =>
+                              selectedIDs.has(row.rowkey),
+                            );
+                            if (selectedRowData) {
+                              // console.log("selected row----------->>>>>",selectedRowData)
+                              setpurchOrder(selectedRowData)
+                            }
+                          }}
+                          disableSelectionOnClick={true}
+                          checkboxSelection={true}
+                          experimentalFeatures={{ newEditingApi: true }}
+                        />
+                      </Box>
+                      <div className="d-flex justify-content-end" sx={{ ml: 10 }}>
+                        <MDBRow className="mb-4">
+                          <div className="float-end">
+                            <button
+                              type="button"
+                              className="btn basicbtn btn-md m-3"
+                              onClick={(e) => postEddDetails(e)}
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </MDBRow>
+                      </div>
+                    </AccordionDetails>
+
+                  </Accordion>
+                </>)}
+
+
+                <Pagination style={{ float: 'right', marginTop: '1rem' }}
+                  count={pageCount}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </>
+            </Container>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
