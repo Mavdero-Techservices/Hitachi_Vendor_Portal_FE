@@ -35,7 +35,7 @@ const ComplianceDetails = () => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
-
+  const [isNewValueEntered, setIsNewValueEntered] = useState(false);
 
   const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
@@ -51,39 +51,50 @@ const ComplianceDetails = () => {
     RPD_Doc: "",
   });
   function onFileChangeRPD(e) {
+    setIsNewValueEntered(true);
     if (e.target) {
-      if (e.target.files[0].size > 5000000) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "File size should be less than 5mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      } else {
-        setfileRPD(e.target.files[0]);
+        setfileRPD(null);
+        setdeleteUploadedFile(false);
+      } else if (file) {
+        setfileRPD(file);
         setdeleteUploadedFile(true);
       }
     } else {
       if (e.size > 5000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "File size should be less than 5mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
+        setfileRPD(null);
+        setdeleteUploadedFile(false);
       } else {
         setfileRPD(e);
         setdeleteUploadedFile(true);
       }
     }
   }
+
   function onFileChangeCOC(e) {
+    setIsNewValueEntered(true);
     if (e.target) {
-      if (e.size > 5000000) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -92,8 +103,8 @@ const ComplianceDetails = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      } else {
-        setfileCOC(e.target.files[0]);
+      } else if (file) {
+        setfileCOC(file);
         setdeleteCocFile(true);
       }
     } else {
@@ -112,9 +123,13 @@ const ComplianceDetails = () => {
       }
     }
   }
+
   function onFileChangeNDA(e) {
+    setIsNewValueEntered(true);
     if (e.target) {
-      if (e.size > 5000000) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -123,8 +138,8 @@ const ComplianceDetails = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      } else {
-        setfileNDA(e.target.files[0]);
+      } else if (file) {
+        setfileNDA(file);
         setdeleteNdaFile(true);
       }
     } else {
@@ -143,7 +158,9 @@ const ComplianceDetails = () => {
       }
     }
   }
+
   function deleteRpd(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
@@ -163,6 +180,7 @@ const ComplianceDetails = () => {
     });
   }
   function deleteCOC(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
@@ -182,6 +200,7 @@ const ComplianceDetails = () => {
     });
   }
   function deleteNDA(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
@@ -201,6 +220,7 @@ const ComplianceDetails = () => {
     });
   }
   function cancel(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -231,18 +251,47 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => { });
+    apiService.downloadPdf(user).then((response) => {});
   };
   function next(e) {
-    // saveComplianceDetail(e);
-    if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
-      navigate("/bank");    
+    if (isNewValueEntered) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          saveComplianceDetail(e, () => {
+            if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+              navigate("/bank");
+            } else {
+              navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+            navigate("/bank");
+          } else {
+            navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+          }
+        }
+      });
     } else {
-      navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+      if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+        navigate("/bank");
+      } else {
+        navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+      }
     }
   }
   useEffect(() => {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -250,9 +299,7 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
-        if (
-          res.data.basicInfo[0]?.submitStatus === "Submitted"
-        ) {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
           setStyle("notEditable");
         }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
@@ -278,9 +325,7 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
-        if (
-          res.data.basicInfo[0]?.submitStatus === "Submitted"
-        ) {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
           setStyle("notEditable");
         }
         if (res.data.ComplianceDetail?.length > 0) {
@@ -300,12 +345,15 @@ const ComplianceDetails = () => {
             setEditCompliance(true);
           });
         }
-
       });
     } else {
-      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-        setredirectUrl(res.data);
-      })
+      apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          setredirectUrl(res.data);
+        });
       setEditCompliance(false);
     }
     const user = {
@@ -314,9 +362,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => { });
-    apiService.createCocPdf(user).then((res) => { });
-    apiService.createNDAPdf(user).then((res) => { });
+    apiService.createRelatedDisclosurePdf(user).then((res) => {});
+    apiService.createCocPdf(user).then((res) => {});
+    apiService.createNDAPdf(user).then((res) => {});
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -331,8 +379,9 @@ const ComplianceDetails = () => {
     );
   }, []);
 
-  const saveComplianceDetail = (e) => {
+  const saveComplianceDetail = (e, callback) => {
     // e.preventDefault();
+    setIsNewValueEntered(false);
     const data = new FormData();
     data.append("RPD_Doc", fileRPD);
     data.append("NDA_Doc", fileNDA);
@@ -351,6 +400,10 @@ const ComplianceDetails = () => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -361,7 +414,9 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
       if (newuser) {
         const compdata = new FormData();
         compdata.append("RPD_Doc", fileRPD);
@@ -377,6 +432,10 @@ const ComplianceDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
             });
           } else {
             Swal.fire({
@@ -396,8 +455,10 @@ const ComplianceDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
-              navigate(`/ComplianceDetail`);
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
             });
           } else {
             Swal.fire({
@@ -411,7 +472,7 @@ const ComplianceDetails = () => {
     }
   };
 
-  const updateComplianceDetail = (e) => {
+  const updateComplianceDetail = (e, callback) => {
     e.preventDefault();
     const data = new FormData();
     data.append("RPD_Doc", fileRPD);
@@ -428,6 +489,10 @@ const ComplianceDetails = () => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -519,10 +584,10 @@ const ComplianceDetails = () => {
                         ) : (
                           // <Button className="UploadBtn">Upload files</Button>
                           <div className="comp-input">
-                            <label htmlFor="fileupload">upload files</label>
+                            <label htmlFor="fileupload1">upload files</label>
                             <input
                               type="file"
-                              id="fileupload"
+                              id="fileupload1"
                               // value={values.GST_Doc}
                               onChange={onFileChangeRPD}
                               required
@@ -583,10 +648,10 @@ const ComplianceDetails = () => {
                         ) : (
                           // <Button className="UploadBtn">Upload files</Button>
                           <div className="comp-input">
-                            <label htmlFor="fileupload">upload files</label>
+                            <label htmlFor="fileupload2">upload files</label>
                             <input
                               type="file"
-                              id="fileupload"
+                              id="fileupload2"
                               // value={values.GST_Doc}
                               onChange={onFileChangeCOC}
                               required
@@ -617,7 +682,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        { editVlauefileNDA? (
+                        {editVlauefileNDA ? (
                           <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>
@@ -645,10 +710,10 @@ const ComplianceDetails = () => {
                         ) : (
                           // <Button className="UploadBtn">Upload files</Button>
                           <div className="comp-input">
-                            <label htmlFor="fileupload">upload files</label>
+                            <label htmlFor="fileupload3">upload files</label>
                             <input
                               type="file"
-                              id="fileupload"
+                              id="fileupload3"
                               // value={values.GST_Doc}
                               onChange={onFileChangeNDA}
                               required
@@ -694,7 +759,9 @@ const ComplianceDetails = () => {
                 >
                   Cancel
                 </button>
-                {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ? (
+                {params.userId &&
+                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                  "Admin" ? (
                   <>
                     <button
                       type="button"
@@ -706,16 +773,15 @@ const ComplianceDetails = () => {
                   </>
                 ) : (
                   <>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          saveComplianceDetail();
-                        }}
-                        className="btn bankbtn btn-md m-1"
-                      >
-                        Save
-                      </button>
-                    
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveComplianceDetail();
+                      }}
+                      className="btn bankbtn btn-md m-1"
+                    >
+                      Save
+                    </button>
                   </>
                 )}
 

@@ -21,6 +21,7 @@ const FinancialDetails = () => {
   const [editfileFD, seteditfileFD] = useState();
   const [fileFD2, setfileFD2] = useState();
   const [editfileFD2, seteditfileFD2] = useState();
+  const [isNewValueEntered, setIsNewValueEntered] = useState(false);
   const [values, setValues] = useState({
     userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
     yearOfAuditedFinancial: "",
@@ -29,12 +30,15 @@ const FinancialDetails = () => {
     netWorth: "",
     currentAssets: "",
     directorDetails: "",
-    organisationType:"",
-    shareholderName:"",
+    organisationType: "",
+    shareholderName: "",
   });
   function onFileChangeFD(e) {
+    setIsNewValueEntered(true);
     if (e.target) {
-      if (e.size > 5000000) {
+      const selectedFile = e.target.files[0];
+      e.target.value = ""; // Reset the input element's value
+      if (selectedFile && selectedFile.size > 5000000) {
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -43,8 +47,8 @@ const FinancialDetails = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      } else {
-        setfileFD(e.target.files[0]);
+      } else if (selectedFile) {
+        setfileFD(selectedFile);
         setdeleteUploadedFile(true);
       }
     } else {
@@ -63,9 +67,13 @@ const FinancialDetails = () => {
       }
     }
   }
+
   function onFileChangeFD2(e) {
+    setIsNewValueEntered(true);
     if (e.target) {
-      if (e.size > 5000000) {
+      const selectedFile = e.target.files[0];
+      e.target.value = "";
+      if (selectedFile && selectedFile.size > 5000000) {
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -74,8 +82,8 @@ const FinancialDetails = () => {
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      } else {
-        setfileFD2(e.target.files[0]);
+      } else if (selectedFile) {
+        setfileFD2(selectedFile);
         setdeleteUploadedFile2(true);
       }
     } else {
@@ -94,7 +102,9 @@ const FinancialDetails = () => {
       }
     }
   }
+
   function deleteFile1(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
@@ -114,6 +124,7 @@ const FinancialDetails = () => {
     });
   }
   function deleteFile2(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
@@ -133,6 +144,7 @@ const FinancialDetails = () => {
     });
   }
   function cancel(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -165,14 +177,43 @@ const FinancialDetails = () => {
     });
   }
   function next(e) {
-    // saveFinancialDetail(e);
-    if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
-      navigate("/ContactTeam");    
+    if (isNewValueEntered) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          saveFinancialDetail(e, () => {
+            if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+              navigate("/ContactTeam");
+            } else {
+              navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+            navigate("/ContactTeam");
+          } else {
+            navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+          }
+        }
+      });
     } else {
-      navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+      if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+        navigate("/ContactTeam");
+      } else {
+        navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+      }
     }
+    // saveFinancialDetail(e);
   }
   const handleChange = (name) => (event) => {
+    setIsNewValueEntered(true);
     setValues({ ...values, [name]: event.target.value });
     let e = { ...errors };
     setErrors(e);
@@ -192,8 +233,9 @@ const FinancialDetails = () => {
     }
     return newErrors;
   };
-  const saveFinancialDetail = (e) => {
+  const saveFinancialDetail = (e, callback) => {
     // e.preventDefault();
+    setIsNewValueEntered(false);
     const data = new FormData();
     data.append("financial_data", fileFD);
     data.append("financial_data2", fileFD2);
@@ -220,6 +262,10 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
             });
           } else {
             Swal.fire({
@@ -242,12 +288,17 @@ const FinancialDetails = () => {
         });
       }
     } else {
-      let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
       if (newuser) {
         const financedata = new FormData();
         financedata.append("financial_data", fileFD);
         financedata.append("financial_data2", fileFD2);
-        financedata.append("yearOfAuditedFinancial", values.yearOfAuditedFinancial);
+        financedata.append(
+          "yearOfAuditedFinancial",
+          values.yearOfAuditedFinancial
+        );
         financedata.append("Revenue", values.Revenue);
         financedata.append("Profit", values.Profit);
         financedata.append("netWorth", values.netWorth);
@@ -265,7 +316,10 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
             });
           } else {
             Swal.fire({
@@ -285,7 +339,10 @@ const FinancialDetails = () => {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            }).then((res) => {
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
             });
           } else {
             Swal.fire({
@@ -298,7 +355,9 @@ const FinancialDetails = () => {
       }
     }
   };
-  const updateFinancialDetail = (e) => {
+  const updateFinancialDetail = (e, callback) => {
+    // e.preventDefault();
+    setIsNewValueEntered(false);
     e.preventDefault();
     const data = new FormData();
     data.append("financial_data", fileFD);
@@ -322,6 +381,10 @@ const FinancialDetails = () => {
             showCloseButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -337,7 +400,9 @@ const FinancialDetails = () => {
     }
   };
   useEffect(() => {
-    let newuser = JSON.parse(window.sessionStorage.getItem("newregUser"))?.newregUser
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
@@ -346,9 +411,7 @@ const FinancialDetails = () => {
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (
-            res.data.basicInfo[0].submitStatus === "Submitted"
-          ) {
+          if (res.data.basicInfo[0].submitStatus === "Submitted") {
             setStyle("notEditable");
           }
           var initialUrlfinancial_data =
@@ -380,8 +443,7 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    }
-    else if (newuser) {
+    } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result.finalStatus;
@@ -389,9 +451,7 @@ const FinancialDetails = () => {
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (
-            res.data.basicInfo[0].submitStatus === "Submitted"
-          ) {
+          if (res.data.basicInfo[0].submitStatus === "Submitted") {
             setStyle("notEditable");
           }
           var initialUrlfinancial_data =
@@ -423,11 +483,14 @@ const FinancialDetails = () => {
           setEditfinancialDetail(true);
         });
       });
-    }
-    else {
-      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-        setredirectUrl(res.data);
-      })
+    } else {
+      apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          setredirectUrl(res.data);
+        });
       setEditfinancialDetail(false);
     }
   }, []);
@@ -512,7 +575,7 @@ const FinancialDetails = () => {
                   id="Distributors"
                   name="Organisationtype"
                   aria-label="Disabled select example"
-                  value={values.organisationType} 
+                  value={values.organisationType}
                   disabled={style === "notEditable" ? true : false}
                   onChange={handleChange("organisationType")}
                 >
@@ -598,10 +661,10 @@ const FinancialDetails = () => {
                   </button>
                 ) : (
                   <div className="finance-input">
-                    <label htmlFor="fileupload">upload files</label>
+                    <label htmlFor="fileupload1">upload files</label>
                     <input
                       type="file"
-                      id="fileupload"
+                      id="fileupload1"
                       onChange={onFileChangeFD}
                       required
                       disabled={style === "notEditable" ? true : false}
@@ -670,15 +733,15 @@ const FinancialDetails = () => {
                   </button>
                 ) : (
                   <div className="finance-input">
-                  <label htmlFor="fileupload">upload files</label>
-                  <input
-                    type="file"
-                    id="fileupload"
-                    onChange={onFileChangeFD2}
-                    required
-                    disabled={style === "notEditable" ? true : false}
-                  />
-                </div>
+                    <label htmlFor="fileupload2">upload files</label>
+                    <input
+                      type="file"
+                      id="fileupload2"
+                      onChange={onFileChangeFD2}
+                      required
+                      disabled={style === "notEditable" ? true : false}
+                    />
+                  </div>
                 )}{" "}
               </div>
               <div className="col-sm-2 col-xs-12"></div>
@@ -691,7 +754,9 @@ const FinancialDetails = () => {
               >
                 Cancel
               </button>
-              {params.userId && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" ?(
+              {params.userId &&
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                "Admin" ? (
                 <>
                   <button
                     type="submit"
@@ -703,16 +768,15 @@ const FinancialDetails = () => {
                 </>
               ) : (
                 <>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        saveFinancialDetail();
-                      }}
-                      className="btn financialbtn btn-md m-3"
-                    >
-                      Save
-                    </button>
-                  
+                  <button
+                    type="button"
+                    onClick={() => {
+                      saveFinancialDetail();
+                    }}
+                    className="btn financialbtn btn-md m-3"
+                  >
+                    Save
+                  </button>
                 </>
               )}
 

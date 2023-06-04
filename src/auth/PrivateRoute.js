@@ -49,7 +49,7 @@ const FinanceRoute = ({ component: Component, ...rest }) => {
 const OtherRoute = ({ component: Component, ...rest }) => {
   console.log("otherRoute");
   const navigate = useNavigate();
-  return auth?.isAuthenticated()?.result?.role === "other" ? (
+  return auth?.isAuthenticated()?.result?.role === "vendor" ? (
     <Outlet />
   ) : (
     () => navigate("/documents")

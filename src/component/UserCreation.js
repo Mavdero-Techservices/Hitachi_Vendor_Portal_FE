@@ -450,7 +450,7 @@ function UserCreation() {
                             >
                               <option value="">Select a role</option>
                               <option value="financial">Financial</option>
-                              <option value="other">Other</option>
+                              <option value="vendor">Other</option>
                             </select>
                             <span className="formError">{roleErr}</span>
                           </Col>
@@ -632,7 +632,7 @@ function UserCreation() {
                                           <option value="financial">
                                             Financial
                                           </option>
-                                          <option value="other">Other</option>
+                                          <option value="vendor">Other</option>
                                         </select>
                                       </Col>
                                     </Row>

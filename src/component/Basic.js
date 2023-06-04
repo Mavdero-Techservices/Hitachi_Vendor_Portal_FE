@@ -52,8 +52,8 @@ export class Basic extends React.Component {
       edit: true,
       editStatutory: "",
       commuDetail: false,
+      dataEntered: false,
     };
-
 
     this.togglebutton = this.togglebutton.bind(this);
     this.togglebuttonCommu = this.togglebuttonCommu.bind(this);
@@ -61,7 +61,6 @@ export class Basic extends React.Component {
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
   }
-
 
   mouseEnter(e) {
     e.preventDefault();
@@ -80,23 +79,33 @@ export class Basic extends React.Component {
     this.setState({ Post_Code: e.target.value });
     if (this.state.Country_Region_Code && this.state.Post_Code) {
       apiService
-      .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
-      .then((response) => {
-        if (response.data.data.postalcodes.length === 0) {           
-          this.setState({ getCityAndState: "" });
-          this.setState({ state:"" });
-          this.setState({ City: "" });
-        } else {                  
-        this.setState({ getCityAndState: response.data.data.postalcodes[0] });
-        this.setState({ state: response.data.data.postalcodes[0].adminName1 });
-        if (response.data.data.postalcodes[0].adminName3) {
-          this.setState({ City: response.data.data.postalcodes[0].adminName3 });
-        } else {
-          this.setState({ City: response.data.data.postalcodes[0].placeName });
-        }
-        }
-
-      });
+        .getStateAndcityByzipcode(
+          this.state.Country_Region_Code,
+          this.state.Post_Code
+        )
+        .then((response) => {
+          if (response.data.data.postalcodes.length === 0) {
+            this.setState({ getCityAndState: "" });
+            this.setState({ state: "" });
+            this.setState({ City: "" });
+          } else {
+            this.setState({
+              getCityAndState: response.data.data.postalcodes[0],
+            });
+            this.setState({
+              state: response.data.data.postalcodes[0].adminName1,
+            });
+            if (response.data.data.postalcodes[0].adminName3) {
+              this.setState({
+                City: response.data.data.postalcodes[0].adminName3,
+              });
+            } else {
+              this.setState({
+                City: response.data.data.postalcodes[0].placeName,
+              });
+            }
+          }
+        });
     }
   }
   togglebutton() {
@@ -105,21 +114,426 @@ export class Basic extends React.Component {
       commu: false,
     });
   }
-  togglebuttonCommu() {
+
+  togglebuttonCommunication = () => {
     this.setState({
       open: false,
       commu: true,
     });
-    // this.handleSubmitComDetail();
+  };
+
+  togglebuttonCommu() {
+    const isValueChanged =
+      (this.state.Address !== this.state.previousAddress &&
+        this.state.Address !== "") ||
+      (this.state.Address_2 !== this.state.previousAddress_2 &&
+        this.state.Address_2 !== "") ||
+      (this.state.City !== this.state.previousCity && this.state.City !== "") ||
+      (this.state.state !== this.state.previousState &&
+        this.state.state !== "") ||
+      (this.state.Country_Region_Code !==
+        this.state.previousCountry_Region_Code &&
+        this.state.Country_Region_Code !== "") ||
+      (this.state.Post_Code !== this.state.previousPost_Code &&
+        this.state.Post_Code !== "") ||
+      (this.state.companyName !== this.state.previousCompanyName &&
+        this.state.companyName !== "") ||
+      (this.state.image !== this.state.previousImage &&
+        this.state.image !== "");
+    if (isValueChanged) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const basicInfo = {
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+              .userId,
+            Address: this.state.Address,
+            Address_2: this.state.Address_2,
+            City: this.state.City,
+            state: this.state.state,
+            Country_Region_Code: this.state.Country_Region_Code,
+            Post_Code: this.state.Post_Code,
+            companyName: this.state.companyName,
+            image: this.state.image,
+          };
+          if (this.props.params.userId) {
+            apiService
+              .updateVendordetail(this.props.params.userId, basicInfo)
+              .then((response) => {
+                if (response) {
+                  Swal.fire({
+                    title: "Data Updated",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  }).then((response) => {
+                    this.fetchData();
+                    this.setState({
+                      open: false,
+                      commu: true,
+                    });
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error While Fetching",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  });
+                }
+              });
+          } else {
+            if (this.props.params.newReg) {
+              apiService.saveNewRegVendordetail(basicInfo).then((response) => {
+                this.setState({ newUser: response.data.result.userId });
+                let data = { newregUser: response.data.result.userId };
+                sessionStorage.setItem("newregUser", JSON.stringify(data));
+                if (response) {
+                  Swal.fire({
+                    title: "Data saved",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  }).then((response) => {
+                    this.fetchData();
+                    this.setState({
+                      open: false,
+                      commu: true,
+                    });
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error While Fetching",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  });
+                }
+              });
+            } else {
+              apiService.saveVendordetail(basicInfo).then((response) => {
+                if (response) {
+                  Swal.fire({
+                    title: "Data saved",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  }).then((response) => {
+                    this.fetchData();
+                    this.setState({
+                      open: false,
+                      commu: true,
+                    });
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error While Fetching",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                  });
+                }
+              });
+            }
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          this.fetchData();
+          this.setState({
+            open: false,
+            commu: true,
+          });
+        }
+      });
+    } else {
+      this.fetchData();
+      this.setState({
+        open: false,
+        commu: true,
+      });
+    }
   }
   next = (e) => {
-    e.preventDefault();
-    console.log("this.state.editStatutory",this.state.editStatutory);
-    if (this.state.editStatutory.length <= 0 || "" || undefined) {
-      this.props.navigate("/statutory");
+    const isValueChanged =
+      (this.state.financeSpoccontactName !==
+        this.state.previousfinanceSpoccontactName &&
+        this.state.financeSpoccontactName !== "") ||
+      (this.state.financeSpocdesignation !==
+        this.state.previousfinanceSpocdesignation &&
+        this.state.financeSpocdesignation !== "") ||
+      (this.state.financeSpocphoneNo !==
+        this.state.previousfinanceSpocphoneNo &&
+        this.state.financeSpocphoneNo !== "") ||
+      (this.state.financeSpocemail !== this.state.previousfinanceSpocemail &&
+        this.state.financeSpocemail !== "") ||
+      (this.state.operationSpoccontactName !==
+        this.state.previousoperationSpoccontactName &&
+        this.state.operationSpoccontactName !== "") ||
+      (this.state.operationSpocdesignation !==
+        this.state.previousoperationSpocdesignation &&
+        this.state.operationSpocdesignation !== "") ||
+      (this.state.operationSpocphoneNo !==
+        this.state.previousoperationSpocphoneNo &&
+        this.state.operationSpocphoneNo !== "") ||
+      (this.state.operationSpocemail !==
+        this.state.previousoperationSpocemail &&
+        this.state.operationSpocemail !== "") ||
+      (this.state.collectionSpoccontactName !==
+        this.state.previouscollectionSpoccontactName &&
+        this.state.collectionSpoccontactName !== "") ||
+      (this.state.collectionSpocdesignation !==
+        this.state.previouscollectionSpocdesignation &&
+        this.state.collectionSpocdesignation !== "") ||
+      (this.state.collectionSpocphoneNo !==
+        this.state.previouscollectionSpocphoneNo &&
+        this.state.collectionSpocphoneNo !== "") ||
+      (this.state.collectionSpocemail !==
+        this.state.previouscollectionSpocemail &&
+        this.state.collectionSpocemail !== "") ||
+      (this.state.managementSpoccontactName !==
+        this.state.previousmanagementSpoccontactName &&
+        this.state.managementSpoccontactName !== "") ||
+      (this.state.managementSpocdesignation !==
+        this.state.previousmanagementSpocdesignation &&
+        this.state.managementSpocdesignation !== "") ||
+      (this.state.managementSpocphoneNo !==
+        this.state.previousmanagementSpocphoneNo &&
+        this.state.managementSpocphoneNo !== "") ||
+      (this.state.managementSpocemail !==
+        this.state.previousmanagementSpocemail &&
+        this.state.managementSpocemail !== "") ||
+      (this.state.contactName !== this.state.previouscontactName &&
+        this.state.contactName !== "") ||
+      (this.state.designation !== this.state.previousdesignation &&
+        this.state.designation !== "") ||
+      (this.state.phoneNo !== this.state.previousphoneNo &&
+        this.state.phoneNo !== "") ||
+      (this.state.email !== this.state.previousemail &&
+        this.state.email !== "") ||
+      (this.state.mastervendor_email !==
+        this.state.previousmastervendor_email &&
+        this.state.mastervendor_email !== "");
+    if (isValueChanged) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const communicationDetails = {
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+              .userId,
+            financeSpoccontactName: this.state.financeSpoccontactName,
+            financeSpocdesignation: this.state.financeSpocdesignation,
+            financeSpocphoneNo: this.state.financeSpocphoneNo,
+            financeSpocemail: this.state.financeSpocemail,
+            operationSpoccontactName: this.state.operationSpoccontactName,
+            operationSpocdesignation: this.state.operationSpocdesignation,
+            operationSpocphoneNo: this.state.operationSpocphoneNo,
+            operationSpocemail: this.state.operationSpocemail,
+            collectionSpoccontactName: this.state.collectionSpoccontactName,
+            collectionSpocdesignation: this.state.collectionSpocdesignation,
+            collectionSpocphoneNo: this.state.collectionSpocphoneNo,
+            collectionSpocemail: this.state.collectionSpocemail,
+            managementSpoccontactName: this.state.managementSpoccontactName,
+            managementSpocdesignation: this.state.managementSpocdesignation,
+            managementSpocphoneNo: this.state.managementSpocphoneNo,
+            managementSpocemail: this.state.managementSpocemail,
+            contactName: this.state.contactName,
+            designation: this.state.designation,
+            phoneNo: this.state.phoneNo,
+            email: this.state.email,
+            mastervendor_email: this.state.mastervendor_email,
+          };
+          if (this.props.params.userId) {
+            if (this.state.commuDetail) {
+              apiService
+                .updateCommunicationdetail(
+                  this.props.params.userId,
+                  communicationDetails
+                )
+                .then((response) => {
+                  this.fetchData();
+                  if (response) {
+                    Swal.fire({
+                      title: "Data Updated",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    }).then((response) => {
+                      if (
+                        this.state.editStatutory.length <= 0 ||
+                        "" ||
+                        undefined
+                      ) {
+                        this.props.navigate("/statutory");
+                      } else {
+                        this.props.navigate(
+                          `/statutory/${this.state.editStatutory[0].userId}`
+                        );
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    });
+                  }
+                });
+            } else {
+              apiService
+                .SaveVendorCommunication(communicationDetails)
+                .then((response) => {
+                  if (response.data.msg === "success") {
+                    this.fetchData();
+                    Swal.fire({
+                      title: "Data saved",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    }).then((response) => {
+                      if (
+                        this.state.editStatutory.length <= 0 ||
+                        "" ||
+                        undefined
+                      ) {
+                        this.props.navigate("/statutory");
+                      } else {
+                        this.props.navigate(
+                          `/statutory/${this.state.editStatutory[0].userId}`
+                        );
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    });
+                  }
+                });
+            }
+          } else {
+            let newuser = JSON.parse(
+              window.sessionStorage.getItem("newregUser")
+            )?.newregUser;
+            if (newuser) {
+              communicationDetails.userId = newuser;
+              apiService
+                .SaveVendorCommunication(communicationDetails)
+                .then((response) => {
+                  if (response.data.msg === "success") {
+                    this.fetchData();
+                    Swal.fire({
+                      title: "Data saved",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    }).then((response) => {
+                      if (
+                        this.state.editStatutory.length <= 0 ||
+                        "" ||
+                        undefined
+                      ) {
+                        this.props.navigate("/statutory");
+                      } else {
+                        this.props.navigate(
+                          `/statutory/${this.state.editStatutory[0].userId}`
+                        );
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    });
+                  }
+                });
+            } else {
+              apiService
+                .SaveVendorCommunication(communicationDetails)
+                .then((response) => {
+                  if (response.data.msg === "success") {
+                    this.fetchData();
+                    Swal.fire({
+                      title: "Data saved",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    }).then((response) => {
+                      if (
+                        this.state.editStatutory.length <= 0 ||
+                        "" ||
+                        undefined
+                      ) {
+                        this.props.navigate("/statutory");
+                      } else {
+                        this.props.navigate(
+                          `/statutory/${this.state.editStatutory[0].userId}`
+                        );
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                    });
+                  }
+                });
+            }
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          if (this.state.editStatutory.length <= 0 || "" || undefined) {
+            this.props.navigate("/statutory");
+          } else {
+            this.props.navigate(
+              `/statutory/${this.state.editStatutory[0].userId}`
+            );
+          }
+        }
+      });
     } else {
-      this.props.navigate(`/statutory/${this.state.editStatutory[0].userId}`);
+      if (this.state.editStatutory.length <= 0 || "" || undefined) {
+        this.props.navigate("/statutory");
+        this.fetchData();
+      } else {
+        this.props.navigate(`/statutory/${this.state.editStatutory[0].userId}`);
+        this.fetchData();
+      }
     }
+
+    e.preventDefault();
   };
 
   cancelBasicInfo = (e) => {
@@ -186,7 +600,7 @@ export class Basic extends React.Component {
   handleChange(e) {
     this.setState({ Country_Region_Code: e.target.value });
     this.setState({ getCityAndState: "" });
-    this.setState({ state:"" });
+    this.setState({ state: "" });
     this.setState({ City: "" });
     this.setState({ Post_Code: "" });
   }
@@ -217,54 +631,67 @@ export class Basic extends React.Component {
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
           if (response) {
+            this.fetchData();
             Swal.fire({
               title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           }
         });
     } else {
       if (this.props.params.newReg) {
         apiService.saveNewRegVendordetail(basicInfo).then((response) => {
-
           this.setState({ newUser: response.data.result.userId });
           let data = { newregUser: response.data.result.userId };
           sessionStorage.setItem("newregUser", JSON.stringify(data));
           if (response) {
+            this.fetchData();
             Swal.fire({
               title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           }
         });
       } else {
         apiService.saveVendordetail(basicInfo).then((response) => {
-          
           if (response) {
+            this.fetchData();
             Swal.fire({
               title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           }
         });
@@ -289,18 +716,22 @@ export class Basic extends React.Component {
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
-          
           if (response) {
+            this.fetchData();
             Swal.fire({
               title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           } else {
             Swal.fire({
               title: "Error While Fetching",
               icon: "error",
               confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
             });
           }
         });
@@ -341,18 +772,22 @@ export class Basic extends React.Component {
             communicationDetails
           )
           .then((response) => {
-            
+            this.fetchData();
             if (response) {
               Swal.fire({
                 title: "Data Updated",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -360,18 +795,22 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-           
             if (response.data.msg === "success") {
+              this.fetchData();
               Swal.fire({
                 title: "Data saved",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -385,18 +824,22 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            
             if (response.data.msg === "success") {
+              this.fetchData();
               Swal.fire({
                 title: "Data saved",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -404,18 +847,22 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            
             if (response.data.msg === "success") {
+              this.fetchData();
               Swal.fire({
                 title: "Data saved",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -458,16 +905,21 @@ export class Basic extends React.Component {
           )
           .then((response) => {
             if (response) {
+              this.fetchData();
               Swal.fire({
                 title: "Data Updated",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -475,18 +927,22 @@ export class Basic extends React.Component {
         apiService
           .SaveVendorCommunication(communicationDetails)
           .then((response) => {
-            
+            this.fetchData();
             if (response.data.msg === "success") {
               Swal.fire({
                 title: "Data saved",
                 icon: "success",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             } else {
               Swal.fire({
                 title: "Error While Fetching",
                 icon: "error",
                 confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
               });
             }
           });
@@ -506,9 +962,21 @@ export class Basic extends React.Component {
     });
   };
   handleFileRead = async (event) => {
+
     const file = event.target.files[0];
     // const base64 = await this.convertBase64(file);
-    if (file) {
+    event.target.value = '';
+    if (file.size > 50000) {
+      Swal.fire({
+        title: "file size should be less than 50 KB",
+        icon: "error",
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    }
+    else {
       const reader = new FileReader();
       reader.onload = this.onreaderLoad.bind(this);
       reader.readAsBinaryString(file);
@@ -522,9 +990,9 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => { });
+    apiService.updateVendordetail(userId, data).then((response) => {});
   }
-  componentDidMount() {
+  fetchData() {
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result.role });
@@ -565,9 +1033,7 @@ export class Basic extends React.Component {
         console.log("finalstatus", finalstatus);
       });
       apiService.getAllCollection(this.props.params.userId).then((res) => {
-        if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
-        ) {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
           this.setState({ setStyle: "notEditable" });
         }
         this.setState({
@@ -575,9 +1041,20 @@ export class Basic extends React.Component {
         });
         Object.entries(res.data.basicInfo).map(([key, value]) => {
           this.setState({
+            previousCompanyName: value.companyName,
+            previousAddress: value.Address,
+            previousAddress_2:
+              value.Address_2 === "null" ? "" : value.Address_2,
+            previousCity: value.City,
+            previousState: value.state,
+            previousCountry_Region_Code: value.Country_Region_Code,
+            previousPost_Code: value.Post_Code,
+            previousImage: value.image,
+          });
+          this.setState({
             companyName: value.companyName,
             Address: value.Address,
-            Address_2: value.Address_2 === 'null' ? "": value.Address_2,
+            Address_2: value.Address_2 === "null" ? "" : value.Address_2,
             City: value.City,
             state: value.state,
             Country_Region_Code: value.Country_Region_Code,
@@ -586,37 +1063,129 @@ export class Basic extends React.Component {
           });
           return null;
         });
-        console.log(
-          "commuDetail2222",
-          res.data.CommunicationDetails.length,
-          res.data.CommunicationDetails
-        );
         Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
           this.setState({
             commuDetail:
               res.data.CommunicationDetails.length > 0 ? true : false,
           });
           this.setState({
+            previousfinanceSpoccontactName: value.financeSpoccontactName,
+            previousfinanceSpocdesignation: value.financeSpocdesignation,
+            previousfinanceSpocphoneNo: value.financeSpocphoneNo,
+            previousfinanceSpocemail: value.financeSpocemail,
+            previousoperationSpoccontactName:
+              value.operationSpoccontactName === "null"
+                ? ""
+                : value.operationSpoccontactName,
+            previousoperationSpocdesignation:
+              value.operationSpocdesignation === "null"
+                ? ""
+                : value.operationSpocdesignation,
+            previousoperationSpocphoneNo:
+              value.operationSpocphoneNo === "null"
+                ? ""
+                : value.operationSpocphoneNo,
+            previousoperationSpocemail:
+              value.operationSpocemail === "null"
+                ? ""
+                : value.operationSpocemail,
+            previouscollectionSpoccontactName:
+              value.collectionSpoccontactName === "null"
+                ? ""
+                : value.collectionSpoccontactName,
+            previouscollectionSpocdesignation:
+              value.collectionSpocdesignation === "null"
+                ? ""
+                : value.collectionSpocdesignation,
+            previouscollectionSpocphoneNo:
+              value.collectionSpocphoneNo === "null"
+                ? ""
+                : value.collectionSpocphoneNo,
+            previouscollectionSpocemail:
+              value.collectionSpocemail === "null"
+                ? ""
+                : value.collectionSpocemail,
+            previousmanagementSpoccontactName:
+              value.managementSpoccontactName === "null"
+                ? ""
+                : value.managementSpoccontactName,
+            previousmanagementSpocdesignation:
+              value.managementSpocdesignation === "null"
+                ? ""
+                : value.managementSpocdesignation,
+            previousmanagementSpocphoneNo:
+              value.managementSpocphoneNo === "null"
+                ? ""
+                : value.managementSpocphoneNo,
+            previousmanagementSpocemail:
+              value.managementSpocemail === "null"
+                ? ""
+                : value.managementSpocemail,
+            previouscontactName:
+              value.contactName === "null" ? "" : value.contactName,
+            previousdesignation:
+              value.designation === "null" ? "" : value.designation,
+            previousphoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+            previousemail: value.email === "null" ? "" : value.email,
+            previousmastervendor_email: value.mastervendor_email,
+          });
+          this.setState({
             financeSpoccontactName: value.financeSpoccontactName,
             financeSpocdesignation: value.financeSpocdesignation,
             financeSpocphoneNo: value.financeSpocphoneNo,
             financeSpocemail: value.financeSpocemail,
-            operationSpoccontactName: value.operationSpoccontactName === 'null' ? "": value.operationSpoccontactName,
-            operationSpocdesignation: value.operationSpocdesignation === 'null' ? "": value.operationSpocdesignation,
-            operationSpocphoneNo: value.operationSpocphoneNo=== 'null' ? "" : value.operationSpocphoneNo,
-            operationSpocemail: value.operationSpocemail === 'null' ? "" : value.operationSpocemail,
-            collectionSpoccontactName: value.collectionSpoccontactName === 'null' ? "" : value.collectionSpoccontactName,
-            collectionSpocdesignation: value.collectionSpocdesignation  === 'null' ? "" : value.collectionSpocdesignation,
-            collectionSpocphoneNo: value.collectionSpocphoneNo === 'null' ? "" : value.collectionSpocphoneNo,
-            collectionSpocemail: value.collectionSpocemail === 'null' ? "" : value.collectionSpocemail,
-            managementSpoccontactName: value.managementSpoccontactName === 'null' ? "" : value.managementSpoccontactName,
-            managementSpocdesignation: value.managementSpocdesignation === 'null' ? "" : value.managementSpocdesignation,
-            managementSpocphoneNo: value.managementSpocphoneNo === 'null' ? "" : value.managementSpocphoneNo,
-            managementSpocemail: value.managementSpocemail === 'null' ? "" : value.managementSpocemail,
-            contactName: value.contactName  === 'null' ? "" : value.contactName,
-            designation: value.designation  === 'null' ? "" : value.designation,
-            phoneNo: value.phoneNo  === 'null' ? "" : value.phoneNo,
-            email: value.email  === 'null' ? "" : value.email,
+            operationSpoccontactName:
+              value.operationSpoccontactName === "null"
+                ? ""
+                : value.operationSpoccontactName,
+            operationSpocdesignation:
+              value.operationSpocdesignation === "null"
+                ? ""
+                : value.operationSpocdesignation,
+            operationSpocphoneNo:
+              value.operationSpocphoneNo === "null"
+                ? ""
+                : value.operationSpocphoneNo,
+            operationSpocemail:
+              value.operationSpocemail === "null"
+                ? ""
+                : value.operationSpocemail,
+            collectionSpoccontactName:
+              value.collectionSpoccontactName === "null"
+                ? ""
+                : value.collectionSpoccontactName,
+            collectionSpocdesignation:
+              value.collectionSpocdesignation === "null"
+                ? ""
+                : value.collectionSpocdesignation,
+            collectionSpocphoneNo:
+              value.collectionSpocphoneNo === "null"
+                ? ""
+                : value.collectionSpocphoneNo,
+            collectionSpocemail:
+              value.collectionSpocemail === "null"
+                ? ""
+                : value.collectionSpocemail,
+            managementSpoccontactName:
+              value.managementSpoccontactName === "null"
+                ? ""
+                : value.managementSpoccontactName,
+            managementSpocdesignation:
+              value.managementSpocdesignation === "null"
+                ? ""
+                : value.managementSpocdesignation,
+            managementSpocphoneNo:
+              value.managementSpocphoneNo === "null"
+                ? ""
+                : value.managementSpocphoneNo,
+            managementSpocemail:
+              value.managementSpocemail === "null"
+                ? ""
+                : value.managementSpocemail,
+            contactName: value.contactName === "null" ? "" : value.contactName,
+            designation: value.designation === "null" ? "" : value.designation,
+            phoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+            email: value.email === "null" ? "" : value.email,
             mastervendor_email: value.mastervendor_email,
           });
           return null;
@@ -670,22 +1239,32 @@ export class Basic extends React.Component {
       });
     } else {
       this.edit = false;
-      apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-        this.setState({
-          editStatutory: res.data.Statutory,
+      apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          this.setState({
+            editStatutory: res.data.Statutory,
+          });
         });
-      })
     }
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
     if (this.state.Country_Region_Code && this.state.Post_Code) {
       apiService
-        .getStateAndcityByzipcode(this.state.Country_Region_Code, this.state.Post_Code)
+        .getStateAndcityByzipcode(
+          this.state.Country_Region_Code,
+          this.state.Post_Code
+        )
         .then((response) => {
           this.setState({ getCityAndState: response.data.postalcodes });
         });
     }
+  }
+  componentDidMount() {
+    this.fetchData();
   }
   render() {
     const {
@@ -695,7 +1274,7 @@ export class Basic extends React.Component {
       contactName,
       companyName,
       open,
-      commu
+      commu,
     } = this.state;
     let countriesList =
       this.state.countryData?.length > 0 &&
@@ -803,7 +1382,7 @@ export class Basic extends React.Component {
                                             value={Address}
                                             disabled={
                                               this.state.setStyle ===
-                                                "notEditable"
+                                              "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -843,11 +1422,13 @@ export class Basic extends React.Component {
                                             className="mb-4 VendorInput"
                                             name="Country_Region_Code"
                                             id="Country_Region_Code"
-                                            value={this.state.Country_Region_Code}
+                                            value={
+                                              this.state.Country_Region_Code
+                                            }
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
-                                                "notEditable"
+                                              "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -915,8 +1496,8 @@ export class Basic extends React.Component {
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
                                   {this.state.image !== "" ||
-                                    undefined ||
-                                    null ? (
+                                  undefined ||
+                                  null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -973,8 +1554,8 @@ export class Basic extends React.Component {
                                   Cancel
                                 </button>
                                 {this.props.params.userId &&
-                                  JSON.parse(window.sessionStorage.getItem("jwt"))
-                                    .result.role === "Admin" ? (
+                                JSON.parse(window.sessionStorage.getItem("jwt"))
+                                  .result.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -988,18 +1569,17 @@ export class Basic extends React.Component {
                                 ) : (
                                   <>
                                     {" "}
-                                      <>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            this.handleSubmit();
-                                          }}
-                                          className="btn basicbtn btn-md m-3"
-                                        >
-                                          Save
-                                        </button>
-                                      </>
-                                    
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          this.handleSubmit();
+                                        }}
+                                        className="btn basicbtn btn-md m-3"
+                                      >
+                                        Save
+                                      </button>
+                                    </>
                                   </>
                                 )}
 
@@ -1309,9 +1889,9 @@ export class Basic extends React.Component {
                                       Cancel
                                     </button>
                                     {this.props.params.userId &&
-                                      JSON.parse(
-                                        window.sessionStorage.getItem("jwt")
-                                      ).result.role === "Admin" ? (
+                                    JSON.parse(
+                                      window.sessionStorage.getItem("jwt")
+                                    ).result.role === "Admin" ? (
                                       <>
                                         <button
                                           type="button"
@@ -1325,18 +1905,17 @@ export class Basic extends React.Component {
                                       </>
                                     ) : (
                                       <>
-                                          <>
-                                            <button
-                                              type="button"
-                                              onClick={() => {
-                                                this.handleSubmitComDetail();
-                                              }}
-                                              className="btn basicbtn btn-md m-3"
-                                            >
-                                              Save
-                                            </button>
-                                          </>
-                                        
+                                        <>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              this.handleSubmitComDetail();
+                                            }}
+                                            className="btn basicbtn btn-md m-3"
+                                          >
+                                            Save
+                                          </button>
+                                        </>
                                       </>
                                     )}
                                     <button
