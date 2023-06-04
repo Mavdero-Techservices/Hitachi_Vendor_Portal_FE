@@ -295,7 +295,7 @@ const ComplianceDetails = () => {
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
@@ -321,7 +321,7 @@ const ComplianceDetails = () => {
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);

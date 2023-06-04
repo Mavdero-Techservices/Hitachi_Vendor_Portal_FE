@@ -2,7 +2,9 @@ import http from '../common/http-common';
 import axios from 'axios';
 
 class apiService {
-  verifiedUser = '';
+  constructor() {
+    this.verifiedUser = '';
+  }
   signup(data) {
     return http.post('/signUp', data);
   }

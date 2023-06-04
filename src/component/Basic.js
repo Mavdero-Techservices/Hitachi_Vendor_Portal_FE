@@ -152,8 +152,7 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const basicInfo = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-              .userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             Address: this.state.Address,
             Address_2: this.state.Address_2,
             City: this.state.City,
@@ -169,7 +168,7 @@ export class Basic extends React.Component {
               .then((response) => {
                 if (response) {
                   Swal.fire({
-                    title: "Data Updated",
+                    title: "Data Updated5",
                     icon: "success",
                     confirmButtonText: "OK",
                     showCloseButton: true,
@@ -337,8 +336,7 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const communicationDetails = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-              .userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             financeSpoccontactName: this.state.financeSpoccontactName,
             financeSpocdesignation: this.state.financeSpocdesignation,
             financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -372,7 +370,7 @@ export class Basic extends React.Component {
                   this.fetchData();
                   if (response) {
                     Swal.fire({
-                      title: "Data Updated",
+                      title: "Data Updated6",
                       icon: "success",
                       confirmButtonText: "OK",
                       showCloseButton: true,
@@ -616,7 +614,7 @@ export class Basic extends React.Component {
     // e.preventDefault();
     const basicInfo = {
       // id: this.state.id,
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
       Address: this.state.Address,
       Address_2: this.state.Address_2,
       City: this.state.City,
@@ -633,7 +631,7 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated",
+              title: "Data Updated1",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -719,7 +717,7 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated",
+              title: "Data Updated2",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -741,7 +739,7 @@ export class Basic extends React.Component {
   handleSubmitComDetail = (e) => {
     // e.preventDefault();
     const communicationDetails = {
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,
       financeSpocdesignation: this.state.financeSpocdesignation,
       financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -775,7 +773,7 @@ export class Basic extends React.Component {
             this.fetchData();
             if (response) {
               Swal.fire({
-                title: "Data Updated",
+                title: "Data Updated3",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
@@ -907,7 +905,7 @@ export class Basic extends React.Component {
             if (response) {
               this.fetchData();
               Swal.fire({
-                title: "Data Updated",
+                title: "Data Updated4",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
@@ -993,11 +991,11 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => {});
   }
   fetchData() {
-    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
+    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId;
     apiService.signupFindByUserId(userid).then((res) => {
-      this.setState({ approval: res.data.result.role });
-      this.setState({ companyName: res.data.result.companyName });
-      this.setState({ vendorId: res.data.result.vendorId });
+      this.setState({ approval: res.data.result?.role });
+      this.setState({ companyName: res.data.result?.companyName });
+      this.setState({ vendorId: res.data.result?.vendorId });
     });
 
     let newuser = JSON.parse(
@@ -1005,11 +1003,10 @@ export class Basic extends React.Component {
     )?.newregUser;
     if (this.props.params.newReg === "newReg") {
       this.setState({
-        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
-          .companyName,
+        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result?.companyName,
       });
       this.setState({
-        approval: JSON.parse(window.sessionStorage.getItem("jwt")).result.role,
+        approval: JSON.parse(window.sessionStorage.getItem("jwt")).result?.role,
       });
     }
     // let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
@@ -1020,9 +1017,9 @@ export class Basic extends React.Component {
     //   }
     // });
     apiService.signupFindByUserId(userid).then((res) => {
-      this.setState({ approval: res.data.result.role });
-      this.setState({ companyName: res.data.result.companyName });
-      this.setState({ vendorId: res.data.result.vendorId });
+      this.setState({ approval: res.data.result?.role });
+      this.setState({ companyName: res.data.result?.companyName });
+      this.setState({ vendorId: res.data.result?.vendorId });
     });
 
     if (this.props.params.userId) {
@@ -1241,7 +1238,7 @@ export class Basic extends React.Component {
       this.edit = false;
       apiService
         .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         )
         .then((res) => {
           this.setState({
@@ -1555,7 +1552,7 @@ export class Basic extends React.Component {
                                 </button>
                                 {this.props.params.userId &&
                                 JSON.parse(window.sessionStorage.getItem("jwt"))
-                                  .result.role === "Admin" ? (
+                                  .result?.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -1891,7 +1888,7 @@ export class Basic extends React.Component {
                                     {this.props.params.userId &&
                                     JSON.parse(
                                       window.sessionStorage.getItem("jwt")
-                                    ).result.role === "Admin" ? (
+                                    ).result?.role === "Admin" ? (
                                       <>
                                         <button
                                           type="button"

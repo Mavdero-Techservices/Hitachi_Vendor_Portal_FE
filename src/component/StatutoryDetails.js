@@ -563,11 +563,11 @@ export default function Statutory(props) {
       if (params.userId) {
         let finalstatus = "";
         await apiService.signupFindByUserId(params.userId).then((res) => {
-          finalstatus = res.data.result.finalStatus;
+          finalstatus = res.data.result?.finalStatus;
         });
         await apiService.getAllCollection(params.userId).then((res) => {
           setredirectUrl(res.data);
-          if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {

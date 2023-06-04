@@ -35,17 +35,17 @@ function App() {
   const VendorDetails = (e) => {
     if (
       editUser?.basicInfo?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/basic/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.basicInfo?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/basic/${params.userId}`, { state: { editUser } });
     } else {
@@ -55,17 +55,17 @@ function App() {
   const statutoryDetails = (e) => {
     if (
       editUser?.Statutory?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/statutory/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.Statutory?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/statutory/${params.userId}`, { state: { editUser } });
     } else {
@@ -75,17 +75,17 @@ function App() {
   const complianceDetails = (e) => {
     if (
       editUser?.ComplianceDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/ComplianceDetail/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.ComplianceDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/ComplianceDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -95,17 +95,17 @@ function App() {
   const bankDetails = (e) => {
     if (
       editUser?.Bankdetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/bank/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.Bankdetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/bank/${params.userId}`, { state: { editUser } });
     } else {
@@ -115,17 +115,17 @@ function App() {
   const financialDetails = (e) => {
     if (
       editUser?.FinancialDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/FinancialDetail/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.FinancialDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/FinancialDetail/${params.userId}`, { state: { editUser } });
     } else {
@@ -135,17 +135,17 @@ function App() {
   const contactDetails = (e) => {
     if (
       editUser?.contactDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
     ) {
       navigate(
         `/ContactTeam/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         }`,
         { state: { editUser } }
       );
     } else if (
       editsubUser?.contactDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
       navigate(`/ContactTeam/${params.userId}`, { state: { editUser } });
     } else {
@@ -156,7 +156,7 @@ function App() {
     (async () => {
       await apiService
         .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         )
         .then((res) => {
           if (res.data.status === "success") {
