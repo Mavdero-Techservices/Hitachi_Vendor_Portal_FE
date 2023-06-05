@@ -11,13 +11,17 @@ import Button from "react-bootstrap/Button";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const ComplianceDetails = () => {
+  const [redirectUrl, setredirectUrl] = useState();
+  const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
   const [EditCompliance, setEditCompliance] = useState(true);
+  console.log("EditCompliance", EditCompliance);
   const [showEditUploadsField, setshowEditUploadsField] = useState(true);
   const [fileRPD, setfileRPD] = useState();
+  console.log("fileRPD", fileRPD);
   const [editVlauefileRPD, seteditVlauefileRPD] = useState();
   const [editVlauefileCOC, seteditVlauefileCOC] = useState();
   const [editVlauefileNDA, seteditVlauefileNDA] = useState();
@@ -31,6 +35,9 @@ const ComplianceDetails = () => {
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
   const [deleteCocFile, setdeleteCocFile] = useState(false);
   const [deleteNdaFile, setdeleteNdaFile] = useState(false);
+  const [isNewValueEntered, setIsNewValueEntered] = useState(false);
+
+  const [style, setStyle] = useState("editable");
   const [pdfValues, setpdfValues] = useState({
     companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
       .companyName,
@@ -44,91 +51,198 @@ const ComplianceDetails = () => {
     RPD_Doc: "",
   });
   function onFileChangeRPD(e) {
-    if (e.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    setIsNewValueEntered(true);
+    if (e.target) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
+        Swal.fire({
+          title: "File size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        setfileRPD(null);
+        setdeleteUploadedFile(false);
+      } else if (file) {
+        setfileRPD(file);
+        setdeleteUploadedFile(true);
+      }
     } else {
-      setfileRPD(e);
-      setdeleteUploadedFile(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "File size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        setfileRPD(null);
+        setdeleteUploadedFile(false);
+      } else {
+        setfileRPD(e);
+        setdeleteUploadedFile(true);
+      }
     }
   }
+
   function onFileChangeCOC(e) {
-    if (e.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    setIsNewValueEntered(true);
+    if (e.target) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else if (file) {
+        setfileCOC(file);
+        setdeleteCocFile(true);
+      }
     } else {
-      setfileCOC(e);
-      setdeleteCocFile(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileCOC(e);
+        setdeleteCocFile(true);
+      }
     }
   }
+
   function onFileChangeNDA(e) {
-    if (e.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    setIsNewValueEntered(true);
+    if (e.target) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "ok",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else if (file) {
+        setfileNDA(file);
+        setdeleteNdaFile(true);
+      }
     } else {
-      setfileNDA(e);
-      setdeleteNdaFile(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "file size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "ok",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        setfileNDA(e);
+        setdeleteNdaFile(true);
+      }
     }
   }
+
   function deleteRpd(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setfileRPD("");
-      seteditVlauefileRPD("");
-      setdeleteUploadedFile(false);
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileRPD("");
+        seteditVlauefileRPD("");
+        setdeleteUploadedFile(false);
+      }
     });
   }
   function deleteCOC(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setfileCOC("");
-      seteditVlauefileCOC("");
-      setdeleteCocFile(false);
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileCOC("");
+        seteditVlauefileCOC("");
+        setdeleteCocFile(false);
+      }
     });
   }
   function deleteNDA(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setfileNDA("");
-      seteditVlauefileNDA("");
-      setdeleteNdaFile(false);
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileNDA("");
+        seteditVlauefileNDA("");
+        setdeleteNdaFile(false);
+      }
     });
   }
   function cancel(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setfileRPD("");
-      setfileCOC("");
-      setfileNDA("");
-      setdeleteUploadedFile(false);
-      setdeleteCocFile(false);
-      setdeleteNdaFile(false);
-      seteditVlauefileRPD("");
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setfileNDA("");
+        seteditVlauefileNDA("");
+        setdeleteNdaFile(false);
+        setfileCOC("");
+        seteditVlauefileCOC("");
+        setdeleteCocFile(false);
+        setfileRPD("");
+        seteditVlauefileRPD("");
+        setdeleteUploadedFile(false);
+      }
     });
   }
   const downloadPdf = (e) => {
@@ -140,12 +254,54 @@ const ComplianceDetails = () => {
     apiService.downloadPdf(user).then((response) => {});
   };
   function next(e) {
-    saveComplianceDetail(e);
-    navigate("/bank");
+    if (isNewValueEntered) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          saveComplianceDetail(e, () => {
+            if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+              navigate("/bank");
+            } else {
+              navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+            navigate("/bank");
+          } else {
+            navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+          }
+        }
+      });
+    } else {
+      if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+        navigate("/bank");
+      } else {
+        navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+      }
+    }
   }
   useEffect(() => {
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(params.userId).then((res) => {
+        finalstatus = res.data.result?.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
+        setredirectUrl(res.data);
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          setStyle("notEditable");
+        }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
           var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
           var RPD_Doc = initialUrlRPD_Doc.replace("uploads/", "");
@@ -162,7 +318,42 @@ const ComplianceDetails = () => {
           setEditCompliance(true);
         });
       });
+    } else if (newuser) {
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result?.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        setredirectUrl(res.data);
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          setStyle("notEditable");
+        }
+        if (res.data.ComplianceDetail?.length > 0) {
+          Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
+            var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
+            var RPD_Doc = initialUrlRPD_Doc.replace("uploads/", "");
+            var initialUrlCOC_Doc = res.data.ComplianceDetail[0].COC_Doc;
+            var COC_Doc = initialUrlCOC_Doc.replace("uploads/", "");
+            var initialUrlNDA_Doc = res.data.ComplianceDetail[0].NDA_Doc;
+            var NDA_Doc = initialUrlNDA_Doc.replace("uploads/", "");
+            setfileRPD(initialUrlRPD_Doc);
+            seteditVlauefileRPD(RPD_Doc);
+            setfileCOC(initialUrlCOC_Doc);
+            seteditVlauefileCOC(COC_Doc);
+            setfileNDA(initialUrlNDA_Doc);
+            seteditVlauefileNDA(NDA_Doc);
+            setEditCompliance(true);
+          });
+        }
+      });
     } else {
+      apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          setredirectUrl(res.data);
+        });
       setEditCompliance(false);
     }
     const user = {
@@ -178,17 +369,19 @@ const ComplianceDetails = () => {
       setfinancialYearEnd(res.data.endDate);
     });
     seturlRPD(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
     );
     seturlCoc(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}COC.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}COC.pdf`
     );
     seturlNDA(
-      `http://localhost:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
+      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
-  const saveComplianceDetail = (e) => {
-    e.preventDefault();
+
+  const saveComplianceDetail = (e, callback) => {
+    // e.preventDefault();
+    setIsNewValueEntered(false);
     const data = new FormData();
     data.append("RPD_Doc", fileRPD);
     data.append("NDA_Doc", fileNDA);
@@ -204,6 +397,13 @@ const ComplianceDetails = () => {
             title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -214,12 +414,85 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      apiService.saveComplianceDetail(data).then((res) => {
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      if (newuser) {
+        const compdata = new FormData();
+        compdata.append("RPD_Doc", fileRPD);
+        compdata.append("NDA_Doc", fileNDA);
+        compdata.append("COC_Doc", fileCOC);
+        compdata.append("userId", newuser);
+        apiService.saveComplianceDetail(compdata).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      } else {
+        apiService.saveComplianceDetail(data).then((res) => {
+          if (res.data.status === "success") {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
+    }
+  };
+
+  const updateComplianceDetail = (e, callback) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("RPD_Doc", fileRPD);
+    data.append("NDA_Doc", fileNDA);
+    data.append("COC_Doc", fileCOC);
+    data.append("userId", params.userId);
+    if (params.userId) {
+      apiService.updateComplianceDetail(params.userId, data).then((res) => {
         if (res.data.status === "success") {
           Swal.fire({
-            title: "Data saved",
+            title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -238,7 +511,7 @@ const ComplianceDetails = () => {
         className="container-fluid  py-5"
         style={{ backgroundColor: "#f3f4f7" }}
       >
-        <Container fluid="md">
+        <Container fluid="md" className={style}>
           <Row>
             <Col>
               <div className="container">
@@ -261,7 +534,7 @@ const ComplianceDetails = () => {
                       <Col sm={6}>
                         {EditCompliance ? (
                           <div>
-                            {editVlauefileRPD != "" ? (
+                            {editVlauefileRPD ? (
                               <div>
                                 <span>File name:{editVlauefileRPD}</span>
                               </div>
@@ -273,6 +546,9 @@ const ComplianceDetails = () => {
                                   type="file"
                                   name="fileRPD"
                                   fileOrFiles={deleteUploadedFile}
+                                  disabled={
+                                    style === "notEditable" ? true : false
+                                  }
                                 />
                                 <span>
                                   {fileRPD
@@ -290,6 +566,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileRPD"
                               fileOrFiles={deleteUploadedFile}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileRPD
@@ -300,17 +577,28 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileRPD != "" ? (
+                        {fileRPD ? (
                           <Button className="UploadBtn" onClick={deleteRpd}>
                             Delete files
                           </Button>
                         ) : (
-                          <Button className="UploadBtn">Upload files</Button>
+                          // <Button className="UploadBtn">Upload files</Button>
+                          <div className="comp-input">
+                            <label htmlFor="fileupload1">upload files</label>
+                            <input
+                              type="file"
+                              id="fileupload1"
+                              // value={values.GST_Doc}
+                              onChange={onFileChangeRPD}
+                              required
+                              disabled={style === "notEditable" ? true : false}
+                            />
+                          </div>
                         )}{" "}
                       </Col>
 
                       <Col>
-                        {fileRPD != "" ? (
+                        {fileRPD ? (
                           <div>
                             <p className="ValidityofDeclaration">
                               Validity of Declaration
@@ -332,7 +620,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && editVlauefileCOC != "" ? (
+                        {editVlauefileCOC ? (
                           <span>File name:{editVlauefileCOC}</span>
                         ) : (
                           <div>
@@ -342,6 +630,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileCOC"
                               fileOrFiles={deleteCocFile}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileCOC
@@ -352,12 +641,23 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileCOC != "" ? (
+                        {fileCOC ? (
                           <Button onClick={deleteCOC} className="UploadBtn">
                             Delete files
                           </Button>
                         ) : (
-                          <Button className="UploadBtn">Upload files</Button>
+                          // <Button className="UploadBtn">Upload files</Button>
+                          <div className="comp-input">
+                            <label htmlFor="fileupload2">upload files</label>
+                            <input
+                              type="file"
+                              id="fileupload2"
+                              // value={values.GST_Doc}
+                              onChange={onFileChangeCOC}
+                              required
+                              disabled={style === "notEditable" ? true : false}
+                            />
+                          </div>
                         )}
                       </Col>
 
@@ -382,7 +682,7 @@ const ComplianceDetails = () => {
                         </a>
                       </Col>
                       <Col sm={6}>
-                        {EditCompliance && editVlauefileNDA != "" ? (
+                        {editVlauefileNDA ? (
                           <span>File name:{editVlauefileNDA}</span>
                         ) : (
                           <div>
@@ -392,6 +692,7 @@ const ComplianceDetails = () => {
                               type="file"
                               name="fileNDA"
                               fileOrFiles={deleteNdaFile}
+                              disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileNDA
@@ -402,12 +703,23 @@ const ComplianceDetails = () => {
                         )}
                       </Col>
                       <Col>
-                        {EditCompliance && fileNDA != "" ? (
+                        {fileNDA ? (
                           <Button onClick={deleteNDA} className="UploadBtn">
                             Delete files
                           </Button>
                         ) : (
-                          <Button className="UploadBtn">Upload files</Button>
+                          // <Button className="UploadBtn">Upload files</Button>
+                          <div className="comp-input">
+                            <label htmlFor="fileupload3">upload files</label>
+                            <input
+                              type="file"
+                              id="fileupload3"
+                              // value={values.GST_Doc}
+                              onChange={onFileChangeNDA}
+                              required
+                              disabled={style === "notEditable" ? true : false}
+                            />
+                          </div>
                         )}
                       </Col>
 
@@ -438,28 +750,49 @@ const ComplianceDetails = () => {
             </Col>
           </Row>
           <Row className="sbtn">
-            <div className="float-end mt-2">
-              <button
-                type="button"
-                onClick={cancel}
-                className="btn bankbtn btn-primary btn-md m-1"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={saveComplianceDetail}
-                className="btn bankbtn btn-primary btn-md m-1"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                className="btn bankbtn btn-primary btn-md m-1"
-              >
-                Next
-              </button>
+            <div className={style}>
+              <div className="float-end mt-2">
+                <button
+                  type="button"
+                  onClick={cancel}
+                  className="btn bankbtn btn-md m-1"
+                >
+                  Cancel
+                </button>
+                {params.userId &&
+                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                  "Admin" ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={updateComplianceDetail}
+                      className="btn bankbtn btn-md m-1"
+                    >
+                      Update
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        saveComplianceDetail();
+                      }}
+                      className="btn bankbtn btn-md m-1"
+                    >
+                      Save
+                    </button>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  onClick={next}
+                  className="btn bankbtn btn-md m-1"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </Row>
         </Container>

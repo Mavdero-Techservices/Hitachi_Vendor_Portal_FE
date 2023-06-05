@@ -6,7 +6,7 @@ import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 
 //Login
 export const loginUser = (userData,history) => dispatch => {
-  axios.post("http://www.localhost:5500/login", userData)
+  axios.post(`${process.env.REACT_APP_API_URL}:3000/login`, userData)
     .then(res => {
        history.push("/")
       const { token } = res.data;

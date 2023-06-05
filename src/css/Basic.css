@@ -35,7 +35,6 @@ color: #F53844;
   background-color: #f0f3f6;
   font-size: inherit;
   color: #000;
-  font-family: "Open Sans";
 }
 
 .mb-0.info {
@@ -176,6 +175,8 @@ select {
   background: #efefef;
   padding-left: 4%; 
   padding-top: 1%; 
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 
@@ -424,6 +425,24 @@ select {
     padding: 11%;
     margin-left: -44%;
     position: relative;
+  }
+
+  .notEditable label {
+    color: black;
+  }
+  .notEditable input {
+    pointer-events: none;
+  }
+  .notEditable button {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+  }
+  .editable input{
+    pointer-events: auto !important;
+    color: black;
+  }
+  .editable input {
+    background-color: white;
   }
 }
 

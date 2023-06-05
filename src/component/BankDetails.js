@@ -6,12 +6,12 @@ import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
+// const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
 const BankDetails = (props) => {
+  const [redirectUrl, setredirectUrl] = useState();
   const [EditBank, setEditBank] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
-  const [errors, setErrors] = useState({});
   const [acName, setAcName] = useState("");
   const [bankname, setBankname] = useState("");
   const [acno, setAcno] = useState("");
@@ -21,75 +21,211 @@ const BankDetails = (props) => {
   const [fileBank, setfileBank] = useState();
   const [editValuefileBank, seteditValuefileBank] = useState("");
   const [deleteUploadedFile, setdeleteUploadedFile] = useState(false);
-  const onFileChange = (file) => {
-    if (file.size > 5000000) {
-      Swal.fire({
-        title: "file size should be less than 5mb",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+  const [style, setStyle] = useState("editable");
+  const [isNewValueEntered, setIsNewValueEntered] = useState(false);
+  const [previousAcName, setPreviousAcName] = useState("");
+  const [previousbankname, setPreviousbankname] = useState("");
+  const [previousacno, setPreviousacno] = useState("");
+  const [previousifsc, setPreviousifsc] = useState("");
+  const [previousmicr, setPreviousmicr] = useState("");
+  const [previousbranchAdd, setPrevioubranchAdd] = useState("");
+  // const onFileChange = (file) => {
+  //   if (file.target) {
+  //     if (file.size > 5000000) {
+  //       Swal.fire({
+  //         title: "file size should be less than 5mb",
+  //         icon: "error",
+  //         confirmButtonText: "OK",
+  //         showCloseButton: true,
+  //         allowOutsideClick: false,
+  //         allowEscapeKey: false,
+  //       });
+  //     } else {
+  //       setfileBank(file.target.files[0]);
+  //       setdeleteUploadedFile(true);
+  //     }
+  //   } else {
+  //     if (file.size > 5000000) {
+  //       Swal.fire({
+  //         title: "file size should be less than 5mb",
+  //         icon: "error",
+  //         confirmButtonText: "OK",
+  //         showCloseButton: true,
+  //         allowOutsideClick: false,
+  //         allowEscapeKey: false,
+  //       });
+  //     } else {
+  //       setfileBank(file);
+  //       setdeleteUploadedFile(true);
+  //     }
+  //   }
+  // };
+
+  function onFileChange(e) {
+    setIsNewValueEntered(true);
+    if (e.target) {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (file && file.size > 5000000) {
+        Swal.fire({
+          title: "File size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        setfileBank(null);
+        setdeleteUploadedFile(false);
+      } else if (file) {
+        setfileBank(file);
+        setdeleteUploadedFile(true);
+      }
     } else {
-      console.log("file::", file);
-      setfileBank(file);
-      setdeleteUploadedFile(true);
+      if (e.size > 5000000) {
+        Swal.fire({
+          title: "File size should be less than 5mb",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+        setfileBank(null);
+        setdeleteUploadedFile(false);
+      } else {
+        setfileBank(e);
+        setdeleteUploadedFile(true);
+      }
     }
-  };
+  }
 
   function deleteFile(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((ClearData) => {
-      setfileBank("");
-      seteditValuefileBank("");
-      setdeleteUploadedFile(false);
+      if (ClearData.isConfirmed) {
+        setfileBank("");
+        seteditValuefileBank("");
+        setdeleteUploadedFile(false);
+      }
     });
   }
   function cancel(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
       icon: "success",
-      confirmButtonText: "OK",
-    }).then((ClearData) => {
-      setAcName("");
-      setBankname("");
-      setAcno("");
-      setIfsc("");
-      setMicr("");
-      setbranchAdd("");
-      setfileBank("");
-      setdeleteUploadedFile(false);
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      showCloseButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setAcName("");
+        setBankname("");
+        setAcno("");
+        setIfsc("");
+        setMicr("");
+        setbranchAdd("");
+        setfileBank("");
+        setdeleteUploadedFile(false);
+      }
     });
   }
   function next(e) {
-    handleSubmit(e);
-    navigate("/FinancialDetail");
+    if (
+      isNewValueEntered ||
+      acName !== previousAcName ||
+      bankname !== previousbankname ||
+      acno !== previousacno ||
+      ifsc !== previousifsc ||
+      micr !== previousmicr ||
+      branchAdd !== previousbranchAdd
+    ) {
+      Swal.fire({
+        title: "Do you want to save?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          saveBankDetail(e, () => {
+            if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+              navigate("/FinancialDetail");
+            } else {
+              navigate(
+                `/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`
+              );
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+            navigate("/FinancialDetail");
+          } else {
+            navigate(
+              `/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`
+            );
+          }
+        }
+      });
+    } else {
+      if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+        navigate("/FinancialDetail");
+      } else {
+        navigate(`/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`);
+      }
+    }
   }
-  const handleSubmit = (event) => {
-    event.preventDefault();
+
+  const saveBankDetail = (e, callback) => {
+    // e.preventDefault();
+    setIsNewValueEntered(false);
     const data = new FormData();
     data.append(
       "userId",
       JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
     );
-    data.append("bankAccountName", acName);
-    data.append("bankName", bankname);
-    data.append("bankAccountNumber", acno);
-    data.append("ifscCode", ifsc);
+    data.append("Account_Holder_Name", acName);
+    data.append("Bank_Name", bankname);
+    data.append("Account_No", acno);
+    data.append("IFSC_Code", ifsc);
     data.append("MICRcode", micr);
-    data.append("branchAddress", branchAdd);
+    data.append("Bank_Address", branchAdd);
     data.append("bankdetailDoc", fileBank);
     if (params.userId) {
       apiService.updateBankDetail(params.userId, data).then((response) => {
         if (response) {
           Swal.fire({
-            title: "Data saved",
+            title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
+          // .then((res) => {
+          //   navigate(`/FinancialDetail/${params.userId}`);
+          // });
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -99,12 +235,97 @@ const BankDetails = (props) => {
         }
       });
     } else {
-      apiService.savebankdetail(data).then((response) => {
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      if (newuser) {
+        const bankdata = new FormData();
+        bankdata.append("userId", newuser);
+        bankdata.append("Account_Holder_Name", acName);
+        bankdata.append("Bank_Name", bankname);
+        bankdata.append("Account_No", acno);
+        bankdata.append("IFSC_Code", ifsc);
+        bankdata.append("MICRcode", micr);
+        bankdata.append("Bank_Address", branchAdd);
+        bankdata.append("bankdetailDoc", fileBank);
+        apiService.savebankdetail(bankdata).then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      } else {
+        apiService.savebankdetail(data).then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data saved",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                callback();
+              }
+            });
+            // .then((res) => {
+            //   navigate(`/FinancialDetail`);
+            // });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
+    }
+  };
+
+  const updatehandle = (event, callback) => {
+    event.preventDefault();
+    setIsNewValueEntered(false);
+    const data = new FormData();
+    data.append("userId", params.userId);
+    data.append("Account_Holder_Name", acName);
+    data.append("Bank_Name", bankname);
+    data.append("Account_No", acno);
+    data.append("IFSC_Code", ifsc);
+    data.append("MICRcode", micr);
+    data.append("Bank_Address", branchAdd);
+    data.append("bankdetailDoc", fileBank);
+    if (params.userId) {
+      apiService.updateBankDetail(params.userId, data).then((response) => {
         if (response) {
           Swal.fire({
-            title: "Data saved",
+            title: "Data updated",
             icon: "success",
             confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
           });
         } else {
           Swal.fire({
@@ -117,42 +338,96 @@ const BankDetails = (props) => {
     }
   };
   useEffect(() => {
+    let newuser = JSON.parse(
+      window.sessionStorage.getItem("newregUser")
+    )?.newregUser;
     if (params.userId) {
+      // eslint-disable-next-line no-unused-vars
+      let finalstatus = "";
+      apiService.signupFindByUserId(params.userId).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
       apiService.getAllCollection(params.userId).then((res) => {
+        setredirectUrl(res.data);
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          setStyle("notEditable");
+        }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
           var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
           var ret = initialUrlbankDoc.replace("uploads/", "");
           var bankdetailDoc = ret;
-          setAcName(value.bankAccountName);
-          setBankname(value.bankName);
-          setAcno(value.bankAccountNumber);
-          setIfsc(value.ifscCode);
+          setAcName(value.Account_Holder_Name);
+          setPreviousAcName(value.Account_Holder_Name);
+          setBankname(value.Bank_Name);
+          setPreviousbankname(value.Bank_Name);
+          setAcno(value.Account_No);
+          setPreviousacno(value.Account_No);
+          setIfsc(value.IFSC_Code);
+          setPreviousifsc(value.IFSC_Code);
           setMicr(value.MICRcode);
-          setbranchAdd(value.branchAddress);
+          setPreviousmicr(value.MICRcode);
+          setPrevioubranchAdd(value.Bank_Address);
+          setbranchAdd(value.Bank_Address);
           setfileBank(initialUrlbankDoc);
           seteditValuefileBank(bankdetailDoc);
+          return null;
+        });
+      });
+    } else if (newuser) {
+      // eslint-disable-next-line no-unused-vars
+      let finalstatus = "";
+      apiService.signupFindByUserId(newuser).then((res) => {
+        finalstatus = res.data.result.finalStatus;
+      });
+      apiService.getAllCollection(newuser).then((res) => {
+        setredirectUrl(res.data);
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          setStyle("notEditable");
+        }
+        Object.entries(res.data.Bankdetail).map(([key, value]) => {
+          var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
+          var ret = initialUrlbankDoc.replace("uploads/", "");
+          var bankdetailDoc = ret;
+          setAcName(value.Account_Holder_Name);
+          setBankname(value.Bank_Name);
+          setAcno(value.Account_No);
+          setIfsc(value.IFSC_Code);
+          setMicr(value.MICRcode);
+          setbranchAdd(value.Bank_Address);
+          setfileBank(initialUrlbankDoc);
+          seteditValuefileBank(bankdetailDoc);
+          return null;
         });
       });
     } else {
+      apiService
+        .getAllCollection(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        )
+        .then((res) => {
+          setredirectUrl(res.data);
+        });
       setEditBank(false);
     }
-  }, []);
+  }, [params.userId]);
   return (
     <div className="bank-details">
       <Navbar1 />
       <div className="container-fluid  py-5 pagebg">
-        <form onSubmit={handleSubmit} className="mb-5">
+        <form style={{ mt: 5 }} className={style}>
           <div className="container">
             <span className="bank_title">Bank Details</span>
             <div className="row p-3 sectionbg">
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                <label className="banklabel">Name as per Bank A/c</label>
+                <label className="banklabel">Name as per Bank A/c*</label>
                 <input
                   type="text"
                   className="mb-4 inputbox"
-                  name="acName"
+                  name="Account_Holder_Name"
                   value={acName}
-                  onChange={(e) => setAcName(e.target.value)}
+                  onChange={(e) => {
+                    setAcName(e.target.value);
+                  }}
                 />
               </div>
               <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -170,7 +445,7 @@ const BankDetails = (props) => {
                 <input
                   type="text"
                   className="mb-4 inputbox"
-                  name="bankname"
+                  name="Bank_Name"
                   value={bankname}
                   onChange={(e) => setBankname(e.target.value)}
                 />
@@ -228,7 +503,7 @@ const BankDetails = (props) => {
               <div className="col-md-6 col-sm-12 col-xs-12 my-auto">
                 {EditBank ? (
                   <div>
-                    {editValuefileBank != "" ? (
+                    {editValuefileBank !== "" ? (
                       <div>
                         <span>File name:{editValuefileBank}</span>
                       </div>
@@ -241,6 +516,7 @@ const BankDetails = (props) => {
                           type="file"
                           name="fileBank"
                           fileOrFiles={deleteUploadedFile}
+                          disabled={style === "notEditable" ? true : false}
                         />
                         <span>
                           {fileBank
@@ -268,8 +544,10 @@ const BankDetails = (props) => {
                   </div>
                 )}
               </div>
-              <div className="col-md-4 col-sm-12 col-xs-12 my-auto">
-                {EditBank && editValuefileBank != "" ? (
+              <div className="col-md-4 col-sm-12 col-xs-12 ">
+                {fileBank !== "" &&
+                fileBank !== undefined &&
+                fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}
@@ -278,9 +556,20 @@ const BankDetails = (props) => {
                     Delete files
                   </button>
                 ) : (
-                  <button type="button" className="btn m-2 uploadFile">
-                    Upload files
-                  </button>
+                  // <button type="button" className="btn m-2 uploadFile">
+                  //   Upload files
+                  // </button>
+                  <div className="bank-input">
+                    <label htmlFor="fileupload">upload files</label>
+                    <input
+                      type="file"
+                      id="fileupload"
+                      // value={values.GST_Doc}
+                      onChange={onFileChange}
+                      required
+                      disabled={style === "notEditable" ? true : false}
+                    />
+                  </div>
                 )}
               </div>
               <div className="col-md-2 col-sm-12 col-xs-12"></div>
@@ -289,20 +578,40 @@ const BankDetails = (props) => {
               <button
                 type="button"
                 onClick={cancel}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn bankbtn btn-primary btn-md m-1"
-              >
-                Save
-              </button>
+              {params.userId &&
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                "Admin" ? (
+                <>
+                  <button
+                    type="submit"
+                    className="btn bankbtn btn-md m-1"
+                    onClick={updatehandle}
+                  >
+                    update
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="btn bankbtn btn-md m-1"
+                    onClick={() => {
+                      saveBankDetail();
+                    }}
+                  >
+                    Save
+                  </button>
+                </>
+              )}
+
               <button
                 type="button"
                 onClick={next}
-                className="btn bankbtn btn-primary btn-md m-1"
+                className="btn bankbtn btn-md m-1"
               >
                 Next
               </button>
