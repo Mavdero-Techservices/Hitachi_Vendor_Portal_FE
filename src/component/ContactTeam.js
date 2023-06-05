@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const numberValidation = /^-?(0|[1-9]\d*)?$/;
-const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+// /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/ 
+const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 const ContactTeam = () => {
@@ -1112,12 +1113,12 @@ const ContactTeam = () => {
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
 
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -1138,11 +1139,11 @@ const ContactTeam = () => {
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }

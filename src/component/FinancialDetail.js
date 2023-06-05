@@ -189,14 +189,14 @@ const FinancialDetails = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           saveFinancialDetail(e, () => {
-            if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+            if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
               navigate("/ContactTeam");
             } else {
               navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+          if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
             navigate("/ContactTeam");
           } else {
             navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
@@ -204,7 +204,7 @@ const FinancialDetails = () => {
         }
       });
     } else {
-      if (redirectUrl.contactDetail?.length <= 0 || "" || undefined) {
+      if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
         navigate("/ContactTeam");
       } else {
         navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);

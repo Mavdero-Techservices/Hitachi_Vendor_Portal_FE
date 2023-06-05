@@ -1026,11 +1026,11 @@ export class Basic extends React.Component {
       this.edit = true;
       let finalstatus = "";
       apiService.signupFindByUserId(this.props.params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
         console.log("finalstatus", finalstatus);
       });
       apiService.getAllCollection(this.props.params.userId).then((res) => {
-        if (res.data.basicInfo[0].submitStatus === "Submitted") {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
           this.setState({ setStyle: "notEditable" });
         }
         this.setState({

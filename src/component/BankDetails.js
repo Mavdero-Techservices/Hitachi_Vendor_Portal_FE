@@ -345,7 +345,7 @@ const BankDetails = (props) => {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
@@ -377,7 +377,7 @@ const BankDetails = (props) => {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
@@ -385,7 +385,7 @@ const BankDetails = (props) => {
           setStyle("notEditable");
         }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
-          var initialUrlbankDoc = res.data.Bankdetail[0].bankdetailDoc;
+          var initialUrlbankDoc = res.data.Bankdetail[0]?.bankdetailDoc;
           var ret = initialUrlbankDoc.replace("uploads/", "");
           var bankdetailDoc = ret;
           setAcName(value.Account_Holder_Name);
