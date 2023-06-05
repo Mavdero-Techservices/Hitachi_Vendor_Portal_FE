@@ -965,7 +965,7 @@ export default function PoReject() {
     Promise.all([apiService.getPo(), apiService.getInvoiceinfo()]).then(
       ([poRes, invoiceRes]) => {
         const filteredData = poRes.data.result.filter((item) => item.level1ApprovalStatus === "Rejected");
-        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus === "Rejected");
+        const invoiceValues = invoiceRes?.data.result?.filter((item) => item.level1ApprovalStatus === "Rejected");
         let arrayData = []
         for (let x in filteredData) {
           arrayData.push(filteredData[x])

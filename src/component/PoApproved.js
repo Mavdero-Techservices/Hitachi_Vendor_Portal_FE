@@ -958,7 +958,7 @@ export default function PoApproved() {
     Promise.all([apiService.getPo(), apiService.getInvoiceinfo()]).then(
       ([poRes, invoiceRes]) => {
         const filteredData = poRes.data.result.filter((item) => item.level1ApprovalStatus === "Approved");
-        const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus === "Approved");
+        const invoiceValues = invoiceRes?.data.result?.filter((item) => item.level1ApprovalStatus === "Approved");
         let arrayData = []
         for (let x in filteredData) {
           arrayData.push(filteredData[x])

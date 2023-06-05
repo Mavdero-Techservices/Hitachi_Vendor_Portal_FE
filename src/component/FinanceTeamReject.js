@@ -961,8 +961,8 @@ export default function FinanceTeamReject() {
     setAccordionData([])
     Promise.all([apiService.getPo(), apiService.getInvoiceinfo()]).then(
       ([poRes, invoiceRes]) => {
-        const filteredData = poRes.data.result.filter((item) => item.level2ApprovalStatus === "Rejected");
-        const invoiceValues = invoiceRes.data.result.filter((item) => item.level2ApprovalStatus === "Rejected");
+        const filteredData = poRes?.data.result?.filter((item) => item.level2ApprovalStatus === "Rejected");
+        const invoiceValues = invoiceRes?.data.result?.filter((item) => item.level2ApprovalStatus === "Rejected");
         let arrayData = []
         for (let x in filteredData) {
           arrayData.push(filteredData[x])
