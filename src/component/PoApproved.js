@@ -209,8 +209,7 @@ export default function PoApproved() {
   };
 
   const rendereWayBill = (params) => {
-    return (params.row.No === "230010" && params.row.eWayBill) ||
-      (params.row.No === "249812"  && params.row.eWayBill) ? (
+    return  params.row.eWayBill ? (
       <strong>
         <Button
           variant="contained"
@@ -237,7 +236,7 @@ export default function PoApproved() {
   };
 
   const rendertransportDocument = (params) => {
-    return params.row.No === "230010" && params.row.transportDocument ? (
+    return  params.row.transportDocument ? (
       <strong>
         <Button
           variant="contained"
@@ -264,13 +263,7 @@ export default function PoApproved() {
   };
 
   const rendermiscDocs = (params) => {
-    return (params.row.No === "230010" && params.row.miscDocs) ||
-      (params.row.No === "249812" && params.row.miscDocs) ||
-      (params.row.No === "220020" && params.row.miscDocs) ||
-      (params.row.No === "220031" && params.row.miscDocs) ||
-      (params.row.No === "220030" && params.row.miscDocs) ||
-      (params.row.No === "220024" && params.row.miscDocs) ||
-      (params.row.No === "220021" && params.row.miscDocs) ? (
+    return  params.row.miscDocs ? (
       <strong>
         <Button
           variant="contained"
@@ -297,7 +290,7 @@ export default function PoApproved() {
   };
 
   const renderboe = (params) => {
-    return params.row.No === "249812" && params.row.boe ? (
+    return params.row.boe ? (
       <strong>
         <Button
           variant="contained"
@@ -324,7 +317,7 @@ export default function PoApproved() {
   };
 
   const renderawb = (params) => {
-    return params.row.No === "249812" && params.row.awb ? (
+    return  params.row.awb ? (
       <strong>
         <Button
           variant="contained"
@@ -351,7 +344,7 @@ export default function PoApproved() {
   };
 
   const renderserviceAgreement = (params) => {
-    return params.row.No === "220020" && params.row.serviceAgreement ? (
+    return  params.row.serviceAgreement ? (
       <strong>
         <Button
           variant="contained"
@@ -378,7 +371,7 @@ export default function PoApproved() {
   };
 
   const renderlic = (params) => {
-    return params.row.No === "220020" && params.row.lic ? (
+    return  params.row.lic ? (
       <strong>
         <Button
           variant="contained"
@@ -405,7 +398,7 @@ export default function PoApproved() {
   };
 
   const renderlicDeliveryProof = (params) => {
-    return params.row.No === "220020" && params.row.licDeliveryProof ? (
+    return  params.row.licDeliveryProof ? (
       <strong>
         <Button
           variant="contained"
@@ -432,7 +425,7 @@ export default function PoApproved() {
   };
 
   const renderwarrantyCertificate = (params) => {
-    return params.row.No === "220020" && params.row.warrantyCertificate ? (
+    return  params.row.warrantyCertificate ? (
       <strong>
         <Button
           variant="contained"
@@ -459,7 +452,7 @@ export default function PoApproved() {
   };
 
   const renderirWcc = (params) => {
-    return params.row.No === "220020" && params.row.irWcc ? (
+    return  params.row.irWcc ? (
       <strong>
         <Button
           variant="contained"
@@ -486,7 +479,7 @@ export default function PoApproved() {
   };
 
   const rendersignOffFromCustomer = (params) => {
-    return params.row.No === "220020" && params.row.signOffFromCustomer ? (
+    return  params.row.signOffFromCustomer ? (
       <strong>
         <Button
           variant="contained"
@@ -513,7 +506,7 @@ export default function PoApproved() {
   };
 
   const rendercoc = (params) => {
-    return params.row.No === "220020" && params.row.coc ? (
+    return  params.row.coc ? (
       <strong>
         <Button
           variant="contained"
@@ -540,7 +533,7 @@ export default function PoApproved() {
   };
 
   const renderesiPayementChallan = (params) => {
-    return params.row.No === "220021" && params.row.esiPayementChallan ? (
+    return  params.row.esiPayementChallan ? (
       <strong>
         <Button
           variant="contained"
@@ -567,7 +560,7 @@ export default function PoApproved() {
   };
 
   const renderpfPayementChallan = (params) => {
-    return params.row.No === "220021" && params.row.pfPayementChallan ? (
+    return  params.row.pfPayementChallan ? (
       <strong>
         <Button
           variant="contained"
@@ -594,7 +587,7 @@ export default function PoApproved() {
   };
 
   const renderemployeeSummary = (params) => {
-    return params.row.No === "220021" && params.row.employeeSummary ? (
+    return  params.row.employeeSummary ? (
       <strong>
         <Button
           variant="contained"
@@ -622,7 +615,7 @@ export default function PoApproved() {
 
   const renderarWorking = (params) => {
     return (
-      params.row.No === "220023" && params.row.arWorking ?
+       params.row.arWorking ?
       <strong>
         <Button
           variant="contained"
@@ -649,7 +642,7 @@ export default function PoApproved() {
 
   const renderdeliveryProof = (params) => {
     return (
-      params.row.No === "220030" && params.row.deliveryProof ?
+       params.row.deliveryProof ?
       <strong>
         <Button
           variant="contained"
@@ -676,7 +669,7 @@ export default function PoApproved() {
 
   const rendercalculation = (params) => {
     return (
-      params.row.No === "220030" && params.row.calculation ?
+       params.row.calculation ?
       <strong>
         <Button
           variant="contained"
@@ -703,7 +696,7 @@ export default function PoApproved() {
 
   const rendercustomExRate = (params) => {
     return (
-      params.row.No === "220030" && params.row.customExRate ?
+       params.row.customExRate ?
       <strong>
         <Button
           variant="contained"

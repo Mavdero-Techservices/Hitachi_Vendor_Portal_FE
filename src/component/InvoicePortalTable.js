@@ -96,8 +96,7 @@ export default function InvoicePortalTable(props) {
   };
 
   const rendereWayBill = (params) => {
-    return params.row.No === "230010" ||
-      params.row.No === "249812" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -121,13 +120,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+   
     );
   };
 
   const rendertransportDocument = (params) => {
-    return params.row.No === "230010" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -151,19 +149,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const rendermiscDocs = (params) => {
-    return params.row.No === "230010" ||
-      params.row.No === "249812" ||
-      params.row.No === "220020" ||
-      params.row.No === "220031" ||
-      params.row.No === "220030" ||
-      params.row.No === "220024" ||
-      params.row.No === "220021" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -187,13 +178,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+   
     );
   };
 
   const renderboe = (params) => {
-    return params.row.No === "249812" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -217,13 +207,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderawb = (params) => {
-    return params.row.No === "249812" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -247,13 +236,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderserviceAgreement = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -277,13 +265,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderlic = (params) => {
-    return params.row.No === "220020" ? (
+    return (
       <strong>
         <Button
           variant="contained"
@@ -307,13 +294,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderlicDeliveryProof = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -337,13 +323,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderwarrantyCertificate = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -371,13 +356,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderirWcc = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -401,13 +385,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+   
     );
   };
 
   const rendersignOffFromCustomer = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -435,13 +418,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const rendercoc = (params) => {
-    return params.row.No === "220020" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -465,13 +447,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderesiPayementChallan = (params) => {
-    return params.row.No === "220021" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -499,13 +480,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderpfPayementChallan = (params) => {
-    return params.row.No === "220021" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -529,13 +509,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderemployeeSummary = (params) => {
-    return params.row.No === "220021" ? (
+    return  (
       <strong>
         <Button
           variant="contained"
@@ -559,14 +538,12 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-    ) : (
-      <></>
+    
     );
   };
 
   const renderarWorking = (params) => {
     return (
-      params.row.No === "220023" ?
       <strong>
         <Button
           variant="contained"
@@ -590,13 +567,11 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-      : <></>
     );
   };
 
   const renderdeliveryProof = (params) => {
     return (
-      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -620,13 +595,11 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-      : <></>
     );
   };
 
   const rendercalculation = (params) => {
     return (
-      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -650,13 +623,11 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-      : <></>
     );
   };
 
   const rendercustomExRate = (params) => {
     return (
-      params.row.No === "220030" ?
       <strong>
         <Button
           variant="contained"
@@ -680,7 +651,6 @@ export default function InvoicePortalTable(props) {
           />
         </Button>
       </strong>
-      : <></>
     );
   };
 
@@ -702,16 +672,16 @@ export default function InvoicePortalTable(props) {
       width: 210,
       // editable: true,
       renderCell: (params) => {
-      
+
         return (
-          params.row.vendorInvoiceNo && params.row.vendorInvoiceNo !=='null'? params.row.vendorInvoiceNo:
-          <>
-            <TextField
-              onChange={(event) => handleInvoiceChange(event, params.row)}
-            >
-              {params.row.vendorInvoiceNo}{" "}
-            </TextField>
-          </>
+          params.row.vendorInvoiceNo && params.row.vendorInvoiceNo !== 'null' ? params.row.vendorInvoiceNo :
+            <>
+              <TextField
+                onChange={(event) => handleInvoiceChange(event, params.row)}
+              >
+                {params.row.vendorInvoiceNo}{" "}
+              </TextField>
+            </>
         );
       },
     },
@@ -914,6 +884,7 @@ export default function InvoicePortalTable(props) {
 
   const handleRequest = (e) => {
     e.preventDefault();
+
     if (invoiceInfo.length > 0) {
       console.log("invoiceInfo------------>", invoiceInfo);
 
