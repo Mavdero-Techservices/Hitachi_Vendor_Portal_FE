@@ -285,6 +285,13 @@ export default function Statutory(props) {
       // });
     }
   }
+  const redirectToComplianceDetail = () => {
+    if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
+      navigate("/ComplianceDetail");
+    } else {
+      navigate(`/ComplianceDetail/${params.userId}`);
+    }
+  };
   function next(e) {
     if (isNewValueEntered) {
       Swal.fire({
@@ -297,27 +304,26 @@ export default function Statutory(props) {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveStatutoryDetail(e, () => {
-            if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-              navigate("/ComplianceDetail");
+          saveStatutoryDetail().then((response) => {
+            if (response === "success") {
+              redirectToComplianceDetail();
             } else {
-              navigate(`/ComplianceDetail/${params.userId}`);
+              Swal.fire({
+                title: "Error while saving data",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-            navigate("/ComplianceDetail");
-          } else {
-            navigate(`/ComplianceDetail/${params.userId}`);
-          }
+          redirectToComplianceDetail();
         }
       });
     } else {
-      if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-        navigate("/ComplianceDetail");
-      } else {
-        navigate(`/ComplianceDetail/${params.userId}`);
-      }
+      redirectToComplianceDetail();
     }
   }
 
@@ -691,7 +697,8 @@ export default function Statutory(props) {
     })();
     seturl(pdf);
   }, [statRes]);
-  const saveStatutoryDetail = (e, callback) => {
+  const saveStatutoryDetail = (e) => {
+    return new Promise((resolve) => {
     // e.preventDefault();
     setIsNewValueEntered(false);
     const data = new FormData();
@@ -745,9 +752,14 @@ export default function Statutory(props) {
             allowEscapeKey: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              callback();
+              resolve("success");
             }
-          });
+            else
+            {
+              resolve("error");
+            }
+          })
+          
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -757,6 +769,7 @@ export default function Statutory(props) {
             allowOutsideClick: false,
             allowEscapeKey: false,
           });
+          resolve("error");
         }
       });
     } else {
@@ -812,9 +825,13 @@ export default function Statutory(props) {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -839,9 +856,13 @@ export default function Statutory(props) {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -855,8 +876,10 @@ export default function Statutory(props) {
         });
       }
     }
+  });
   };
-  const updateStatutoryDetail = (e, callback) => {
+  const updateStatutoryDetail  = (e) => {
+    return new Promise((resolve) => {
     e.preventDefault();
     setIsNewValueEntered(false);
     const data = new FormData();
@@ -907,9 +930,13 @@ export default function Statutory(props) {
             allowEscapeKey: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              callback();
+              resolve("success");
             }
-          });
+            else
+            {
+              resolve("error");
+            }
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -922,6 +949,7 @@ export default function Statutory(props) {
         }
       });
     }
+  });
   };
   const deleteFile = (event) => {
     if (

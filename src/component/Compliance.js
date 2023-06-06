@@ -253,6 +253,13 @@ const ComplianceDetails = () => {
     e.preventDefault();
     apiService.downloadPdf(user).then((response) => {});
   };
+  const redirectToBankdetail = () => {
+    if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+      navigate("/bank");
+    } else {
+      navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+    }
+  };
   function next(e) {
     if (isNewValueEntered) {
       Swal.fire({
@@ -265,11 +272,18 @@ const ComplianceDetails = () => {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveComplianceDetail(e, () => {
-            if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
-              navigate("/bank");
+          saveComplianceDetail().then((response) => {
+            if (response === "success") {
+              redirectToBankdetail();
             } else {
-              navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+              Swal.fire({
+                title: "Error while saving data",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -379,7 +393,8 @@ const ComplianceDetails = () => {
     );
   }, []);
 
-  const saveComplianceDetail = (e, callback) => {
+  const saveComplianceDetail  = (e) => {
+    return new Promise((resolve) => {
     // e.preventDefault();
     setIsNewValueEntered(false);
     const data = new FormData();
@@ -402,9 +417,13 @@ const ComplianceDetails = () => {
             allowEscapeKey: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              callback();
+              resolve("success");
             }
-          });
+            else
+            {
+              resolve("error");
+            }
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -434,9 +453,13 @@ const ComplianceDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -457,9 +480,13 @@ const ComplianceDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -470,9 +497,11 @@ const ComplianceDetails = () => {
         });
       }
     }
+  });
   };
 
-  const updateComplianceDetail = (e, callback) => {
+  const updateComplianceDetail  = (e) => {
+    return new Promise((resolve) => {
     e.preventDefault();
     const data = new FormData();
     data.append("RPD_Doc", fileRPD);
@@ -491,9 +520,13 @@ const ComplianceDetails = () => {
             allowEscapeKey: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              callback();
+              resolve("success");
             }
-          });
+            else
+            {
+              resolve("error");
+            }
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -503,6 +536,7 @@ const ComplianceDetails = () => {
         }
       });
     }
+  });
   };
   return (
     <div className="Compliance-details">

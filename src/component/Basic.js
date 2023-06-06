@@ -123,24 +123,7 @@ export class Basic extends React.Component {
   };
 
   togglebuttonCommu() {
-    const isValueChanged =
-      (this.state.Address !== this.state.previousAddress &&
-        this.state.Address !== "") ||
-      (this.state.Address_2 !== this.state.previousAddress_2 &&
-        this.state.Address_2 !== "") ||
-      (this.state.City !== this.state.previousCity && this.state.City !== "") ||
-      (this.state.state !== this.state.previousState &&
-        this.state.state !== "") ||
-      (this.state.Country_Region_Code !==
-        this.state.previousCountry_Region_Code &&
-        this.state.Country_Region_Code !== "") ||
-      (this.state.Post_Code !== this.state.previousPost_Code &&
-        this.state.Post_Code !== "") ||
-      (this.state.companyName !== this.state.previousCompanyName &&
-        this.state.companyName !== "") ||
-      (this.state.image !== this.state.previousImage &&
-        this.state.image !== "");
-    if (isValueChanged) {
+        if (this.state.isFormChanged) {
       Swal.fire({
         title: "Do you want to save?",
         icon: "question",
@@ -168,7 +151,7 @@ export class Basic extends React.Component {
               .then((response) => {
                 if (response) {
                   Swal.fire({
-                    title: "Data Updated5",
+                    title: "Data Updated",
                     icon: "success",
                     confirmButtonText: "OK",
                     showCloseButton: true,
@@ -264,67 +247,8 @@ export class Basic extends React.Component {
       });
     }
   }
-  next = (e) => {
-    const isValueChanged =
-      (this.state.financeSpoccontactName !==
-        this.state.previousfinanceSpoccontactName &&
-        this.state.financeSpoccontactName !== "") ||
-      (this.state.financeSpocdesignation !==
-        this.state.previousfinanceSpocdesignation &&
-        this.state.financeSpocdesignation !== "") ||
-      (this.state.financeSpocphoneNo !==
-        this.state.previousfinanceSpocphoneNo &&
-        this.state.financeSpocphoneNo !== "") ||
-      (this.state.financeSpocemail !== this.state.previousfinanceSpocemail &&
-        this.state.financeSpocemail !== "") ||
-      (this.state.operationSpoccontactName !==
-        this.state.previousoperationSpoccontactName &&
-        this.state.operationSpoccontactName !== "") ||
-      (this.state.operationSpocdesignation !==
-        this.state.previousoperationSpocdesignation &&
-        this.state.operationSpocdesignation !== "") ||
-      (this.state.operationSpocphoneNo !==
-        this.state.previousoperationSpocphoneNo &&
-        this.state.operationSpocphoneNo !== "") ||
-      (this.state.operationSpocemail !==
-        this.state.previousoperationSpocemail &&
-        this.state.operationSpocemail !== "") ||
-      (this.state.collectionSpoccontactName !==
-        this.state.previouscollectionSpoccontactName &&
-        this.state.collectionSpoccontactName !== "") ||
-      (this.state.collectionSpocdesignation !==
-        this.state.previouscollectionSpocdesignation &&
-        this.state.collectionSpocdesignation !== "") ||
-      (this.state.collectionSpocphoneNo !==
-        this.state.previouscollectionSpocphoneNo &&
-        this.state.collectionSpocphoneNo !== "") ||
-      (this.state.collectionSpocemail !==
-        this.state.previouscollectionSpocemail &&
-        this.state.collectionSpocemail !== "") ||
-      (this.state.managementSpoccontactName !==
-        this.state.previousmanagementSpoccontactName &&
-        this.state.managementSpoccontactName !== "") ||
-      (this.state.managementSpocdesignation !==
-        this.state.previousmanagementSpocdesignation &&
-        this.state.managementSpocdesignation !== "") ||
-      (this.state.managementSpocphoneNo !==
-        this.state.previousmanagementSpocphoneNo &&
-        this.state.managementSpocphoneNo !== "") ||
-      (this.state.managementSpocemail !==
-        this.state.previousmanagementSpocemail &&
-        this.state.managementSpocemail !== "") ||
-      (this.state.contactName !== this.state.previouscontactName &&
-        this.state.contactName !== "") ||
-      (this.state.designation !== this.state.previousdesignation &&
-        this.state.designation !== "") ||
-      (this.state.phoneNo !== this.state.previousphoneNo &&
-        this.state.phoneNo !== "") ||
-      (this.state.email !== this.state.previousemail &&
-        this.state.email !== "") ||
-      (this.state.mastervendor_email !==
-        this.state.previousmastervendor_email &&
-        this.state.mastervendor_email !== "");
-    if (isValueChanged) {
+  next = (e) => { 
+    if (this.state.isFormChangedCommunication) {
       Swal.fire({
         title: "Do you want to save?",
         icon: "question",
@@ -370,7 +294,7 @@ export class Basic extends React.Component {
                   this.fetchData();
                   if (response) {
                     Swal.fire({
-                      title: "Data Updated6",
+                      title: "Data Updated",
                       icon: "success",
                       confirmButtonText: "OK",
                       showCloseButton: true,
@@ -601,12 +525,23 @@ export class Basic extends React.Component {
     this.setState({ state: "" });
     this.setState({ City: "" });
     this.setState({ Post_Code: "" });
+    this.setState({ isFormChanged: true });
   }
   formValChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     this.setState({
       [name]: value,
+      isFormChanged: true,
+    });
+    this.setState({ [e.target.id]: e.target.value });
+  };
+  formValChangeCommunication = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+      isFormChangedCommunication: true,
     });
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -631,7 +566,7 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated1",
+              title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -717,7 +652,7 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated2",
+              title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -773,7 +708,7 @@ export class Basic extends React.Component {
             this.fetchData();
             if (response) {
               Swal.fire({
-                title: "Data Updated3",
+                title: "Data Updated",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
@@ -905,7 +840,7 @@ export class Basic extends React.Component {
             if (response) {
               this.fetchData();
               Swal.fire({
-                title: "Data Updated4",
+                title: "Data Updated",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
@@ -1620,7 +1555,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpoccontactName"
                                     id="financeSpoccontactName"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={financeSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1631,7 +1566,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpocdesignation"
                                     id="financeSpocdesignation"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={financeSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1642,7 +1577,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpocphoneNo"
                                     id="financeSpocphoneNo"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={financeSpocphoneNo}
                                   />
                                 </MDBCol>
@@ -1653,7 +1588,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpocemail"
                                     id="financeSpocemail"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={financeSpocemail}
                                   />
                                 </MDBCol>
@@ -1669,7 +1604,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpoccontactName"
                                     id="operationSpoccontactName"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={operationSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1680,7 +1615,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocdesignation"
                                     id="operationSpocdesignation"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={operationSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1691,7 +1626,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocphoneNo"
                                     id="operationSpocphoneNo"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={operationSpocphoneNo}
                                   />
                                 </MDBCol>
@@ -1702,7 +1637,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocemail"
                                     id="operationSpocemail"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={operationSpocemail}
                                   />
                                 </MDBCol>
@@ -1718,7 +1653,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpoccontactName"
                                     id="collectionSpoccontactName"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={collectionSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1729,7 +1664,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocdesignation"
                                     id="collectionSpocdesignation"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={collectionSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1740,7 +1675,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocphoneNo"
                                     id="collectionSpocphoneNo"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={collectionSpocphoneNo}
                                   />
                                 </MDBCol>
@@ -1751,7 +1686,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocemail"
                                     id="collectionSpocemail"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={collectionSpocemail}
                                   />
                                 </MDBCol>
@@ -1768,7 +1703,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpoccontactName"
                                     id="managementSpoccontactName"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={managementSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1779,7 +1714,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocdesignation"
                                     id="managementSpocdesignation"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={managementSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1790,7 +1725,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocphoneNo"
                                     id="managementSpocphoneNo"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={managementSpocphoneNo}
                                   />
                                 </MDBCol>
@@ -1801,7 +1736,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocemail"
                                     id="managementSpocemail"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={managementSpocemail}
                                   />
                                 </MDBCol>
@@ -1815,7 +1750,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="contactName"
                                     id="contactName"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={contactName}
                                   />
                                 </MDBCol>
@@ -1826,7 +1761,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="designation"
                                     id="designation"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={designation}
                                   />
                                 </MDBCol>
@@ -1837,7 +1772,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="phoneNo"
                                     id="phoneNo"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={phoneNo}
                                   />
                                 </MDBCol>
@@ -1848,7 +1783,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="email"
                                     id="email"
-                                    onChange={this.formValChange}
+                                    onChange={this.formValChangeCommunication}
                                     value={email}
                                   />
                                 </MDBCol>
@@ -1867,7 +1802,7 @@ export class Basic extends React.Component {
                                       className="mb-4 VendorInput"
                                       name="mastervendor_email"
                                       id="mastervendor_email"
-                                      onChange={this.formValChange}
+                                      onChange={this.formValChangeCommunication}
                                       value={mastervendor_email}
                                     />
                                   </MDBCol>

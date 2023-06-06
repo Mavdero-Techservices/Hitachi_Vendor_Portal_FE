@@ -37,10 +37,10 @@ const FinancialDetails = () => {
     setIsNewValueEntered(true);
     if (e.target) {
       const selectedFile = e.target.files[0];
-      e.target.value = ""; // Reset the input element's value
-      if (selectedFile && selectedFile.size > 5000000) {
+      e.target.value = "";
+      if (selectedFile && selectedFile.size > 10000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "file size should be less than 10mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
@@ -52,9 +52,9 @@ const FinancialDetails = () => {
         setdeleteUploadedFile(true);
       }
     } else {
-      if (e.size > 5000000) {
+      if (e.size > 10000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "file size should be less than 10mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
@@ -73,9 +73,9 @@ const FinancialDetails = () => {
     if (e.target) {
       const selectedFile = e.target.files[0];
       e.target.value = "";
-      if (selectedFile && selectedFile.size > 5000000) {
+      if (selectedFile && selectedFile.size > 10000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "file size should be less than 10mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
@@ -87,9 +87,9 @@ const FinancialDetails = () => {
         setdeleteUploadedFile2(true);
       }
     } else {
-      if (e.size > 5000000) {
+      if (e.size > 10000000) {
         Swal.fire({
-          title: "file size should be less than 5mb",
+          title: "file size should be less than 10mb",
           icon: "error",
           confirmButtonText: "OK",
           showCloseButton: true,
@@ -176,6 +176,13 @@ const FinancialDetails = () => {
       }
     });
   }
+  const redirectToContactTeam = () => {
+    if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
+      navigate("/ContactTeam");
+    } else {
+      navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+    }
+  };
   function next(e) {
     if (isNewValueEntered) {
       Swal.fire({
@@ -188,11 +195,18 @@ const FinancialDetails = () => {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveFinancialDetail(e, () => {
-            if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
-              navigate("/ContactTeam");
-            } else {
-              navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+          saveFinancialDetail().then((response) => {
+            if (response === "success") {
+              redirectToContactTeam();
+            }else {
+              Swal.fire({
+                title: "Error while saving data",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -233,7 +247,8 @@ const FinancialDetails = () => {
     }
     return newErrors;
   };
-  const saveFinancialDetail = (e, callback) => {
+  const saveFinancialDetail = (e) => {
+    return new Promise((resolve) => {
     // e.preventDefault();
     setIsNewValueEntered(false);
     const data = new FormData();
@@ -264,9 +279,13 @@ const FinancialDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -318,9 +337,13 @@ const FinancialDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -341,9 +364,13 @@ const FinancialDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
               }
-            });
+              else
+              {
+                resolve("error");
+              }
+            })
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -354,8 +381,10 @@ const FinancialDetails = () => {
         });
       }
     }
+  });
   };
-  const updateFinancialDetail = (e, callback) => {
+  const updateFinancialDetail= (e) => {
+    return new Promise((resolve) => {
     // e.preventDefault();
     setIsNewValueEntered(false);
     e.preventDefault();
@@ -383,9 +412,13 @@ const FinancialDetails = () => {
             allowEscapeKey: false,
           }).then((result) => {
             if (result.isConfirmed) {
-              callback();
+              resolve("success");
             }
-          });
+            else
+            {
+              resolve("error");
+            }
+          })
         } else {
           Swal.fire({
             title: "Error While Fetching",
@@ -398,6 +431,7 @@ const FinancialDetails = () => {
         }
       });
     }
+  });
   };
   useEffect(() => {
     let newuser = JSON.parse(
