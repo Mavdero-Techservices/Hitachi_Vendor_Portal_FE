@@ -13,6 +13,9 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import Tooltip from "@material-ui/core/Tooltip";
+import InfoIcon from "@mui/icons-material/Info";
+import InputGroup from "react-bootstrap/InputGroup";
 export class Basic extends React.Component {
   constructor(props) {
     super(props);
@@ -53,6 +56,7 @@ export class Basic extends React.Component {
       editStatutory: "",
       commuDetail: false,
       dataEntered: false,
+      phoneNumber: "please enter your 10 digit phone number",
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -163,6 +167,9 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
+                    this.setState({
+                      isFormChanged: false,
+                    });
                   });
                 } else {
                   Swal.fire({
@@ -193,6 +200,9 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
+                    this.setState({
+                      isFormChanged: false,
+                    });
                   });
                 } else {
                   Swal.fire({
@@ -219,6 +229,9 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
+                    this.setState({
+                      isFormChanged: false,
+                    });
                   });
                 } else {
                   Swal.fire({
@@ -238,6 +251,9 @@ export class Basic extends React.Component {
             open: false,
             commu: true,
           });
+          this.setState({
+            isFormChanged: false,
+          });
         }
       });
     } else {
@@ -245,6 +261,9 @@ export class Basic extends React.Component {
       this.setState({
         open: false,
         commu: true,
+      });
+      this.setState({
+        isFormChanged: false,
       });
     }
   }
@@ -302,6 +321,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -337,6 +359,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -378,6 +403,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -413,6 +441,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -438,6 +469,9 @@ export class Basic extends React.Component {
             }
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
+          this.setState({
+            isFormChangedCommunication: false,
+          });
           if (this.state.editStatutory.length <= 0 || "" || undefined) {
             this.props.navigate("/statutory");
           } else {
@@ -448,6 +482,9 @@ export class Basic extends React.Component {
         }
       });
     } else {
+      this.setState({
+        isFormChangedCommunication: false,
+      });
       if (this.state.editStatutory.length <= 0 || "" || undefined) {
         this.props.navigate("/statutory");
         this.fetchData();
@@ -472,6 +509,9 @@ export class Basic extends React.Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
+          isFormChanged: true,
+        });
+        this.setState({
           Address: "",
           Address_2: "",
           City: "",
@@ -495,6 +535,9 @@ export class Basic extends React.Component {
       showCancelButton: true,
     }).then((ClearData) => {
       if (ClearData.isConfirmed) {
+        this.setState({
+          isFormChangedCommunication: true,
+        });
         this.setState({
           financeSpoccontactName: "",
           financeSpocdesignation: "",
@@ -573,6 +616,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -598,6 +647,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -619,6 +674,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -659,6 +720,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -715,6 +782,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -738,6 +811,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -767,6 +846,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -790,6 +875,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -847,6 +938,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -870,6 +967,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -1574,14 +1677,35 @@ export class Basic extends React.Component {
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
-                                  <input
-                                    type="text"
-                                    className="mb-4 VendorInput"
-                                    name="financeSpocphoneNo"
-                                    id="financeSpocphoneNo"
-                                    onChange={this.formValChangeCommunication}
-                                    value={financeSpocphoneNo}
-                                  />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <input
+                                      type="text"
+                                      className="mb-4 VendorInput"
+                                      name="financeSpocphoneNo"
+                                      id="financeSpocphoneNo"
+                                      onChange={this.formValChangeCommunication}
+                                      value={financeSpocphoneNo}
+                                    />
+                                    <Tooltip
+                                      title={this.state.phoneNumber}
+                                      placement="right"
+                                    >
+                                      <div
+                                        style={{
+                                          position: "absolute",
+                                          right: "27.5%",
+                                          top: "6.5%",
+                                        }}
+                                      >
+                                        <InfoIcon />
+                                      </div>
+                                    </Tooltip>
+                                  </div>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email*</label>
@@ -1631,6 +1755,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "22.5%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1680,6 +1818,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "37.8%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1730,6 +1882,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "53.7%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1777,6 +1943,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={phoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "69.5%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>

@@ -121,7 +121,6 @@ const BankDetails = (props) => {
     });
   }
   function cancel(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -134,6 +133,7 @@ const BankDetails = (props) => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
+        setIsNewValueEntered(true);
         setAcName("");
         setBankname("");
         setAcno("");

@@ -528,6 +528,7 @@ export default function Statutory(props) {
         setdeleteform_10fUploadedFile(false);
         setEditform_10f_Doc("");
         setEditPE_Declaration_Doc(" ");
+        setIsNewValueEntered(true);
       }
     });
   }

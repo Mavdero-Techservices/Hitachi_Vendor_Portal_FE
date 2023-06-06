@@ -220,7 +220,6 @@ const ComplianceDetails = () => {
     });
   }
   function cancel(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -233,6 +232,7 @@ const ComplianceDetails = () => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
+        setIsNewValueEntered(true);
         setfileNDA("");
         seteditVlauefileNDA("");
         setdeleteNdaFile(false);

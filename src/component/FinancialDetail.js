@@ -104,7 +104,6 @@ const FinancialDetails = () => {
   }
 
   function deleteFile1(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
@@ -120,11 +119,11 @@ const FinancialDetails = () => {
         setfileFD("");
         setdeleteUploadedFile(false);
         seteditfileFD("");
+        setIsNewValueEntered(true);
       }
     });
   }
   function deleteFile2(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to delete file?",
@@ -140,11 +139,12 @@ const FinancialDetails = () => {
         setfileFD2("");
         setdeleteUploadedFile2(false);
         seteditfileFD2("");
+        setIsNewValueEntered(true);
       }
     });
   }
   function cancel(e) {
-    setIsNewValueEntered(true);
+    
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -167,6 +167,7 @@ const FinancialDetails = () => {
           organisationType: "",
           shareholderName: "",
         });
+        setIsNewValueEntered(true);
         setfileFD("");
         setdeleteUploadedFile(false);
         seteditfileFD("");
