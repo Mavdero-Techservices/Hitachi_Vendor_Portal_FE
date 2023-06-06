@@ -68,13 +68,21 @@ export default function Signup(props) {
       setErrors(formErrors);
     } else {
       apiService.saveUser(user).then((response) => {
-        if (response.data.message === "User already exist") {
+        console.log("response-------------->", response);
+        if (response.data.message === "User Email already exist") {
           Swal.fire({
             title: response.data.message,
             icon: "error",
             confirmButtonText: "OK",
           });
-        } else if (response.data.message === "Registered Successfully") {
+        } else if (response.data.message === "User Phone Number already exist") {
+          Swal.fire({
+            title: response.data.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        else if (response.data.message === "Registered Successfully") {
           Swal.fire({
             title: "Please check your email to proceed",
             icon: "success",
