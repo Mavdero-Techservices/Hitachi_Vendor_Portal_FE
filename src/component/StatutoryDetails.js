@@ -285,6 +285,13 @@ export default function Statutory(props) {
       // });
     }
   }
+  const redirectToComplianceDetail = () => {
+    if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
+      navigate("/ComplianceDetail");
+    } else {
+      navigate(`/ComplianceDetail/${params.userId}`);
+    }
+  };
   function next(e) {
     if (isNewValueEntered) {
       Swal.fire({
@@ -297,27 +304,26 @@ export default function Statutory(props) {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveStatutoryDetail(e, () => {
-            if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-              navigate("/ComplianceDetail");
+          saveStatutoryDetail().then((response) => {
+            if (response === "success") {
+              redirectToComplianceDetail();
             } else {
-              navigate(`/ComplianceDetail/${params.userId}`);
+              Swal.fire({
+                title: "Error while saving data",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-            navigate("/ComplianceDetail");
-          } else {
-            navigate(`/ComplianceDetail/${params.userId}`);
-          }
+          redirectToComplianceDetail();
         }
       });
     } else {
-      if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
-        navigate("/ComplianceDetail");
-      } else {
-        navigate(`/ComplianceDetail/${params.userId}`);
-      }
+      redirectToComplianceDetail();
     }
   }
 
@@ -627,11 +633,11 @@ export default function Statutory(props) {
       } else if (newuser) {
         let finalstatus = "";
         await apiService.signupFindByUserId(newuser).then((res) => {
-          finalstatus = res.data.result.finalStatus;
+          finalstatus = res.data.result?.finalStatus;
         });
         await apiService.getAllCollection(newuser).then((res) => {
           setredirectUrl(res.data);
-          if (res.data.basicInfo[0].submitStatus === "Submitted") {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {
@@ -691,120 +697,54 @@ export default function Statutory(props) {
     })();
     seturl(pdf);
   }, [statRes]);
-  const saveStatutoryDetail = (e, callback) => {
-    // e.preventDefault();
-    setIsNewValueEntered(false);
-    const data = new FormData();
-    data.append("GST_Vendor_Type", GST_type);
-    if (GST_type === "UnRegistered") {
-      data.append("GST_Registration_No", "N/A");
-    } else {
-      data.append("GST_Registration_No", values.GST_No);
-    }
-    if (countryName !== "IN") {
-      data.append("P_A_N_No", "N/A");
-      data.append("PAN_Doc", "");
-    } else {
-      data.append("P_A_N_No", values.PAN_No);
-      data.append("PAN_Doc", PAN_Doc);
-    }
-    if (GST_type === "Registered") {
-      data.append("GST_Doc", GST_Doc);
-      data.append("fileDisclosure", "");
-    } else {
-      data.append("GST_Doc", "");
-      data.append("fileDisclosure", fileDisclosure);
-    }
-    data.append("form_10f_Doc", form_10f_Doc);
-    data.append("TAN_Doc", TAN_Doc);
-    data.append("PE_DeclarationNo", values.PE_DeclarationNo);
-    data.append("PE_Declaration_Doc", PE_Declaration_Doc);
-    data.append("MSME_Doc", MSME_Doc);
-    data.append("Tax_residency_Doc", Tax_residency_Doc);
-    data.append("CIN_No", values.CIN_No);
-    data.append("form_10f", values.form_10f);
-    data.append("MSMED", MSME_status);
-    data.append("MSMED_Number", values.MSME_No);
-    data.append("MSMED_Vendor_Type", MSME);
-    data.append("TAN_No", values.TAN_No);
-    data.append(
-      "userId",
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-    );
-    data.append("Tax_residency_No", values.Tax_residency_No);
-    if (params.userId) {
-      apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-        setstatRes(statRes + 1);
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data Updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              callback();
-            }
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        }
-      });
-    } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      if (newuser) {
-        const statdata = new FormData();
-        statdata.append("GST_Vendor_Type", GST_type);
-        statdata.append("GST_Registration_No", values.GST_No);
-        if (GST_type === "UnRegistered") {
-          statdata.append("GST_Registration_No", "N/A");
-        } else {
-          statdata.append("GST_Registration_No", values.GST_No);
-        }
-        if (countryName !== "IN") {
-          statdata.append("P_A_N_No", values.PAN_No);
-          statdata.append("PAN_Doc", PAN_Doc);
-        } else {
-          statdata.append("P_A_N_No", "N/A");
-          statdata.append("PAN_Doc", "");
-        }
-        if (GST_type === "Registered") {
-          statdata.append("GST_Doc", GST_Doc);
-          statdata.append("fileDisclosure", "");
-        } else {
-          statdata.append("GST_Doc", "");
-          statdata.append("fileDisclosure", fileDisclosure);
-        }
-        statdata.append("form_10f_Doc", form_10f_Doc);
-        statdata.append("TAN_Doc", TAN_Doc);
-        statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
-        statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
-        statdata.append("MSME_Doc", MSME_Doc);
-        statdata.append("Tax_residency_Doc", Tax_residency_Doc);
-        statdata.append("CIN_No", values.CIN_No);
-        statdata.append("form_10f", values.form_10f);
-        statdata.append("MSMED", MSME_status);
-        statdata.append("MSMED_Number", values.MSME_No);
-        statdata.append("MSMED_Vendor_Type", MSME);
-        statdata.append("TAN_No", values.TAN_No);
-        statdata.append("userId", newuser);
-        statdata.append("Tax_residency_No", values.Tax_residency_No);
-        apiService.saveStatutoryDetail(statdata).then((res) => {
-          setstatRes(res.data.status);
+  const saveStatutoryDetail = (e) => {
+    return new Promise((resolve) => {
+      // e.preventDefault();
+      setIsNewValueEntered(false);
+      const data = new FormData();
+      data.append("GST_Vendor_Type", GST_type);
+      if (GST_type === "UnRegistered") {
+        data.append("GST_Registration_No", "N/A");
+      } else {
+        data.append("GST_Registration_No", values.GST_No);
+      }
+      if (countryName !== "IN") {
+        data.append("P_A_N_No", "N/A");
+        data.append("PAN_Doc", "");
+      } else {
+        data.append("P_A_N_No", values.PAN_No);
+        data.append("PAN_Doc", PAN_Doc);
+      }
+      if (GST_type === "Registered") {
+        data.append("GST_Doc", GST_Doc);
+        data.append("fileDisclosure", "");
+      } else {
+        data.append("GST_Doc", "");
+        data.append("fileDisclosure", fileDisclosure);
+      }
+      data.append("form_10f_Doc", form_10f_Doc);
+      data.append("TAN_Doc", TAN_Doc);
+      data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+      data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+      data.append("MSME_Doc", MSME_Doc);
+      data.append("Tax_residency_Doc", Tax_residency_Doc);
+      data.append("CIN_No", values.CIN_No);
+      data.append("form_10f", values.form_10f);
+      data.append("MSMED", MSME_status);
+      data.append("MSMED_Number", values.MSME_No);
+      data.append("MSMED_Vendor_Type", MSME);
+      data.append("TAN_No", values.TAN_No);
+      data.append(
+        "userId",
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      );
+      data.append("Tax_residency_No", values.Tax_residency_No);
+      if (params.userId) {
+        apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+          setstatRes(statRes + 1);
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data saved",
+              title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -812,7 +752,9 @@ export default function Statutory(props) {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
+              } else {
+                resolve("error");
               }
             });
           } else {
@@ -824,14 +766,156 @@ export default function Statutory(props) {
               allowOutsideClick: false,
               allowEscapeKey: false,
             });
+            resolve("error");
           }
         });
       } else {
-        apiService.saveStatutoryDetail(data).then((res) => {
+        let newuser = JSON.parse(
+          window.sessionStorage.getItem("newregUser")
+        )?.newregUser;
+        if (newuser) {
+          const statdata = new FormData();
+          statdata.append("GST_Vendor_Type", GST_type);
+          statdata.append("GST_Registration_No", values.GST_No);
+          if (GST_type === "UnRegistered") {
+            statdata.append("GST_Registration_No", "N/A");
+          } else {
+            statdata.append("GST_Registration_No", values.GST_No);
+          }
+          if (countryName !== "IN") {
+            statdata.append("P_A_N_No", values.PAN_No);
+            statdata.append("PAN_Doc", PAN_Doc);
+          } else {
+            statdata.append("P_A_N_No", "N/A");
+            statdata.append("PAN_Doc", "");
+          }
+          if (GST_type === "Registered") {
+            statdata.append("GST_Doc", GST_Doc);
+            statdata.append("fileDisclosure", "");
+          } else {
+            statdata.append("GST_Doc", "");
+            statdata.append("fileDisclosure", fileDisclosure);
+          }
+          statdata.append("form_10f_Doc", form_10f_Doc);
+          statdata.append("TAN_Doc", TAN_Doc);
+          statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+          statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+          statdata.append("MSME_Doc", MSME_Doc);
+          statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+          statdata.append("CIN_No", values.CIN_No);
+          statdata.append("form_10f", values.form_10f);
+          statdata.append("MSMED", MSME_status);
+          statdata.append("MSMED_Number", values.MSME_No);
+          statdata.append("MSMED_Vendor_Type", MSME);
+          statdata.append("TAN_No", values.TAN_No);
+          statdata.append("userId", newuser);
+          statdata.append("Tax_residency_No", values.Tax_residency_No);
+          apiService.saveStatutoryDetail(statdata).then((res) => {
+            setstatRes(res.data.status);
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
+          });
+        } else {
+          apiService.saveStatutoryDetail(data).then((res) => {
+            setstatRes(res.data.status);
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
+          });
+        }
+      }
+    });
+  };
+  const updateStatutoryDetail = (e) => {
+    return new Promise((resolve) => {
+      e.preventDefault();
+      setIsNewValueEntered(false);
+      const data = new FormData();
+      data.append("GST_Vendor_Type", GST_type);
+      if (GST_type === "UnRegistered") {
+        data.append("GST_Registration_No", "N/A");
+      } else {
+        data.append("GST_Registration_No", values.GST_No);
+      }
+      if (countryName !== "IN") {
+        data.append("P_A_N_No", "N/A");
+        data.append("PAN_Doc", "");
+      } else {
+        data.append("P_A_N_No", values.PAN_No);
+        data.append("PAN_Doc", PAN_Doc);
+      }
+      if (GST_type === "Registered") {
+        data.append("GST_Doc", GST_Doc);
+        data.append("fileDisclosure", "");
+      } else {
+        data.append("GST_Doc", "");
+        data.append("fileDisclosure", fileDisclosure);
+      }
+      data.append("form_10f_Doc", form_10f_Doc);
+      data.append("TAN_Doc", TAN_Doc);
+      data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+      data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+      data.append("MSME_Doc", MSME_Doc);
+      data.append("Tax_residency_Doc", Tax_residency_Doc);
+      data.append("CIN_No", values.CIN_No);
+      data.append("form_10f", values.form_10f);
+      data.append("MSMED", MSME_status);
+      data.append("MSMED_Number", values.MSMED_Number);
+      data.append("MSMED_Vendor_Type", MSME);
+      data.append("TAN_No", values.TAN_No);
+      data.append("userId", params.userId);
+      data.append("Tax_residency_No", values.Tax_residency_No);
+      if (params.userId) {
+        apiService.updateStatutoryDetail(params.userId, data).then((res) => {
           setstatRes(res.data.status);
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data saved",
+              title: "Data Updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -839,7 +923,9 @@ export default function Statutory(props) {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                callback();
+                resolve("success");
+              } else {
+                resolve("error");
               }
             });
           } else {
@@ -854,74 +940,7 @@ export default function Statutory(props) {
           }
         });
       }
-    }
-  };
-  const updateStatutoryDetail = (e, callback) => {
-    e.preventDefault();
-    setIsNewValueEntered(false);
-    const data = new FormData();
-    data.append("GST_Vendor_Type", GST_type);
-    if (GST_type === "UnRegistered") {
-      data.append("GST_Registration_No", "N/A");
-    } else {
-      data.append("GST_Registration_No", values.GST_No);
-    }
-    if (countryName !== "IN") {
-      data.append("P_A_N_No", "N/A");
-      data.append("PAN_Doc", "");
-    } else {
-      data.append("P_A_N_No", values.PAN_No);
-      data.append("PAN_Doc", PAN_Doc);
-    }
-    if (GST_type === "Registered") {
-      data.append("GST_Doc", GST_Doc);
-      data.append("fileDisclosure", "");
-    } else {
-      data.append("GST_Doc", "");
-      data.append("fileDisclosure", fileDisclosure);
-    }
-    data.append("form_10f_Doc", form_10f_Doc);
-    data.append("TAN_Doc", TAN_Doc);
-    data.append("PE_DeclarationNo", values.PE_DeclarationNo);
-    data.append("PE_Declaration_Doc", PE_Declaration_Doc);
-    data.append("MSME_Doc", MSME_Doc);
-    data.append("Tax_residency_Doc", Tax_residency_Doc);
-    data.append("CIN_No", values.CIN_No);
-    data.append("form_10f", values.form_10f);
-    data.append("MSMED", MSME_status);
-    data.append("MSMED_Number", values.MSMED_Number);
-    data.append("MSMED_Vendor_Type", MSME);
-    data.append("TAN_No", values.TAN_No);
-    data.append("userId", params.userId);
-    data.append("Tax_residency_No", values.Tax_residency_No);
-    if (params.userId) {
-      apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-        setstatRes(res.data.status);
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data Updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              callback();
-            }
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          });
-        }
-      });
-    }
+    });
   };
   const deleteFile = (event) => {
     if (
