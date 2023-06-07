@@ -113,6 +113,7 @@ export class Basic extends React.Component {
     }
   }
   togglebutton() {
+    console.log("basic::")
     this.setState({
       open: true,
       commu: false,
@@ -1301,6 +1302,7 @@ export class Basic extends React.Component {
     }
   }
   componentDidMount() {
+    console.log("this.state.image",this.state.image);
     this.fetchData();
   }
   render() {
@@ -1477,7 +1479,7 @@ export class Basic extends React.Component {
                                       <MDBCol>
                                         <div>
                                           <label htmlFor="Post_Code">
-                                            Pincode*
+                                            Pincode/Zipcode*
                                           </label>
                                         </div>
                                         <div>
@@ -1532,9 +1534,7 @@ export class Basic extends React.Component {
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image !== "" ||
-                                  undefined ||
-                                  null ? (
+                                {this.state.image !== "" && this.state.image !== undefined && this.state.image !== null ? (
                                     <div>
                                       <img
                                         className="camera-img"

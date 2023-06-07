@@ -153,6 +153,7 @@ const BankDetails = (props) => {
     }
   };
   function next(e) {
+    console.log("previousAcName::",previousAcName);
     if (
       isNewValueEntered ||
       acName !== previousAcName ||
@@ -208,7 +209,6 @@ const BankDetails = (props) => {
   const saveBankDetail = (e) => {
     return new Promise((resolve) => {
       // e.preventDefault();
-      setIsNewValueEntered(false);
       const data = new FormData();
       data.append(
         "userId",
@@ -235,7 +235,25 @@ const BankDetails = (props) => {
               if (result.isConfirmed) {
                 resolve("success");
                 fetchdata();
-              } else {
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              }else if (result.dismiss === Swal.DismissReason.close) {
+                resolve("success");
+                fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              }
+               else {
                 resolve("error");
               }
             });
@@ -277,7 +295,25 @@ const BankDetails = (props) => {
                 if (result.isConfirmed) {
                   resolve("success");
                   fetchdata();
-                } else {
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }else if (result.dismiss === Swal.DismissReason.close) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }
+                 else {
                   resolve("error");
                 }
               });
@@ -303,7 +339,25 @@ const BankDetails = (props) => {
                 if (result.isConfirmed) {
                   resolve("success");
                   fetchdata();
-                } else {
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }else if (result.dismiss === Swal.DismissReason.close) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }
+                 else {
                   resolve("error");
                 }
               });
@@ -350,7 +404,25 @@ const BankDetails = (props) => {
               if (result.isConfirmed) {
                 resolve("success");
                 fetchdata();
-              } else {
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              }else if (result.dismiss === Swal.DismissReason.close) {
+                resolve("success");
+                fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              }
+               else {
                 resolve("error");
               }
             });
@@ -366,6 +438,7 @@ const BankDetails = (props) => {
     });
   };
   function fetchdata(e) {
+    setIsNewValueEntered(false);
     let newuser = JSON.parse(
       window.sessionStorage.getItem("newregUser")
     )?.newregUser;
@@ -437,6 +510,7 @@ const BankDetails = (props) => {
         });
       setEditBank(false);
     }
+    console.log("previousAcName",previousAcName);
   }
   useEffect(() => {
     let newuser = JSON.parse(
