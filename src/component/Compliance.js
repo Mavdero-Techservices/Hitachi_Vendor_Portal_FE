@@ -220,7 +220,6 @@ const ComplianceDetails = () => {
     });
   }
   function cancel(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -233,6 +232,7 @@ const ComplianceDetails = () => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
+        setIsNewValueEntered(true);
         setfileNDA("");
         seteditVlauefileNDA("");
         setdeleteNdaFile(false);
@@ -251,7 +251,7 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => {});
+    apiService.downloadPdf(user).then((response) => { });
   };
   const redirectToBankdetail = () => {
     if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
@@ -376,9 +376,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => {});
-    apiService.createCocPdf(user).then((res) => {});
-    apiService.createNDAPdf(user).then((res) => {});
+    apiService.createRelatedDisclosurePdf(user).then((res) => { });
+    apiService.createCocPdf(user).then((res) => { });
+    apiService.createNDAPdf(user).then((res) => { });
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -392,60 +392,23 @@ const ComplianceDetails = () => {
       `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
-
-  const saveComplianceDetail  = (e) => {
+  const saveComplianceDetail = (e) => {
     return new Promise((resolve) => {
-    // e.preventDefault();
-    setIsNewValueEntered(false);
-    const data = new FormData();
-    data.append("RPD_Doc", fileRPD);
-    data.append("NDA_Doc", fileNDA);
-    data.append("COC_Doc", fileCOC);
-    data.append(
-      "userId",
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-    );
-    if (params.userId) {
-      apiService.updateComplianceDetail(params.userId, data).then((res) => {
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              resolve("success");
-            }
-            else
-            {
-              resolve("error");
-            }
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      if (newuser) {
-        const compdata = new FormData();
-        compdata.append("RPD_Doc", fileRPD);
-        compdata.append("NDA_Doc", fileNDA);
-        compdata.append("COC_Doc", fileCOC);
-        compdata.append("userId", newuser);
-        apiService.saveComplianceDetail(compdata).then((res) => {
+      // e.preventDefault();
+      setIsNewValueEntered(false);
+      const data = new FormData();
+      data.append("RPD_Doc", fileRPD);
+      data.append("NDA_Doc", fileNDA);
+      data.append("COC_Doc", fileCOC);
+      data.append(
+        "userId",
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      );
+      if (params.userId) {
+        apiService.updateComplianceDetail(params.userId, data).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data saved",
+              title: "Data updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -454,12 +417,10 @@ const ComplianceDetails = () => {
             }).then((result) => {
               if (result.isConfirmed) {
                 resolve("success");
-              }
-              else
-              {
+              } else {
                 resolve("error");
               }
-            })
+            });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -469,10 +430,82 @@ const ComplianceDetails = () => {
           }
         });
       } else {
-        apiService.saveComplianceDetail(data).then((res) => {
+        let newuser = JSON.parse(
+          window.sessionStorage.getItem("newregUser")
+        )?.newregUser;
+        if (newuser) {
+          const compdata = new FormData();
+          compdata.append("RPD_Doc", fileRPD);
+          compdata.append("NDA_Doc", fileNDA);
+          compdata.append("COC_Doc", fileCOC);
+          compdata.append("userId", newuser);
+          apiService.saveComplianceDetail(compdata).then((res) => {
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        } else {
+          apiService.saveComplianceDetail(data).then((res) => {
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      }
+    });
+  };
+
+  const updateComplianceDetail = (e) => {
+    return new Promise((resolve) => {
+      e.preventDefault();
+      const data = new FormData();
+      data.append("RPD_Doc", fileRPD);
+      data.append("NDA_Doc", fileNDA);
+      data.append("COC_Doc", fileCOC);
+      data.append("userId", params.userId);
+      if (params.userId) {
+        apiService.updateComplianceDetail(params.userId, data).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data saved",
+              title: "Data updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -481,12 +514,10 @@ const ComplianceDetails = () => {
             }).then((result) => {
               if (result.isConfirmed) {
                 resolve("success");
-              }
-              else
-              {
+              } else {
                 resolve("error");
               }
-            })
+            });
           } else {
             Swal.fire({
               title: "Error While Fetching",
@@ -496,47 +527,7 @@ const ComplianceDetails = () => {
           }
         });
       }
-    }
-  });
-  };
-
-  const updateComplianceDetail  = (e) => {
-    return new Promise((resolve) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append("RPD_Doc", fileRPD);
-    data.append("NDA_Doc", fileNDA);
-    data.append("COC_Doc", fileCOC);
-    data.append("userId", params.userId);
-    if (params.userId) {
-      apiService.updateComplianceDetail(params.userId, data).then((res) => {
-        if (res.data.status === "success") {
-          Swal.fire({
-            title: "Data updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              resolve("success");
-            }
-            else
-            {
-              resolve("error");
-            }
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    }
-  });
+    });
   };
   return (
     <div className="Compliance-details">
@@ -794,7 +785,7 @@ const ComplianceDetails = () => {
                   Cancel
                 </button>
                 {params.userId &&
-                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                  JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
                   "Admin" ? (
                   <>
                     <button

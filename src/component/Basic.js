@@ -13,6 +13,9 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import Tooltip from "@material-ui/core/Tooltip";
+import InfoIcon from "@mui/icons-material/Info";
+import InputGroup from "react-bootstrap/InputGroup";
 export class Basic extends React.Component {
   constructor(props) {
     super(props);
@@ -53,6 +56,7 @@ export class Basic extends React.Component {
       editStatutory: "",
       commuDetail: false,
       dataEntered: false,
+      phoneNumber: "please enter your 10 digit phone number",
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -109,6 +113,7 @@ export class Basic extends React.Component {
     }
   }
   togglebutton() {
+    console.log("basic::")
     this.setState({
       open: true,
       commu: false,
@@ -123,7 +128,7 @@ export class Basic extends React.Component {
   };
 
   togglebuttonCommu() {
-        if (this.state.isFormChanged) {
+    if (this.state.isFormChanged) {
       Swal.fire({
         title: "Do you want to save?",
         icon: "question",
@@ -135,7 +140,8 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const basicInfo = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId,
             Address: this.state.Address,
             Address_2: this.state.Address_2,
             City: this.state.City,
@@ -161,6 +167,9 @@ export class Basic extends React.Component {
                     this.setState({
                       open: false,
                       commu: true,
+                    });
+                    this.setState({
+                      isFormChanged: false,
                     });
                   });
                 } else {
@@ -192,6 +201,9 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
+                    this.setState({
+                      isFormChanged: false,
+                    });
                   });
                 } else {
                   Swal.fire({
@@ -218,6 +230,9 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
+                    this.setState({
+                      isFormChanged: false,
+                    });
                   });
                 } else {
                   Swal.fire({
@@ -237,6 +252,9 @@ export class Basic extends React.Component {
             open: false,
             commu: true,
           });
+          this.setState({
+            isFormChanged: false,
+          });
         }
       });
     } else {
@@ -245,9 +263,12 @@ export class Basic extends React.Component {
         open: false,
         commu: true,
       });
+      this.setState({
+        isFormChanged: false,
+      });
     }
   }
-  next = (e) => { 
+  next = (e) => {
     if (this.state.isFormChangedCommunication) {
       Swal.fire({
         title: "Do you want to save?",
@@ -260,7 +281,8 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const communicationDetails = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId,
             financeSpoccontactName: this.state.financeSpoccontactName,
             financeSpocdesignation: this.state.financeSpocdesignation,
             financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -300,6 +322,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -335,6 +360,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -376,6 +404,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -411,6 +442,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        isFormChangedCommunication: false,
+                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -436,6 +470,9 @@ export class Basic extends React.Component {
             }
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
+          this.setState({
+            isFormChangedCommunication: false,
+          });
           if (this.state.editStatutory.length <= 0 || "" || undefined) {
             this.props.navigate("/statutory");
           } else {
@@ -446,6 +483,9 @@ export class Basic extends React.Component {
         }
       });
     } else {
+      this.setState({
+        isFormChangedCommunication: false,
+      });
       if (this.state.editStatutory.length <= 0 || "" || undefined) {
         this.props.navigate("/statutory");
         this.fetchData();
@@ -470,6 +510,9 @@ export class Basic extends React.Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
+          isFormChanged: true,
+        });
+        this.setState({
           Address: "",
           Address_2: "",
           City: "",
@@ -493,6 +536,9 @@ export class Basic extends React.Component {
       showCancelButton: true,
     }).then((ClearData) => {
       if (ClearData.isConfirmed) {
+        this.setState({
+          isFormChangedCommunication: true,
+        });
         this.setState({
           financeSpoccontactName: "",
           financeSpocdesignation: "",
@@ -571,6 +617,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -596,6 +648,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -617,6 +675,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -657,6 +721,12 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.setState({
+                  isFormChanged: false,
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -713,6 +783,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -736,6 +812,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -765,6 +847,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -788,6 +876,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -845,6 +939,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -868,6 +968,12 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.setState({
+                    isFormChangedCommunication: false,
+                  });
+                }
               });
             } else {
               Swal.fire({
@@ -895,10 +1001,9 @@ export class Basic extends React.Component {
     });
   };
   handleFileRead = async (event) => {
-
     const file = event.target.files[0];
     // const base64 = await this.convertBase64(file);
-    event.target.value = '';
+    event.target.value = "";
     if (file.size > 50000) {
       Swal.fire({
         title: "file size should be less than 50 KB",
@@ -908,8 +1013,7 @@ export class Basic extends React.Component {
         allowOutsideClick: false,
         allowEscapeKey: false,
       });
-    }
-    else {
+    } else {
       const reader = new FileReader();
       reader.onload = this.onreaderLoad.bind(this);
       reader.readAsBinaryString(file);
@@ -923,10 +1027,11 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => {});
+    apiService.updateVendordetail(userId, data).then((response) => { });
   }
   fetchData() {
-    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId;
+    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
+      ?.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result?.role });
       this.setState({ companyName: res.data.result?.companyName });
@@ -938,7 +1043,8 @@ export class Basic extends React.Component {
     )?.newregUser;
     if (this.props.params.newReg === "newReg") {
       this.setState({
-        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result?.companyName,
+        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
+          ?.companyName,
       });
       this.setState({
         approval: JSON.parse(window.sessionStorage.getItem("jwt")).result?.role,
@@ -1196,6 +1302,7 @@ export class Basic extends React.Component {
     }
   }
   componentDidMount() {
+    console.log("this.state.image", this.state.image);
     this.fetchData();
   }
   render() {
@@ -1314,7 +1421,7 @@ export class Basic extends React.Component {
                                             value={Address}
                                             disabled={
                                               this.state.setStyle ===
-                                              "notEditable"
+                                                "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -1360,7 +1467,7 @@ export class Basic extends React.Component {
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
-                                              "notEditable"
+                                                "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -1372,7 +1479,7 @@ export class Basic extends React.Component {
                                       <MDBCol>
                                         <div>
                                           <label htmlFor="Post_Code">
-                                            Pincode*
+                                            Pincode/Zipcode*
                                           </label>
                                         </div>
                                         <div>
@@ -1427,9 +1534,7 @@ export class Basic extends React.Component {
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image !== "" ||
-                                  undefined ||
-                                  null ? (
+                                  {this.state.image !== "" && this.state.image !== undefined && this.state.image !== null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -1486,8 +1591,8 @@ export class Basic extends React.Component {
                                   Cancel
                                 </button>
                                 {this.props.params.userId &&
-                                JSON.parse(window.sessionStorage.getItem("jwt"))
-                                  .result?.role === "Admin" ? (
+                                  JSON.parse(window.sessionStorage.getItem("jwt"))
+                                    .result?.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -1572,14 +1677,35 @@ export class Basic extends React.Component {
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
-                                  <input
-                                    type="text"
-                                    className="mb-4 VendorInput"
-                                    name="financeSpocphoneNo"
-                                    id="financeSpocphoneNo"
-                                    onChange={this.formValChangeCommunication}
-                                    value={financeSpocphoneNo}
-                                  />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <input
+                                      type="text"
+                                      className="mb-4 VendorInput"
+                                      name="financeSpocphoneNo"
+                                      id="financeSpocphoneNo"
+                                      onChange={this.formValChangeCommunication}
+                                      value={financeSpocphoneNo}
+                                    />
+                                    <Tooltip
+                                      title={this.state.phoneNumber}
+                                      placement="right"
+                                    >
+                                      <div
+                                        style={{
+                                          position: "absolute",
+                                          right: "27.5%",
+                                          top: "6.5%",
+                                        }}
+                                      >
+                                        <InfoIcon />
+                                      </div>
+                                    </Tooltip>
+                                  </div>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email*</label>
@@ -1629,6 +1755,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "22.5%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1678,6 +1818,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "37.8%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1728,6 +1882,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpocphoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "53.7%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1775,6 +1943,20 @@ export class Basic extends React.Component {
                                     onChange={this.formValChangeCommunication}
                                     value={phoneNo}
                                   />
+                                  <Tooltip
+                                    title={this.state.phoneNumber}
+                                    placement="right"
+                                  >
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        right: "27.5%",
+                                        top: "69.5%",
+                                      }}
+                                    >
+                                      <InfoIcon />
+                                    </div>
+                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1821,9 +2003,9 @@ export class Basic extends React.Component {
                                       Cancel
                                     </button>
                                     {this.props.params.userId &&
-                                    JSON.parse(
-                                      window.sessionStorage.getItem("jwt")
-                                    ).result?.role === "Admin" ? (
+                                      JSON.parse(
+                                        window.sessionStorage.getItem("jwt")
+                                      ).result?.role === "Admin" ? (
                                       <>
                                         <button
                                           type="button"

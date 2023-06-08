@@ -121,7 +121,6 @@ const BankDetails = (props) => {
     });
   }
   function cancel(e) {
-    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -134,6 +133,7 @@ const BankDetails = (props) => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
+        setIsNewValueEntered(true);
         setAcName("");
         setBankname("");
         setAcno("");
@@ -147,14 +147,13 @@ const BankDetails = (props) => {
   }
   const redirectToFinancialDetail = () => {
     if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
-            navigate("/FinancialDetail");
-          } else {
-            navigate(
-              `/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`
-            );
-          }
+      navigate("/FinancialDetail");
+    } else {
+      navigate(`/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`);
+    }
   };
   function next(e) {
+    console.log("previousAcName::", previousAcName);
     if (
       isNewValueEntered ||
       acName !== previousAcName ||
@@ -207,71 +206,26 @@ const BankDetails = (props) => {
     }
   }
 
-  const saveBankDetail  = (e) => {
+  const saveBankDetail = (e) => {
     return new Promise((resolve) => {
-    // e.preventDefault();
-    setIsNewValueEntered(false);
-    const data = new FormData();
-    data.append(
-      "userId",
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-    );
-    data.append("Account_Holder_Name", acName);
-    data.append("Bank_Name", bankname);
-    data.append("Account_No", acno);
-    data.append("IFSC_Code", ifsc);
-    data.append("MICRcode", micr);
-    data.append("Bank_Address", branchAdd);
-    data.append("bankdetailDoc", fileBank);
-    if (params.userId) {
-      apiService.updateBankDetail(params.userId, data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              resolve("success");
-              fetchdata();
-            }
-            else
-            {
-              resolve("error");
-            }
-          })
-          // .then((res) => {
-          //   navigate(`/FinancialDetail/${params.userId}`);
-          // });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    } else {
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      if (newuser) {
-        const bankdata = new FormData();
-        bankdata.append("userId", newuser);
-        bankdata.append("Account_Holder_Name", acName);
-        bankdata.append("Bank_Name", bankname);
-        bankdata.append("Account_No", acno);
-        bankdata.append("IFSC_Code", ifsc);
-        bankdata.append("MICRcode", micr);
-        bankdata.append("Bank_Address", branchAdd);
-        bankdata.append("bankdetailDoc", fileBank);
-        apiService.savebankdetail(bankdata).then((response) => {
+      // e.preventDefault();
+      const data = new FormData();
+      data.append(
+        "userId",
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      );
+      data.append("Account_Holder_Name", acName);
+      data.append("Bank_Name", bankname);
+      data.append("Account_No", acno);
+      data.append("IFSC_Code", ifsc);
+      data.append("MICRcode", micr);
+      data.append("Bank_Address", branchAdd);
+      data.append("bankdetailDoc", fileBank);
+      if (params.userId) {
+        apiService.updateBankDetail(params.userId, data).then((response) => {
           if (response) {
             Swal.fire({
-              title: "Data saved",
+              title: "Data updated",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -281,42 +235,30 @@ const BankDetails = (props) => {
               if (result.isConfirmed) {
                 resolve("success");
                 fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              } else if (result.dismiss === Swal.DismissReason.close) {
+                resolve("success");
+                fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
               }
-              else
-              {
+              else {
                 resolve("error");
               }
-            })
-          } else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
             });
-          }
-        });
-      } else {
-        apiService.savebankdetail(data).then((response) => {
-          if (response) {
-            Swal.fire({
-              title: "Data saved",
-              icon: "success",
-              confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                resolve("success");
-                fetchdata();
-              }
-              else
-              {
-                resolve("error");
-              }
-            })
             // .then((res) => {
-            //   navigate(`/FinancialDetail`);
+            //   navigate(`/FinancialDetail/${params.userId}`);
             // });
           } else {
             Swal.fire({
@@ -326,56 +268,177 @@ const BankDetails = (props) => {
             });
           }
         });
+      } else {
+        let newuser = JSON.parse(
+          window.sessionStorage.getItem("newregUser")
+        )?.newregUser;
+        if (newuser) {
+          const bankdata = new FormData();
+          bankdata.append("userId", newuser);
+          bankdata.append("Account_Holder_Name", acName);
+          bankdata.append("Bank_Name", bankname);
+          bankdata.append("Account_No", acno);
+          bankdata.append("IFSC_Code", ifsc);
+          bankdata.append("MICRcode", micr);
+          bankdata.append("Bank_Address", branchAdd);
+          bankdata.append("bankdetailDoc", fileBank);
+          apiService.savebankdetail(bankdata).then((response) => {
+            if (response) {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                } else if (result.dismiss === Swal.DismissReason.close) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }
+                else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        } else {
+          apiService.savebankdetail(data).then((response) => {
+            if (response) {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                } else if (result.dismiss === Swal.DismissReason.close) {
+                  resolve("success");
+                  fetchdata();
+                  setIsNewValueEntered(false);
+                  setPreviousAcName(acName);
+                  setPreviousbankname(bankname);
+                  setPreviousacno(acno);
+                  setPreviousifsc(ifsc);
+                  setPreviousmicr(micr);
+                  setPrevioubranchAdd(branchAdd);
+                }
+                else {
+                  resolve("error");
+                }
+              });
+              // .then((res) => {
+              //   navigate(`/FinancialDetail`);
+              // });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
       }
-    }
-  });
+    });
   };
 
   const updatehandle = (event) => {
     return new Promise((resolve) => {
-    event.preventDefault();
-    setIsNewValueEntered(false);
-    const data = new FormData();
-    data.append("userId", params.userId);
-    data.append("Account_Holder_Name", acName);
-    data.append("Bank_Name", bankname);
-    data.append("Account_No", acno);
-    data.append("IFSC_Code", ifsc);
-    data.append("MICRcode", micr);
-    data.append("Bank_Address", branchAdd);
-    data.append("bankdetailDoc", fileBank);
-    if (params.userId) {
-      apiService.updateBankDetail(params.userId, data).then((response) => {
-        if (response) {
-          Swal.fire({
-            title: "Data updated",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCloseButton: true,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              resolve("success");
-              fetchdata();
-            }
-            else
-            {
-              resolve("error");
-            }
-          })
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      });
-    }
-  });
+      event.preventDefault();
+      setIsNewValueEntered(false);
+      const data = new FormData();
+      data.append("userId", params.userId);
+      data.append("Account_Holder_Name", acName);
+      data.append("Bank_Name", bankname);
+      data.append("Account_No", acno);
+      data.append("IFSC_Code", ifsc);
+      data.append("MICRcode", micr);
+      data.append("Bank_Address", branchAdd);
+      data.append("bankdetailDoc", fileBank);
+      if (params.userId) {
+        apiService.updateBankDetail(params.userId, data).then((response) => {
+          if (response) {
+            Swal.fire({
+              title: "Data updated",
+              icon: "success",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                resolve("success");
+                fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              } else if (result.dismiss === Swal.DismissReason.close) {
+                resolve("success");
+                fetchdata();
+                setIsNewValueEntered(false);
+                setPreviousAcName(acName);
+                setPreviousbankname(bankname);
+                setPreviousacno(acno);
+                setPreviousifsc(ifsc);
+                setPreviousmicr(micr);
+                setPrevioubranchAdd(branchAdd);
+              }
+              else {
+                resolve("error");
+              }
+            });
+          } else {
+            Swal.fire({
+              title: "Error While Fetching",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        });
+      }
+    });
   };
   function fetchdata(e) {
+    setIsNewValueEntered(false);
     let newuser = JSON.parse(
       window.sessionStorage.getItem("newregUser")
     )?.newregUser;
@@ -447,6 +510,7 @@ const BankDetails = (props) => {
         });
       setEditBank(false);
     }
+    console.log("previousAcName", previousAcName);
   }
   useEffect(() => {
     let newuser = JSON.parse(
@@ -657,8 +721,8 @@ const BankDetails = (props) => {
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12 ">
                 {fileBank !== "" &&
-                fileBank !== undefined &&
-                fileBank !== null ? (
+                  fileBank !== undefined &&
+                  fileBank !== null ? (
                   <button
                     type="button"
                     onClick={deleteFile}
@@ -694,7 +758,7 @@ const BankDetails = (props) => {
                 Cancel
               </button>
               {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
                 "Admin" ? (
                 <>
                   <button
