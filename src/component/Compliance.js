@@ -220,6 +220,7 @@ const ComplianceDetails = () => {
     });
   }
   function cancel(e) {
+    setIsNewValueEntered(true);
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -232,7 +233,6 @@ const ComplianceDetails = () => {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        setIsNewValueEntered(true);
         setfileNDA("");
         seteditVlauefileNDA("");
         setdeleteNdaFile(false);
@@ -251,14 +251,7 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => { });
-  };
-  const redirectToBankdetail = () => {
-    if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
-      navigate("/bank");
-    } else {
-      navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
-    }
+    apiService.downloadPdf(user).then((response) => {});
   };
   function next(e) {
     if (isNewValueEntered) {
@@ -272,18 +265,11 @@ const ComplianceDetails = () => {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveComplianceDetail().then((response) => {
-            if (response === "success") {
-              redirectToBankdetail();
+          saveComplianceDetail(e, () => {
+            if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+              navigate("/bank");
             } else {
-              Swal.fire({
-                title: "Error while saving data",
-                icon: "error",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              });
+              navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -376,9 +362,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => { });
-    apiService.createCocPdf(user).then((res) => { });
-    apiService.createNDAPdf(user).then((res) => { });
+    apiService.createRelatedDisclosurePdf(user).then((res) => {});
+    apiService.createCocPdf(user).then((res) => {});
+    apiService.createNDAPdf(user).then((res) => {});
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -392,23 +378,55 @@ const ComplianceDetails = () => {
       `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
-  const saveComplianceDetail = (e) => {
-    return new Promise((resolve) => {
-      // e.preventDefault();
-      setIsNewValueEntered(false);
-      const data = new FormData();
-      data.append("RPD_Doc", fileRPD);
-      data.append("NDA_Doc", fileNDA);
-      data.append("COC_Doc", fileCOC);
-      data.append(
-        "userId",
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
-      );
-      if (params.userId) {
-        apiService.updateComplianceDetail(params.userId, data).then((res) => {
+
+  const saveComplianceDetail = (e, callback) => {
+    // e.preventDefault();
+    setIsNewValueEntered(false);
+    const data = new FormData();
+    data.append("RPD_Doc", fileRPD);
+    data.append("NDA_Doc", fileNDA);
+    data.append("COC_Doc", fileCOC);
+    data.append(
+      "userId",
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    );
+    if (params.userId) {
+      apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      let newuser = JSON.parse(
+        window.sessionStorage.getItem("newregUser")
+      )?.newregUser;
+      if (newuser) {
+        const compdata = new FormData();
+        compdata.append("RPD_Doc", fileRPD);
+        compdata.append("NDA_Doc", fileNDA);
+        compdata.append("COC_Doc", fileCOC);
+        compdata.append("userId", newuser);
+        apiService.saveComplianceDetail(compdata).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data updated",
+              title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -416,9 +434,7 @@ const ComplianceDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                resolve("success");
-              } else {
-                resolve("error");
+                callback();
               }
             });
           } else {
@@ -430,82 +446,10 @@ const ComplianceDetails = () => {
           }
         });
       } else {
-        let newuser = JSON.parse(
-          window.sessionStorage.getItem("newregUser")
-        )?.newregUser;
-        if (newuser) {
-          const compdata = new FormData();
-          compdata.append("RPD_Doc", fileRPD);
-          compdata.append("NDA_Doc", fileNDA);
-          compdata.append("COC_Doc", fileCOC);
-          compdata.append("userId", newuser);
-          apiService.saveComplianceDetail(compdata).then((res) => {
-            if (res.data.status === "success") {
-              Swal.fire({
-                title: "Data saved",
-                icon: "success",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  resolve("success");
-                } else {
-                  resolve("error");
-                }
-              });
-            } else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        } else {
-          apiService.saveComplianceDetail(data).then((res) => {
-            if (res.data.status === "success") {
-              Swal.fire({
-                title: "Data saved",
-                icon: "success",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  resolve("success");
-                } else {
-                  resolve("error");
-                }
-              });
-            } else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        }
-      }
-    });
-  };
-
-  const updateComplianceDetail = (e) => {
-    return new Promise((resolve) => {
-      e.preventDefault();
-      const data = new FormData();
-      data.append("RPD_Doc", fileRPD);
-      data.append("NDA_Doc", fileNDA);
-      data.append("COC_Doc", fileCOC);
-      data.append("userId", params.userId);
-      if (params.userId) {
-        apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        apiService.saveComplianceDetail(data).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
-              title: "Data updated",
+              title: "Data saved",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
@@ -513,9 +457,7 @@ const ComplianceDetails = () => {
               allowEscapeKey: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                resolve("success");
-              } else {
-                resolve("error");
+                callback();
               }
             });
           } else {
@@ -527,7 +469,40 @@ const ComplianceDetails = () => {
           }
         });
       }
-    });
+    }
+  };
+
+  const updateComplianceDetail = (e, callback) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("RPD_Doc", fileRPD);
+    data.append("NDA_Doc", fileNDA);
+    data.append("COC_Doc", fileCOC);
+    data.append("userId", params.userId);
+    if (params.userId) {
+      apiService.updateComplianceDetail(params.userId, data).then((res) => {
+        if (res.data.status === "success") {
+          Swal.fire({
+            title: "Data updated",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              callback();
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Error While Fetching",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
   };
   return (
     <div className="Compliance-details">
@@ -785,7 +760,7 @@ const ComplianceDetails = () => {
                   Cancel
                 </button>
                 {params.userId &&
-                  JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
                   "Admin" ? (
                   <>
                     <button

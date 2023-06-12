@@ -13,9 +13,6 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import Tooltip from "@material-ui/core/Tooltip";
-import InfoIcon from "@mui/icons-material/Info";
-import InputGroup from "react-bootstrap/InputGroup";
 export class Basic extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +53,6 @@ export class Basic extends React.Component {
       editStatutory: "",
       commuDetail: false,
       dataEntered: false,
-      phoneNumber: "please enter your 10 digit phone number",
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -113,7 +109,6 @@ export class Basic extends React.Component {
     }
   }
   togglebutton() {
-    console.log("basic::")
     this.setState({
       open: true,
       commu: false,
@@ -128,7 +123,24 @@ export class Basic extends React.Component {
   };
 
   togglebuttonCommu() {
-    if (this.state.isFormChanged) {
+    const isValueChanged =
+      (this.state.Address !== this.state.previousAddress &&
+        this.state.Address !== "") ||
+      (this.state.Address_2 !== this.state.previousAddress_2 &&
+        this.state.Address_2 !== "") ||
+      (this.state.City !== this.state.previousCity && this.state.City !== "") ||
+      (this.state.state !== this.state.previousState &&
+        this.state.state !== "") ||
+      (this.state.Country_Region_Code !==
+        this.state.previousCountry_Region_Code &&
+        this.state.Country_Region_Code !== "") ||
+      (this.state.Post_Code !== this.state.previousPost_Code &&
+        this.state.Post_Code !== "") ||
+      (this.state.companyName !== this.state.previousCompanyName &&
+        this.state.companyName !== "") ||
+      (this.state.image !== this.state.previousImage &&
+        this.state.image !== "");
+    if (isValueChanged) {
       Swal.fire({
         title: "Do you want to save?",
         icon: "question",
@@ -140,8 +152,7 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const basicInfo = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             Address: this.state.Address,
             Address_2: this.state.Address_2,
             City: this.state.City,
@@ -157,7 +168,7 @@ export class Basic extends React.Component {
               .then((response) => {
                 if (response) {
                   Swal.fire({
-                    title: "Data Updated",
+                    title: "Data Updated5",
                     icon: "success",
                     confirmButtonText: "OK",
                     showCloseButton: true,
@@ -167,9 +178,6 @@ export class Basic extends React.Component {
                     this.setState({
                       open: false,
                       commu: true,
-                    });
-                    this.setState({
-                      isFormChanged: false,
                     });
                   });
                 } else {
@@ -201,9 +209,6 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
-                    this.setState({
-                      isFormChanged: false,
-                    });
                   });
                 } else {
                   Swal.fire({
@@ -230,9 +235,6 @@ export class Basic extends React.Component {
                       open: false,
                       commu: true,
                     });
-                    this.setState({
-                      isFormChanged: false,
-                    });
                   });
                 } else {
                   Swal.fire({
@@ -252,9 +254,6 @@ export class Basic extends React.Component {
             open: false,
             commu: true,
           });
-          this.setState({
-            isFormChanged: false,
-          });
         }
       });
     } else {
@@ -263,13 +262,69 @@ export class Basic extends React.Component {
         open: false,
         commu: true,
       });
-      this.setState({
-        isFormChanged: false,
-      });
     }
   }
   next = (e) => {
-    if (this.state.isFormChangedCommunication) {
+    const isValueChanged =
+      (this.state.financeSpoccontactName !==
+        this.state.previousfinanceSpoccontactName &&
+        this.state.financeSpoccontactName !== "") ||
+      (this.state.financeSpocdesignation !==
+        this.state.previousfinanceSpocdesignation &&
+        this.state.financeSpocdesignation !== "") ||
+      (this.state.financeSpocphoneNo !==
+        this.state.previousfinanceSpocphoneNo &&
+        this.state.financeSpocphoneNo !== "") ||
+      (this.state.financeSpocemail !== this.state.previousfinanceSpocemail &&
+        this.state.financeSpocemail !== "") ||
+      (this.state.operationSpoccontactName !==
+        this.state.previousoperationSpoccontactName &&
+        this.state.operationSpoccontactName !== "") ||
+      (this.state.operationSpocdesignation !==
+        this.state.previousoperationSpocdesignation &&
+        this.state.operationSpocdesignation !== "") ||
+      (this.state.operationSpocphoneNo !==
+        this.state.previousoperationSpocphoneNo &&
+        this.state.operationSpocphoneNo !== "") ||
+      (this.state.operationSpocemail !==
+        this.state.previousoperationSpocemail &&
+        this.state.operationSpocemail !== "") ||
+      (this.state.collectionSpoccontactName !==
+        this.state.previouscollectionSpoccontactName &&
+        this.state.collectionSpoccontactName !== "") ||
+      (this.state.collectionSpocdesignation !==
+        this.state.previouscollectionSpocdesignation &&
+        this.state.collectionSpocdesignation !== "") ||
+      (this.state.collectionSpocphoneNo !==
+        this.state.previouscollectionSpocphoneNo &&
+        this.state.collectionSpocphoneNo !== "") ||
+      (this.state.collectionSpocemail !==
+        this.state.previouscollectionSpocemail &&
+        this.state.collectionSpocemail !== "") ||
+      (this.state.managementSpoccontactName !==
+        this.state.previousmanagementSpoccontactName &&
+        this.state.managementSpoccontactName !== "") ||
+      (this.state.managementSpocdesignation !==
+        this.state.previousmanagementSpocdesignation &&
+        this.state.managementSpocdesignation !== "") ||
+      (this.state.managementSpocphoneNo !==
+        this.state.previousmanagementSpocphoneNo &&
+        this.state.managementSpocphoneNo !== "") ||
+      (this.state.managementSpocemail !==
+        this.state.previousmanagementSpocemail &&
+        this.state.managementSpocemail !== "") ||
+      (this.state.contactName !== this.state.previouscontactName &&
+        this.state.contactName !== "") ||
+      (this.state.designation !== this.state.previousdesignation &&
+        this.state.designation !== "") ||
+      (this.state.phoneNo !== this.state.previousphoneNo &&
+        this.state.phoneNo !== "") ||
+      (this.state.email !== this.state.previousemail &&
+        this.state.email !== "") ||
+      (this.state.mastervendor_email !==
+        this.state.previousmastervendor_email &&
+        this.state.mastervendor_email !== "");
+    if (isValueChanged) {
       Swal.fire({
         title: "Do you want to save?",
         icon: "question",
@@ -281,8 +336,7 @@ export class Basic extends React.Component {
       }).then((result) => {
         if (result.isConfirmed) {
           const communicationDetails = {
-            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId,
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             financeSpoccontactName: this.state.financeSpoccontactName,
             financeSpocdesignation: this.state.financeSpocdesignation,
             financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -316,15 +370,12 @@ export class Basic extends React.Component {
                   this.fetchData();
                   if (response) {
                     Swal.fire({
-                      title: "Data Updated",
+                      title: "Data Updated6",
                       icon: "success",
                       confirmButtonText: "OK",
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
-                      this.setState({
-                        isFormChangedCommunication: false,
-                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -360,9 +411,6 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
-                      this.setState({
-                        isFormChangedCommunication: false,
-                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -404,9 +452,6 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
-                      this.setState({
-                        isFormChangedCommunication: false,
-                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -442,9 +487,6 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
-                      this.setState({
-                        isFormChangedCommunication: false,
-                      });
                       if (
                         this.state.editStatutory.length <= 0 ||
                         "" ||
@@ -470,9 +512,6 @@ export class Basic extends React.Component {
             }
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          this.setState({
-            isFormChangedCommunication: false,
-          });
           if (this.state.editStatutory.length <= 0 || "" || undefined) {
             this.props.navigate("/statutory");
           } else {
@@ -483,9 +522,6 @@ export class Basic extends React.Component {
         }
       });
     } else {
-      this.setState({
-        isFormChangedCommunication: false,
-      });
       if (this.state.editStatutory.length <= 0 || "" || undefined) {
         this.props.navigate("/statutory");
         this.fetchData();
@@ -510,9 +546,6 @@ export class Basic extends React.Component {
     }).then((result) => {
       if (result.isConfirmed) {
         this.setState({
-          isFormChanged: true,
-        });
-        this.setState({
           Address: "",
           Address_2: "",
           City: "",
@@ -536,9 +569,6 @@ export class Basic extends React.Component {
       showCancelButton: true,
     }).then((ClearData) => {
       if (ClearData.isConfirmed) {
-        this.setState({
-          isFormChangedCommunication: true,
-        });
         this.setState({
           financeSpoccontactName: "",
           financeSpocdesignation: "",
@@ -571,23 +601,12 @@ export class Basic extends React.Component {
     this.setState({ state: "" });
     this.setState({ City: "" });
     this.setState({ Post_Code: "" });
-    this.setState({ isFormChanged: true });
   }
   formValChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     this.setState({
       [name]: value,
-      isFormChanged: true,
-    });
-    this.setState({ [e.target.id]: e.target.value });
-  };
-  formValChangeCommunication = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-      isFormChangedCommunication: true,
     });
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -612,17 +631,11 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated",
+              title: "Data Updated1",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.setState({
-                  isFormChanged: false,
-                });
-              }
             });
           } else {
             Swal.fire({
@@ -648,12 +661,6 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.setState({
-                  isFormChanged: false,
-                });
-              }
             });
           } else {
             Swal.fire({
@@ -675,12 +682,6 @@ export class Basic extends React.Component {
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.setState({
-                  isFormChanged: false,
-                });
-              }
             });
           } else {
             Swal.fire({
@@ -716,17 +717,11 @@ export class Basic extends React.Component {
           if (response) {
             this.fetchData();
             Swal.fire({
-              title: "Data Updated",
+              title: "Data Updated2",
               icon: "success",
               confirmButtonText: "OK",
               showCloseButton: true,
               allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.setState({
-                  isFormChanged: false,
-                });
-              }
             });
           } else {
             Swal.fire({
@@ -778,17 +773,11 @@ export class Basic extends React.Component {
             this.fetchData();
             if (response) {
               Swal.fire({
-                title: "Data Updated",
+                title: "Data Updated3",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -812,12 +801,6 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -847,12 +830,6 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -876,12 +853,6 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -934,17 +905,11 @@ export class Basic extends React.Component {
             if (response) {
               this.fetchData();
               Swal.fire({
-                title: "Data Updated",
+                title: "Data Updated4",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -968,12 +933,6 @@ export class Basic extends React.Component {
                 confirmButtonText: "OK",
                 showCloseButton: true,
                 allowOutsideClick: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.setState({
-                    isFormChangedCommunication: false,
-                  });
-                }
               });
             } else {
               Swal.fire({
@@ -1001,9 +960,10 @@ export class Basic extends React.Component {
     });
   };
   handleFileRead = async (event) => {
+
     const file = event.target.files[0];
     // const base64 = await this.convertBase64(file);
-    event.target.value = "";
+    event.target.value = '';
     if (file.size > 50000) {
       Swal.fire({
         title: "file size should be less than 50 KB",
@@ -1013,7 +973,8 @@ export class Basic extends React.Component {
         allowOutsideClick: false,
         allowEscapeKey: false,
       });
-    } else {
+    }
+    else {
       const reader = new FileReader();
       reader.onload = this.onreaderLoad.bind(this);
       reader.readAsBinaryString(file);
@@ -1027,11 +988,10 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => { });
+    apiService.updateVendordetail(userId, data).then((response) => {});
   }
   fetchData() {
-    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
-      ?.userId;
+    let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId;
     apiService.signupFindByUserId(userid).then((res) => {
       this.setState({ approval: res.data.result?.role });
       this.setState({ companyName: res.data.result?.companyName });
@@ -1043,8 +1003,7 @@ export class Basic extends React.Component {
     )?.newregUser;
     if (this.props.params.newReg === "newReg") {
       this.setState({
-        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
-          ?.companyName,
+        companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result?.companyName,
       });
       this.setState({
         approval: JSON.parse(window.sessionStorage.getItem("jwt")).result?.role,
@@ -1067,11 +1026,11 @@ export class Basic extends React.Component {
       this.edit = true;
       let finalstatus = "";
       apiService.signupFindByUserId(this.props.params.userId).then((res) => {
-        finalstatus = res.data.result?.finalStatus;
+        finalstatus = res.data.result.finalStatus;
         console.log("finalstatus", finalstatus);
       });
       apiService.getAllCollection(this.props.params.userId).then((res) => {
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+        if (res.data.basicInfo[0].submitStatus === "Submitted") {
           this.setState({ setStyle: "notEditable" });
         }
         this.setState({
@@ -1302,7 +1261,6 @@ export class Basic extends React.Component {
     }
   }
   componentDidMount() {
-    console.log("this.state.image", this.state.image);
     this.fetchData();
   }
   render() {
@@ -1421,7 +1379,7 @@ export class Basic extends React.Component {
                                             value={Address}
                                             disabled={
                                               this.state.setStyle ===
-                                                "notEditable"
+                                              "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -1467,7 +1425,7 @@ export class Basic extends React.Component {
                                             onChange={this.handleChange}
                                             disabled={
                                               this.state.setStyle ===
-                                                "notEditable"
+                                              "notEditable"
                                                 ? true
                                                 : false
                                             }
@@ -1479,7 +1437,7 @@ export class Basic extends React.Component {
                                       <MDBCol>
                                         <div>
                                           <label htmlFor="Post_Code">
-                                            Pincode/Zipcode*
+                                            Pincode*
                                           </label>
                                         </div>
                                         <div>
@@ -1534,7 +1492,9 @@ export class Basic extends React.Component {
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image !== "" && this.state.image !== undefined && this.state.image !== null ? (
+                                  {this.state.image !== "" ||
+                                  undefined ||
+                                  null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -1591,8 +1551,8 @@ export class Basic extends React.Component {
                                   Cancel
                                 </button>
                                 {this.props.params.userId &&
-                                  JSON.parse(window.sessionStorage.getItem("jwt"))
-                                    .result?.role === "Admin" ? (
+                                JSON.parse(window.sessionStorage.getItem("jwt"))
+                                  .result?.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -1660,7 +1620,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpoccontactName"
                                     id="financeSpoccontactName"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={financeSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1671,41 +1631,20 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpocdesignation"
                                     id="financeSpocdesignation"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={financeSpocdesignation}
                                   />
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    <input
-                                      type="text"
-                                      className="mb-4 VendorInput"
-                                      name="financeSpocphoneNo"
-                                      id="financeSpocphoneNo"
-                                      onChange={this.formValChangeCommunication}
-                                      value={financeSpocphoneNo}
-                                    />
-                                    <Tooltip
-                                      title={this.state.phoneNumber}
-                                      placement="right"
-                                    >
-                                      <div
-                                        style={{
-                                          position: "absolute",
-                                          right: "27.5%",
-                                          top: "6.5%",
-                                        }}
-                                      >
-                                        <InfoIcon />
-                                      </div>
-                                    </Tooltip>
-                                  </div>
+                                  <input
+                                    type="text"
+                                    className="mb-4 VendorInput"
+                                    name="financeSpocphoneNo"
+                                    id="financeSpocphoneNo"
+                                    onChange={this.formValChange}
+                                    value={financeSpocphoneNo}
+                                  />
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email*</label>
@@ -1714,7 +1653,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="financeSpocemail"
                                     id="financeSpocemail"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={financeSpocemail}
                                   />
                                 </MDBCol>
@@ -1730,7 +1669,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpoccontactName"
                                     id="operationSpoccontactName"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={operationSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1741,7 +1680,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocdesignation"
                                     id="operationSpocdesignation"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={operationSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1752,23 +1691,9 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocphoneNo"
                                     id="operationSpocphoneNo"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={operationSpocphoneNo}
                                   />
-                                  <Tooltip
-                                    title={this.state.phoneNumber}
-                                    placement="right"
-                                  >
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        right: "27.5%",
-                                        top: "22.5%",
-                                      }}
-                                    >
-                                      <InfoIcon />
-                                    </div>
-                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1777,7 +1702,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="operationSpocemail"
                                     id="operationSpocemail"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={operationSpocemail}
                                   />
                                 </MDBCol>
@@ -1793,7 +1718,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpoccontactName"
                                     id="collectionSpoccontactName"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={collectionSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1804,7 +1729,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocdesignation"
                                     id="collectionSpocdesignation"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={collectionSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1815,23 +1740,9 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocphoneNo"
                                     id="collectionSpocphoneNo"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={collectionSpocphoneNo}
                                   />
-                                  <Tooltip
-                                    title={this.state.phoneNumber}
-                                    placement="right"
-                                  >
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        right: "27.5%",
-                                        top: "37.8%",
-                                      }}
-                                    >
-                                      <InfoIcon />
-                                    </div>
-                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1840,7 +1751,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="collectionSpocemail"
                                     id="collectionSpocemail"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={collectionSpocemail}
                                   />
                                 </MDBCol>
@@ -1857,7 +1768,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpoccontactName"
                                     id="managementSpoccontactName"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={managementSpoccontactName}
                                   />
                                 </MDBCol>
@@ -1868,7 +1779,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocdesignation"
                                     id="managementSpocdesignation"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={managementSpocdesignation}
                                   />
                                 </MDBCol>
@@ -1879,23 +1790,9 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocphoneNo"
                                     id="managementSpocphoneNo"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={managementSpocphoneNo}
                                   />
-                                  <Tooltip
-                                    title={this.state.phoneNumber}
-                                    placement="right"
-                                  >
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        right: "27.5%",
-                                        top: "53.7%",
-                                      }}
-                                    >
-                                      <InfoIcon />
-                                    </div>
-                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1904,7 +1801,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="managementSpocemail"
                                     id="managementSpocemail"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={managementSpocemail}
                                   />
                                 </MDBCol>
@@ -1918,7 +1815,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="contactName"
                                     id="contactName"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={contactName}
                                   />
                                 </MDBCol>
@@ -1929,7 +1826,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="designation"
                                     id="designation"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={designation}
                                   />
                                 </MDBCol>
@@ -1940,23 +1837,9 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="phoneNo"
                                     id="phoneNo"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={phoneNo}
                                   />
-                                  <Tooltip
-                                    title={this.state.phoneNumber}
-                                    placement="right"
-                                  >
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        right: "27.5%",
-                                        top: "69.5%",
-                                      }}
-                                    >
-                                      <InfoIcon />
-                                    </div>
-                                  </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1965,7 +1848,7 @@ export class Basic extends React.Component {
                                     className="mb-4 VendorInput"
                                     name="email"
                                     id="email"
-                                    onChange={this.formValChangeCommunication}
+                                    onChange={this.formValChange}
                                     value={email}
                                   />
                                 </MDBCol>
@@ -1984,7 +1867,7 @@ export class Basic extends React.Component {
                                       className="mb-4 VendorInput"
                                       name="mastervendor_email"
                                       id="mastervendor_email"
-                                      onChange={this.formValChangeCommunication}
+                                      onChange={this.formValChange}
                                       value={mastervendor_email}
                                     />
                                   </MDBCol>
@@ -2003,9 +1886,9 @@ export class Basic extends React.Component {
                                       Cancel
                                     </button>
                                     {this.props.params.userId &&
-                                      JSON.parse(
-                                        window.sessionStorage.getItem("jwt")
-                                      ).result?.role === "Admin" ? (
+                                    JSON.parse(
+                                      window.sessionStorage.getItem("jwt")
+                                    ).result?.role === "Admin" ? (
                                       <>
                                         <button
                                           type="button"

@@ -46,8 +46,65 @@
   text-transform: unset !important;
   font-size: 15px;
   background-color: #4f4f4f !important;
+  color: rgb(255, 255, 255)!important;
 }
 .sectionbg {
   background-color: #fff !important;
   margin: 0px -2px !important;
+}
+
+.notEditable label {
+  color: black;
+}
+.notEditable input {
+  pointer-events: none;
+}
+.notEditable button {
+  pointer-events: none;
+}
+
+.editable input{
+  pointer-events: auto !important;
+  color: black;
+}
+.editable input {
+  background-color: white;
+}
+
+.bank-input input[type='file'] {
+  display: none;
+}
+
+.bank-input label {
+  cursor: pointer;
+  background-color: #b1000e;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 3% 7% !important;
+  text-align: center;
+  border: 1px solid #b1000e;
+  font-size: 12px;
+  text-transform: uppercase;
+  position: relative;
+  top: 8px;
+  color: #fff;
+}
+
+.bank-input .deleteFile:focus {
+  outline: none !important;
+}
+.bank-input .deleteFile {
+  cursor: pointer;
+  text-transform: unset !important;
+  background-color: #b1000e !important;
+  color: white !important;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 2% 10%;
+  text-align: center;
+  border: 1px solid #b1000e;
+  font-size: 16px;
+  position: relative;
+  top: 32px;
+  outline: none !important;
 }
