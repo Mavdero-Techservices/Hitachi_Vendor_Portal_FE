@@ -237,8 +237,8 @@ function UserCreation() {
         roles: roles,
       };
       apiService.saveMasterVendor(user).then((response) => {
-        apiService.getAllMasterVendorSubUser().then((res) => {
-          const modifiedUsers = res.data.result.map((user) => {
+        apiService.getMasterVendorById(user).then((res) => {
+          const modifiedUsers = res.data.result?.map((user) => {
             return {
               ...user,
               password: "*****",
@@ -262,8 +262,11 @@ function UserCreation() {
     navigate(`/basic/${id}`);
   };
   useEffect(() => {
-    apiService.getAllMasterVendorSubUser().then((res) => {
-      const modifiedUsers = res.data.result.map((user) => {
+    const user = {
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+    };
+    apiService.getMasterVendorById(user).then((res) => {
+      const modifiedUsers = res.data.result?.map((user) => {
         return {
           ...user,
           password: "*****",
@@ -313,8 +316,11 @@ function UserCreation() {
     }).then((ClearData) => {
       if(ClearData.isConfirmed){
         apiService.deleteMasterVendorSubUserById(id).then((res) => {
-          apiService.getAllMasterVendorSubUser().then((res) => {
-            const modifiedUsers = res.data.result.map((user) => {
+          const user = {
+            userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+          }; 
+          apiService.getMasterVendorById(user).then((res) => {
+            const modifiedUsers = res.data.result?.map((user) => {
               return {
                 ...user,
                 password: "*****",

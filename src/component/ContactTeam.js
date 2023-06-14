@@ -249,6 +249,9 @@ const ContactTeam = () => {
         if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
           statutoryArray.push("PAN Doc");
         }
+        if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
+          statutoryArray.push("PAN Doc");
+        }
 
         if ((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
           statutoryArray.push("GST Doc");

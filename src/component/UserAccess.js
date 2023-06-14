@@ -125,8 +125,11 @@ function UserAccess() {
     });
   }
   useEffect(() => {
+    const user = {
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+    };
     setgetAllvendorcode([]);
-    apiService.getAllMasterVendorSubUser().then((res) => {
+    apiService.getMasterVendorById(user).then((res) => {
       setgetAllUser(res.data.result);
     });
     apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {

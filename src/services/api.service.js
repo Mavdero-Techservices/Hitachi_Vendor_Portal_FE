@@ -345,6 +345,9 @@ postEddDetails(data) {
   console.log("data------>", data);
   return http.post('/postEddDetails', data);
 }
+getMasterVendorById(userId) {
+  return http.post('/getMasterVendorById',userId);
+}
 
 }
 export default new apiService();
