@@ -348,6 +348,8 @@ postEddDetails(data) {
 getMasterVendorById(userId) {
   return http.post('/getMasterVendorById',userId);
 }
-
+UpdateMasterVendorSubUserById(data) {
+  return http.put("/UpdateMasterVendorSubUserById", data);
+}
 }
 export default new apiService();

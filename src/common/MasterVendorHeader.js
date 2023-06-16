@@ -16,11 +16,15 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Logo1 from "../img/logo1.png";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
+import Swal from "sweetalert2";
+import auth from "../auth/auth-helper";
+import { useNavigate } from "react-router-dom";
 const pages = ['Home', 'Admin', 'Master'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 function MasterVendorHeader() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -30,8 +34,29 @@ function MasterVendorHeader() {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (e) => {
         setAnchorElUser(null);
+        if (e.target.innerText==='Logout'){
+            Swal.fire({
+              title: "are You sure?",
+              text: "You Want to Logout!",
+              icon: "warning",
+              dangerMode: true,
+              confirmButtonText: "Yes",
+              showCloseButton: true,
+              cancelButtonText: "No",
+              showCancelButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                auth.clearJWT(() => navigate("/login"));
+              }
+            });
+          }
+        //  else if (e.target.innerText==='Change password'){
+
+        //   }
     };
     const darkTheme = createTheme({
         palette: {
@@ -157,7 +182,7 @@ function MasterVendorHeader() {
                                     horizontal: 'right',
                                 }}
                                 open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
+                                onClose={(e) => {handleCloseUserMenu(e)}}
                             >
                                 {settings.map((setting) => (
                                     <MenuItem key={setting} onClick={handleCloseUserMenu}>

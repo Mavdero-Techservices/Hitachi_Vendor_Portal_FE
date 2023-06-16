@@ -127,6 +127,7 @@ export default function Statutory(props) {
       });
       e.target.value = "";
     } else {
+      Swal.fire("File Selected!", "", "success");
       setfileDisclosure(e.target.files[0]);
     }
   }
@@ -170,6 +171,7 @@ export default function Statutory(props) {
       });
       event.target.value = "";
     } else {
+      Swal.fire("File Selected!", "", "success");
       setFile(event.target.files[0]);
       // setValues({
       //   GST_Doc: event.target.files[0],
@@ -180,6 +182,10 @@ export default function Statutory(props) {
   function onFileChangeTax_residency_Doc(e) {
     setIsNewValueEntered(true);
     if (e.size > 5000000) {
+      setTax_residency_Doc(null);
+      setdeleteTax_residencyUploadedFile(null);
+      e = null;
+      document.getElementsByName("Tax_residency_Doc")[0].value = null;
       Swal.fire({
         title: "file size should be less than 5mb",
         icon: "error",
@@ -189,6 +195,7 @@ export default function Statutory(props) {
         allowEscapeKey: false,
       });
     } else {
+      Swal.fire("File Selected!", "", "success");
       setTax_residency_Doc(e);
       setdeleteTax_residencyUploadedFile(true);
     }
@@ -196,6 +203,10 @@ export default function Statutory(props) {
   function onFileChangeform_10f_Doc(e) {
     setIsNewValueEntered(true);
     if (e.size > 5000000) {
+      setform_10f_Doc(null);
+      setdeleteform_10fUploadedFile(null);
+      e = null;
+      document.getElementsByName("form_10f_Doc")[0].value = null;
       Swal.fire({
         title: "file size should be less than 5mb",
         icon: "error",
@@ -205,6 +216,7 @@ export default function Statutory(props) {
         allowEscapeKey: false,
       });
     } else {
+      Swal.fire("File Selected!", "", "success");
       setform_10f_Doc(e);
       setdeleteform_10fUploadedFile(true);
     }
@@ -223,6 +235,7 @@ export default function Statutory(props) {
       });
       e.target.value = "";
     } else {
+      Swal.fire("File Selected!", "", "success");
       setPAN_Doc(e.target.files[0]);
       // setValues({
       //   PAN_Doc: e.target.files[0],
@@ -232,6 +245,10 @@ export default function Statutory(props) {
   function onFileChangePE_Declaration_Doc(e) {
     setIsNewValueEntered(true);
     if (e.size > 5000000) {
+      setPE_Declaration_Doc(null);
+      setdeletePE_DeclarationUploadedFile(null);
+      e = null;
+      document.getElementsByName("PE_Declaration_Doc")[0].value = null;
       Swal.fire({
         title: "file size should be less than 5mb",
         icon: "error",
@@ -241,6 +258,7 @@ export default function Statutory(props) {
         allowEscapeKey: false,
       });
     } else {
+      Swal.fire("File Selected!", "", "success");
       setPE_Declaration_Doc(e);
       setdeletePE_DeclarationUploadedFile(true);
     }
@@ -259,6 +277,7 @@ export default function Statutory(props) {
       });
       e.target.value = "";
     } else {
+      Swal.fire("File Selected!", "", "success");
       setTAN_Doc(e.target.files[0]);
       // setValues({
       //   TAN_Doc: e.target.files[0],
@@ -279,6 +298,7 @@ export default function Statutory(props) {
       });
       e.target.value = "";
     } else {
+      Swal.fire("File Selected!", "", "success");
       setMSME_Doc(e.target.files[0]);
       // setValues({
       //   MSME_Doc: e.target.files[0],
@@ -550,8 +570,12 @@ export default function Statutory(props) {
           setCountryName(
             res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : ""
           );
+          setcountry(res.data.basicInfo[0]?.Country_Region_Code);
+          if (res.data.basicInfo[0]?.Country_Region_Code === "IN") {
+            setshowLoginTab(false);
+          }
         })
-        .then((result) => {});
+        .then((result) => { });
 
       let newuser = JSON.parse(
         window.sessionStorage.getItem("newregUser")
@@ -559,14 +583,14 @@ export default function Statutory(props) {
       let id = newuser
         ? newuser
         : params.userId
-        ? params.userId
-        : values.userId;
-      await apiService.getvendorDetail(id).then((res) => {
-        setcountry(res.data.country);
-        if (res.data.country === "IN") {
-          setshowLoginTab(false);
-        }
-      });
+          ? params.userId
+          : values.userId;
+      // await apiService.getvendorDetail(id).then((res) => {
+      //   setcountry(res.data.country);
+      //   if (res.data.country === "IN") {
+      //     setshowLoginTab(false);
+      //   }
+      // });
       if (params.userId) {
         let finalstatus = "";
         await apiService.signupFindByUserId(params.userId).then((res) => {
@@ -983,6 +1007,7 @@ export default function Statutory(props) {
             },
           }).then((result) => {
             if (result.isConfirmed) {
+              setIsNewValueEntered(true);
               if (event === "GST_Doc") {
                 setFile("");
                 // setValues({
@@ -1009,12 +1034,14 @@ export default function Statutory(props) {
               Swal.fire("Deleted!", "", "success");
             } else if (result.isDenied) {
               Swal.fire("File not deleted", "", "info");
+              setIsNewValueEntered(false);
             }
           });
         },
       });
     } else {
       Swal.fire("File not deleted", "", "info");
+      setIsNewValueEntered(false);
     }
   };
 
@@ -1116,8 +1143,8 @@ export default function Statutory(props) {
                                   </div>{" "} */}
 
                                       {fileDisclosure !== "" &&
-                                      fileDisclosure !== "null" &&
-                                      fileDisclosure !== undefined ? (
+                                        fileDisclosure !== "null" &&
+                                        fileDisclosure !== undefined ? (
                                         <div className="frame-input">
                                           <button
                                             type="button"
@@ -1220,8 +1247,8 @@ export default function Statutory(props) {
                                           </Col>
                                           <Col>
                                             {GST_Doc !== "" &&
-                                            GST_Doc !== "null" &&
-                                            GST_Doc !== undefined ? (
+                                              GST_Doc !== "null" &&
+                                              GST_Doc !== undefined ? (
                                               <div className="frame-input">
                                                 <button
                                                   type="button"
@@ -1297,8 +1324,8 @@ export default function Statutory(props) {
                                         </Col>
                                         <Col>
                                           {GST_Doc !== "" &&
-                                          GST_Doc !== "null" &&
-                                          GST_Doc !== undefined ? (
+                                            GST_Doc !== "null" &&
+                                            GST_Doc !== undefined ? (
                                             <div className="frame-input">
                                               <button
                                                 type="button"
@@ -1367,8 +1394,8 @@ export default function Statutory(props) {
                               ) : (
                                 <Row>
                                   {fileDisclosure !== "" &&
-                                  fileDisclosure !== "null" &&
-                                  fileDisclosure !== undefined ? (
+                                    fileDisclosure !== "null" &&
+                                    fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
@@ -1473,8 +1500,8 @@ export default function Statutory(props) {
                         <Col>
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
-                            PAN_Doc !== "null" &&
-                            PAN_Doc !== undefined ? (
+                              PAN_Doc !== "null" &&
+                              PAN_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1548,10 +1575,10 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {Editform_10f_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
-                                      <span>File name:{Editform_10f_Doc}</span>
+                                      <span>File name:{" "}{Editform_10f_Doc}</span>
 
                                       <ClearIcon
                                         style={{ color: "red" }}
@@ -1567,12 +1594,17 @@ export default function Statutory(props) {
                                         handleChange={onFileChangeform_10f_Doc}
                                         required
                                         type="file"
-                                        name="fileFD"
-                                        fileOrFiles={deleteform_10fUploadedFile}
+                                        name="form_10f_Doc"
+                                          fileOrFiles={form_10f_Doc}
                                       />
                                       <span>
                                         {form_10f_Doc
-                                          ? `File name: ${form_10f_Doc.name}`
+                                            ? <> File name:{" "} ${form_10f_Doc.name} < ClearIcon
+                                          style={{ color: "red" }}
+                                          onClick={() => {
+                                            DeleteForm10FDoc("form_10f_Doc");
+                                          }}
+                                            /></>
                                           : "No File Chosen"}
                                       </span>
                                     </div>
@@ -1585,14 +1617,19 @@ export default function Statutory(props) {
                                     handleChange={onFileChangeform_10f_Doc}
                                     required
                                     type="file"
-                                    name="fileFD"
-                                    fileOrFiles={deleteform_10fUploadedFile}
+                                    name="form_10f_Doc"
+                                    fileOrFiles={form_10f_Doc}
                                   />
                                   <span>
-                                    {form_10f_Doc
-                                      ? `File name: ${form_10f_Doc.name}`
-                                      : "No File Chosen"}
-                                  </span>
+                                      {form_10f_Doc
+                                        ? <> File name:{" "} ${form_10f_Doc.name} < ClearIcon
+                                          style={{ color: "red" }}
+                                          onClick={() => {
+                                            DeleteForm10FDoc("form_10f_Doc");
+                                          }}
+                                            /></>
+                                          : "No File Chosen"}
+                                      </span>
                                 </div>
                               )}
                             </Form.Group>
@@ -1609,11 +1646,11 @@ export default function Statutory(props) {
                               <Form.Label>No PE declaration*</Form.Label>
                               {(params.userId &&
                                 EditPE_Declaration_Doc != "") ||
-                              undefined ||
-                              null ? (
+                                undefined ||
+                                null ? (
                                 <div>
                                   <span>
-                                    File name:{EditPE_Declaration_Doc}
+                                    File name:{" "}{EditPE_Declaration_Doc}
                                   </span>
                                   <ClearIcon
                                     style={{ color: "red" }}
@@ -1631,14 +1668,19 @@ export default function Statutory(props) {
                                     }
                                     required
                                     type="file"
-                                    name="fileFD"
+                                    name="PE_Declaration_Doc"
                                     fileOrFiles={
-                                      deletePE_DeclarationUploadedFile
+                                      PE_Declaration_Doc
                                     }
                                   />
                                   <span>
                                     {PE_Declaration_Doc
-                                      ? `File name: ${PE_Declaration_Doc.name}`
+                                        ? <>File name:{" "} ${PE_Declaration_Doc.name}<ClearIcon
+                                          style={{ color: "red" }}
+                                          onClick={() => {
+                                            DeletePEDeclaration("PE_Declaration_Doc");
+                                          }}
+                                        /></> 
                                       : "No File Chosen"}
                                   </span>
                                 </div>
@@ -1704,9 +1746,9 @@ export default function Statutory(props) {
                               </Col>
                               <Col>
                                 {MSME_Doc !== "" &&
-                                MSME_Doc !== "null" &&
-                                MSME_Doc !== undefined &&
-                                MSME_status === "Registered" ? (
+                                  MSME_Doc !== "null" &&
+                                  MSME_Doc !== undefined &&
+                                  MSME_status === "Registered" ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1764,8 +1806,8 @@ export default function Statutory(props) {
                               </Col>
                               <Col>
                                 {MSME_Doc !== "" &&
-                                MSME_Doc !== "null" &&
-                                MSME_Doc !== undefined ? (
+                                  MSME_Doc !== "null" &&
+                                  MSME_Doc !== undefined ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1818,9 +1860,9 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             {MSME_Doc !== "" &&
-                            MSME_Doc !== "null" &&
-                            MSME_Doc !== undefined &&
-                            MSME_status === "Registered" ? (
+                              MSME_Doc !== "null" &&
+                              MSME_Doc !== undefined &&
+                              MSME_status === "Registered" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1948,8 +1990,8 @@ export default function Statutory(props) {
                           </div> */}
 
                           {TAN_Doc !== "" &&
-                          TAN_Doc !== "null" &&
-                          TAN_Doc !== undefined ? (
+                            TAN_Doc !== "null" &&
+                            TAN_Doc !== undefined ? (
                             <div className="frame-input">
                               <button
                                 type="button"
@@ -1988,10 +2030,10 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {editTax_residency_Doc != "" ||
-                                  undefined ||
-                                  null ? (
+                                    undefined ||
+                                    null ? (
                                     <div>
-                                      <span>File name:{Tax_residency_Doc}</span>
+                                      <span>File name:{" "}{Tax_residency_Doc}</span>
                                       <ClearIcon
                                         style={{ color: "red" }}
                                         onClick={() => {
@@ -2010,14 +2052,21 @@ export default function Statutory(props) {
                                         }
                                         required
                                         type="file"
-                                        name="fileFD"
+                                        name="Tax_residency_Doc"
                                         fileOrFiles={
-                                          deleteTax_residencyUploadedFile
+                                          Tax_residency_Doc
                                         }
                                       />
                                       <span>
                                         {Tax_residency_Doc
-                                          ? `File name: ${Tax_residency_Doc.name}`
+                                            ? <>File name:{" "} ${Tax_residency_Doc.name}<ClearIcon
+                                              style={{ color: "red" }}
+                                              onClick={() => {
+                                                DeleteTax_residency(
+                                                  "Tax_residency_Doc"
+                                                );
+                                              }}
+                                            /></>
                                           : "No File Chosen"}
                                       </span>
                                     </div>
@@ -2030,14 +2079,21 @@ export default function Statutory(props) {
                                     handleChange={onFileChangeTax_residency_Doc}
                                     required
                                     type="file"
-                                    name="fileFD"
+                                    name="Tax_residency_Doc"
                                     fileOrFiles={
-                                      deleteTax_residencyUploadedFile
+                                      Tax_residency_Doc
                                     }
                                   />
-                                  <span>
+                                 <span>
                                     {Tax_residency_Doc
-                                      ? `File name: ${Tax_residency_Doc.name}`
+                                        ? <>File name:{" "} ${Tax_residency_Doc.name}<ClearIcon
+                                          style={{ color: "red" }}
+                                          onClick={() => {
+                                            DeleteTax_residency(
+                                              "Tax_residency_Doc"
+                                            );
+                                          }}
+                                        /></>
                                       : "No File Chosen"}
                                   </span>
                                 </div>
@@ -2053,7 +2109,7 @@ export default function Statutory(props) {
             </Card>
           </Col>
         </Row>
-        {!hideunRegisteredField ? (
+        {!hideunRegisteredField || GST_type === 'UnRegistered' ? (
           <Row>
             <Col>
               <a href={url} download>
@@ -2069,7 +2125,7 @@ export default function Statutory(props) {
           <Col>
             <p className="statutory-Note">
               NOTE: If the vendor is not registered with the above compliance,
-              they can mention it as “Non-Registered” in that column and they
+              they can mention it as “UnRegistered” in that column and they
               will upload the discloser for the same on the document upload
               option.
             </p>
@@ -2085,7 +2141,7 @@ export default function Statutory(props) {
               Cancel
             </button>
             {params.userId &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
               "Admin" ? (
               <>
                 <button

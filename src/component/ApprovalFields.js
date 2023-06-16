@@ -7,7 +7,7 @@ function ApprovalFields(props) {
   const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
   const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const numberValidation = /^-?(0|[1-9]\d*)?$/;
-  const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   const [editData, seteditData] = useState([]);
   const [editCommmData, seteditCommmData] = useState([]);
@@ -1156,11 +1156,11 @@ function ApprovalFields(props) {
                 // Phone_No: "9385580222",
                 // Telex_No: "9385580222",
                 // MSMED: "Unregistered",
-                // MSMED_Number: "NA",
-                // MSMED_Vendor_Type: " ",
+                MSMED_Number: MSME_No||undefined,
+                MSMED_Vendor_Type: MSME_Type||undefined,
                 // Country_Region_Code: "IND",
                 Post_Code: Post_Code||undefined,
-                // E_Mail: "apitestmail2@gmail.com",
+                E_Mail: mastervendor_email||undefined,
                 P_A_N_No:PAN_No||undefined,
                 // State_Code: "UTP",
                 // Structure: "GST",
@@ -1180,12 +1180,12 @@ function ApprovalFields(props) {
                 HSI_Contact_Name_3:name3||undefined,
                 HSI_Contact_E_Mail_3:email3||undefined,
                 HSI_Contact_Contact_No_3:contactNumber3||undefined,
-                // Shareholder_Name: "",
-                // Organization_Type: " "             
+                Shareholder_Name: shareholderName||undefined,
+                Organization_Type: organisationType||undefined,             
             };
             apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
             console.log("ERPData---->", ERPData);
-          if(response)
+            if(response && !response.data.Result?.["odata.error"])
           {
             console.log("ErpResponse::",response);
                 const MasterVendor={
@@ -1195,6 +1195,18 @@ function ApprovalFields(props) {
               apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
                 console.log("masterLogin::",Masterresponse);
               })
+          }
+          else
+          {
+            const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+            Swal.fire({
+              title:errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+              icon: "error",
+              confirmButtonText: "OK",
+              showCloseButton: true,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
           }
             })
           }
@@ -1661,11 +1673,11 @@ function ApprovalFields(props) {
                 // Phone_No: "9385580222",
                 // Telex_No: "9385580222",
                 // MSMED: "Unregistered",
-                // MSMED_Number: "NA",
-                // MSMED_Vendor_Type: " ",
+                MSMED_Number: MSME_No||undefined,
+                MSMED_Vendor_Type: MSME_Type||undefined,
                 // Country_Region_Code: "IND",
                 Post_Code: Post_Code||undefined,
-                // E_Mail: "apitestmail2@gmail.com",
+                E_Mail: mastervendor_email||undefined,
                 P_A_N_No:PAN_No||undefined,
                 // State_Code: "UTP",
                 // Structure: "GST",
@@ -1685,8 +1697,8 @@ function ApprovalFields(props) {
                 HSI_Contact_Name_3:name3||undefined,
                 HSI_Contact_E_Mail_3:email3||undefined,
                 HSI_Contact_Contact_No_3:contactNumber3||undefined,
-                // Shareholder_Name: "",
-                // Organization_Type: " "             
+                Shareholder_Name: shareholderName||undefined,
+                Organization_Type: organisationType||undefined,             
             };
               apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
                 const MasterVendor={
@@ -1694,9 +1706,25 @@ function ApprovalFields(props) {
                   companyName:companyName||undefined,
                   Ticket_ID:TicketID||undefined,
                 }
-                apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-                  console.log("masterLogin::",Masterresponse);
-                })              
+                if(response && !response.data.Result?.["odata.error"])
+                {
+                  apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+                    console.log("masterLogin::",Masterresponse);
+                  })
+                }
+                else
+                {
+                  const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                  Swal.fire({
+                    title:errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  });
+                }
+                             
               })
             }
             

@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const numberValidation = /^-?(0|[1-9]\d*)?$/;
-const emailValidation = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+// /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/ 
+const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 const ContactTeam = () => {
@@ -142,10 +143,10 @@ const ContactTeam = () => {
             basicInfoArray.push("state");
           }
         }
-        if (value && key === "Post_Code") {
-          if (!numberValidation.test(value))
-            basicInfoArray.push("Pincode is invalid");
-        }
+        // if (value && key === "Post_Code") {
+        //   if (!numberValidation.test(value))
+        //     basicInfoArray.push("Pincode is invalid");
+        // }
       });
     }
 
@@ -252,7 +253,6 @@ const ContactTeam = () => {
         if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
           statutoryArray.push("PAN Doc");
         }
-
         if ((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
           statutoryArray.push("GST Doc");
         }
@@ -290,13 +290,21 @@ const ContactTeam = () => {
               statutoryArray.push("GST No is invalid");
             }
           }
-
+          if (statutory[0].GST_Vendor_Type === "Registered"&&key === "GST_Registration_No" && value === "N/A") {
+            if (!GSTValidation.test(value)) {
+              statutoryArray.push("GST No is invalid");
+            }
+          }
 
           if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-          if(basicInfo[0].Country_Region_Code === 'IN' && key === "P_A_N_No" && value === "N/A"  )
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "Registered" && key === "P_A_N_No" && value === "N/A"  )
+          {
+            statutoryArray.push("PAN NO is invalid");
+          }
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "UnRegistered" && key === "P_A_N_No" && value === "N/A"  )
           {
             statutoryArray.push("PAN NO is invalid");
           }
@@ -350,13 +358,21 @@ const ContactTeam = () => {
               statutoryArray.push("GST No is invalid");
             }
           }
-
+          if (statutory[0].GST_Vendor_Type === "Registered"&&key === "GST_Registration_No" && value === "N/A") {
+            if (!GSTValidation.test(value)) {
+              statutoryArray.push("GST No is invalid");
+            }
+          }
 
           if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-          if(basicInfo[0].Country_Region_Code === 'IN' && key === "P_A_N_No" && value === "N/A"  )
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "Registered" && key === "P_A_N_No" && value === "N/A"  )
+          {
+            statutoryArray.push("PAN NO is invalid");
+          }
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "UnRegistered" && key === "P_A_N_No" && value === "N/A"  )
           {
             statutoryArray.push("PAN NO is invalid");
           }
@@ -844,13 +860,21 @@ const ContactTeam = () => {
               statutoryArray.push("GST No is invalid");
             }
           }
-
+          if (statutory[0].GST_Vendor_Type === "Registered"&&key === "GST_Registration_No" && value === "N/A") {
+            if (!GSTValidation.test(value)) {
+              statutoryArray.push("GST No is invalid");
+            }
+          }
 
           if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-          if(basicInfo[0].Country_Region_Code === 'IN' && key === "P_A_N_No" && value === "N/A"  )
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "Registered" && key === "P_A_N_No" && value === "N/A"  )
+          {
+            statutoryArray.push("PAN NO is invalid");
+          }
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "UnRegistered" && key === "P_A_N_No" && value === "N/A"  )
           {
             statutoryArray.push("PAN NO is invalid");
           }
@@ -889,13 +913,21 @@ const ContactTeam = () => {
               statutoryArray.push("GST No is invalid");
             }
           }
-
+          if (statutory[0].GST_Vendor_Type === "Registered"&&key === "GST_Registration_No" && value === "N/A") {
+            if (!GSTValidation.test(value)) {
+              statutoryArray.push("GST No is invalid");
+            }
+          }
 
           if (key === "P_A_N_No" && value.trim() !== "" && value !== "N/A" && value !== "null") {
             if (!PANValidation.test(value))
               statutoryArray.push("PAN NO is invalid");
           }
-          if(basicInfo[0].Country_Region_Code === 'IN' && key === "P_A_N_No" && value === "N/A"  )
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "Registered" && key === "P_A_N_No" && value === "N/A"  )
+          {
+            statutoryArray.push("PAN NO is invalid");
+          }
+          if(basicInfo[0].Country_Region_Code === 'IN' && statutory[0].GST_Vendor_Type === "UnRegistered" && key === "P_A_N_No" && value === "N/A"  )
           {
             statutoryArray.push("PAN NO is invalid");
           }
@@ -1115,12 +1147,12 @@ const ContactTeam = () => {
     if (params.userId) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(params.userId).then((res) => {
 
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }
@@ -1141,11 +1173,11 @@ const ContactTeam = () => {
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
-        finalstatus = res.data.result.finalStatus;
+        finalstatus = res.data.result?.finalStatus;
       });
       apiService.getAllCollection(newuser).then((res) => {
         if (
-          res.data.basicInfo[0].submitStatus === "Submitted"
+          res.data.basicInfo[0]?.submitStatus === "Submitted"
         ) {
           setStyle("notEditable");
         }

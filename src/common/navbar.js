@@ -1,16 +1,21 @@
 import Logo1 from "../img/logo1.png";
 import "../css/navbar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
 import auth from "../auth/auth-helper";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
+import { Navigate } from "react-router-dom";
 function App() {
+  const response = JSON.parse(window.sessionStorage.getItem("newregUser"));
+  const hasValue = response?.newregUser !== undefined && response?.newregUser !== null;
+  const [hasmaster, sethasmaster] = useState(false);
+  const location = useLocation();
   const [Edit, setEdit] = useState(true);
-  const [editUser, seteditUser] = useState();
+  const [editUser, seteditUser] = useState(); 
   const [editsubUser, seteditsubUser] = useState();
   const navigate = useNavigate();
   const params = useParams();
@@ -35,17 +40,16 @@ function App() {
   const VendorDetails = (e) => {
     if (
       editUser?.basicInfo?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
     ) {
       navigate(
         `/basic/${
-          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         }`,
         { state: { editUser } }
       );
     } else if (
-      editsubUser?.basicInfo?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
+      editsubUser?.basicInfo?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
       navigate(`/basic/${params.userId}`, { state: { editUser } });
     } else {
@@ -132,6 +136,10 @@ function App() {
       navigate("/FinancialDetail", { state: { editUser } });
     }
   };
+  const redirectToMaster =(e)=>{
+    navigate("/userCreation");
+
+  }
   const contactDetails = (e) => {
     if (
       editUser?.contactDetail?.length > 0 &&
@@ -153,21 +161,32 @@ function App() {
     }
   };
   useEffect(() => {
+    console.log("location.pathname",location.pathname)
+    if (location.pathname.includes('newReg')) {
+console.log("newReg")
+      sethasmaster(true);
+    } else {
+      sethasmaster(false);
+    }
+     const queryParams = new URLSearchParams(location.search);
+     const isMaster = queryParams.get("master") === "true";
     (async () => {
-      await apiService
-        .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
-        )
-        .then((res) => {
-          if (res.data.status === "success") {
-            setEdit(true);
-            seteditUser(res.data);
-          } else {
-            setEdit(false);
-          }
-        });
+   await apiService
+      .getAllCollection(
+        JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
+      )
+      .then((res) => {
+        if (res.data.status === "success") {
+          setEdit(true);
+          seteditUser(res.data);
+        } else {
+          setEdit(false);
+        }
+      });
 
-      await apiService.getAllCollection(params.userId).then((res) => {
+   await apiService
+      .getAllCollection(params.userId)
+      .then((res) => {
         if (res.data.status === "success") {
           setEdit(true);
           seteditsubUser(res.data);
@@ -176,7 +195,8 @@ function App() {
         }
       });
     })();
-  }, [params.userId]);
+    
+  }, [params.userId,location.search,location]);
   return (
     <>
       <Navbar collapseOnSelect expand="lg">
@@ -196,9 +216,14 @@ function App() {
               <Nav.Link onClick={bankDetails}>Bank Details</Nav.Link>
               <Nav.Link onClick={financialDetails}>Financial Details</Nav.Link>
               <Nav.Link onClick={contactDetails}>Contact Team</Nav.Link>
+              {!hasmaster && (
               <Nav.Link onClick={handleClickOpen} id="b3">
-                logOut
-              </Nav.Link>
+              logOut
+            </Nav.Link>
+              )}
+              {hasmaster && (
+                <Nav.Link onClick={redirectToMaster}>Back To Master</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
