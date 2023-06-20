@@ -83,6 +83,7 @@ export default function Statutory(props) {
     Tax_residency_No: "",
   });
   const [isNewValueEntered, setIsNewValueEntered] = useState(false);
+  const [hasmaster, sethasmaster] = useState(false);
   function onChangeValue(event) {
     setIsNewValueEntered(true);
     setGST_type(event.target.value);
@@ -555,6 +556,11 @@ export default function Statutory(props) {
 
   useEffect(() => {
     (async () => {
+      const storedData = sessionStorage.getItem("master");
+      const masterData = storedData ? JSON.parse(storedData) : {};
+      console.log("storedData",masterData.master)
+   
+      console.log("country",countryName);
       await apiService
         .getAllCollection(
           JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
@@ -567,9 +573,16 @@ export default function Statutory(props) {
           if (cName !== "IN" && cName !== null && cName !== undefined) {
             setValues({ PAN_No: "N/A" });
           }
-          setCountryName(
-            res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : ""
-          );
+          if (masterData.master===true) {
+            setCountryName("IN");
+                }
+                else
+                {
+                  setCountryName(
+                    res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : ""
+                  );
+                }
+       
           setcountry(res.data.basicInfo[0]?.Country_Region_Code);
           if (res.data.basicInfo[0]?.Country_Region_Code === "IN") {
             setshowLoginTab(false);

@@ -23,7 +23,7 @@ import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
 import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
-
+import { withRouter } from 'react-router-dom';
 export const MasterVendorSidemenu = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [open, setOpen] = useState(false);
@@ -143,6 +143,11 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
   };
 
   const handleState = () => {
+    let data = { master:true};
+                sessionStorage.setItem("master", JSON.stringify(data));
+               const subUserid=JSON.parse(window.sessionStorage.getItem("jwt")).result
+               ?.userId + Math.floor(100000 + Math.random() * 900000);
+               sessionStorage.setItem("subUserid", JSON.stringify(subUserid));
     let id = 'newReg'
     navigate(`/basic/newReg/${id}`);
   };
@@ -490,7 +495,11 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
                     <Box>
                       <Button
                         variant="contained"
-                        onClick={() => navigate(`/basic/newReg/newReg`)}
+                        onClick={() => {
+                          let data = { master: true };
+                          sessionStorage.setItem("master", JSON.stringify(data));
+                          navigate(`/basic/${UserId}`);
+                        }}
                       >
                         Submit
                       </Button>

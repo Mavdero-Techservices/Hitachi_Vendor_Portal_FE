@@ -46,15 +46,26 @@ const FinanceRoute = ({ component: Component, ...rest }) => {
     auth?.clearJWT(() => navigate("/login"))
   );
 };
+// const OtherRoute = ({ component: Component, ...rest }) => {
+//   console.log("otherRoute");
+//   const navigate = useNavigate();
+//   return auth?.isAuthenticated()?.result?.role === "vendor" ? (
+//     <Outlet />
+//   ) : (
+//     () => navigate("/documents")
+//   );
+// };
 const OtherRoute = ({ component: Component, ...rest }) => {
   console.log("otherRoute");
   const navigate = useNavigate();
-  return auth?.isAuthenticated()?.result?.role === "vendor" ? (
+  return auth?.isAuthenticated()?.result?.role === "vendor" ||
+  auth?.isAuthenticated()?.result?.role === "Admin"&&auth?.isAuthenticated()?.result?.Country_Region_Code !== "IND" ? (
     <Outlet />
   ) : (
     () => navigate("/documents")
   );
 };
+
 const VCTRoute = ({ component: Component, ...rest }) => {
   console.log("VCTRoute");
   const navigate = useNavigate();

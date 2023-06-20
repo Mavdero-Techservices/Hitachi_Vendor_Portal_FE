@@ -152,6 +152,7 @@ export default function Signin(props) {
         setValidation(data);
         setUserName(data?.result?.userName);
         setRole(data?.result?.role);
+        console.log("role::",data?.result?.role);
         setverifiedUser(data?.result?.verifiedUser);
         if (data === "invalid user") {
           setSubmit(false);
@@ -243,10 +244,12 @@ export default function Signin(props) {
 
   const { redirectToReferrer } = values;
   if (redirectToReferrer) {
+    console.log("checkrole")
     if (role === "Admin" && verifiedUser === "approved") {
       return <Navigate to={"/userCreation"} />;
     }
-    if (role === "other") {
+    if (role === "vendor") {
+      console.log("rolevendor:::")
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "user" && verifiedUser === "approved") {
@@ -264,6 +267,7 @@ export default function Signin(props) {
       return <Navigate to={"/"} />;
     }
     if (role === "financial") {
+      console.log("finacial::")
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "VCT") {
@@ -287,6 +291,10 @@ export default function Signin(props) {
     if (role === "PurchaseTeam") {
       return <Navigate to={"/poTeam"} />;
     }
+  }
+  else
+  {
+    console.log("rolenot set::")
   }
   return (
     <div className="login">

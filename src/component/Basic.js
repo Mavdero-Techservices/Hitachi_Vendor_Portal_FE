@@ -57,6 +57,7 @@ export class Basic extends React.Component {
       commuDetail: false,
       dataEntered: false,
       phoneNumber: "please enter your 10 digit phone number",
+      newMasterReg:false,
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -183,11 +184,26 @@ export class Basic extends React.Component {
                 }
               });
           } else {
-            if (this.props.params.newReg) {
+            if (this.state.newMasterReg) {
+           console.log("newRegSave::")
+              const basicInfo = {
+                userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+                  ?.userId,
+                Address: this.state.Address,
+                Address_2: this.state.Address_2,
+                City: this.state.City,
+                state: this.state.state,
+                Country_Region_Code: "IN",
+                Post_Code: this.state.Post_Code,
+                companyName: this.state.companyName,
+                image: this.state.image,
+                subUserid:JSON.parse(window.sessionStorage.getItem("subUserid")),
+              };
               apiService.saveNewRegVendordetail(basicInfo).then((response) => {
+
                 this.setState({ newUser: response.data.result.userId });
-                let data = { newregUser: response.data.result.userId };
-                sessionStorage.setItem("newregUser", JSON.stringify(data));
+                // let data = { newregUser: response.data.result.userId };
+                // sessionStorage.setItem("newregUser", JSON.stringify(data));
                 if (response) {
                   Swal.fire({
                     title: "Data saved",
@@ -388,8 +404,8 @@ export class Basic extends React.Component {
             }
           } else {
             let newuser = JSON.parse(
-              window.sessionStorage.getItem("newregUser")
-            )?.newregUser;
+              window.sessionStorage.getItem("subUserid")
+            );
             if (newuser) {
               communicationDetails.userId = newuser;
               apiService
@@ -604,6 +620,7 @@ export class Basic extends React.Component {
       Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
+      subUserid:JSON.parse(window.sessionStorage.getItem("subUserid"))
     };
     if (this.props.params.userId) {
       apiService
@@ -635,11 +652,12 @@ export class Basic extends React.Component {
           }
         });
     } else {
-      if (this.props.params.newReg) {
+      if (this.state.newMasterReg) {
+        console.log("newReg@3::")
         apiService.saveNewRegVendordetail(basicInfo).then((response) => {
           this.setState({ newUser: response.data.result.userId });
-          let data = { newregUser: response.data.result.userId };
-          sessionStorage.setItem("newregUser", JSON.stringify(data));
+          // let data = { newregUser: response.data.result.userId };
+          // sessionStorage.setItem("newregUser", JSON.stringify(data));
           if (response) {
             this.fetchData();
             Swal.fire({
@@ -832,8 +850,8 @@ export class Basic extends React.Component {
       }
     } else {
       let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
+        window.sessionStorage.getItem("subUserid")
+      );
       if (newuser) {
         communicationDetails.userId = newuser;
         apiService
@@ -1039,8 +1057,8 @@ export class Basic extends React.Component {
     });
 
     let newuser = JSON.parse(
-      window.sessionStorage.getItem("newregUser")
-    )?.newregUser;
+      window.sessionStorage.getItem("subUserid")
+    );
     if (this.props.params.newReg === "newReg") {
       this.setState({
         companyName: JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -1245,6 +1263,7 @@ export class Basic extends React.Component {
             Country_Region_Code: value.Country_Region_Code,
             Post_Code: value.Post_Code,
             image: value.image,
+            subUserid:JSON.parse(window.sessionStorage.getItem("subUserid"))
           });
           return null;
         });
@@ -1271,6 +1290,7 @@ export class Basic extends React.Component {
             phoneNo: value.phoneNo,
             email: value.email,
             mastervendor_email: value.mastervendor_email,
+            subUserid:JSON.parse(window.sessionStorage.getItem("subUserid"))
           });
           return null;
         });
@@ -1302,8 +1322,22 @@ export class Basic extends React.Component {
     }
   }
   componentDidMount() {
-    console.log("this.state.image",this.state.image);
+ 
+    console.log("subuserid",   JSON.parse(
+      window.sessionStorage.getItem("subUserid")));
     this.fetchData();
+    const storedData = sessionStorage.getItem("master");
+    const data = storedData ? JSON.parse(storedData) : {};
+    console.log("basicmaster::",data.master)
+    if(data.master===true)
+    {
+      console.log("indianmaster::")
+      this.setState({
+        newMasterReg: true,
+      });
+      
+    }
+  
   }
   render() {
     const {
@@ -1457,23 +1491,33 @@ export class Basic extends React.Component {
                                           </label>
                                         </div>
                                         <div>
-                                          <select
-                                            className="mb-4 VendorInput"
-                                            name="Country_Region_Code"
-                                            id="Country_Region_Code"
-                                            value={
-                                              this.state.Country_Region_Code
-                                            }
-                                            onChange={this.handleChange}
-                                            disabled={
-                                              this.state.setStyle ===
-                                              "notEditable"
-                                                ? true
-                                                : false
-                                            }
-                                          >
-                                            {countriesList}
-                                          </select>
+                                        {this.state.newMasterReg ? (
+        <input
+          className="mb-4 VendorInput"
+          name="Country_Region_Code"
+          id="Country_Region_Code"
+          value="India"
+          readOnly
+        />
+      ) : (
+        <select
+        className="mb-4 VendorInput"
+        name="Country_Region_Code"
+        id="Country_Region_Code"
+        value={
+          this.state.Country_Region_Code
+        }
+        onChange={this.handleChange}
+        disabled={
+          this.state.setStyle ===
+          "notEditable"
+            ? true
+            : false
+        }
+      >
+        {countriesList}
+      </select>
+      )}
                                         </div>
                                       </MDBCol>
                                       <MDBCol>

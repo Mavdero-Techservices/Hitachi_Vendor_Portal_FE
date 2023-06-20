@@ -38,6 +38,7 @@ function App() {
     });
   };
   const VendorDetails = (e) => {
+    console.log("editsubUser::",editsubUser);
     if (
       editUser?.basicInfo?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
@@ -51,7 +52,9 @@ function App() {
     } else if (
       editsubUser?.basicInfo?.length > 0 && JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
     ) {
-      navigate(`/basic/${params.userId}`, { state: { editUser } });
+      navigate(`/basic/${
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      }`, { state: { editUser } });
     } else {
       navigate("/basic", { state: { editUser } });
     }
@@ -137,6 +140,8 @@ function App() {
     }
   };
   const redirectToMaster =(e)=>{
+    let data = { master: false };
+  sessionStorage.setItem("master", JSON.stringify(data));
     navigate("/userCreation");
 
   }
@@ -162,10 +167,14 @@ function App() {
   };
   useEffect(() => {
     console.log("location.pathname",location.pathname)
-    if (location.pathname.includes('newReg')) {
-console.log("newReg")
+    const storedData = sessionStorage.getItem("master");
+    const data = storedData ? JSON.parse(storedData) : {};
+    console.log("storedData",data.master)
+    if (data.master===true) {
+console.log("newReg::")
       sethasmaster(true);
     } else {
+      console.log("notnewReg::")
       sethasmaster(false);
     }
      const queryParams = new URLSearchParams(location.search);
@@ -185,7 +194,7 @@ console.log("newReg")
       });
 
    await apiService
-      .getAllCollection(params.userId)
+      .getAllCollection(JSON.parse(window.sessionStorage.getItem("subUserid")))
       .then((res) => {
         if (res.data.status === "success") {
           setEdit(true);
