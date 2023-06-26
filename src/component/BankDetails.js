@@ -78,11 +78,16 @@ const BankDetails = (props) => {
         setfileBank(null);
         setdeleteUploadedFile(false);
       } else if (file) {
+        Swal.fire("File Selected!", "", "success");
         setfileBank(file);
         setdeleteUploadedFile(true);
       }
     } else {
       if (e.size > 5000000) {
+        setfileBank(null);
+        setdeleteUploadedFile(null);
+        e = null;
+        document.getElementsByName("fileBank")[0].value = null;
         Swal.fire({
           title: "File size should be less than 5mb",
           icon: "error",
@@ -94,6 +99,7 @@ const BankDetails = (props) => {
         setfileBank(null);
         setdeleteUploadedFile(false);
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileBank(e);
         setdeleteUploadedFile(true);
       }
@@ -450,7 +456,9 @@ const BankDetails = (props) => {
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+
+        
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           setStyle("notEditable");
         }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
@@ -513,6 +521,11 @@ const BankDetails = (props) => {
     console.log("previousAcName", previousAcName);
   }
   useEffect(() => {
+
+    // const admin = JSON.parse(window.sessionStorage.getItem("jwt")).result.role
+    // console.log("admin--->", admin);
+
+
     let newuser = JSON.parse(
       window.sessionStorage.getItem("newregUser")
     )?.newregUser;
@@ -524,7 +537,7 @@ const BankDetails = (props) => {
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           setStyle("notEditable");
         }
         Object.entries(res.data.Bankdetail).map(([key, value]) => {
@@ -680,7 +693,7 @@ const BankDetails = (props) => {
                   <div>
                     {editValuefileBank !== "" ? (
                       <div>
-                        <span>File name:{editValuefileBank}</span>
+                        <span>File name:{" "}{editValuefileBank}</span>
                       </div>
                     ) : (
                       <div>
@@ -690,12 +703,12 @@ const BankDetails = (props) => {
                           required
                           type="file"
                           name="fileBank"
-                          fileOrFiles={deleteUploadedFile}
+                          fileOrFiles={fileBank}
                           disabled={style === "notEditable" ? true : false}
                         />
-                        <span>
+                         <span>
                           {fileBank
-                            ? `File name: ${fileBank.name}`
+                              ? <>File name:{" "} ${fileBank.name}</>
                             : "No File Chosen"}
                         </span>
                       </div>
@@ -713,7 +726,7 @@ const BankDetails = (props) => {
                     />
                     <span>
                       {fileBank
-                        ? `File name: ${fileBank.name}`
+                          ? <>File name:{" "} ${fileBank.name}</>
                         : "No File Chosen"}
                     </span>
                   </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 import auth from '../auth/auth-helper';
-import { withRouter } from "react-router-dom";
 export class Test extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,7 @@ export class Test extends React.Component {
     return (
       <div>
         <p>hello</p>
-        <buuton onClick={this.logout} >Logout</buuton>
+        <button onClick={this.logout} >Logout</button>
         </div>
      )
   }

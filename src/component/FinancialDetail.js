@@ -48,11 +48,16 @@ const FinancialDetails = () => {
           allowEscapeKey: false,
         });
       } else if (selectedFile) {
+        Swal.fire("File Selected!", "", "success");
         setfileFD(selectedFile);
         setdeleteUploadedFile(true);
       }
     } else {
       if (e.size > 10000000) {
+        setfileFD(null);
+        setdeleteUploadedFile(null);
+        e = null;
+        document.getElementsByName("fileFD")[0].value = null;
         Swal.fire({
           title: "file size should be less than 10mb",
           icon: "error",
@@ -62,6 +67,7 @@ const FinancialDetails = () => {
           allowEscapeKey: false,
         });
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileFD(e);
         setdeleteUploadedFile(true);
       }
@@ -83,11 +89,16 @@ const FinancialDetails = () => {
           allowEscapeKey: false,
         });
       } else if (selectedFile) {
+        Swal.fire("File Selected!", "", "success");
         setfileFD2(selectedFile);
         setdeleteUploadedFile2(true);
       }
     } else {
       if (e.size > 10000000) {
+        setfileFD2(null);
+        setdeleteUploadedFile2(null);
+        e = null;
+        document.getElementsByName("fileFD2")[0].value = null;
         Swal.fire({
           title: "file size should be less than 10mb",
           icon: "error",
@@ -97,6 +108,7 @@ const FinancialDetails = () => {
           allowEscapeKey: false,
         });
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileFD2(e);
         setdeleteUploadedFile2(true);
       }
@@ -438,7 +450,7 @@ const FinancialDetails = () => {
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
             setStyle("notEditable");
           }
           var initialUrlfinancial_data =
@@ -478,7 +490,7 @@ const FinancialDetails = () => {
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
             setStyle("notEditable");
           }
           var initialUrlfinancial_data =
@@ -638,7 +650,7 @@ const FinancialDetails = () => {
                   <div>
                     {editfileFD ? (
                       <div>
-                        <span>File name:{editfileFD}</span>
+                        <span>File name:{" "}{editfileFD}</span>
                       </div>
                     ) : (
                       <div>
@@ -648,12 +660,12 @@ const FinancialDetails = () => {
                           required
                           type="file"
                           name="fileFD"
-                          fileOrFiles={deleteUploadedFile}
+                          fileOrFiles={fileFD}
                           disabled={style === "notEditable" ? true : false}
                         />
-                        <span>
+                         <span>
                           {fileFD
-                            ? `File name: ${fileFD.name}`
+                              ? <>File name:{" "} ${fileFD.name}</>
                             : "No File Chosen"}
                         </span>
                       </div>
@@ -667,11 +679,11 @@ const FinancialDetails = () => {
                       required
                       type="file"
                       name="fileFD"
-                      fileOrFiles={deleteUploadedFile}
+                      fileOrFiles={fileFD}
                       disabled={style === "notEditable" ? true : false}
                     />
-                    <span>
-                      {fileFD ? `File name: ${fileFD.name}` : "No File Chosen"}
+                     <span>
+                        {fileFD ? <>File name:{" "} ${fileFD.name}</> : "No File Chosen"}
                     </span>
                   </div>
                 )}
@@ -708,7 +720,7 @@ const FinancialDetails = () => {
                   <div>
                     {editfileFD2 ? (
                       <div>
-                        <span>File name:{editfileFD2}</span>
+                        <span>File name:{" "}{editfileFD2}</span>
                       </div>
                     ) : (
                       <div>
@@ -718,12 +730,12 @@ const FinancialDetails = () => {
                           required
                           type="file"
                           name="fileFD2"
-                          fileOrFiles={deleteUploadedFile2}
+                          fileOrFiles={fileFD2}
                           disabled={style === "notEditable" ? true : false}
                         />
-                        <span>
+                       <span>
                           {fileFD2
-                            ? `File name: ${fileFD2.name}`
+                              ? <>File name:{" "} ${fileFD2.name}</>
                             : "No File Chosen"}
                         </span>
                       </div>
@@ -737,12 +749,12 @@ const FinancialDetails = () => {
                       required
                       type="file"
                       name="fileFD2"
-                      fileOrFiles={deleteUploadedFile2}
+                      fileOrFiles={fileFD2}
                       disabled={style === "notEditable" ? true : false}
                     />
-                    <span>
+                     <span>
                       {fileFD2
-                        ? `File name: ${fileFD2.name}`
+                          ? <>File name:{" "} ${fileFD2.name}</>
                         : "No File Chosen"}
                     </span>
                   </div>

@@ -57,6 +57,9 @@ export class Basic extends React.Component {
       commuDetail: false,
       dataEntered: false,
       phoneNumber: "please enter your 10 digit phone number",
+      newMasterReg:false,
+      basicInfoVendor:false,
+      communicationDetailsInfo:false,
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -81,35 +84,46 @@ export class Basic extends React.Component {
       [name]: value,
     });
     this.setState({ Post_Code: e.target.value });
-    if (this.state.Country_Region_Code && this.state.Post_Code) {
+    if (this.state.Country_Region_Code && this.state.Post_Code && this.state.Post_Code.includes("/") === false) {
       apiService
         .getStateAndcityByzipcode(
           this.state.Country_Region_Code,
           this.state.Post_Code
         )
         .then((response) => {
-          if (response.data.data.postalcodes.length === 0) {
+          console.log("res--------->", response);
+
+          if (response.data.postalcodes.length === 0) {
             this.setState({ getCityAndState: "" });
             this.setState({ state: "" });
             this.setState({ City: "" });
           } else {
             this.setState({
-              getCityAndState: response.data.data.postalcodes[0],
+              getCityAndState: response.data.postalcodes[0],
             });
             this.setState({
-              state: response.data.data.postalcodes[0].adminName1,
+              state: response.data.postalcodes[0].adminName1,
             });
-            if (response.data.data.postalcodes[0].adminName3) {
-              this.setState({
-                City: response.data.data.postalcodes[0].adminName3,
-              });
+            if (response.data.postalcodes[0].adminName3) {
+              for (let i = 0; i < response.data.postalcodes.length; i++) {
+                if(response.data.postalcodes[i].adminName3 !== "NA") {
+                  this.setState({
+                    City: response.data.postalcodes[i].adminName3,
+                  });
+                }
+              }
+
+              
             } else {
               this.setState({
-                City: response.data.data.postalcodes[0].placeName,
+                City: response.data.postalcodes[0].placeName,
               });
             }
           }
         });
+    }
+    else {
+      
     }
   }
   togglebutton() {
@@ -151,7 +165,8 @@ export class Basic extends React.Component {
             companyName: this.state.companyName,
             image: this.state.image,
           };
-          if (this.props.params.userId) {
+          if (this.state.basicInfoVendor) {
+            console.log("update::",this.state.basicInfoVendor)
             apiService
               .updateVendordetail(this.props.params.userId, basicInfo)
               .then((response) => {
@@ -184,6 +199,18 @@ export class Basic extends React.Component {
               });
           } else {
             if (this.props.params.newReg) {
+              const basicInfo = {
+                userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+                  ?.userId,
+                Address: this.state.Address,
+                Address_2: this.state.Address_2,
+                City: this.state.City,
+                state: this.state.state,
+                Country_Region_Code: "IN",
+                Post_Code: this.state.Post_Code,
+                companyName: this.state.companyName,
+                image: this.state.image,
+              };
               apiService.saveNewRegVendordetail(basicInfo).then((response) => {
                 this.setState({ newUser: response.data.result.userId });
                 let data = { newregUser: response.data.result.userId };
@@ -216,6 +243,7 @@ export class Basic extends React.Component {
                 }
               });
             } else {
+              console.log("save::",this.state.basicInfoVendor)
               apiService.saveVendordetail(basicInfo).then((response) => {
                 if (response) {
                   Swal.fire({
@@ -229,6 +257,9 @@ export class Basic extends React.Component {
                     this.setState({
                       open: false,
                       commu: true,
+                    });
+                    this.setState({     
+                      basicInfoVendor: true,
                     });
                     this.setState({
                       isFormChanged: false,
@@ -305,7 +336,8 @@ export class Basic extends React.Component {
             email: this.state.email,
             mastervendor_email: this.state.mastervendor_email,
           };
-          if (this.props.params.userId) {
+          
+          if (this.state.communicationDetailsInfo) {
             if (this.state.commuDetail) {
               apiService
                 .updateCommunicationdetail(
@@ -361,6 +393,9 @@ export class Basic extends React.Component {
                       allowOutsideClick: false,
                     }).then((response) => {
                       this.setState({
+                        communicationDetailsInfo:true
+                      })
+                      this.setState({
                         isFormChangedCommunication: false,
                       });
                       if (
@@ -405,6 +440,9 @@ export class Basic extends React.Component {
                       allowOutsideClick: false,
                     }).then((response) => {
                       this.setState({
+                        communicationDetailsInfo:true
+                      })
+                      this.setState({
                         isFormChangedCommunication: false,
                       });
                       if (
@@ -442,6 +480,9 @@ export class Basic extends React.Component {
                       showCloseButton: true,
                       allowOutsideClick: false,
                     }).then((response) => {
+                      this.setState({
+                        communicationDetailsInfo:true
+                      })
                       this.setState({
                         isFormChangedCommunication: false,
                       });
@@ -605,7 +646,8 @@ export class Basic extends React.Component {
       companyName: this.state.companyName,
       image: this.state.image,
     };
-    if (this.props.params.userId) {
+    if (this.state.basicInfoVendor) {
+      console.log("update::",this.state.basicInfoVendor)
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
@@ -666,6 +708,7 @@ export class Basic extends React.Component {
           }
         });
       } else {
+        console.log("save::",this.state.basicInfoVendor)
         apiService.saveVendordetail(basicInfo).then((response) => {
           if (response) {
             this.fetchData();
@@ -677,6 +720,9 @@ export class Basic extends React.Component {
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
+                this.setState({     
+                  basicInfoVendor: true,
+                });
                 this.setState({
                   isFormChanged: false,
                 });
@@ -709,7 +755,8 @@ export class Basic extends React.Component {
       companyName: this.state.companyName,
       image: this.state.image,
     };
-    if (this.props.params.userId) {
+    if (this.state.basicInfoVendor) {
+      console.log("update::",this.state.basicInfoVendor)
       apiService
         .updateVendordetail(this.props.params.userId, basicInfo)
         .then((response) => {
@@ -767,7 +814,7 @@ export class Basic extends React.Component {
       email: this.state.email,
       mastervendor_email: this.state.mastervendor_email,
     };
-    if (this.props.params.userId) {
+    if (this.state.communicationDetailsInfo) {
       if (this.state.commuDetail) {
         apiService
           .updateCommunicationdetail(
@@ -815,6 +862,9 @@ export class Basic extends React.Component {
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
+                    communicationDetailsInfo:true
+                  })
+                  this.setState({
                     isFormChangedCommunication: false,
                   });
                 }
@@ -850,6 +900,9 @@ export class Basic extends React.Component {
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
+                    communicationDetailsInfo:true
+                  })
+                  this.setState({
                     isFormChangedCommunication: false,
                   });
                 }
@@ -878,6 +931,9 @@ export class Basic extends React.Component {
                 allowOutsideClick: false,
               }).then((result) => {
                 if (result.isConfirmed) {
+                  this.setState({
+                    communicationDetailsInfo:true
+                  })
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -922,7 +978,7 @@ export class Basic extends React.Component {
       email: this.state.email,
       mastervendor_email: this.state.mastervendor_email,
     };
-    if (this.props.params.userId) {
+    if (this.state.communicationDetailsInfo) {
       // "aravinth"
       if (this.state.commuDetail) {
         apiService
@@ -970,6 +1026,9 @@ export class Basic extends React.Component {
                 allowOutsideClick: false,
               }).then((result) => {
                 if (result.isConfirmed) {
+                  this.setState({
+                    communicationDetailsInfo:true
+                  })
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -1030,6 +1089,17 @@ export class Basic extends React.Component {
     apiService.updateVendordetail(userId, data).then((response) => { });
   }
   fetchData() {
+    const storedData = sessionStorage.getItem("master");
+    const data = storedData ? JSON.parse(storedData) : {};
+    console.log("basicmaster::",data.master)
+    if(data.master===true)
+    {
+      console.log("indianmaster::")
+      this.setState({
+        newMasterReg: true,
+      });
+      
+    }
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
       ?.userId;
     apiService.signupFindByUserId(userid).then((res) => {
@@ -1071,7 +1141,22 @@ export class Basic extends React.Component {
         console.log("finalstatus", finalstatus);
       });
       apiService.getAllCollection(this.props.params.userId).then((res) => {
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+        console.log("basicres::",res.data.basicInfo?.length > 0);
+        if (res.data.basicInfo?.length > 0)
+        {
+          this.setState({     
+            basicInfoVendor: true,
+          });
+        }
+        
+        if(res.data.CommunicationDetails?.length > 0)
+        {
+          this.setState({
+            communicationDetailsInfo:true
+          })
+        }
+        console.log("basicInfotrue::",this.state.basicInfoVendor);
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           this.setState({ setStyle: "notEditable" });
         }
         this.setState({
@@ -1235,6 +1320,18 @@ export class Basic extends React.Component {
         this.setState({
           editStatutory: res.data.Statutory,
         });
+        if (res.data.basicInfo?.length > 0)
+        {
+          this.setState({     
+            basicInfoVendor: true,
+          });
+        }
+        if(res.data.CommunicationDetails?.length > 0)
+        {
+          this.setState({
+            communicationDetailsInfo:true
+          })
+        }
         Object.entries(res.data.basicInfo).map(([key, value]) => {
           this.setState({
             companyName: value.companyName,
@@ -1282,11 +1379,25 @@ export class Basic extends React.Component {
           JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
         )
         .then((res) => {
+          if (res.data.basicInfo?.length > 0)
+          {
+            this.setState({     
+              basicInfoVendor: true,
+            });
+          }
+          if(res.data.CommunicationDetails?.length > 0)
+          {
+            this.setState({
+              communicationDetailsInfo:true
+            })
+          }
+          console.log("basicres::",res);
           this.setState({
             editStatutory: res.data.Statutory,
           });
         });
     }
+    console.log("basicInfoVendor::",this.state.basicInfoVendor);
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
@@ -1399,6 +1510,7 @@ export class Basic extends React.Component {
                                             id="companyName"
                                             onChange={this.formValChange}
                                             value={companyName}
+                                            readOnly = {true}
                                           />
                                         </div>
                                       </MDBCol>
@@ -1457,23 +1569,34 @@ export class Basic extends React.Component {
                                           </label>
                                         </div>
                                         <div>
-                                          <select
-                                            className="mb-4 VendorInput"
-                                            name="Country_Region_Code"
-                                            id="Country_Region_Code"
-                                            value={
-                                              this.state.Country_Region_Code
-                                            }
-                                            onChange={this.handleChange}
-                                            disabled={
-                                              this.state.setStyle ===
-                                                "notEditable"
-                                                ? true
-                                                : false
-                                            }
-                                          >
-                                            {countriesList}
-                                          </select>
+                                        {this.state.newMasterReg ? (
+        <input
+          className="mb-4 VendorInput"
+          name="Country_Region_Code"
+          id="Country_Region_Code"
+          value="India"
+          readOnly
+        />
+      ) : (
+        <select
+        className="mb-4 VendorInput"
+        name="Country_Region_Code"
+        id="Country_Region_Code"
+        value={
+          this.state.Country_Region_Code
+        }
+        onChange={this.handleChange}
+        disabled={
+          this.state.setStyle ===
+            "notEditable"
+            ? true
+            : false
+        }
+      >
+        {countriesList}
+      </select>
+      )}
+                                        
                                         </div>
                                       </MDBCol>
                                       <MDBCol>
@@ -1492,6 +1615,20 @@ export class Basic extends React.Component {
                                             onMouseLeave={this.mouseOut}
                                             onChange={this.mouseEnter}
                                           />
+                                            <Tooltip class="tooltipstyle"
+                                            title={'Please fill the exact code relevant to your country and click outside, State & City will auto populate'}
+                                            placement="right"
+                                          >
+                                            <div
+                                              style={{
+                                                position: "absolute",
+                                                right: "5%",
+                                                top: "63%",
+                                              }}
+                                            >
+                                              <InfoIcon />
+                                            </div>
+                                          </Tooltip>
                                         </div>
                                       </MDBCol>
                                     </MDBRow>

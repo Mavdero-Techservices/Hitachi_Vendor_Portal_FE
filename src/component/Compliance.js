@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/Compliance.css";
 import Navbar1 from "../common/navbar.js";
 import { FileUploader } from "react-drag-drop-files";
+import "../css/Dragfileuploader.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -67,11 +68,16 @@ const ComplianceDetails = () => {
         setfileRPD(null);
         setdeleteUploadedFile(false);
       } else if (file) {
+        Swal.fire("File Selected!", "", "success");
         setfileRPD(file);
         setdeleteUploadedFile(true);
       }
     } else {
       if (e.size > 5000000) {
+        setfileRPD(null);
+        setdeleteUploadedFile(null);
+        e = null;
+        document.getElementsByName("fileRPD")[0].value = null;
         Swal.fire({
           title: "File size should be less than 5mb",
           icon: "error",
@@ -83,6 +89,7 @@ const ComplianceDetails = () => {
         setfileRPD(null);
         setdeleteUploadedFile(false);
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileRPD(e);
         setdeleteUploadedFile(true);
       }
@@ -104,11 +111,16 @@ const ComplianceDetails = () => {
           allowEscapeKey: false,
         });
       } else if (file) {
+        Swal.fire("File Selected!", "", "success");
         setfileCOC(file);
         setdeleteCocFile(true);
       }
     } else {
       if (e.size > 5000000) {
+        setfileCOC(null);
+        setdeleteCocFile(null);
+        e = null;
+        document.getElementsByName("fileCOC")[0].value = null;
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -118,6 +130,7 @@ const ComplianceDetails = () => {
           allowEscapeKey: false,
         });
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileCOC(e);
         setdeleteCocFile(true);
       }
@@ -139,11 +152,16 @@ const ComplianceDetails = () => {
           allowEscapeKey: false,
         });
       } else if (file) {
+        Swal.fire("File Selected!", "", "success");
         setfileNDA(file);
         setdeleteNdaFile(true);
       }
     } else {
       if (e.size > 5000000) {
+        setfileNDA(null);
+        setdeleteNdaFile(null);
+        e=null;
+        document.getElementsByName("fileNDA")[0].value = null;
         Swal.fire({
           title: "file size should be less than 5mb",
           icon: "error",
@@ -153,6 +171,7 @@ const ComplianceDetails = () => {
           allowEscapeKey: false,
         });
       } else {
+        Swal.fire("File Selected!", "", "success");
         setfileNDA(e);
         setdeleteNdaFile(true);
       }
@@ -313,7 +332,7 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           setStyle("notEditable");
         }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
@@ -339,7 +358,7 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted") {
+        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           setStyle("notEditable");
         }
         if (res.data.ComplianceDetail?.length > 0) {
@@ -561,7 +580,7 @@ const ComplianceDetails = () => {
                           <div>
                             {editVlauefileRPD ? (
                               <div>
-                                <span>File name:{editVlauefileRPD}</span>
+                                <span>File name:{" "}{editVlauefileRPD}</span>
                               </div>
                             ) : (
                               <div>
@@ -570,14 +589,14 @@ const ComplianceDetails = () => {
                                   required
                                   type="file"
                                   name="fileRPD"
-                                  fileOrFiles={deleteUploadedFile}
+                                  fileOrFiles={fileRPD}
                                   disabled={
                                     style === "notEditable" ? true : false
                                   }
                                 />
                                 <span>
                                   {fileRPD
-                                    ? `File name:${fileRPD.name}`
+                                      ? <>File name:{" "}${fileRPD.name}</>
                                     : "No File Chosen"}
                                 </span>
                               </div>
@@ -590,12 +609,12 @@ const ComplianceDetails = () => {
                               required
                               type="file"
                               name="fileRPD"
-                              fileOrFiles={deleteUploadedFile}
+                              fileOrFiles={fileRPD}
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileRPD
-                                ? `File name:${fileRPD.name}`
+                                  ? <>File name:{" "}${fileRPD.name}</>
                                 : "No File Chosen"}
                             </span>
                           </div>
@@ -646,7 +665,7 @@ const ComplianceDetails = () => {
                       </Col>
                       <Col sm={6}>
                         {editVlauefileCOC ? (
-                          <span>File name:{editVlauefileCOC}</span>
+                          <span>File name:{" "}{editVlauefileCOC}</span>
                         ) : (
                           <div>
                             <FileUploader
@@ -654,12 +673,12 @@ const ComplianceDetails = () => {
                               required
                               type="file"
                               name="fileCOC"
-                              fileOrFiles={deleteCocFile}
+                              fileOrFiles={fileCOC}
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileCOC
-                                ? `File name: ${fileCOC.name}`
+                                  ? <>File name:{" "} ${fileCOC.name}</>
                                 : "No File Chosen"}
                             </span>
                           </div>
@@ -708,7 +727,7 @@ const ComplianceDetails = () => {
                       </Col>
                       <Col sm={6}>
                         {editVlauefileNDA ? (
-                          <span>File name:{editVlauefileNDA}</span>
+                          <span>File name:{" "}{editVlauefileNDA}</span>
                         ) : (
                           <div>
                             <FileUploader
@@ -716,12 +735,12 @@ const ComplianceDetails = () => {
                               required
                               type="file"
                               name="fileNDA"
-                              fileOrFiles={deleteNdaFile}
+                              fileOrFiles={fileNDA}
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
                               {fileNDA
-                                ? `File name:${fileNDA.name}`
+                                  ? <>File name:{" "}${fileNDA.name}</>
                                 : "No File Chosen"}
                             </span>
                           </div>
