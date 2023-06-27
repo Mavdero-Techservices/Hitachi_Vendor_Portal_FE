@@ -15,7 +15,11 @@ import apiService from "../services/api.service";
 import Swal from 'sweetalert2';
 
 function Documents() {
+
     const [doclist, setdoclist] = useState([]);
+
+    const [vendorCodeDoc, setvendorCodeDoc] = useState();
+
     const param = useParams();
     const theme = createTheme({
         Link: {
@@ -142,18 +146,32 @@ function Documents() {
             setdoclist(response.data.result)
             console.log("response.data.result------------req-->>>", response)
             // setreqData(response.data.result);
-        })
-    }, [])
+        });
+
+        apiService.getDocuments().then((res) => {
+            const arr = res.data.result.filter((item) => {
+              return item.vendorId === vendorCodeDoc;
+            });
+            console.log("arr---->", arr);
+            setdoclist(arr);
+          });
+
+    }, [vendorCodeDoc])
 
     const submitHandler = (e) => {
         e.preventDefault();
         // console.log("rows-------------->>>>", rows);
     }
+
+    const handleVcode = (msg) => {
+        setvendorCodeDoc(msg);
+      };
+
     return (
         <ThemeProvider theme={theme}>
             <Box style={{ backgroundColor: '#f3f4f7' }}  >
                 <CssBaseline />
-                <VendorPortalHeader vCode={param?.vId} />
+                <VendorPortalHeader handleVcode={handleVcode} />
                 <Box sx={{ display: 'flex' }}>
                     <VendorPortSidemenu />
                     <Box sx={{ mt: 2, width: '100%' }}>

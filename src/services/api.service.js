@@ -353,5 +353,14 @@ createsharepointFolderByTicketId(data)
 {
   return http.post("/createsharepointFolderByTicketId",data);
 }
+
+getSubuserId(subUserId) {
+  return http.get(`/getSubuserId/${subUserId}`);
+}
+
+getDocuments() {
+  return http.get('/getDocuments');
+}
+
 }
 export default new apiService();
