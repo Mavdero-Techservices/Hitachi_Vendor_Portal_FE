@@ -491,7 +491,7 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID || undefined
+      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 : JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID
     };
     if (params.userId) {
 
@@ -518,9 +518,24 @@ const ContactTeam = () => {
             apiService
               .updateVendordetail(userkey, basicInfo[0])
               .then((response) => {
-                Swal.fire(
-                  "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                );
+                Swal.fire({
+                  title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                  confirmButtonText: "Yes",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                      item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                      delete item.result.userId2;
+                      delete item.result.usertype;
+                      delete item.result.Ticket_ID2;
+                      console.log("new user response------------>>>", item.result)
+                      sessionStorage.setItem("jwt", JSON.stringify(item));
+                      navigate("/userCreation");
+                    }
+                  }
+                })
               });
           } else {
             Swal.fire({
@@ -608,7 +623,19 @@ const ContactTeam = () => {
                       sessionStorage.removeItem('newregUser')
                     }
                     if (result.isConfirmed) {
-                      navigate("/userCreation")
+                      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                        let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                        item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                        item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                        delete item.result.userId2;
+                        delete item.result.usertype;
+                        delete item.result.Ticket_ID2;
+                        console.log("new user response------------>>>", item.result)
+                        sessionStorage.setItem("jwt", JSON.stringify(item));
+                        navigate("/userCreation");
+                      } else {
+                        navigate("/userCreation")
+                      }
                     }
                   })
                 });
@@ -684,9 +711,24 @@ const ContactTeam = () => {
               apiService
                 .updateVendordetail(userkey, basicInfo[0])
                 .then((response) => {
-                  Swal.fire(
-                    "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                  );
+                    Swal.fire({
+                    title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                        let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                        item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                        item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                        delete item.result.userId2;
+                        delete item.result.usertype;
+                        delete item.result.Ticket_ID2;
+                        console.log("new user response------------>>>", item.result)
+                        sessionStorage.setItem("jwt", JSON.stringify(item));
+                        navigate("/userCreation");
+                      }
+                    }
+                  })
                 });
             } else {
               Swal.fire({
@@ -1050,7 +1092,7 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID || undefined
+      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 : JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID
     };
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
@@ -1088,7 +1130,20 @@ const ContactTeam = () => {
                       confirmButtonText: "Yes",
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        navigate("/userCreation")
+                        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                          let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                          item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                          item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                          delete item.result.userId2;
+                          delete item.result.usertype;
+                          delete item.result.Ticket_ID2;
+                          console.log("new user response------------>>>", item.result)
+                          sessionStorage.setItem("jwt", JSON.stringify(item));
+                          navigate("/userCreation");
+                        } else {
+                          navigate("/userCreation")
+
+                        }
                       }
                     })
                     // chandran
@@ -1224,7 +1279,7 @@ const ContactTeam = () => {
       });
     } else {
       if (
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration"
       ) {
         apiService.getAllCollection(params.userId).then((getAllCollection) => {
           setbasicInfo(getAllCollection.data.basicInfo);

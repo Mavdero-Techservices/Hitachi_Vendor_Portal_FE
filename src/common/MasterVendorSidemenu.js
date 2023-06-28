@@ -23,6 +23,7 @@ import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
 import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const MasterVendorSidemenu = (props) => {
   const [modalShow, setModalShow] = useState(false);
@@ -148,11 +149,45 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
   };
 
   const handleState = () => {
-    let data = { master:true};
-    sessionStorage.setItem("master", JSON.stringify(data));
-    let id = 'newReg'
-    navigate(`/basic/newReg/${id}`);
+    const data = { userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId }
+    apiService.saveNewRegVendordetail(data).then((response) => {
+
+      if (response) {
+        console.log("new user response------------>>>", "response")
+        let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+        item.result.userId = response.data.result.userId
+        item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        item.result.usertype = "NewRegistration"
+        item.result.Ticket_ID2 = response.data.result.Ticket_ID
+        sessionStorage.setItem("jwt", JSON.stringify(item));
+        navigate(`/basic`);
+
+      }
+      else {
+        Swal.fire({
+          title: "Error While Fetching",
+          icon: "error",
+          confirmButtonText: "OK",
+          showCloseButton: true,
+          allowOutsideClick: false,
+        });
+      }
+    });
   };
+
+  const onSubmitClick = () => {
+    var vendorUserId = { userId: UserId };
+    let data = { master: true };
+    sessionStorage.setItem("master", JSON.stringify(data));
+    sessionStorage.setItem("UserFromMasterData", JSON.stringify(UserId));
+    navigate(`/basic/${UserId}`);
+
+    apiService.UpdateUserStatusByUserId(UserId).then((res) => {
+      console.log("res###############", res)
+      // setAdminEmail(res.data.result.emailId);
+    });
+
+  }
   return (
     <>
       <Box
@@ -497,13 +532,7 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
                     <Box>
                       <Button
                         variant="contained"
-                        onClick={() => {
-                          var vendorUserId = { userId:UserId };
-                          let data = { master: true };                         
-                          sessionStorage.setItem("master", JSON.stringify(data));
-                          sessionStorage.setItem("UserFromMasterData",JSON.stringify(UserId));
-                          navigate(`/basic/${UserId}`);
-                        }}
+                        onClick={onSubmitClick}
                       >
                         Submit
                       </Button>

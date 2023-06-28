@@ -244,6 +244,9 @@ class apiService {
   getErpVendor_APIByP_A_N_No(P_A_N_No) {
     return http.get(`/getErpVendor_APIByP_A_N_No/${P_A_N_No}`);
   }
+  getErpVendor_APIByVendorId(ticketId) {
+    return http.get(`/getErpVendor_APIByVendorId/${ticketId}`);
+  }
   updateTicketIdbyUserId(userId) {
     return http.put(`/updateTicketIdbyUserId/${userId}`);
   }
@@ -361,6 +364,8 @@ getSubuserId(subUserId) {
 getDocuments() {
   return http.get('/getDocuments');
 }
-
+  UpdateUserStatusByUserId(userId) {
+    return http.put(`/updateVdetail/userStatus/${userId}`);
+  }
 }
 export default new apiService();

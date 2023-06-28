@@ -60,6 +60,7 @@ export class Basic extends React.Component {
       newMasterReg:false,
       basicInfoVendor:false,
       communicationDetailsInfo:false,
+      userType: ''
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -164,6 +165,7 @@ export class Basic extends React.Component {
             Post_Code: this.state.Post_Code,
             companyName: this.state.companyName,
             image: this.state.image,
+            userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
           };
           if (this.state.basicInfoVendor) {
             console.log("update::",this.state.basicInfoVendor)
@@ -210,6 +212,7 @@ export class Basic extends React.Component {
                 Post_Code: this.state.Post_Code,
                 companyName: this.state.companyName,
                 image: this.state.image,
+                userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
               };
               apiService.saveNewRegVendordetail(basicInfo).then((response) => {
                 this.setState({ newUser: response.data.result.userId });
@@ -645,6 +648,7 @@ export class Basic extends React.Component {
       Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
+      userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
     };
     if (this.state.basicInfoVendor) {
       console.log("update::",this.state.basicInfoVendor)
@@ -754,6 +758,7 @@ export class Basic extends React.Component {
       Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
+      userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
     };
     if (this.state.basicInfoVendor) {
       console.log("update::",this.state.basicInfoVendor)
@@ -1413,6 +1418,13 @@ export class Basic extends React.Component {
     }
   }
   componentDidMount() {
+    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+      this.setState({ Country_Region_Code: "IN" })
+      this.setState({ userType: "NewRegistration" })
+    } else {
+      this.setState({ Country_Region_Code: "" })
+      this.setState({ userType: "" })
+    }
     console.log("this.state.image", this.state.image);
     this.fetchData();
   }
@@ -1588,7 +1600,7 @@ export class Basic extends React.Component {
         onChange={this.handleChange}
         disabled={
           this.state.setStyle ===
-            "notEditable"
+            "notEditable" || this.state.userType === 'NewRegistration'
             ? true
             : false
         }
@@ -1815,10 +1827,10 @@ export class Basic extends React.Component {
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
+                                    // style={{
+                                    //   display: "flex",
+                                    //   alignItems: "center",
+                                    // }}
                                   >
                                     <input
                                       type="text"
@@ -1832,15 +1844,15 @@ export class Basic extends React.Component {
                                       title={this.state.phoneNumber}
                                       placement="right"
                                     >
-                                      <div
+                                      <span
                                         style={{
                                           position: "absolute",
-                                          right: "27.5%",
-                                          top: "6.5%",
+                                          marginTop: "7px",
+                                          marginLeft: '-30px'
                                         }}
                                       >
                                         <InfoIcon />
-                                      </div>
+                                      </span>
                                     </Tooltip>
                                   </div>
                                 </MDBCol>
@@ -1896,15 +1908,15 @@ export class Basic extends React.Component {
                                     title={this.state.phoneNumber}
                                     placement="right"
                                   >
-                                    <div
+                                    <span
                                       style={{
                                         position: "absolute",
-                                        right: "27.5%",
-                                        top: "22.5%",
+                                        marginTop: "7px",
+                                        marginLeft: '-30px'
                                       }}
                                     >
                                       <InfoIcon />
-                                    </div>
+                                    </span>
                                   </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
@@ -1959,15 +1971,15 @@ export class Basic extends React.Component {
                                     title={this.state.phoneNumber}
                                     placement="right"
                                   >
-                                    <div
+                                    <span
                                       style={{
                                         position: "absolute",
-                                        right: "27.5%",
-                                        top: "37.8%",
+                                        marginTop: "7px",
+                                        marginLeft: '-30px'
                                       }}
                                     >
                                       <InfoIcon />
-                                    </div>
+                                    </span>
                                   </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
@@ -2023,15 +2035,15 @@ export class Basic extends React.Component {
                                     title={this.state.phoneNumber}
                                     placement="right"
                                   >
-                                    <div
+                                      <span
                                       style={{
                                         position: "absolute",
-                                        right: "27.5%",
-                                        top: "53.7%",
+                                        marginTop: "7px",
+                                        marginLeft: '-30px'
                                       }}
                                     >
                                       <InfoIcon />
-                                    </div>
+                                    </span>
                                   </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
@@ -2084,15 +2096,15 @@ export class Basic extends React.Component {
                                     title={this.state.phoneNumber}
                                     placement="right"
                                   >
-                                    <div
+                                    <span
                                       style={{
                                         position: "absolute",
-                                        right: "27.5%",
-                                        top: "69.5%",
+                                        marginTop: "7px",
+                                        marginLeft: '-30px'
                                       }}
                                     >
                                       <InfoIcon />
-                                    </div>
+                                    </span>
                                   </Tooltip>
                                 </MDBCol>
                                 <MDBCol>
@@ -2107,7 +2119,7 @@ export class Basic extends React.Component {
                                   />
                                 </MDBCol>
                               </MDBRow>
-                              {this.state.approval === "Admin" ? (
+                              {this.state.approval === "Admin" || this.state.userType === 'NewRegistration' ? (
                                 ""
                               ) : (
                                 <MDBRow>
@@ -2142,7 +2154,7 @@ export class Basic extends React.Component {
                                     {this.props.params.userId &&
                                       JSON.parse(
                                         window.sessionStorage.getItem("jwt")
-                                      ).result?.role === "Admin" ? (
+                                      ).result?.role === "Admin" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration" ? (
                                       <>
                                         <button
                                           type="button"

@@ -101,6 +101,7 @@ function ApprovalFields(props) {
         setcity(res.data.basicInfo[0].City);
         setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
+        setuserStatus(res.data.basicInfo[0].userStatus);
       } else {
         setaddress1("");
         setaddress2("");
@@ -110,6 +111,7 @@ function ApprovalFields(props) {
         setcity("");
         setpinCode("");
         setCountry("");
+        userStatus("");
       }
   
       if (
@@ -404,6 +406,7 @@ function ApprovalFields(props) {
         setcity(res.data.basicInfo[0].City);
         setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
+        setuserStatus(res.data.basicInfo[0].userStatus);
       } else {
         setaddress1("");
         setaddress2("");
@@ -412,6 +415,7 @@ function ApprovalFields(props) {
         setstate("");
         setcity("");
         setpinCode("");
+        userStatus("");
       }
 
       if (
@@ -631,6 +635,7 @@ function ApprovalFields(props) {
   const [City, setcity] = useState("");
   const [Post_Code, setpinCode] = useState("");
   const [logo, setlogo] = useState("");
+  const [userStatus, setuserStatus] = useState("");
 
   const [fs_ContactName, setfs_ContactName] = useState("");
   const [fs_Designation, setfs_Designation] = useState("");
@@ -826,7 +831,7 @@ function ApprovalFields(props) {
       setpinCodeErr("Pincode is required");
     } else if (
       !numberValidation.test(e.target.value)) {
-      setpinCodeErr("Pincode is invalid");
+      // setpinCodeErr("Pincode is invalid");
     } else {
       setpinCodeErr("");
       setpinCode(e.target.value);
@@ -921,7 +926,7 @@ function ApprovalFields(props) {
   };
   const validatemastervendor_email = (e) => {
     setmastervendor_email(e.target.value);
-    if (e.target.value.length === 0) {
+    if (e.target.value.length === 0 && userStatus !== "NewRegistration") {
       setmastervendor_emailErr("Email is required");
     } else {
       setmastervendor_emailErr("");
@@ -1706,8 +1711,8 @@ function ApprovalFields(props) {
       FormarrayErr.push("Post_Code")
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
-      FormarrayErr.push("Post_Code Invalid")
-      setpinCodeErr("Pincode is Invalid");
+      // FormarrayErr.push("Post_Code Invalid")
+      // setpinCodeErr("Pincode is Invalid");
     }
 
     // if (!logo) {
@@ -1777,10 +1782,10 @@ function ApprovalFields(props) {
       setmngs_EmailErr("Email is invalid");
     }
 
-    if (mastervendor_email.length === 0) {
+    if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email")
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email)) {
+    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email Invalid")
       setmastervendor_emailErr("Email is invalid");
     }
@@ -2261,8 +2266,8 @@ function ApprovalFields(props) {
       FormarrayErr.push("Post_Code")
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
-      FormarrayErr.push("Post_Code Invalid")
-      setpinCodeErr("Pincode is Invalid");
+      // FormarrayErr.push("Post_Code Invalid")
+      // setpinCodeErr("Pincode is Invalid");
     }
 
     // if (!logo) {
@@ -2332,10 +2337,10 @@ function ApprovalFields(props) {
       setmngs_EmailErr("Email is invalid");
     }
 
-    if (mastervendor_email.length === 0) {
+    if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email")
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email)) {
+    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email Invalid")
       setmastervendor_emailErr("Email is invalid");
     }
@@ -2726,8 +2731,8 @@ function ApprovalFields(props) {
           FormarrayErr.push("Post_Code")
           setpinCodeErr("Pincode is required");
         }else if (!numberValidation.test(Post_Code)){
-          FormarrayErr.push("Post_Code Invalid")
-          setpinCodeErr("Pincode is Invalid");
+          // FormarrayErr.push("Post_Code Invalid")
+          // setpinCodeErr("Pincode is Invalid");
         }
     
         // if (!logo) {
@@ -2797,10 +2802,10 @@ function ApprovalFields(props) {
           setmngs_EmailErr("Email is invalid");
         }
     
-        if (mastervendor_email.length === 0) {
+    if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
           FormarrayErr.push("mastervendor_email")
           setmastervendor_emailErr("Email is required");
-        } else if (!emailValidation.test(mastervendor_email)) {
+    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
           FormarrayErr.push("mastervendor_email Invalid")
           setmastervendor_emailErr("Email is invalid");
         }
@@ -3135,8 +3140,8 @@ function ApprovalFields(props) {
       FormarrayErr.push("Post_Code")
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
-      FormarrayErr.push("Post_Code Invalid")
-      setpinCodeErr("Pincode is Invalid");
+      // FormarrayErr.push("Post_Code Invalid")
+      // setpinCodeErr("Pincode is Invalid");
     }
 
     // if (!logo) {
@@ -3206,10 +3211,10 @@ function ApprovalFields(props) {
       setmngs_EmailErr("Email is invalid");
     }
 
-    if (mastervendor_email.length === 0) {
+    if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email")
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email)) {
+    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
       FormarrayErr.push("mastervendor_email Invalid")
       setmastervendor_emailErr("Email is invalid");
     }
@@ -3978,7 +3983,7 @@ function ApprovalFields(props) {
                       </div>: ""}
                     </div>
                   </>
-               
+                {userStatus === "NewRegistration" ? "" :
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="Post_Code">Master vendor email id*</label>
                   <input
@@ -3990,6 +3995,7 @@ function ApprovalFields(props) {
                   />
                   <span className="formError">{mastervendor_emailErr}</span>
                 </div>
+                }
               </div>
 
               <div className="row px-3" style={{ backgroundColor: "#fff" }}>

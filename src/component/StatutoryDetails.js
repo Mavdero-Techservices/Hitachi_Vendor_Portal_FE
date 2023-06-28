@@ -81,6 +81,8 @@ export default function Statutory(props) {
     MSME_Type: "",
     TAN_No: "",
     Tax_residency_No: "",
+    staticPAN_No: "",
+    userType: ""
   });
   const [isNewValueEntered, setIsNewValueEntered] = useState(false);
   function onChangeValue(event) {
@@ -555,6 +557,28 @@ export default function Statutory(props) {
 
   useEffect(() => {
     (async () => {
+      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+        console.log("vendorcodessss---inside-------------->>>>>>")
+        let masterid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.Ticket_ID
+
+        setValues({ userType: "NewRegistration" })
+
+        await apiService.getErpVendor_APIByVendorId(masterid).then((vendorCode) => {
+          if (vendorCode) {
+            console.log("vendorcodessss-------vendorCode.data.result.P_A_N_No---------->>>>>>", vendorCode.data.response[0].P_A_N_No)
+            if (vendorCode.data.response.length > 0) {
+              setValues({ PAN_No: vendorCode.data.response[0].P_A_N_No })
+            } else {
+              setValues({ PAN_No: "" })
+            }
+
+          }
+        })
+      } else {
+        setValues({ PAN_No: "" })
+        setValues({ userType: "" })
+      }
+
       const storedData = sessionStorage.getItem("master");
       const masterData = storedData ? JSON.parse(storedData) : {};
       await apiService
@@ -1494,9 +1518,9 @@ export default function Statutory(props) {
                                   }}
                                   type="text"
                                   value={
-                                    countryName !== "IN" ? "N/A" : values.PAN_No
+                                    countryName !== "IN" && values.userType !== 'NewRegistration' ? "N/A" : values.PAN_No
                                   }
-                                  disabled={countryName !== "IN"}
+                                    disabled={countryName !== "IN" || (JSON.parse(window.sessionStorage.getItem("jwt")).result?.userType === "NewRegistration") ? true : false}
                                   onChange={handleChange("PAN_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
