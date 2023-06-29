@@ -45,6 +45,8 @@ import VendorHomePage from './component/VendorHomePage';
 import FinanceTeam from './component/FinanceTeam';
 import FinanceTeamApproved from './component/FinanceTeamApproved';
 import FinanceTeamRejected from './component/FinanceTeamReject';
+import Assent from './component/Assent';
+import AgreementDocuments from './component/AgreementDocuments';
 
 const MainRouter = () => {
   const { isLoggedIn } = useSelector((state) => state.onlineStatus);
@@ -102,10 +104,10 @@ const MainRouter = () => {
           
           </Route>
                 {/*otherRoutes */}
-        <Route element={<OtherRoute />}>
+        {/* <Route element={<OtherRoute />}> */}
           <Route path="/documents" element={<Documents />} />
           <Route path="/documents/:vId" element={<Documents />} />
-        </Route>
+        {/* </Route> */}
         {/*VCTRoutes */}
         <Route element={<VCTRoute/>}>
         <Route path="/approval" element={<AdminPage />} />
@@ -177,6 +179,9 @@ const MainRouter = () => {
         <Route path="/poApproved" element={<PoApproved />} />
         <Route path="/poRejected" element={<PoReject />} />
           </Route>
+
+        <Route path="/assent" element={<Assent/>} />
+        <Route path="/agreementDocuments" element={<AgreementDocuments />} />
       </Routes>
     </div>
   );

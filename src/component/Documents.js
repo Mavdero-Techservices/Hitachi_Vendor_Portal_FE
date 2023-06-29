@@ -13,11 +13,13 @@ import VendorPortSidemenu from "../common/VendorPortSidemenu";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
+import AgreementDocuments from './AgreementDocuments';
 
 function Documents() {
   const [doclist, setdoclist] = useState([]);
   const [vendorCodeDoc, setvendorCodeDoc] = useState();
   const [docDetails, setdocDetails] = useState([]);
+    const [docState, setdocState] = useState("PeriodicDoc");
 
   console.log("vendorCodeDoc--------->", vendorCodeDoc);
 
@@ -197,39 +199,14 @@ function Documents() {
                   aria-controls="panel3a-content"
                   id="panel3a-header"
                 >
-                  <Typography
-                    sx={{
-                      mt: 1,
-                      width: "30%",
-                      flexShrink: 0,
-                      fontWeight: "bold",
-                      color: "#B1000E",
-                    }}
-                  >
-                    PERIODIC DOCUMENTS
-                  </Typography>
-                  <Typography
-                    sx={{
-                      mt: 1,
-                      width: "20%",
-                      flexShrink: 0,
-                      color: "#B1000E",
-                    }}
-                  >
-                    AGREEMENTS
-                  </Typography>
-                  <Typography
-                    sx={{
-                      mt: 1,
-                      width: "30%",
-                      flexShrink: 0,
-                      color: "#B1000E",
-                    }}
-                  >
-                    TDS CERTIFICATE
-                  </Typography>
+                                  <Typography onClick={(e) => { setdocState('PeriodicDoc') }} sx={{ mt: 1, width: '30%', flexShrink: 0, fontWeight: docState === 'PeriodicDoc' ? "bold" : 'none', color: '#B1000E' }} >PERIODIC DOCUMENTS</Typography>
+                                  <Typography onClick={(e) => { setdocState('Agreements') }} sx={{ mt: 1, width: '20%', flexShrink: 0, fontWeight: docState === 'Agreements' ? "bold" : 'none', color: '#B1000E' }}>AGREEMENTS</Typography>
+                                  <Typography onClick={(e) => { setdocState('TDS') }} sx={{ mt: 1, width: '30%', flexShrink: 0, fontWeight: docState === 'TDS' ? "bold" : 'none', color: '#B1000E' }}>TDS CERTIFICATE</Typography>
                 </AccordionSummary>
               </Accordion>
+                      </Container>
+                      {docState === 'PeriodicDoc' ?
+                          <Container>
               <Box sx={{ mt: 4, height: 350, width: "100%" }}>
                 <DataGrid
                   sx={{ backgroundColor: "white" }}
@@ -262,6 +239,9 @@ function Documents() {
                 </button>
               </Box>
             </Container>
+                          : <></>}
+                      {docState === 'Agreements' ? <AgreementDocuments />
+                          : <></>}
           </Box>
         </Box>
       </Box>
