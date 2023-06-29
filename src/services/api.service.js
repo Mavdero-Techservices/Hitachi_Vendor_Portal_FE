@@ -333,6 +333,15 @@ saveInvoiceInfo(data) {
   return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveInvoiceInfo`, data);
 }
 
+uploadDocbyVendorCode(data){
+  console.log("data-------->", data);
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/uploadDocbyVendorCode`, data);
+}
+
+getOutOfIndiaVcode(ticketId) {
+  return http.get(`/getOutOfIndiaVcode/${ticketId}`,);
+}
+
 getInvoiceinfo() {
   return http.get('/getInvoiceinfo');
 }
