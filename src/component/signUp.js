@@ -47,8 +47,9 @@ export default function Signup(props) {
     }
     if (!phoneNumber || phoneNumber === "") {
       newErrors.phoneNumber = "Please enter phoneNumber";
-    } else if (!mobileValReg.test(phoneNumber))
-      newErrors.phoneNumber = "Please enter a valid phoneNumber";
+    } 
+    // else if (!mobileValReg.test(phoneNumber))
+    //   newErrors.phoneNumber = "Please enter a valid phoneNumber";
     if (!emailId || emailId === "") {
       newErrors.emailId = "Please enter emailId";
     } else if (!mailValReg.test(emailId))

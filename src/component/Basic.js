@@ -56,7 +56,7 @@ export class Basic extends React.Component {
       editStatutory: "",
       commuDetail: false,
       dataEntered: false,
-      phoneNumber: "please enter your 10 digit phone number",
+      phoneNumber: "please enter your valid phone number",
       newMasterReg:false,
       basicInfoVendor:false,
       communicationDetailsInfo:false,
@@ -1833,7 +1833,7 @@ export class Basic extends React.Component {
                                     // }}
                                   >
                                     <input
-                                      type="text"
+                                      type="number"
                                       className="mb-4 VendorInput"
                                       name="financeSpocphoneNo"
                                       id="financeSpocphoneNo"
@@ -1897,7 +1897,7 @@ export class Basic extends React.Component {
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <input
-                                    type="text"
+                                    type="number"
                                     className="mb-4 VendorInput"
                                     name="operationSpocphoneNo"
                                     id="operationSpocphoneNo"
@@ -1960,7 +1960,7 @@ export class Basic extends React.Component {
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <input
-                                    type="text"
+                                    type="number"
                                     className="mb-4 VendorInput"
                                     name="collectionSpocphoneNo"
                                     id="collectionSpocphoneNo"
@@ -2024,7 +2024,7 @@ export class Basic extends React.Component {
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <input
-                                    type="text"
+                                    type="number"
                                     className="mb-4 VendorInput"
                                     name="managementSpocphoneNo"
                                     id="managementSpocphoneNo"
@@ -2085,7 +2085,7 @@ export class Basic extends React.Component {
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <input
-                                    type="text"
+                                    type="number"
                                     className="mb-4 VendorInput"
                                     name="phoneNo"
                                     id="phoneNo"

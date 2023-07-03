@@ -179,6 +179,11 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
     var vendorUserId = { userId: UserId };
     let data = { master: true };
     sessionStorage.setItem("master", JSON.stringify(data));
+    let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+    item.result.userId = UserId
+    item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+    item.result.usertype = "masterData"
+    sessionStorage.setItem("jwt", JSON.stringify(item));
     sessionStorage.setItem("UserFromMasterData", JSON.stringify(UserId));
     navigate(`/basic/${UserId}`);
 

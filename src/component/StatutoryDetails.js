@@ -43,8 +43,8 @@ export default function Statutory(props) {
     useState(true);
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
-  const [MSME, setMSME] = useState("Micro");
-  const [MSME_status, setMSME_status] = useState("Registered");
+  const [MSME, setMSME] = useState("1");
+  const [MSME_status, setMSME_status] = useState("1");
   const [GST_Doc, setFile] = useState();
   const [PAN_Doc, setPAN_Doc] = useState();
   const [PE_Declaration_Doc, setPE_Declaration_Doc] = useState();
@@ -140,8 +140,9 @@ export default function Statutory(props) {
   function onChangeValueMSME_status(event) {
     setIsNewValueEntered(true);
     setMSME_status(event.target.value);
-    if (event.target.value === "UnRegistered") {
+    if (event.target.value === "2") {
       sethideMSMEunRegisteredField(false);
+      setMSME("0");
     } else {
       sethideMSMEunRegisteredField(true);
     }
@@ -1748,9 +1749,9 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME_status}
                                   type="radio"
-                                  value="Registered"
+                                  value="1"
                                   name="Registered"
-                                  checked={MSME_status === "Registered"}
+                                  checked={MSME_status === "1"}
                                 />{" "}
                                 Registered
                               </Col>
@@ -1758,9 +1759,9 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME_status}
                                   type="radio"
-                                  value="UnRegistered"
+                                  value="2"
                                   name="UnRegistered"
-                                  checked={MSME_status === "UnRegistered"}
+                                  checked={MSME_status === "2"}
                                 />{" "}
                                 UnRegistered
                               </Col>
@@ -1770,7 +1771,7 @@ export default function Statutory(props) {
                       </Row>
                       {hideMSMEunRegisteredField ? (
                         <>
-                          {MSME_status === "UnRegistered" ? (
+                          {MSME_status === "2" ? (
                             <Row>
                               <Col>
                                 <Form.Group
@@ -1790,7 +1791,7 @@ export default function Statutory(props) {
                                 {MSME_Doc !== "" &&
                                   MSME_Doc !== "null" &&
                                   MSME_Doc !== undefined &&
-                                  MSME_status === "Registered" ? (
+                                  MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1802,7 +1803,7 @@ export default function Statutory(props) {
                                       Delete MSME
                                     </button>
                                   </div>
-                                ) : MSME_status === "Registered" ? (
+                                ) : MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <label htmlFor="fileuploadMSME">
                                       Upload MSME
@@ -1861,7 +1862,7 @@ export default function Statutory(props) {
                                       Delete MSME
                                     </button>
                                   </div>
-                                ) : MSME_status === "Registered" ? (
+                                ) : MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <label htmlFor="fileuploadMSME">
                                       Upload MSME
@@ -1904,7 +1905,7 @@ export default function Statutory(props) {
                             {MSME_Doc !== "" &&
                               MSME_Doc !== "null" &&
                               MSME_Doc !== undefined &&
-                              MSME_status === "Registered" ? (
+                              MSME_status === "1" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1916,7 +1917,7 @@ export default function Statutory(props) {
                                   Delete MSME
                                 </button>
                               </div>
-                            ) : MSME_status === "Registered" ? (
+                            ) : MSME_status === "1" ? (
                               <div className="frame-input">
                                 <label htmlFor="fileuploadMSME">
                                   Upload MSME
@@ -1948,11 +1949,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Micro"
+                                  value="1"
                                   name="Micro"
-                                  checked={MSME === "Micro"}
+                                  checked={MSME === "1"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }
@@ -1963,11 +1964,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Small"
+                                  value="2"
                                   name="Small"
-                                  checked={MSME === "Small"}
+                                  checked={MSME === "2"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }
@@ -1978,11 +1979,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Macro"
+                                  value="3"
                                   name="Macro"
-                                  checked={MSME === "Macro"}
+                                  checked={MSME === "3"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }

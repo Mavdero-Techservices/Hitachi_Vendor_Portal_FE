@@ -14,11 +14,12 @@ function ApprovalFields(props) {
   const [editStatData, seteditStatData] = useState([]);
   const [editFinanceData, seteditFinanceData] = useState([]);
   const [editContactData, seteditContactData] = useState([]);
- 
 
-  const reload =()=>{
+
+  const reload = () => {
     console.log("reloading------------------>>>>>")
     apiService.getAllCollection(props.userid).then((res) => {
+      console.log("res.data.basicInfo[0].Vendor_Account_Manager",res.data.basicInfo[0].Vendor_Account_Manager);
       if (res.data.basicInfo[0] !== "null" && res.data.basicInfo?.length > 0) {
         var abc = res.data.basicInfo;
         const countryCode = res.data.basicInfo[0]?.Country_Region_Code;
@@ -87,8 +88,7 @@ function ApprovalFields(props) {
         } else if (countryCode === 'US') {
           setCountry('USA');
         }
-        else
-        {
+        else {
           setCountry("");
         }
         seteditData([]);
@@ -102,6 +102,8 @@ function ApprovalFields(props) {
         setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
         setuserStatus(res.data.basicInfo[0].userStatus);
+        setVendor_Account_Manager(res.data.basicInfo[0].Vendor_Account_Manager);
+setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       } else {
         setaddress1("");
         setaddress2("");
@@ -112,8 +114,11 @@ function ApprovalFields(props) {
         setpinCode("");
         setCountry("");
         userStatus("");
+        setVendor_Account_Manager("");
+        setVendor_Type("");
+
       }
-  
+
       if (
         res.data.CommunicationDetails[0] !== "null" &&
         res.data.CommunicationDetails.length > 0
@@ -185,7 +190,7 @@ function ApprovalFields(props) {
         setothers_Email("");
         setmastervendor_email("");
       }
-  
+
       if (res.data.Statutory[0] !== "null" && res.data.Statutory.length > 0) {
         var statarr = res.data.Statutory;
         console.log("res.data.Statutory", res.data.Statutory[0])
@@ -226,7 +231,7 @@ function ApprovalFields(props) {
         setTAN_Doc("");
         setTax_residency("");
       }
-  
+
       if (
         res.data.ComplianceDetail[0] !== "null" &&
         res.data.ComplianceDetail.length > 0
@@ -239,7 +244,7 @@ function ApprovalFields(props) {
         setCOC_Doc("");
         setNDA_Doc("");
       }
-  
+
       if (
         res.data.FinancialDetail[0] !== "null" &&
         res.data.FinancialDetail.length > 0
@@ -271,7 +276,7 @@ function ApprovalFields(props) {
         setfinancial_data("");
         setfinancial_data2("");
       }
-  
+
       if (res.data.Bankdetail[0] !== 'null' && res.data.Bankdetail.length > 0) {
         setbankAccountName(res.data.Bankdetail[0].Account_Holder_Name);
         setbankName(res.data.Bankdetail[0].Bank_Name);
@@ -289,7 +294,7 @@ function ApprovalFields(props) {
         setbranchAddress("");
         setbankdetailDoc("");
       }
-  
+
       if (
         res.data.contactDetail[0] !== "null" &&
         res.data.contactDetail.length > 0
@@ -324,6 +329,7 @@ function ApprovalFields(props) {
 
   useEffect(() => {
     apiService.getAllCollection(props.userid).then((res) => {
+      console.log("acmanager::",res.data.basicInfo[0].Vendor_Account_Manager);
       if (res.data.basicInfo[0] !== "null" && res.data.basicInfo?.length > 0) {
         var abc = res.data.basicInfo;
         const countryCode = res.data.basicInfo[0]?.Country_Region_Code;
@@ -392,8 +398,7 @@ function ApprovalFields(props) {
         } else if (countryCode === 'US') {
           setCountry('USA');
         }
-        else
-        {
+        else {
           setCountry('');
         }
         seteditData([]);
@@ -407,6 +412,8 @@ function ApprovalFields(props) {
         setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
         setuserStatus(res.data.basicInfo[0].userStatus);
+        setVendor_Account_Manager(res.data.basicInfo[0].Vendor_Account_Manager);
+setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       } else {
         setaddress1("");
         setaddress2("");
@@ -416,6 +423,8 @@ function ApprovalFields(props) {
         setcity("");
         setpinCode("");
         userStatus("");
+        setVendor_Account_Manager("");
+        setVendor_Type("");
       }
 
       if (
@@ -500,7 +509,7 @@ function ApprovalFields(props) {
         setGST_Doc(res.data.Statutory[0].GST_Doc);
         setfileDisclosure(res.data.Statutory[0].fileDisclosure);
         setPAN_No(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].P_A_N_No : "N/A");
-        setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc:"" );
+        setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc : "");
         setCIN_No(res.data.Statutory[0].CIN_No);
         setform_10f(res.data.Statutory[0].form_10f_Doc);
         setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);
@@ -512,7 +521,7 @@ function ApprovalFields(props) {
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency_Doc
-);
+        );
       } else {
         setGST_type("");
         setGST_No("");
@@ -625,7 +634,8 @@ function ApprovalFields(props) {
       }
     });
   }, [props.userid]);
-
+  const [Vendor_Type, setVendor_Type] = useState("");
+  const [Vendor_Account_Manager, setVendor_Account_Manager] = useState("");
   const [Address, setaddress1] = useState("");
   const [Address_2, setaddress2] = useState("");
   const [companyName, setcompanyName] = useState("");
@@ -707,7 +717,7 @@ function ApprovalFields(props) {
   const [name3, setname3] = useState("");
   const [contactNumber3, setcontactNumber3] = useState("");
   const [email3, setemail3] = useState("");
-  const [TicketID,setTicketID]=useState("");
+  const [TicketID, setTicketID] = useState("");
 
   const [vendorType, setvendorType] = useState("");
   const [acManager, setacManager] = useState("");
@@ -861,8 +871,7 @@ function ApprovalFields(props) {
     if (e.target.value.length === 0) {
       setfs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(e.target.value) ||
-      e.target.value.length !== 10
+      !numberValidation.test(e.target.value) 
     ) {
       setfs_PhoneNoErr("Phone number is invalid");
     } else {
@@ -904,8 +913,7 @@ function ApprovalFields(props) {
     if (e.target.value.length === 0) {
       setmngs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(e.target.value) ||
-      e.target.value.length !== 10
+      !numberValidation.test(e.target.value)
     ) {
       setmngs_PhoneNoErr("Phone number is invalid");
     } else {
@@ -1056,33 +1064,33 @@ function ApprovalFields(props) {
     setGST_type(e.target.value);
     if (e.target.value.length === 0) {
       setGST_typeErr("GST type is required");
-    } else if ( e.target.value === "UnRegistered"){
-        setGST_No('N/A');
-        setGST_typeErr("");
-        setGST_NoErr("");
-      
-      } else if (e.target.value === "Import"){
-        setGST_No('N/A');
-        setPAN_No('N/A');
-        setGST_typeErr("");
-        setGST_NoErr("");
-        setPAN_NoErr("");
+    } else if (e.target.value === "UnRegistered") {
+      setGST_No('N/A');
+      setGST_typeErr("");
+      setGST_NoErr("");
+
+    } else if (e.target.value === "Import") {
+      setGST_No('N/A');
+      setPAN_No('N/A');
+      setGST_typeErr("");
+      setGST_NoErr("");
+      setPAN_NoErr("");
       setfileDisclosureErr("")
       setGST_DocErr("")
       setPAN_DocErr("")
       // setGST_Doc("");
       // setfileDisclosure("");
-    } else if (e.target.value === "N/A"){
+    } else if (e.target.value === "N/A") {
       setGST_typeErr("GST type is required");
     }
-      else {
+    else {
       setGST_No(GST_No);
       setGST_typeErr("");
       setfileDisclosureErr("")
       setGST_type(e.target.value);
-      }
-      
-    
+    }
+
+
   };
   const validateGST_No = (e) => {
     setGST_No(e.target.value);
@@ -1155,7 +1163,7 @@ function ApprovalFields(props) {
     setMSME_status(e.target.value);
     if (e.target.value.length === 0) {
       setMSME_statusErr("MSME status is required");
-    } else if (e.target.value === "UnRegistered"){
+    } else if (e.target.value === "UnRegistered") {
       setMSME_No("N/A")
       setMSME_Type("")
       setMSME_NoErr("")
@@ -1227,9 +1235,9 @@ function ApprovalFields(props) {
   };
 
   const handleEdit = (event) => {
-    if (style === "cont2"){
+    if (style === "cont2") {
       setStyle("approvalsform");
-    }else{
+    } else {
       setStyle("cont2");
     }
   };
@@ -1243,7 +1251,7 @@ function ApprovalFields(props) {
   };
 
   const handleView = (event) => {
-    if (event.size){
+    if (event.size) {
       // console.log("event-----if---------", event)
       const blobData = new Blob([event], { type: event.type });
       const blobUrl = URL.createObjectURL(blobData);
@@ -1251,25 +1259,25 @@ function ApprovalFields(props) {
     }
     else {
       // console.log("event------else--------", event)
-      if(event){
-      let text = event;
-      let fname = text.split("/");
-      fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
-        (response) => {
-          response.blob().then((blob) => {
-            let url = URL.createObjectURL(blob, "application/pdf");
-            window.open(url, "_blank");
-          });
-        }
-      );
-    } else {
-      Swal.fire({
-        title: "File not found",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      if (event) {
+        let text = event;
+        let fname = text.split("/");
+        fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
+          (response) => {
+            response.blob().then((blob) => {
+              let url = URL.createObjectURL(blob, "application/pdf");
+              window.open(url, "_blank");
+            });
+          }
+        );
+      } else {
+        Swal.fire({
+          title: "File not found",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     }
-  }
   };
   // console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
@@ -1373,7 +1381,7 @@ function ApprovalFields(props) {
               } else if (event === "bankdetailDoc") {
                 setbankdetailDoc("");
                 setbankdetailDocErr("Bank document is required");
-              }else if (event === "approverFile") {
+              } else if (event === "approverFile") {
                 setapproverFile("");
                 setapproverFileErr("File is required");
               }
@@ -1521,121 +1529,183 @@ function ApprovalFields(props) {
     data.append("level2Date", new Date());
     // data.append('level2RejectComment', "");
     // data.append('level2rejectFileDoc', "");
-    apiService.updateApprovalStatus(userId, data).then((responseData) => {
-      if (responseData.data.status === 'success') {
-        Swal.fire({
-          title: "Approved",
-          icon: "success",
-          confirmButtonText: "OK",
-          showCloseButton: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        }).then((JapanTeamApprove) => {
-          if(JapanTeamApprove){
-            const ERPData={
-                Entry_No: TicketID||undefined,
-                Vendor_Type:vendorType||undefined,
-                // Employee_Code: "1",
-                Name:companyName||undefined,
-                // Name_2: "",
-                Address:Address||undefined,
-                Address_2: Address_2||undefined,
-                City:City||undefined,
-                // Contact: "",
-                // Phone_No: "9385580222",
-                // Telex_No: "9385580222",
-                // MSMED: "Unregistered",
-                MSMED_Number: MSME_No||undefined,
-                MSMED_Vendor_Type: MSME_Type||undefined,
-                Country_Region_Code:countryRegionCode ||undefined,
-                Post_Code: Post_Code||undefined,
-                E_Mail: mastervendor_email||undefined,
-                P_A_N_No:PAN_No||undefined,
-                // State_Code: "UTP",
-                // Structure: "GST",
-                GST_Registration_No:GST_No||undefined,
-                GST_Vendor_Type:GST_type||undefined,
-                Account_Holder_Name:bankAccountName||undefined,
-                Account_No:bankAccountNumber||undefined,
-                Bank_Name:bankName||undefined,
-                Bank_Address:branchAddress||undefined,
-                IFSC_Code:ifscCode||undefined,
-                HSI_Contact_Name_1:name||undefined,
-                HSI_Contact_E_Mail_1:email||undefined,
-                HSI_Contact_Contact_No_1:contactNumber||undefined,
-                HSI_Contact_Name_2:name2||undefined,
-                HSI_Contact_E_Mail_2:email2||undefined,
-                HSI_Contact_Contact_No_2:contactNumber2||undefined,
-                HSI_Contact_Name_3:name3||undefined,
-                HSI_Contact_E_Mail_3:email3||undefined,
-                HSI_Contact_Contact_No_3:contactNumber3||undefined,
-                Shareholder_Name: shareholderName||undefined,
-                Organization_Type: organisationType||undefined,             
-            };
-            apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-            console.log("ERPData---->", ERPData);
-            if(response && !response.data.Result?.["odata.error"])
-          {
-            console.log("ErpResponse::",response);
-            const sharepointDocumentUpload={
-              Ticket_ID:TicketID,
-              logo:logo,
-              GST_Doc:GST_Doc,
-              PAN_Doc:PAN_Doc,
-              MSME_Doc:MSME_Doc,
-              form_10f:form_10f,
-              PE_Declaration_Doc:pe_declaration,
-              Tax_residency_Doc:Tax_residency,
-              fileDisclosure:fileDisclosure,
-              TAN_Doc:TAN_Doc,
-              RPD_Doc:RPD_Doc,
-              COC_Doc:COC_Doc,
-              NDA_Doc:NDA_Doc,
-              financial_data:financial_data,
-              financial_data2:financial_data2,
-              bankdetailDoc:bankdetailDoc,
-                    }
-                    apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
-                      console.log("Sharepointresponse::",response);
-                  
-                    }).catch((error) => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error in Fetching Api to Sharepoint',                      
-                      });
-                    })
-                const MasterVendor={
-                mastervendor_email:mastervendor_email||undefined,
-                companyName:companyName||undefined,
-                Ticket_ID:TicketID||undefined, 
-                Country_Region_Code:countryRegionCode ||undefined,             }
+    console.log("vendortype",Vendor_Type);
+console.log("acmanager::",Vendor_Account_Manager);
+    const ERPData = {
+      Entry_No: TicketID || undefined,
+      Vendor_Type: Vendor_Type || undefined,
+      Name: companyName || undefined,
+      Address: Address || undefined,
+      Address_2: Address_2 || undefined,
+      City: City || undefined,
+      // MSMED: MSME_status || undefined,
+      MSMED_Number: MSME_No || undefined,
+      MSMED_Vendor_Type: MSME_Type || undefined,
+      Country_Region_Code: countryRegionCode || undefined,
+      Post_Code: Post_Code || undefined,
+      E_Mail: mastervendor_email || undefined,
+      P_A_N_No: PAN_No || undefined,
+      CIN_No: CIN_No || undefined,
+      TAN_No: TAN_No || undefined,
+      // Vendor_Account_Manager: Vendor_Account_Manager || undefined,
+      // State_Code: "UTP",
+      Finance_Contact_Name: fs_ContactName || undefined,
+      Finance_Contact_Designation: fs_Designation || undefined,
+      Finance_Contact_Phone_No: fs_PhoneNo || undefined,
+      Finance_Contact_E_Mail: fs_Email || undefined,
+      Operation_Contact_Name: ops_ContactName || undefined,
+      Operation_Contact_Designation: ops_Designation || undefined,
+      Operation_Contact_Phone_No: ops_PhoneNo || undefined,
+      Operation_Contact_E_Mail: ops_Email || undefined,
+      Collection_Contact_Name: colls_ContactName || undefined,
+      Collection_Contact_Designation: colls_Designation || undefined,
+      Collection_Contact_Phone_No: colls_PhoneNo || undefined,
+      Collection_Contact_E_Mail: colls_Email || undefined,
+      Management_Contact_Name: mngs_ContactName || undefined,
+      Management_Contact_Designation: mngs_Designation || undefined,
+      Management_Contact_Phone_No: mngs_PhoneNo || undefined,
+      Management_Contact_E_Mail: mngs_Email || undefined,
+      Others_Contact_Name: others_ContactName || undefined,
+      Others_Contact_Designation: others_Designation || undefined,
+      Others_Contact_Phone_No: others_PhoneNo || undefined,
+      Others_Contact_E_Mail: others_Email || undefined,
+      Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
+      MICR_Swift_Code: MICRcode || undefined,
+      Year_of_audited_financials: yearOfAuditedFinancial || undefined,
+      Revenue: Revenue || undefined,
+      Profit: Profit || undefined,
+      Networth: netWorth || undefined,
+      Current_Assets: currentAssets || undefined,
+      Director_Detail: directorDetails || undefined,
+      GST_Registration_No: GST_No || undefined,
+      GST_Vendor_Type: GST_type || undefined,
+      Account_Holder_Name: bankAccountName || undefined,
+      Account_No: bankAccountNumber || undefined,
+      Bank_Name: bankName || undefined,
+      Bank_Address: branchAddress || undefined,
+      IFSC_Code: ifscCode || undefined,
+      HSI_Contact_Name_1: name || undefined,
+      HSI_Contact_E_Mail_1: email || undefined,
+      HSI_Contact_Contact_No_1: contactNumber || undefined,
+      HSI_Contact_Name_2: name2 || undefined,
+      HSI_Contact_E_Mail_2: email2 || undefined,
+      HSI_Contact_Contact_No_2: contactNumber2 || undefined,
+      HSI_Contact_Name_3: name3 || undefined,
+      HSI_Contact_E_Mail_3: email3 || undefined,
+      HSI_Contact_Contact_No_3: contactNumber3 || undefined,
+      Shareholder_Name: shareholderName || undefined,
+      Organization_Type: organisationType || undefined,
+    };
+    const sharepointDocumentUpload = {
+      Ticket_ID: TicketID,
+      logo: logo,
+      GST_Doc: GST_Doc,
+      PAN_Doc: PAN_Doc,
+      MSME_Doc: MSME_Doc,
+      form_10f: form_10f,
+      PE_Declaration_Doc: pe_declaration,
+      Tax_residency_Doc: Tax_residency,
+      fileDisclosure: fileDisclosure,
+      TAN_Doc: TAN_Doc,
+      RPD_Doc: RPD_Doc,
+      COC_Doc: COC_Doc,
+      NDA_Doc: NDA_Doc,
+      financial_data: financial_data,
+      financial_data2: financial_data2,
+      bankdetailDoc: bankdetailDoc,
+    }
+    const MasterVendor = {
+      mastervendor_email: mastervendor_email || undefined,
+      companyName: companyName || undefined,
+      Ticket_ID: TicketID || undefined,
+      Country_Region_Code: countryRegionCode || undefined,
+    }
+    apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
+      console.log("Sharepointresponse::", response);
+      if (response.data.message === "success") {
+        apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+          console.log("ERPData---->", ERPData);
+          if (response && response.data.msg !== "error") {
+            if (response && !response.data.Result?.["odata.error"]) {
+              console.log("ErpResponse::", response);
+              const MasterVendor = {
+                mastervendor_email: mastervendor_email || undefined,
+                companyName: companyName || undefined,
+                Ticket_ID: TicketID || undefined,
+                Country_Region_Code: countryRegionCode || undefined,
+              }
               apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-                console.log("masterLogin::",Masterresponse);
+                console.log("masterLogin::", Masterresponse);
+                apiService.updateApprovalStatus(userId, data).then((responseData) => {
+                  if (responseData.data.status === 'success') {
+                    Swal.fire({
+                      title: "Approved",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: false,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                    })
+                   
+                  } else {
+                    Swal.fire({
+                      title: responseData.data.message,
+                      icon: "error",
+                      confirmButtonText: "OK",
+                    });
+                  }
+                });
               })
+            }
+            else {
+              const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+              Swal.fire({
+                title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
           }
-          else
-          {
-            const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+          else {
+            const erpErrorResponse = response.data.error;
             Swal.fire({
-              title:errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
-              icon: "error",
+              icon: 'error',
+              title: `In ERP,${erpErrorResponse}`,
               confirmButtonText: "OK",
-              showCloseButton: true,
+              showCloseButton: false,
               allowOutsideClick: false,
               allowEscapeKey: false,
             });
           }
-            })
-          }
-                  })
-      } else {
+
+        })
+      }
+      else {
         Swal.fire({
-          title: responseData.data.message,
-          icon: "error",
+          icon: 'error',
+          title: 'Error in Fetching Api to Sharepoint',
           confirmButtonText: "OK",
+          showCloseButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
       }
-    });
+
+    }).catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error in Fetching Api to Sharepoint',
+        confirmButtonText: "OK",
+        showCloseButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    })
+
+
   };
   const handleConcernFound = (event) => {
     // Swal.fire({
@@ -1656,29 +1726,29 @@ function ApprovalFields(props) {
     //     if (!comment || !rejectdoc) {
     //       Swal.showValidationMessage(`Please enter comments and file`);
     //     } else {
-          const data = new FormData();
-          console.log("new date--------", new Date());
-          data.append("userId", event);
-          data.append("level2Status", "rejected");
-          data.append("level2RejectComment", "");
-          data.append("level2rejectFileDoc", undefined );
-          data.append("level2Date", new Date());
-          const userId = event;
-          apiService.updateApprovalStatus(userId, data).then((responseData) => {
-            if (responseData.data.status === 'success') {
-              Swal.fire({
-                title:  "Rejected",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: responseData.data.message,
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
+    const data = new FormData();
+    console.log("new date--------", new Date());
+    data.append("userId", event);
+    data.append("level2Status", "rejected");
+    data.append("level2RejectComment", "");
+    data.append("level2rejectFileDoc", undefined);
+    data.append("level2Date", new Date());
+    const userId = event;
+    apiService.updateApprovalStatus(userId, data).then((responseData) => {
+      if (responseData.data.status === 'success') {
+        Swal.fire({
+          title: "Rejected",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          title: responseData.data.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    });
     //     }
     //   },
     // });
@@ -1711,8 +1781,8 @@ function ApprovalFields(props) {
       FormarrayErr.push("Post_Code")
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
-      // FormarrayErr.push("Post_Code Invalid")
-      // setpinCodeErr("Pincode is Invalid");
+      FormarrayErr.push("Post_Code Invalid")
+      setpinCodeErr("Pincode is Invalid");
     }
 
     // if (!logo) {
@@ -1733,8 +1803,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("fs_PhoneNo")
       setfs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(fs_PhoneNo) ||
-      fs_PhoneNo.length !== 10
+      !numberValidation.test(fs_PhoneNo)
     ) {
       FormarrayErr.push("fs_PhoneNo Invalid")
       setfs_PhoneNoErr("Phone number is invalid");
@@ -1767,8 +1836,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("mngs_PhoneNo")
       setmngs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(mngs_PhoneNo) ||
-      mngs_PhoneNo.length !== 10
+      !numberValidation.test(mngs_PhoneNo) 
     ) {
       FormarrayErr.push("mngs_PhoneNo Invalid")
       setmngs_PhoneNoErr("Phone number is invalid");
@@ -1782,10 +1850,10 @@ function ApprovalFields(props) {
       setmngs_EmailErr("Email is invalid");
     }
 
-    if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
+    if (mastervendor_email.length === 0) {
       FormarrayErr.push("mastervendor_email")
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
+    } else if (!emailValidation.test(mastervendor_email)) {
       FormarrayErr.push("mastervendor_email Invalid")
       setmastervendor_emailErr("Email is invalid");
     }
@@ -1841,8 +1909,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("contactNumber")
       setcontactNumberErr("Contact number is required");
     } else if (
-      !numberValidation.test(contactNumber) ||
-      contactNumber.length !== 10
+      !numberValidation.test(contactNumber) 
     ) {
       FormarrayErr.push("contactNumber Invalid")
       setcontactNumberErr("Phone number is invalid");
@@ -1903,15 +1970,15 @@ function ApprovalFields(props) {
       FormarrayErr.push("MSME_status")
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_No")
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === 'Registered') {
+    if (!MSME_Doc && MSME_status === '1') {
       FormarrayErr.push("MSME_Doc")
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_Type")
       setMSME_TypeErr("MSME type is required");
     }
@@ -2012,7 +2079,7 @@ function ApprovalFields(props) {
       data.append("Tax_residency_Doc", Tax_residency);
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
-      if (MSME_status === "UnRegistered") {
+      if (MSME_status === "2") {
         data.append("MSMED_Number", 'N/A');
         data.append("MSMED_Vendor_Type", '');
         data.append("MSME_Doc", '');
@@ -2064,124 +2131,180 @@ function ApprovalFields(props) {
       data1.append("userId", event);
       data1.append("level3Status", "approved");
       data1.append("level3Date", new Date());
+console.log("vendortype",Vendor_Type);
+console.log("acmanager::",Vendor_Account_Manager);
+      const ERPData = {
+        Entry_No: TicketID || undefined,
+        Vendor_Type: Vendor_Type || undefined,
+        Name: companyName || undefined,
+        Address: Address || undefined,
+        Address_2: Address_2 || undefined,
+        City: City || undefined,
+        // MSMED: MSME_status || undefined,
+        MSMED_Number: MSME_No || undefined,
+        MSMED_Vendor_Type: MSME_Type || undefined,
+        Country_Region_Code: countryRegionCode || undefined,
+        Post_Code: Post_Code || undefined,
+        E_Mail: mastervendor_email || undefined,
+        P_A_N_No: PAN_No || undefined,
+        CIN_No: CIN_No || undefined,
+        TAN_No: TAN_No || undefined,
+        // Vendor_Account_Manager: Vendor_Account_Manager || undefined,
+        // State_Code: "UTP",
+        Finance_Contact_Name: fs_ContactName || undefined,
+        Finance_Contact_Designation: fs_Designation || undefined,
+        Finance_Contact_Phone_No: fs_PhoneNo || undefined,
+        Finance_Contact_E_Mail: fs_Email || undefined,
+        Operation_Contact_Name: ops_ContactName || undefined,
+        Operation_Contact_Designation: ops_Designation || undefined,
+        Operation_Contact_Phone_No: ops_PhoneNo || undefined,
+        Operation_Contact_E_Mail: ops_Email || undefined,
+        Collection_Contact_Name: colls_ContactName || undefined,
+        Collection_Contact_Designation: colls_Designation || undefined,
+        Collection_Contact_Phone_No: colls_PhoneNo || undefined,
+        Collection_Contact_E_Mail: colls_Email || undefined,
+        Management_Contact_Name: mngs_ContactName || undefined,
+        Management_Contact_Designation: mngs_Designation || undefined,
+        Management_Contact_Phone_No: mngs_PhoneNo || undefined,
+        Management_Contact_E_Mail: mngs_Email || undefined,
+        Others_Contact_Name: others_ContactName || undefined,
+        Others_Contact_Designation: others_Designation || undefined,
+        Others_Contact_Phone_No: others_PhoneNo || undefined,
+        Others_Contact_E_Mail: others_Email || undefined,
+        Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
+        MICR_Swift_Code: MICRcode || undefined,
+        Year_of_audited_financials: yearOfAuditedFinancial || undefined,
+        Revenue: Revenue || undefined,
+        Profit: Profit || undefined,
+        Networth: netWorth || undefined,
+        Current_Assets: currentAssets || undefined,
+        Director_Detail: directorDetails || undefined,
+        GST_Registration_No: GST_No || undefined,
+        GST_Vendor_Type: GST_type || undefined,
+        Account_Holder_Name: bankAccountName || undefined,
+        Account_No: bankAccountNumber || undefined,
+        Bank_Name: bankName || undefined,
+        Bank_Address: branchAddress || undefined,
+        IFSC_Code: ifscCode || undefined,
+        HSI_Contact_Name_1: name || undefined,
+        HSI_Contact_E_Mail_1: email || undefined,
+        HSI_Contact_Contact_No_1: contactNumber || undefined,
+        HSI_Contact_Name_2: name2 || undefined,
+        HSI_Contact_E_Mail_2: email2 || undefined,
+        HSI_Contact_Contact_No_2: contactNumber2 || undefined,
+        HSI_Contact_Name_3: name3 || undefined,
+        HSI_Contact_E_Mail_3: email3 || undefined,
+        HSI_Contact_Contact_No_3: contactNumber3 || undefined,
+        Shareholder_Name: shareholderName || undefined,
+        Organization_Type: organisationType || undefined,
+      };
+      const sharepointDocumentUpload = {
+        Ticket_ID: TicketID,
+        logo: logo,
+        GST_Doc: GST_Doc,
+        PAN_Doc: PAN_Doc,
+        MSME_Doc: MSME_Doc,
+        form_10f: form_10f,
+        PE_Declaration_Doc: pe_declaration,
+        Tax_residency_Doc: Tax_residency,
+        fileDisclosure: fileDisclosure,
+        TAN_Doc: TAN_Doc,
+        RPD_Doc: RPD_Doc,
+        COC_Doc: COC_Doc,
+        NDA_Doc: NDA_Doc,
+        financial_data: financial_data,
+        financial_data2: financial_data2,
+        bankdetailDoc: bankdetailDoc,
+      }
+      const MasterVendor = {
+        mastervendor_email: mastervendor_email || undefined,
+        companyName: companyName || undefined,
+        Ticket_ID: TicketID || undefined,
+        Country_Region_Code: countryRegionCode || undefined,
+      }
+      apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
+        console.log("Sharepointresponse::", response);
+        if (response.data.message === "success") {
+          apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
+            console.log("ERPData---->", ERPData);
+            if (response && response.data.msg !== "error") {
+              if (response && !response.data.Result?.["odata.error"]) {
+                console.log("ErpResponse::", response);
+                const MasterVendor = {
+                  mastervendor_email: mastervendor_email || undefined,
+                  companyName: companyName || undefined,
+                  Ticket_ID: TicketID || undefined,
+                  Country_Region_Code: countryRegionCode || undefined,
+                }
+                apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+                  console.log("masterLogin::", Masterresponse);
+                  apiService.updateApprovalStatus(userId, data1).then((responseData) => {
+                    if (responseData.data.status === 'success') {
+                      Swal.fire({
+                        title: "Approved",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        showCloseButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      })
+                    } else {
+                      Swal.fire({
+                        title: responseData.data.message,
+                        icon: "error",
+                        confirmButtonText: "OK",
+                      });
+                    }
+                  });
+                })
+              }
+              else {
+                const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                Swal.fire({
+                  title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                });
+              }
+            }
+            else {
+              const erpErrorResponse = response.data.error;
+              Swal.fire({
+                icon: 'error',
+                title: `In ERP,${erpErrorResponse}`,
+                confirmButtonText: "OK",
+                showCloseButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
 
-
-      apiService.updateApprovalStatus(userId, data1).then((responseData) => {
-        if (responseData.data.status === 'success') {
+          })
+        }
+        else {
           Swal.fire({
-            title: "Approved",
-            icon: "success",
+            icon: 'error',
+            title: 'Error in Fetching Api to Sharepoint',
             confirmButtonText: "OK",
             showCloseButton: false,
             allowOutsideClick: false,
             allowEscapeKey: false,
-          }).then((MRTTeamApprove) => {
-            if(MRTTeamApprove){
-              const ERPData={
-                Entry_No: TicketID||undefined,
-                Vendor_Type:vendorType||undefined,
-                // Employee_Code: "1",
-                Name:companyName||undefined,
-                // Name_2: "",
-                Address:Address||undefined,
-                Address_2: Address_2||undefined,
-                City:City||undefined,
-                // Contact: "",
-                // Phone_No: "9385580222",
-                // Telex_No: "9385580222",
-                // MSMED: "Unregistered",
-                MSMED_Number: MSME_No||undefined,
-                MSMED_Vendor_Type: MSME_Type||undefined,
-                Country_Region_Code:countryRegionCode ||undefined,
-                Post_Code: Post_Code||undefined,
-                E_Mail: mastervendor_email||undefined,
-                P_A_N_No:PAN_No||undefined,
-                // State_Code: "UTP",
-                // Structure: "GST",
-                GST_Registration_No:GST_No||undefined,
-                GST_Vendor_Type:GST_type||undefined,
-                Account_Holder_Name:bankAccountName||undefined,
-                Account_No:bankAccountNumber||undefined,
-                Bank_Name:bankName||undefined,
-                Bank_Address:branchAddress||undefined,
-                IFSC_Code:ifscCode||undefined,
-                HSI_Contact_Name_1:name||undefined,
-                HSI_Contact_E_Mail_1:email||undefined,
-                HSI_Contact_Contact_No_1:contactNumber||undefined,
-                HSI_Contact_Name_2:name2||undefined,
-                HSI_Contact_E_Mail_2:email2||undefined,
-                HSI_Contact_Contact_No_2:contactNumber2||undefined,
-                HSI_Contact_Name_3:name3||undefined,
-                HSI_Contact_E_Mail_3:email3||undefined,
-                HSI_Contact_Contact_No_3:contactNumber3||undefined,
-                Shareholder_Name: shareholderName||undefined,
-                Organization_Type: organisationType||undefined,             
-            };
-              apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-                const MasterVendor={
-                  mastervendor_email:mastervendor_email||undefined,
-                  companyName:companyName||undefined,
-                  Ticket_ID:TicketID||undefined,
-                  Country_Region_Code:countryRegionCode ||undefined,
-                }
-                if(response && !response.data.Result?.["odata.error"])
-                {
-                  const sharepointDocumentUpload={
-                    Ticket_ID:TicketID,
-                    logo:logo,
-                    GST_Doc:GST_Doc,
-                    PAN_Doc:PAN_Doc,
-                    MSME_Doc:MSME_Doc,
-                    form_10f:form_10f,
-                    PE_Declaration_Doc:pe_declaration,
-                    Tax_residency_Doc:Tax_residency,
-                    fileDisclosure:fileDisclosure,
-                    TAN_Doc:TAN_Doc,
-                    RPD_Doc:RPD_Doc,
-                    COC_Doc:COC_Doc,
-                    NDA_Doc:NDA_Doc,
-                    financial_data:financial_data,
-                    financial_data2:financial_data2,
-                    bankdetailDoc:bankdetailDoc,
-                          }
-                          apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
-                            console.log("Sharepointresponse::",response);
-                        
-                          }).catch((error) => {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Error in Fetching Api to Sharepoint',                      
-                            });
-                          })
-                  apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-                    console.log("masterLogin::",Masterresponse);
-                  })
-                }
-                else
-                {
-                  const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
-                  Swal.fire({
-                    title:errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                    showCloseButton: true,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                  });
-                }
-                             
-              })
-            }
-            
-                    })
-        } else {
-          Swal.fire({
-            title: responseData.data.message,
-            icon: "error",
-            confirmButtonText: "OK",
           });
         }
-      });
+
+      }).catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error in Fetching Api to Sharepoint',
+          confirmButtonText: "OK",
+          showCloseButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      })
     } else {
       Swal.fire({
         title: "Please fill the mandatory fields",
@@ -2220,7 +2343,7 @@ function ApprovalFields(props) {
           apiService.updateApprovalStatus(userId, data).then((responseData) => {
             if (responseData.data.status === 'success') {
               Swal.fire({
-                title:"Rejected",
+                title: "Rejected",
                 icon: "success",
                 confirmButtonText: "OK",
               });
@@ -2288,8 +2411,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("fs_PhoneNo")
       setfs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(fs_PhoneNo) ||
-      fs_PhoneNo.length !== 10
+      !numberValidation.test(fs_PhoneNo)
     ) {
       FormarrayErr.push("fs_PhoneNo Invalid")
       setfs_PhoneNoErr("Phone number is invalid");
@@ -2322,8 +2444,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("mngs_PhoneNo")
       setmngs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(mngs_PhoneNo) ||
-      mngs_PhoneNo.length !== 10
+      !numberValidation.test(mngs_PhoneNo) 
     ) {
       FormarrayErr.push("mngs_PhoneNo Invalid")
       setmngs_PhoneNoErr("Phone number is invalid");
@@ -2396,8 +2517,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("contactNumber")
       setcontactNumberErr("Contact number is required");
     } else if (
-      !numberValidation.test(contactNumber) ||
-      contactNumber.length !== 10
+      !numberValidation.test(contactNumber) 
     ) {
       FormarrayErr.push("contactNumber Invalid")
       setcontactNumberErr("Phone number is invalid");
@@ -2426,7 +2546,7 @@ function ApprovalFields(props) {
     if (!approverFile) {
       FormarrayErr.push("approverFile required")
       setapproverFileErr("File is required");
-    } 
+    }
 
     if (GST_type.length === 0) {
       FormarrayErr.push("GST_type")
@@ -2474,15 +2594,15 @@ function ApprovalFields(props) {
       FormarrayErr.push("MSME_status")
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_No")
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === 'Registered') {
+    if (!MSME_Doc && MSME_status === '1') {
       FormarrayErr.push("MSME_Doc")
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_Type")
       setMSME_TypeErr("MSME type is required");
     }
@@ -2583,7 +2703,7 @@ function ApprovalFields(props) {
       data.append("Tax_residency_Doc", Tax_residency);
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
-      if (MSME_status === "UnRegistered") {
+      if (MSME_status === "2") {
         data.append("MSMED_Number", 'N/A');
         data.append("MSMED_Vendor_Type", '');
         data.append("MSME_Doc", '');
@@ -2629,7 +2749,7 @@ function ApprovalFields(props) {
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
       });
-   
+
 
       const data1 = new FormData();
       data1.append("level1Status", "approved");
@@ -2637,7 +2757,7 @@ function ApprovalFields(props) {
       apiService.saveApproval(data1).then((responseData) => {
         if (responseData.data.status === 'success') {
           Swal.fire({
-            title:"Approved",
+            title: "Approved",
             icon: "success",
             confirmButtonText: "OK",
           });
@@ -2674,7 +2794,7 @@ function ApprovalFields(props) {
       preConfirm: () => {
         const comment = Swal.getPopup().querySelector("#comment").value;
         const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-        if (!comment ) {
+        if (!comment) {
           Swal.showValidationMessage(`Please enter comments`);
         } else {
           const data = new FormData();
@@ -2686,7 +2806,7 @@ function ApprovalFields(props) {
           apiService.saveApproval(data).then((responseData) => {
             if (responseData.data.status === 'success') {
               Swal.fire({
-                title:"Rejected",
+                title: "Rejected",
                 icon: "success",
                 confirmButtonText: "OK",
               });
@@ -2705,385 +2825,382 @@ function ApprovalFields(props) {
 
   const submitHandler = (e, team) => {
     e.preventDefault();
-    let FormarrayErr =[];
-        if (companyName.length === 0) {
-          FormarrayErr.push("companyName")
-          setcompanyNameErr("Company name is required");
-        }
-        if (Address.length === 0) {
-          FormarrayErr.push("Address")
-          setaddress1Err("Address 1 is required");
-        }
-        if (Country_Region_Code.length === 0) {
-          FormarrayErr.push("Country_Region_Code")
-          setcountryErr("Country is required");
-        }
-        if (state.length === 0) {
-          FormarrayErr.push("state")
-          setstateErr("State is required");
-        }
-        if (City.length === 0) {
-          FormarrayErr.push("City")
-          setcityErr("City is required");
-        }
-    
-        if (Post_Code.length === 0) {
-          FormarrayErr.push("Post_Code")
-          setpinCodeErr("Pincode is required");
-        }else if (!numberValidation.test(Post_Code)){
-          // FormarrayErr.push("Post_Code Invalid")
-          // setpinCodeErr("Pincode is Invalid");
-        }
-    
-        // if (!logo) {
-        //   FormarrayErr.push("logo")
-        //   setlogoErr("Logo is required");
-        //   console.log("hellossssssss", logoErr);
-        // }
-        if (fs_ContactName.length === 0) {
-          FormarrayErr.push("fs_ContactName")
-          setfs_ContactNameErr("Contact name is required");
-        }
-        if (fs_Designation.length === 0) {
-          FormarrayErr.push("fs_Designation")
-          setfs_DesignationErr("Designation is required");
-        }
-    
-        if (fs_PhoneNo.length === 0) {
-          FormarrayErr.push("fs_PhoneNo")
-          setfs_PhoneNoErr("Phone number is required");
-        } else if (
-          !numberValidation.test(fs_PhoneNo) ||
-          fs_PhoneNo.length !== 10
-        ) {
-          FormarrayErr.push("fs_PhoneNo Invalid")
-          setfs_PhoneNoErr("Phone number is invalid");
-        }
-    
-        if (fs_Email.length === 0) {
-          FormarrayErr.push("fs_Email")
-          setfs_EmailErr("Email is required");
-        } else if (!emailValidation.test(fs_Email)) {
-          FormarrayErr.push("fs_Email Invalid")
-          setfs_EmailErr("Email is invalid");
-        }
-        // console.log("fs_Email",fs_Email);
-        // console.log("mngs_ContactName",mngs_ContactName);
-        // console.log("mngs_Designation",mngs_Designation);
-        // console.log("mngs_PhoneNo",mngs_PhoneNo);
-        // console.log("mngs_Email",mngs_Email);
-        // console.log("mastervendor_email",mastervendor_email);
-    
-        if (mngs_ContactName.length === 0) {
-          FormarrayErr.push("mngs_ContactName")
-          setmngs_ContactNameErr("Contact name is required");
-        }
-        if (mngs_Designation.length === 0) {
-          FormarrayErr.push("mngs_Designation")
-          setmngs_DesignationErr("Designation is required");
-        }
-    
-        if (mngs_PhoneNo.length === 0) {
-          FormarrayErr.push("mngs_PhoneNo")
-          setmngs_PhoneNoErr("Phone number is required");
-        } else if (
-          !numberValidation.test(mngs_PhoneNo) ||
-          mngs_PhoneNo.length !== 10
-        ) {
-          FormarrayErr.push("mngs_PhoneNo Invalid")
-          setmngs_PhoneNoErr("Phone number is invalid");
-        }
-    
-        if (mngs_Email.length === 0) {
-          FormarrayErr.push("mngs_Email")
-          setmngs_EmailErr("Email is required");
-        } else if (!emailValidation.test(mngs_Email)) {
-          FormarrayErr.push("mngs_Email Invalid")
-          setmngs_EmailErr("Email is invalid");
-        }
-    
+    let FormarrayErr = [];
+    if (companyName.length === 0) {
+      FormarrayErr.push("companyName")
+      setcompanyNameErr("Company name is required");
+    }
+    if (Address.length === 0) {
+      FormarrayErr.push("Address")
+      setaddress1Err("Address 1 is required");
+    }
+    if (Country_Region_Code.length === 0) {
+      FormarrayErr.push("Country_Region_Code")
+      setcountryErr("Country is required");
+    }
+    if (state.length === 0) {
+      FormarrayErr.push("state")
+      setstateErr("State is required");
+    }
+    if (City.length === 0) {
+      FormarrayErr.push("City")
+      setcityErr("City is required");
+    }
+
+    if (Post_Code.length === 0) {
+      FormarrayErr.push("Post_Code")
+      setpinCodeErr("Pincode is required");
+    } else if (!numberValidation.test(Post_Code)) {
+      // FormarrayErr.push("Post_Code Invalid")
+      // setpinCodeErr("Pincode is Invalid");
+    }
+
+    // if (!logo) {
+    //   FormarrayErr.push("logo")
+    //   setlogoErr("Logo is required");
+    //   console.log("hellossssssss", logoErr);
+    // }
+    if (fs_ContactName.length === 0) {
+      FormarrayErr.push("fs_ContactName")
+      setfs_ContactNameErr("Contact name is required");
+    }
+    if (fs_Designation.length === 0) {
+      FormarrayErr.push("fs_Designation")
+      setfs_DesignationErr("Designation is required");
+    }
+
+    if (fs_PhoneNo.length === 0) {
+      FormarrayErr.push("fs_PhoneNo")
+      setfs_PhoneNoErr("Phone number is required");
+    } else if (
+      !numberValidation.test(fs_PhoneNo) 
+    ) {
+      FormarrayErr.push("fs_PhoneNo Invalid")
+      setfs_PhoneNoErr("Phone number is invalid");
+    }
+
+    if (fs_Email.length === 0) {
+      FormarrayErr.push("fs_Email")
+      setfs_EmailErr("Email is required");
+    } else if (!emailValidation.test(fs_Email)) {
+      FormarrayErr.push("fs_Email Invalid")
+      setfs_EmailErr("Email is invalid");
+    }
+    // console.log("fs_Email",fs_Email);
+    // console.log("mngs_ContactName",mngs_ContactName);
+    // console.log("mngs_Designation",mngs_Designation);
+    // console.log("mngs_PhoneNo",mngs_PhoneNo);
+    // console.log("mngs_Email",mngs_Email);
+    // console.log("mastervendor_email",mastervendor_email);
+
+    if (mngs_ContactName.length === 0) {
+      FormarrayErr.push("mngs_ContactName")
+      setmngs_ContactNameErr("Contact name is required");
+    }
+    if (mngs_Designation.length === 0) {
+      FormarrayErr.push("mngs_Designation")
+      setmngs_DesignationErr("Designation is required");
+    }
+
+    if (mngs_PhoneNo.length === 0) {
+      FormarrayErr.push("mngs_PhoneNo")
+      setmngs_PhoneNoErr("Phone number is required");
+    } else if (
+      !numberValidation.test(mngs_PhoneNo)
+    ) {
+      FormarrayErr.push("mngs_PhoneNo Invalid")
+      setmngs_PhoneNoErr("Phone number is invalid");
+    }
+
+    if (mngs_Email.length === 0) {
+      FormarrayErr.push("mngs_Email")
+      setmngs_EmailErr("Email is required");
+    } else if (!emailValidation.test(mngs_Email)) {
+      FormarrayErr.push("mngs_Email Invalid")
+      setmngs_EmailErr("Email is invalid");
+    }
+
     if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
-          FormarrayErr.push("mastervendor_email")
-          setmastervendor_emailErr("Email is required");
+      FormarrayErr.push("mastervendor_email")
+      setmastervendor_emailErr("Email is required");
     } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
-          FormarrayErr.push("mastervendor_email Invalid")
-          setmastervendor_emailErr("Email is invalid");
-        }
-    
-        if (bankAccountName.length === 0) {
-          FormarrayErr.push("bankAccountName")
-          setbankAccountNameErr("Account name is required");
-        }
-        if (bankName.length === 0) {
-          FormarrayErr.push("bankName")
-          setbankNameErr("Bank name is required");
-        }
-        if (bankAccountNumber.length === 0) {
-          FormarrayErr.push("bankAccountNumber")
-          setbankAccountNumberErr("Account number is required");
-        }
-        if (ifscCode.length === 0) {
-          FormarrayErr.push("ifscCode")
-          setifscCodeErr("IFSC code is required");
-        }
-        if (MICRcode.length === 0) {
-          FormarrayErr.push("MICRcode")
-          setMICRcodeErr("MICR code is required");
-        }
-        if (branchAddress.length === 0) {
-          FormarrayErr.push("branchAddress")
-          setbranchAddressErr("Branch address is required");
-        }
-        if (!bankdetailDoc) {
-          FormarrayErr.push("bankdetailDoc")
-          setbankdetailDocErr("Bank document is required");
-        }
-    
-        if (!RPD_Doc) {
-          FormarrayErr.push("RPD_Doc")
-          setRPD_DocErr("RPD document is required");
-        }
-        if (!COC_Doc) {
-          FormarrayErr.push("COC_Doc")
-          setCOC_DocErr("COC document is required");
-        }
-        if (!NDA_Doc) {
-          FormarrayErr.push("NDA_Doc")
-          setNDA_DocErr("NDA document is required");
-        }
-    
-        if (name.length === 0) {
-          FormarrayErr.push("name")
-          setnameErr("Name is required");
-        }
-    
-        if (contactNumber.length === 0) {
-          FormarrayErr.push("contactNumber")
-          setcontactNumberErr("Contact number is required");
-        } else if (
-          !numberValidation.test(contactNumber) ||
-          contactNumber.length !== 10
-        ) {
-          FormarrayErr.push("contactNumber Invalid")
-          setcontactNumberErr("Phone number is invalid");
-        }
-    
-        if (email.length === 0) {
-          FormarrayErr.push("email")
-          setemailErr("Email is required");
-        } else if (!emailValidation.test(email)) {
-          FormarrayErr.push("email Invalid")
-          setemailErr("Email is invalid");
-        }
-    
-        // if (vendorType.length === 0) {
-        //   setvendorTypeErr("Vendor type is required");
-        // }
-        // if (acManager.length === 0) {
-        //   setacManagerErr("A/C manager is required");
-        // }
-        // if (mkcheck === false) {
-        //   setmkcheckErr("Check is required");
-        // }
-    
-        if (GST_type.length === 0) {
-          FormarrayErr.push("GST_type")
-          setGST_typeErr("GST type is required");
-        }
-    
-        if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
-          FormarrayErr.push("GST_No")
-          setGST_NoErr("GST Number is required");
-        } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
-          FormarrayErr.push("GST_No Invalid")
-          setGST_NoErr("GST Number is not valid");
-        } 
-    
-        if (!GST_Doc && GST_type === 'Registered') {
-          FormarrayErr.push("GST_Doc")
-          setGST_DocErr("GST doc is required");
-        }
-        if (!fileDisclosure && GST_type === 'UnRegistered') {
-          FormarrayErr.push("fileDisclosure")
-          setfileDisclosureErr("File Disclosure is required");
-        }
-        console.log("PAN_No****************************", PAN_No) 
-        console.log("PAN_Doc****************************", PAN_Doc) 
-        if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
-          FormarrayErr.push("PAN_No")
-          setPAN_NoErr("Pan number is required");
-        } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
-          FormarrayErr.push("PAN_No Invalid")
-          setPAN_NoErr("Pan number is not valid");
-        } 
-    
-        if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
-          FormarrayErr.push("PAN_Doc")
-          setPAN_DocErr("Pan doc is required");
-        }
-        if (CIN_No.length === 0) {
-          FormarrayErr.push("CIN_No")
-          setCIN_NoErr("CIN number is required");
-        }
-        if (!form_10f && Country_Region_Code !== 'IN') {
-          FormarrayErr.push("form_10f")
-          setform_10fErr("Form 10f is required");
-        }
-        if (MSME_status.length === 0) {
-          FormarrayErr.push("MSME_status")
-          setMSME_statusErr("MSME status is required");
-        }
-        if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === 'Registered') {
-          FormarrayErr.push("MSME_No")
-          setMSME_NoErr("MSME number is required");
-        }
-        if (!MSME_Doc && MSME_status === 'Registered') {
-          FormarrayErr.push("MSME_Doc")
-          setMSME_DocErr("MSME doc is required");
-        }
-        if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === 'Registered' ) {
-          FormarrayErr.push("MSME_Type")
-          setMSME_TypeErr("MSME type is required");
-        }
-        // if (TAN_No.length === 0) {
-        //   setTAN_NoErr("TAN number is required");
-        // }
-        // if (!TAN_Doc) {
-        //   setTAN_DocErr("TAN doc is required");
-        // }
-        if (!Tax_residency && Country_Region_Code !== 'IN') {
-          FormarrayErr.push("Tax_residency")
-          setTax_residencyErr("Tax residency is required");
-        }
-        if (!pe_declaration && Country_Region_Code !== 'IN') {
-          FormarrayErr.push("pe_declaration")
-          setpe_declarationErr("PE declaration is required");
-        }
-    
-        const userId = props.userid;
-    
-        console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
-        if (FormarrayErr.length=== 0 ) {
-    
-          const data = new FormData();
-          data.append("userId", props.userid);
-          data.append("Address", Address);
-          data.append("Address_2", Address_2);
-          data.append("companyName", companyName);
-          data.append("Country_Region_Code", Country_Region_Code);
-          data.append("state", state);
-          data.append("City", City);
-          data.append("Post_Code", Post_Code);
-          data.append("image", logo);
-          data.append("Vendor_Type", vendorType);
-          data.append("Vendor_Account_Manager", acManager);
-          data.append("mkDenialCheque", mkcheck);
-          data.append("financeSpoccontactName", fs_ContactName);
-          data.append("financeSpocdesignation", fs_Designation);
-          data.append("financeSpocphoneNo", fs_PhoneNo);
-          data.append("financeSpocemail", fs_Email);
-          data.append("operationSpoccontactName", ops_ContactName);
-          data.append("operationSpocdesignation", ops_Designation);
-          data.append("operationSpocphoneNo", ops_PhoneNo);
-          data.append("operationSpocemail", ops_Email);
-          data.append("collectionSpoccontactName", colls_ContactName);
-          data.append("collectionSpocdesignation", colls_Designation);
-          data.append("collectionSpocphoneNo", colls_PhoneNo);
-          data.append("collectionSpocemail", colls_Email);
-          data.append("managementSpoccontactName", mngs_ContactName);
-          data.append("managementSpocdesignation", mngs_Designation);
-          data.append("managementSpocphoneNo", mngs_PhoneNo);
-          data.append("managementSpocemail", mngs_Email);
-          data.append("contactName", others_ContactName);
-          data.append("designation", others_Designation);
-          data.append("phoneNo", others_PhoneNo);
-          data.append("others_Email", others_Email);
-          data.append("mastervendor_email", mastervendor_email);
-          if (GST_type === "UnRegistered") {
-            data.append("GST_Registration_No", "N/A");
-            data.append("GST_Doc", '');
-    
-            data.append("fileDisclosure", fileDisclosure);
-    
-            data.append("P_A_N_No", PAN_No);
-            data.append("PAN_Doc", PAN_Doc);
-    
-          } 
-           if (GST_type === "Import") {
-    
-            data.append("GST_Registration_No", "N/A");
-            data.append("GST_Doc", "");
-            data.append("fileDisclosure", "");
-    
-            data.append("P_A_N_No", "N/A");
-            data.append("PAN_Doc", "");  
-          }
-          if (GST_type === "Registered") {
-            data.append("GST_Registration_No", GST_No);
-            data.append("GST_Doc", GST_Doc);
-            data.append("fileDisclosure", "");
-    
-            data.append("P_A_N_No", PAN_No);
-            data.append("PAN_Doc", PAN_Doc);
-          }
-          data.append("RPD_Doc", RPD_Doc);
-          data.append("NDA_Doc", NDA_Doc);
-          data.append("COC_Doc", COC_Doc);
-          data.append("GST_Vendor_Type", GST_type);
-    
-    
-          data.append("form_10f_Doc", form_10f);
-          data.append("TAN_Doc", TAN_Doc);
-          data.append("PE_Declaration_Doc", pe_declaration);
-          data.append("Tax_residency_Doc", Tax_residency);
-          data.append("CIN_No", CIN_No);
-          data.append("MSMED", MSME_status);
-          if (MSME_status === "UnRegistered") {
-            data.append("MSMED_Number", 'N/A');
-            data.append("MSMED_Vendor_Type", '');
-            data.append("MSME_Doc", '');
-    
-            // setMSME_No("N/A");
-            // setMSME_Type("");
-            // console.log("MSME statuse pe+++++++++++++++++")
-            // setMSME_Doc("");
-          } else {
-            data.append("MSMED_Number", MSME_No);
-            data.append("MSMED_Vendor_Type", MSME_Type);
-            data.append("MSME_Doc", MSME_Doc);
-          }
-    
-          data.append("TAN_No", TAN_No);
-          data.append("financial_data", financial_data);
-          data.append("financial_data2", financial_data2);
-          data.append("yearOfAuditedFinancial", yearOfAuditedFinancial);
-          data.append("Revenue", Revenue);
-          data.append("Profit", Profit);
-          data.append("netWorth", netWorth);
-          data.append("currentAssets", currentAssets);
-          data.append("directorDetails", directorDetails);
-          data.append("organisationType", organisationType);
-          data.append("shareholderName", shareholderName);
-          data.append('Account_Holder_Name', bankAccountName);
-          data.append('Bank_Name', bankName);
-          data.append('Account_No', bankAccountNumber);
-          data.append('IFSC_Code', ifscCode);
-          data.append('MICRcode', MICRcode);
-          data.append('Bank_Address', branchAddress);
-          data.append("bankdetailDoc", bankdetailDoc);
-          data.append("name", name);
-          data.append("contactNumber", contactNumber);
-          data.append("email", email);
-          data.append("name2", name2);
-          data.append("contactNumber2", contactNumber2);
-          data.append("email2", email2);
-          data.append("name3", name3);
-          data.append("contactNumber3", contactNumber3);
-          data.append("email3", email3);
-          data.append("approverFile", approverFile);
-      
+      FormarrayErr.push("mastervendor_email Invalid")
+      setmastervendor_emailErr("Email is invalid");
+    }
+
+    if (bankAccountName.length === 0) {
+      FormarrayErr.push("bankAccountName")
+      setbankAccountNameErr("Account name is required");
+    }
+    if (bankName.length === 0) {
+      FormarrayErr.push("bankName")
+      setbankNameErr("Bank name is required");
+    }
+    if (bankAccountNumber.length === 0) {
+      FormarrayErr.push("bankAccountNumber")
+      setbankAccountNumberErr("Account number is required");
+    }
+    if (ifscCode.length === 0) {
+      FormarrayErr.push("ifscCode")
+      setifscCodeErr("IFSC code is required");
+    }
+    if (MICRcode.length === 0) {
+      FormarrayErr.push("MICRcode")
+      setMICRcodeErr("MICR code is required");
+    }
+    if (branchAddress.length === 0) {
+      FormarrayErr.push("branchAddress")
+      setbranchAddressErr("Branch address is required");
+    }
+    if (!bankdetailDoc) {
+      FormarrayErr.push("bankdetailDoc")
+      setbankdetailDocErr("Bank document is required");
+    }
+
+    if (!RPD_Doc) {
+      FormarrayErr.push("RPD_Doc")
+      setRPD_DocErr("RPD document is required");
+    }
+    if (!COC_Doc) {
+      FormarrayErr.push("COC_Doc")
+      setCOC_DocErr("COC document is required");
+    }
+    if (!NDA_Doc) {
+      FormarrayErr.push("NDA_Doc")
+      setNDA_DocErr("NDA document is required");
+    }
+
+    if (name.length === 0) {
+      FormarrayErr.push("name")
+      setnameErr("Name is required");
+    }
+
+    if (contactNumber.length === 0) {
+      FormarrayErr.push("contactNumber")
+      setcontactNumberErr("Contact number is required");
+    } else if (
+      !numberValidation.test(contactNumber) 
+    ) {
+      FormarrayErr.push("contactNumber Invalid")
+      setcontactNumberErr("Phone number is invalid");
+    }
+
+    if (email.length === 0) {
+      FormarrayErr.push("email")
+      setemailErr("Email is required");
+    } else if (!emailValidation.test(email)) {
+      FormarrayErr.push("email Invalid")
+      setemailErr("Email is invalid");
+    }
+
+    // if (vendorType.length === 0) {
+    //   setvendorTypeErr("Vendor type is required");
+    // }
+    // if (acManager.length === 0) {
+    //   setacManagerErr("A/C manager is required");
+    // }
+    // if (mkcheck === false) {
+    //   setmkcheckErr("Check is required");
+    // }
+
+    if (GST_type.length === 0) {
+      FormarrayErr.push("GST_type")
+      setGST_typeErr("GST type is required");
+    }
+
+    if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
+      FormarrayErr.push("GST_No")
+      setGST_NoErr("GST Number is required");
+    } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
+      FormarrayErr.push("GST_No Invalid")
+      setGST_NoErr("GST Number is not valid");
+    }
+
+    if (!GST_Doc && GST_type === 'Registered') {
+      FormarrayErr.push("GST_Doc")
+      setGST_DocErr("GST doc is required");
+    }
+    if (!fileDisclosure && GST_type === 'UnRegistered') {
+      FormarrayErr.push("fileDisclosure")
+      setfileDisclosureErr("File Disclosure is required");
+    }
+    console.log("PAN_No****************************", PAN_No)
+    console.log("PAN_Doc****************************", PAN_Doc)
+    if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
+      FormarrayErr.push("PAN_No")
+      setPAN_NoErr("Pan number is required");
+    } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
+      FormarrayErr.push("PAN_No Invalid")
+      setPAN_NoErr("Pan number is not valid");
+    }
+
+    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
+      FormarrayErr.push("PAN_Doc")
+      setPAN_DocErr("Pan doc is required");
+    }
+    if (CIN_No.length === 0) {
+      FormarrayErr.push("CIN_No")
+      setCIN_NoErr("CIN number is required");
+    }
+    if (!form_10f && Country_Region_Code !== 'IN') {
+      FormarrayErr.push("form_10f")
+      setform_10fErr("Form 10f is required");
+    }
+    if (MSME_status.length === 0) {
+      FormarrayErr.push("MSME_status")
+      setMSME_statusErr("MSME status is required");
+    }
+    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
+      FormarrayErr.push("MSME_No")
+      setMSME_NoErr("MSME number is required");
+    }
+    if (!MSME_Doc && MSME_status === '1') {
+      FormarrayErr.push("MSME_Doc")
+      setMSME_DocErr("MSME doc is required");
+    }
+    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
+      FormarrayErr.push("MSME_Type")
+      setMSME_TypeErr("MSME type is required");
+    }
+    // if (TAN_No.length === 0) {
+    //   setTAN_NoErr("TAN number is required");
+    // }
+    // if (!TAN_Doc) {
+    //   setTAN_DocErr("TAN doc is required");
+    // }
+    if (!Tax_residency && Country_Region_Code !== 'IN') {
+      FormarrayErr.push("Tax_residency")
+      setTax_residencyErr("Tax residency is required");
+    }
+    if (!pe_declaration && Country_Region_Code !== 'IN') {
+      FormarrayErr.push("pe_declaration")
+      setpe_declarationErr("PE declaration is required");
+    }
+
+    const userId = props.userid;
+
+    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
+    if (FormarrayErr.length === 0) {
+
+      const data = new FormData();
+      data.append("userId", props.userid);
+      data.append("Address", Address);
+      data.append("Address_2", Address_2);
+      data.append("companyName", companyName);
+      data.append("Country_Region_Code", Country_Region_Code);
+      data.append("state", state);
+      data.append("City", City);
+      data.append("Post_Code", Post_Code);
+      data.append("image", logo);
+      data.append("Vendor_Type", vendorType);
+      data.append("Vendor_Account_Manager", acManager);
+      data.append("mkDenialCheque", mkcheck);
+      data.append("financeSpoccontactName", fs_ContactName);
+      data.append("financeSpocdesignation", fs_Designation);
+      data.append("financeSpocphoneNo", fs_PhoneNo);
+      data.append("financeSpocemail", fs_Email);
+      data.append("operationSpoccontactName", ops_ContactName);
+      data.append("operationSpocdesignation", ops_Designation);
+      data.append("operationSpocphoneNo", ops_PhoneNo);
+      data.append("operationSpocemail", ops_Email);
+      data.append("collectionSpoccontactName", colls_ContactName);
+      data.append("collectionSpocdesignation", colls_Designation);
+      data.append("collectionSpocphoneNo", colls_PhoneNo);
+      data.append("collectionSpocemail", colls_Email);
+      data.append("managementSpoccontactName", mngs_ContactName);
+      data.append("managementSpocdesignation", mngs_Designation);
+      data.append("managementSpocphoneNo", mngs_PhoneNo);
+      data.append("managementSpocemail", mngs_Email);
+      data.append("contactName", others_ContactName);
+      data.append("designation", others_Designation);
+      data.append("phoneNo", others_PhoneNo);
+      data.append("others_Email", others_Email);
+      data.append("mastervendor_email", mastervendor_email);
+      if (GST_type === "UnRegistered") {
+        data.append("GST_Registration_No", "N/A");
+        data.append("GST_Doc", '');
+
+        data.append("fileDisclosure", fileDisclosure);
+
+        data.append("P_A_N_No", PAN_No);
+        data.append("PAN_Doc", PAN_Doc);
+
+      }
+      if (GST_type === "Import") {
+
+        data.append("GST_Registration_No", "N/A");
+        data.append("GST_Doc", "");
+        data.append("fileDisclosure", "");
+
+        data.append("P_A_N_No", "N/A");
+        data.append("PAN_Doc", "");
+      }
+      if (GST_type === "Registered") {
+        data.append("GST_Registration_No", GST_No);
+        data.append("GST_Doc", GST_Doc);
+        data.append("fileDisclosure", "");
+
+        data.append("P_A_N_No", PAN_No);
+        data.append("PAN_Doc", PAN_Doc);
+      }
+      data.append("RPD_Doc", RPD_Doc);
+      data.append("NDA_Doc", NDA_Doc);
+      data.append("COC_Doc", COC_Doc);
+      data.append("GST_Vendor_Type", GST_type);
+
+
+      data.append("form_10f_Doc", form_10f);
+      data.append("TAN_Doc", TAN_Doc);
+      data.append("PE_Declaration_Doc", pe_declaration);
+      data.append("Tax_residency_Doc", Tax_residency);
+      data.append("CIN_No", CIN_No);
+      data.append("MSMED", MSME_status);
+      if (MSME_status === "2") {
+        data.append("MSMED_Number", 'N/A');
+        data.append("MSMED_Vendor_Type", '');
+        data.append("MSME_Doc", '');
+
+        // setMSME_No("N/A");
+        // setMSME_Type("");
+        // console.log("MSME statuse pe+++++++++++++++++")
+        // setMSME_Doc("");
+      } else {
+        data.append("MSMED_Number", MSME_No);
+        data.append("MSMED_Vendor_Type", MSME_Type);
+        data.append("MSME_Doc", MSME_Doc);
+      }
+
+      data.append("TAN_No", TAN_No);
+      data.append("financial_data", financial_data);
+      data.append("financial_data2", financial_data2);
+      data.append("yearOfAuditedFinancial", yearOfAuditedFinancial);
+      data.append("Revenue", Revenue);
+      data.append("Profit", Profit);
+      data.append("netWorth", netWorth);
+      data.append("currentAssets", currentAssets);
+      data.append("directorDetails", directorDetails);
+      data.append("organisationType", organisationType);
+      data.append("shareholderName", shareholderName);
+      data.append('Account_Holder_Name', bankAccountName);
+      data.append('Bank_Name', bankName);
+      data.append('Account_No', bankAccountNumber);
+      data.append('IFSC_Code', ifscCode);
+      data.append('MICRcode', MICRcode);
+      data.append('Bank_Address', branchAddress);
+      data.append("bankdetailDoc", bankdetailDoc);
+      data.append("name", name);
+      data.append("contactNumber", contactNumber);
+      data.append("email", email);
+      data.append("name2", name2);
+      data.append("contactNumber2", contactNumber2);
+      data.append("email2", email2);
+      data.append("name3", name3);
+      data.append("contactNumber3", contactNumber3);
+      data.append("email3", email3);
+      data.append("approverFile", approverFile);
+
       for (var pair of data.entries()) {
-        console.log("test------------->>>>>>>>>>>>>>>>>>",pair[0] + ', ' + pair[1]);
+        console.log("test------------->>>>>>>>>>>>>>>>>>", pair[0] + ', ' + pair[1]);
       }
 
       apiService.updateAllCollection(userId, data).then((response) => {
@@ -3162,8 +3279,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("fs_PhoneNo")
       setfs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(fs_PhoneNo) ||
-      fs_PhoneNo.length !== 10
+      !numberValidation.test(fs_PhoneNo) 
     ) {
       FormarrayErr.push("fs_PhoneNo Invalid")
       setfs_PhoneNoErr("Phone number is invalid");
@@ -3196,8 +3312,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("mngs_PhoneNo")
       setmngs_PhoneNoErr("Phone number is required");
     } else if (
-      !numberValidation.test(mngs_PhoneNo) ||
-      mngs_PhoneNo.length !== 10
+      !numberValidation.test(mngs_PhoneNo)
     ) {
       FormarrayErr.push("mngs_PhoneNo Invalid")
       setmngs_PhoneNoErr("Phone number is invalid");
@@ -3270,8 +3385,7 @@ function ApprovalFields(props) {
       FormarrayErr.push("contactNumber")
       setcontactNumberErr("Contact number is required");
     } else if (
-      !numberValidation.test(contactNumber) ||
-      contactNumber.length !== 10
+      !numberValidation.test(contactNumber) 
     ) {
       FormarrayErr.push("contactNumber Invalid")
       setcontactNumberErr("Phone number is invalid");
@@ -3341,15 +3455,15 @@ function ApprovalFields(props) {
       FormarrayErr.push("MSME_status")
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_No")
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === 'Registered') {
+    if (!MSME_Doc && MSME_status === '1') {
       FormarrayErr.push("MSME_Doc")
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === 'Registered') {
+    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
       FormarrayErr.push("MSME_Type")
       setMSME_TypeErr("MSME type is required");
     }
@@ -3438,7 +3552,7 @@ function ApprovalFields(props) {
       data.append("email3", email3);
       data.append("approverFile", approverFile);
 
-      
+
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", '');
@@ -3448,16 +3562,16 @@ function ApprovalFields(props) {
         data.append("P_A_N_No", PAN_No);
         data.append("PAN_Doc", PAN_Doc);
 
-      }  if (GST_type === "Import") {
+      } if (GST_type === "Import") {
 
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", "");
         data.append("fileDisclosure", "");
 
         data.append("P_A_N_No", "N/A");
-        data.append("PAN_Doc", "");  
+        data.append("PAN_Doc", "");
       }
-       if (GST_type === "Registered") {
+      if (GST_type === "Registered") {
         data.append("GST_Registration_No", GST_No);
         data.append("GST_Doc", GST_Doc);
         data.append("fileDisclosure", "");
@@ -3477,7 +3591,7 @@ function ApprovalFields(props) {
       data.append("Tax_residency_Doc", Tax_residency);
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
-      if (MSME_status === "UnRegistered") {
+      if (MSME_status === "2") {
         data.append("MSMED_Number", 'N/A');
         data.append("MSMED_Vendor_Type", '');
         data.append("MSME_Doc", '');
@@ -3492,7 +3606,7 @@ function ApprovalFields(props) {
         data.append("MSME_Doc", MSME_Doc);
       }
 
-      
+
 
       for (var pair of data.entries()) {
         console.log("test------------->>>>>>>>>>>>>>>>>>", pair[0] + ', ' + pair[1]);
@@ -3720,25 +3834,25 @@ function ApprovalFields(props) {
                     <span className="formError">{fs_EmailErr}</span>
                   </div>
                 </div>
-             
-                  <>
+
+                <>
                   {(editCommmData[0]?.operationSpoccontactName !== "null" &&
                     editCommmData[0]?.operationSpoccontactName) ||
-                   ( editCommmData[0]?.operationSpocdesignation !== "null" &&
-                    editCommmData[0]?.operationSpocdesignation)||
+                    (editCommmData[0]?.operationSpocdesignation !== "null" &&
+                      editCommmData[0]?.operationSpocdesignation) ||
                     (editCommmData[0]?.operationSpocphoneNo !== "null" &&
-                    editCommmData[0]?.operationSpocphoneNo) ||
+                      editCommmData[0]?.operationSpocphoneNo) ||
                     (editCommmData[0]?.operationSpocemail !== "null" &&
-                    editCommmData[0]?.operationSpocemail) ? (
+                      editCommmData[0]?.operationSpocemail) ? (
                     <p>
                       <b>Operation Spoc</b>
                     </p>
-                      ) : (
-                      ""
-                )}
-                    <div className="row">
+                  ) : (
+                    ""
+                  )}
+                  <div className="row">
                     {(editCommmData[0]?.operationSpoccontactName !== "null" &&
-                      editCommmData[0]?.operationSpoccontactName)?
+                      editCommmData[0]?.operationSpoccontactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_ContactName">Contact Name</label>
                         <input
@@ -3748,7 +3862,7 @@ function ApprovalFields(props) {
                           value={ops_ContactName}
                           onChange={(e) => setops_ContactName(e.target.value)}
                         />
-                      </div> :""}
+                      </div> : ""}
                     {(editCommmData[0]?.operationSpocdesignation !== "null" &&
                       editCommmData[0]?.operationSpocdesignation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
@@ -3761,9 +3875,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setops_Designation(e.target.value)}
                         />
                       </div>
-                        : ""}
-                        {(editCommmData[0]?.operationSpocphoneNo !== "null" &&
-                          editCommmData[0]?.operationSpocphoneNo) ?
+                      : ""}
+                    {(editCommmData[0]?.operationSpocphoneNo !== "null" &&
+                      editCommmData[0]?.operationSpocphoneNo) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_PhoneNo">Phone no</label>
                         <input
@@ -3774,9 +3888,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setops_PhoneNo(e.target.value)}
                         />
                       </div>
-                      :""}
-                      {(editCommmData[0]?.operationSpocemail !== "null" &&
-                        editCommmData[0]?.operationSpocemail) ?
+                      : ""}
+                    {(editCommmData[0]?.operationSpocemail !== "null" &&
+                      editCommmData[0]?.operationSpocemail) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_Email">Email</label>
                         <input
@@ -3786,28 +3900,28 @@ function ApprovalFields(props) {
                           value={ops_Email}
                           onChange={(e) => setops_Email(e.target.value)}
                         />
-                      </div>:""}
-                    </div>
-                  </>
-                
-                  <>
+                      </div> : ""}
+                  </div>
+                </>
+
+                <>
                   {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
                     editCommmData[0]?.collectionSpoccontactName) ||
                     (editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                    editCommmData[0]?.collectionSpocdesignation) ||
+                      editCommmData[0]?.collectionSpocdesignation) ||
                     (editCommmData[0]?.collectionSpocphoneNo !== "null" &&
-                    editCommmData[0]?.collectionSpocphoneNo) ||
+                      editCommmData[0]?.collectionSpocphoneNo) ||
                     (editCommmData[0]?.collectionSpocemail !== "null" &&
-                    editCommmData[0]?.collectionSpocemail) ? (
+                      editCommmData[0]?.collectionSpocemail) ? (
                     <p>
                       <b>Collection Spoc</b>
                     </p>
                   ) : (
                     ""
                   )}
-                    <div className="row">
+                  <div className="row">
                     {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
-                      editCommmData[0]?.collectionSpoccontactName)? 
+                      editCommmData[0]?.collectionSpoccontactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Contact Name</label>
                         <input
@@ -3819,7 +3933,7 @@ function ApprovalFields(props) {
                         />
                       </div> : ""}
                     {(editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                      editCommmData[0]?.collectionSpocdesignation) ? 
+                      editCommmData[0]?.collectionSpocdesignation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Designation</label>
                         <input
@@ -3842,9 +3956,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setcolls_PhoneNo(e.target.value)}
                         />
                       </div>
-                       : ""}
-                       {(editCommmData[0]?.collectionSpocemail !== "null" &&
-                         editCommmData[0]?.collectionSpocemail) ?
+                      : ""}
+                    {(editCommmData[0]?.collectionSpocemail !== "null" &&
+                      editCommmData[0]?.collectionSpocemail) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Email</label>
                         <input
@@ -3854,10 +3968,10 @@ function ApprovalFields(props) {
                           value={colls_Email}
                           onChange={(e) => setcolls_Email(e.target.value)}
                         />
-                      </div>: ""}
-                    </div>
-                  </>
-              
+                      </div> : ""}
+                  </div>
+                </>
+
 
                 <p>
                   <b>Management Spoc</b>
@@ -3908,25 +4022,25 @@ function ApprovalFields(props) {
                     <span className="formError">{mngs_EmailErr}</span>
                   </div>
                 </div>
-              
-                  <>
+
+                <>
                   {(editCommmData[0]?.contactName !== "null" &&
                     editCommmData[0]?.contactName) ||
                     (editCommmData[0]?.designation !== "null" &&
-                    editCommmData[0]?.designation) ||
+                      editCommmData[0]?.designation) ||
                     (editCommmData[0]?.phoneNo !== "null" &&
-                    editCommmData[0]?.phoneNo) ||
+                      editCommmData[0]?.phoneNo) ||
                     (editCommmData[0]?.email !== "null" &&
-                    editCommmData[0]?.email) ? (
+                      editCommmData[0]?.email) ? (
                     <p>
                       <b>Others</b>
                     </p>
                   ) : (
                     ""
                   )}
-                    <div className="row">
+                  <div className="row">
                     {(editCommmData[0]?.contactName !== "null" &&
-                      editCommmData[0]?.contactName) ? 
+                      editCommmData[0]?.contactName) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_ContactName">Contact Name</label>
                         <input
@@ -3939,10 +4053,10 @@ function ApprovalFields(props) {
                           }
                         />
                       </div>
-                       : ""}
+                      : ""}
 
-                       {(editCommmData[0]?.designation !== "null" &&
-                         editCommmData[0]?.designation) ?
+                    {(editCommmData[0]?.designation !== "null" &&
+                      editCommmData[0]?.designation) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_Designation">Designation</label>
                         <input
@@ -3955,9 +4069,9 @@ function ApprovalFields(props) {
                           }
                         />
                       </div>
-                       : ""}
-                       {(editCommmData[0]?.phoneNo !== "null" &&
-                         editCommmData[0]?.phoneNo) ?
+                      : ""}
+                    {(editCommmData[0]?.phoneNo !== "null" &&
+                      editCommmData[0]?.phoneNo) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_PhoneNo">Phone no</label>
                         <input
@@ -3968,9 +4082,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setothers_PhoneNo(e.target.value)}
                         />
                       </div>
-                       : ""}
-                       {(editCommmData[0]?.email !== "null" &&
-                         editCommmData[0]?.email) ?
+                      : ""}
+                    {(editCommmData[0]?.email !== "null" &&
+                      editCommmData[0]?.email) ?
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_Email">Email</label>
                         <input
@@ -3980,21 +4094,21 @@ function ApprovalFields(props) {
                           value={others_Email}
                           onChange={(e) => setothers_Email(e.target.value)}
                         />
-                      </div>: ""}
-                    </div>
-                  </>
+                      </div> : ""}
+                  </div>
+                </>
                 {userStatus === "NewRegistration" ? "" :
-                <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
-                  <label htmlFor="Post_Code">Master vendor email id*</label>
-                  <input
-                    type="text"
-                    className="mb-2 inputbox"
-                    name="mastervendor_email"
-                    value={mastervendor_email}
-                    onChange={(e) => validatemastervendor_email(e)}
-                  />
-                  <span className="formError">{mastervendor_emailErr}</span>
-                </div>
+                  <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
+                    <label htmlFor="Post_Code">Master vendor email id*</label>
+                    <input
+                      type="text"
+                      className="mb-2 inputbox"
+                      name="mastervendor_email"
+                      value={mastervendor_email}
+                      onChange={(e) => validatemastervendor_email(e)}
+                    />
+                    <span className="formError">{mastervendor_emailErr}</span>
+                  </div>
                 }
               </div>
 
@@ -4079,8 +4193,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSMED"
                             id="MSME_status1"
-                            value={"Registered"}
-                            checked={MSME_status === "Registered"}
+                            value={"1"}
+                            checked={MSME_status === "1"}
                             onChange={(e) => validateMSME_status(e)}
                           />
                           <label
@@ -4098,8 +4212,8 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSMED"
                             id="MSME_status2"
-                            value={"UnRegistered"}
-                            checked={MSME_status === "UnRegistered"}
+                            value={"2"}
+                            checked={MSME_status === "2"}
                             onChange={(e) => validateMSME_status(e)}
                           />
                           <label
@@ -4159,7 +4273,7 @@ function ApprovalFields(props) {
                             <>
                               <button
                                 type="button"
-                                  onClick={(e) => handleEditPopup("fileDisclosure")}
+                                onClick={(e) => handleEditPopup("fileDisclosure")}
                                 className="btn bankbtn btn-primary btn-md mt-3"
                               >
                                 Delete File
@@ -4168,10 +4282,10 @@ function ApprovalFields(props) {
                           ) : (
                             <button
                               type="button"
-                                onClick={(e) => handleView(fileDisclosure)}
+                              onClick={(e) => handleView(fileDisclosure)}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
-                                View File
+                              View File
                             </button>
                           )}
                           <p className="formError">{fileDisclosureErr}</p>
@@ -4191,16 +4305,16 @@ function ApprovalFields(props) {
                           name="MSME_No"
                           value={MSME_No}
                           onChange={(e) => validateMSME_No(e)}
-                          readOnly={MSME_status=== "UnRegistered"}
+                          readOnly={MSME_status === "2"}
                         />
                         <span className="formError">{MSME_NoErr}</span>
                       </div>
-                      {MSME_status === "Registered" ? (
+                      {MSME_status === "1" ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
                           {style === "cont2" ? (
                             <button
                               type="button"
-                              disabled={MSME_status === "UnRegistered"}
+                              disabled={MSME_status === "2"}
                               onClick={(e) => handleEditPopup("MSME_Doc")}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
@@ -4209,7 +4323,7 @@ function ApprovalFields(props) {
                           ) : (
                             <button
                               type="button"
-                              disabled={MSME_status === "UnRegistered"}
+                              disabled={MSME_status === "2"}
                               onClick={(e) => handleView(MSME_Doc)}
                               className="btn bankbtn btn-primary btn-md mt-3"
                             >
@@ -4237,27 +4351,27 @@ function ApprovalFields(props) {
                         />
                         <span className="formError">{PAN_NoErr}</span>
                       </div>
-                      {((GST_type !== 'Import') && (Country_Region_Code === "IN"))  ?
-                      <div className="col-sm-12 col-lg-4 m-auto">
-                        {style === "cont2" ? (
-                          <button
-                            type="button"
-                            onClick={(e) => handleEditPopup("PAN_Doc")}
-                            className="btn bankbtn btn-primary btn-md mt-3"
-                          >
-                            Delete File
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => handleView(PAN_Doc)}
-                            className="btn bankbtn btn-primary btn-md mt-3"
-                          >
-                            View File
-                          </button>
-                        )}
-                        <p className="formError">{PAN_DocErr}</p>
-                      </div>:<></>}
+                      {((GST_type !== 'Import') && (Country_Region_Code === "IN")) ?
+                        <div className="col-sm-12 col-lg-4 m-auto">
+                          {style === "cont2" ? (
+                            <button
+                              type="button"
+                              onClick={(e) => handleEditPopup("PAN_Doc")}
+                              className="btn bankbtn btn-primary btn-md mt-3"
+                            >
+                              Delete File
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => handleView(PAN_Doc)}
+                              className="btn bankbtn btn-primary btn-md mt-3"
+                            >
+                              View File
+                            </button>
+                          )}
+                          <p className="formError">{PAN_DocErr}</p>
+                        </div> : <></>}
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
@@ -4270,9 +4384,9 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type1"
-                            value={"Micro"}
-                            checked={MSME_Type === "Micro"}
-                            disabled={MSME_status === "UnRegistered"}
+                            value={"1"}
+                            checked={MSME_Type === "1"}
+                            disabled={MSME_status === "2"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
@@ -4290,9 +4404,9 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type2"
-                            value={"Small"}
-                            checked={MSME_Type === "Small"}
-                            disabled={MSME_status === "UnRegistered"}
+                            value={"2"}
+                            checked={MSME_Type === "2"}
+                            disabled={MSME_status === "2"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
@@ -4310,16 +4424,16 @@ function ApprovalFields(props) {
                             type="radio"
                             name="MSME_Type"
                             id="MSME_Type3"
-                            value={"Macro"}
-                            checked={MSME_Type === "Macro"}
-                            disabled={MSME_status === "UnRegistered"}
+                            value={"3"}
+                            checked={MSME_Type === "3"}
+                            disabled={MSME_status === "2"}
                             onChange={(e) => validateMSME_Type(e)}
                           />
                           <label
                             className="form-check-label"
                             htmlFor="MSME_Type3"
                           >
-                             Medium
+                            Medium
                           </label>
                         </div>
                       </div>
@@ -4376,7 +4490,7 @@ function ApprovalFields(props) {
                       </div>
                     </div>
                   </div>
-                  { Country_Region_Code !== "IN" ? (
+                  {Country_Region_Code !== "IN" ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
@@ -4452,7 +4566,7 @@ function ApprovalFields(props) {
                   ) : (
                     <></>
                   )}
-                 { Country_Region_Code !== "IN" ? (
+                  {Country_Region_Code !== "IN" ? (
                     <>
                       <div className="col-lg-4 col-sm-6 col-xs-12 pt-1">
                         <div className="row text-center">
@@ -4715,7 +4829,7 @@ function ApprovalFields(props) {
                 <div className="row">
                   {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
                   {editFinanceData[0]?.yearOfAuditedFinancial !== "null" &&
-                  editFinanceData[0]?.yearOfAuditedFinancial ? (
+                    editFinanceData[0]?.yearOfAuditedFinancial ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">
                         Year of audited financials
@@ -4735,7 +4849,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.Revenue ? ( */}
                   {editFinanceData[0]?.Revenue !== "null" &&
-                  editFinanceData[0]?.Revenue ? (
+                    editFinanceData[0]?.Revenue ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
@@ -4751,7 +4865,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.Profit ? ( */}
                   {editFinanceData[0]?.Profit !== "null" &&
-                  editFinanceData[0]?.Profit ? (
+                    editFinanceData[0]?.Profit ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
@@ -4767,7 +4881,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.netWorth ? ( */}
                   {editFinanceData[0]?.netWorth !== "null" &&
-                  editFinanceData[0]?.netWorth ? (
+                    editFinanceData[0]?.netWorth ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
@@ -4783,7 +4897,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.currentAssets ? ( */}
                   {editFinanceData[0]?.currentAssets !== "null" &&
-                  editFinanceData[0]?.currentAssets ? (
+                    editFinanceData[0]?.currentAssets ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Current Assets</label>
                       <input
@@ -4799,7 +4913,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.directorDetails ? ( */}
                   {editFinanceData[0]?.directorDetails !== "null" &&
-                  editFinanceData[0]?.directorDetails ? (
+                    editFinanceData[0]?.directorDetails ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Director detail</label>
                       <input
@@ -4813,48 +4927,48 @@ function ApprovalFields(props) {
                   ) : (
                     ""
                   )}
-                   {editFinanceData[0]?.organisationType !== "null" &&
+                  {editFinanceData[0]?.organisationType !== "null" &&
                     editFinanceData[0]?.organisationType ? (
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                    <label htmlFor="Organisationtype">Organisation type</label>
-                    <select
-                      className="form-select"
-                      id="Distributors"
-                      name="Organisationtype"
-                      aria-label="Disabled select example"
-                      value={organisationType}
-                      disabled={style === "approvalsform" ? true : false}
-                      onChange={(e) => setorganisationType(e.target.value)}
-                    >
-                      <option value="null">- Select Organisation Type -</option>
-                      <option value="Company">Company</option>
-                      <option value="LLP">LLP</option>
-                      <option value="Partnership Firm">Partnership Firm</option>
-                      <option value="Proprietorship">Proprietorship</option>
-                    </select>
-                  </div>
+                    <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                      <label htmlFor="Organisationtype">Organisation type</label>
+                      <select
+                        className="form-select"
+                        id="Distributors"
+                        name="Organisationtype"
+                        aria-label="Disabled select example"
+                        value={organisationType}
+                        disabled={style === "approvalsform" ? true : false}
+                        onChange={(e) => setorganisationType(e.target.value)}
+                      >
+                        <option value="null">- Select Organisation Type -</option>
+                        <option value="Company">Company</option>
+                        <option value="LLP">LLP</option>
+                        <option value="Partnership Firm">Partnership Firm</option>
+                        <option value="Proprietorship">Proprietorship</option>
+                      </select>
+                    </div>
                   ) : (
                     ""
                   )}
                   {editFinanceData[0]?.shareholderName !== "null" &&
                     editFinanceData[0]?.shareholderName ? (
-                  <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                    <label htmlFor="Shareholdername">Shareholder name</label>
-                    <input
-                      type="text"
-                      className="mb-4 inputbox"
-                      name="Shareholdername"
-                      value={shareholderName}
-                      onChange={(e) => setshareholderName(e.target.value)}
-                    />
-                  </div>
+                    <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                      <label htmlFor="Shareholdername">Shareholder name</label>
+                      <input
+                        type="text"
+                        className="mb-4 inputbox"
+                        name="Shareholdername"
+                        value={shareholderName}
+                        onChange={(e) => setshareholderName(e.target.value)}
+                      />
+                    </div>
                   ) : (
                     ""
                   )}
                   {/* {editFinanceData[0]?.financial_data ? ( */}
 
                   {editFinanceData[0]?.financial_data !== "null" &&
-                  editFinanceData[0]?.financial_data ? (
+                    editFinanceData[0]?.financial_data ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6  my-auto">
                       {style === "cont2" ? (
                         <button
@@ -4880,7 +4994,7 @@ function ApprovalFields(props) {
                   )}
                   {/* {editFinanceData[0]?.financial_data2 ? ( */}
                   {editFinanceData[0]?.financial_data2 !== "null" &&
-                  editFinanceData[0]?.financial_data2 ? (
+                    editFinanceData[0]?.financial_data2 ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                       {style === "cont2" ? (
                         <button
@@ -4950,9 +5064,9 @@ function ApprovalFields(props) {
                     <span className="formError">{contactNumberErr}</span>
                   </div>
                 </div>
-               
-                  <>
-                    <div className="row">
+
+                <>
+                  <div className="row">
                     {editContactData[0]?.contactName2 !== "null" &&
                       editContactData[0]?.contactName2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -4965,10 +5079,10 @@ function ApprovalFields(props) {
                           onChange={(e) => setname2(e.target.value)}
                         />
                       </div>
-                         : ""}
+                      : ""}
 
-                         {editContactData[0]?.emailId2 !== "null" &&
-                           editContactData[0]?.emailId2 ? 
+                    {editContactData[0]?.emailId2 !== "null" &&
+                      editContactData[0]?.emailId2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -4978,7 +5092,7 @@ function ApprovalFields(props) {
                           value={email2}
                           onChange={(e) => setemail2(e.target.value)}
                         />
-                      </div>    : ""}
+                      </div> : ""}
                     {editContactData[0]?.contactNumber2 !== "null" &&
                       editContactData[0]?.contactNumber2 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
@@ -4990,15 +5104,15 @@ function ApprovalFields(props) {
                           value={contactNumber2}
                           onChange={(e) => setcontactNumber2(e.target.value)}
                         />
-                      </div>      : ""}
-                    </div>
-                  </>
-               
-               
-                  <>
-                    <div className="row">
+                      </div> : ""}
+                  </div>
+                </>
+
+
+                <>
+                  <div className="row">
                     {editContactData[0]?.contactName3 !== "null" &&
-                      editContactData[0]?.contactName3 ? 
+                      editContactData[0]?.contactName3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Name*</label>
                         <input
@@ -5009,9 +5123,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setname3(e.target.value)}
                         />
                       </div>
-                          : ""}
-                          {editContactData[0]?.emailId3 !== "null" &&
-                            editContactData[0]?.emailId3 ? 
+                      : ""}
+                    {editContactData[0]?.emailId3 !== "null" &&
+                      editContactData[0]?.emailId3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -5022,9 +5136,9 @@ function ApprovalFields(props) {
                           onChange={(e) => setemail3(e.target.value)}
                         />
                       </div>
-                        : ""}
-                        {editContactData[0]?.contactNumber3 !== "null" &&
-                          editContactData[0]?.contactNumber3 ?
+                      : ""}
+                    {editContactData[0]?.contactNumber3 !== "null" &&
+                      editContactData[0]?.contactNumber3 ?
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Contact Number*</label>
                         <input
@@ -5034,10 +5148,10 @@ function ApprovalFields(props) {
                           value={contactNumber3}
                           onChange={(e) => setcontactNumber3(e.target.value)}
                         />
-                      </div>  : ""}
-                    </div>
-                  </>
-               
+                      </div> : ""}
+                  </div>
+                </>
+
               </div>
             </div>
 
@@ -5053,15 +5167,15 @@ function ApprovalFields(props) {
                         name="vendorType"
                         aria-label="Disabled select example"
                         value={vendorType}
-                        disabled={style === "approvalsform"?true:false}
+                        disabled={style === "approvalsform" ? true : false}
                         onChange={(e) => validatevendorType(e)}
                       >
                         {/* <option selected>Open this select menu</option> */}
-                        <option value="Distributor">Distributor</option>
-                        <option value="import">import</option>
-                        <option value="OEM">OEM</option>
-                        <option value="local vendor">local vendor</option>
-                        <option value="others">others</option>
+                        <option value="VENDOR-2">Distributor</option>
+                        <option value="VENDOR-5">import</option>
+                        <option value="VENDOR-1">OEM</option>
+                        <option value="VENDOR-3">local vendor</option>
+                        <option value="VENDOR-4">others</option>
                       </select>
                       <span className="formError">{vendorTypeErr}</span>
                     </div>
@@ -5129,12 +5243,12 @@ function ApprovalFields(props) {
 
                         <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
                           <button disabled={style === "approvalsform" ? true : false}
-                          type="button"
-                          onClick={(e) => handleEditPopup("approverFile")}
-                          className="btn bankbtn btn-primary btn-md m-1"
-                        >
-                         {approverFile? "Delete file" : "Select File"} 
-                        </button><br></br>
+                            type="button"
+                            onClick={(e) => handleEditPopup("approverFile")}
+                            className="btn bankbtn btn-primary btn-md m-1"
+                          >
+                            {approverFile ? "Delete file" : "Select File"}
+                          </button><br></br>
                           <span className="formError">{approverFileErr}</span>
                         </div>
                       </div>
@@ -5174,7 +5288,7 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                    {style === "cont2" ? "View" : "Edit"}
+                  {style === "cont2" ? "View" : "Edit"}
                 </button>
                 <button
                   type="button"
@@ -5207,8 +5321,8 @@ function ApprovalFields(props) {
                   onClick={handleEdit}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                   {style === "cont2" ? "View" : "Edit"}
-                  
+                  {style === "cont2" ? "View" : "Edit"}
+
                 </button>
                 <button
                   type="button"

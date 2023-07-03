@@ -95,12 +95,12 @@ const ContactTeam = () => {
       newErrors.contactNumber1 = "contactNumber";
     }
 
-    if (
-      !numberValidation.test(contactNumber1) ||
-      contactNumber1.length !== 10
-    ) {
-      newErrors.contactNumber1 = "Please enter a valid Phone Number";
-    }
+    // if (
+    //   !numberValidation.test(contactNumber1) ||
+    //   contactNumber1.length !== 10
+    // ) {
+    //   newErrors.contactNumber1 = "Please enter a valid Phone Number";
+    // }
 
     return newErrors;
   };
@@ -201,11 +201,11 @@ const ContactTeam = () => {
         }
 
         if (value && key === "financeSpocphoneNo") {
-          if (!numberValidation.test(value) || value.length !== 10)
+          if (!numberValidation.test(value))
             communicationArray.push("financeSpocphoneNo is invalid");
         }
         if (value && key === "managementSpocphoneNo") {
-          if (!numberValidation.test(value) || value.length !== 10)
+          if (!numberValidation.test(value))
             communicationArray.push("managementSpocphoneNo is invalid");
         }
 

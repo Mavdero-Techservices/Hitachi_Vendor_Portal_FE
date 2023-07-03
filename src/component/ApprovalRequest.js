@@ -29,6 +29,7 @@ import { ClickAwayListener } from '@material-ui/core';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+
 function ApprovalRequest() {
     const [modalShow, setModalShow] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -54,19 +55,19 @@ function ApprovalRequest() {
     const handleSetVendorCode = (params, value) => {
         setpara(params);
         params.vendorCode = value;
-        console.log("vendorCodeVl::",params.vendorCode);
+        console.log("vendorCodeVl::", params.vendorCode);
     };
     const handlesaveVendorCodeDetails = () => {
-  
+
         setsaveVendorCode(true);
         setModalOpen(false)
-      };
+    };
     const handleVendorCode = (event, value) => {
         handleSetVendorCode(para, value);
-        console.log("vendorcode",value);
-        console.log("para",para);
+        console.log("vendorcode", value);
+        console.log("para", para);
     };
-    
+
 
     const theme = createTheme({
         Link: {
@@ -315,50 +316,55 @@ function ApprovalRequest() {
             field: 'vendorCode',
             headerName: 'Vendor Code',
             renderCell: (params) => {
-              console.log("vandorPAravalue::", para);
-              const buttonName = saveVendorCode && para && para?.id === params.row?.id && para?.vendorCode && para?.vendorCode.length > 0 ? 'Vendor Code Selected' : 'Select Vendor Code';
-              const vendorCodeValues = para && para?.id === params.row?.id && para?.vendorCode && para?.vendorCode.length > 0 ? para?.vendorCode?.filter(obj => obj.Vendor_No).map(obj => obj.Vendor_No) : [];
-          
-              return (
-                <>
-                  {saveVendorCode ? (
-                    <Tooltip title={vendorCodeValues.join(', ')} placement="top">
-                      <button
-                        onClick={() => {
-                          handleSetVendorCode(params.row, para);
-                          setModalOpen(true);
-                        }}
-                        type="button"
-                        className="btn bankbtn btn-primary btn-md m-2"
-                      >
-                        {buttonName}
-                      </button>
-                    </Tooltip>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        handleSetVendorCode(params.row, para);
-                        setModalOpen(true);
-                      }}
-                      type="button"
-                      className="btn bankbtn btn-primary btn-md m-2"
-                    >
-                      {buttonName}
-                    </button>
-                  )}
-                </>
-              );
+                const rowId = params.row?.id;
+                const buttonName = params.row.vendorCode && params.row.vendorCode.length > 0 ? 'Vendor Code Selected' : 'Select Vendor Code';
+                const vendorCodeValues = params.row.vendorCode?.filter(obj => obj.Vendor_No).map(obj => obj.Vendor_No) || [];
+
+                return (
+                    <>
+                        {params.row.vendorCode && params.row.vendorCode.length > 0 ? (
+                            <Tooltip title={vendorCodeValues.join(', ')} placement="top">
+                                <button
+                                    onClick={() => {
+                                        handleSetVendorCode(params.row, params.row.vendorCode);
+                                        setModalOpen(true);
+                                    }}
+                                    type="button"
+                                    className="btn bankbtn btn-primary btn-md m-2"
+                                >
+                                    {buttonName}
+                                </button>
+                            </Tooltip>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    handleSetVendorCode(params.row, []);
+                                    setModalOpen(true);
+                                }}
+                                type="button"
+                                className="btn bankbtn btn-primary btn-md m-2"
+                            >
+                                {buttonName}
+                            </button>
+                        )}
+                    </>
+                );
             },
             width: 500,
-          }
-          
+        }
+
     ];
 
     const getReqData = () => {
         setreqData([])
         apiService.getPeriodicReq().then(response => {
-            // setreqData(response.data.result);
-            setreqData(oldArray => [...oldArray, ...response.data.result]);
+            const modifiedData = response.data.result.map((item) => ({
+                ...item,
+                quaterly: null,
+                halfyearly: null,
+                yearly: null,
+            }));
+            setreqData((prevData) => [...prevData, ...modifiedData]);
         })
     }
     useEffect(() => {
@@ -376,9 +382,16 @@ function ApprovalRequest() {
             // setvendorList(prevState => [...prevState, ...response.data.value])
         })
         apiService.getPeriodicReq().then(response => {
-            // console.log("response.data.result------------req-->>>",response)
-            setreqData(response.data.result);
-        })
+            const modifiedResult = response.data.result.map(item => {
+                return {
+                    ...item,
+                    quaterly: null,
+                    halfyearly: null,
+                    yearly: null
+                };
+            });
+            setreqData(modifiedResult);
+        });
     }, [])
 
     const rows = reqData ? reqData : "";
@@ -564,30 +577,32 @@ function ApprovalRequest() {
                                 </AccordionSummary>
                             </Accordion>
                             <Box sx={{ mt: 4, height: 350, width: '100%' }}>
-                            <div style={{ height: 420, width: '100%', overflow: 'auto' }}>
-                            <DataGrid
-                                    sx={{ backgroundColor: "white" }}
-                                    rows={rows}
-                                    onSelectionModelChange={(ids) => {
-                                        const selectedIDs = new Set(ids);
-                                        const selectedRowData = rows.filter((row) =>
-                                            selectedIDs.has(row.id),
-                                        );
-                                        if (selectedRowData) {
-                                            // console.log("selected row----------->>>>>",selectedRowData)
-                                            setreqinfo(selectedRowData)
-                                        }
-                                    }}
-                                    rowHeight={"auto"}
-                                    columns={columns}
-                                    pageSize={5}
-                                    rowsPerPageOptions={[5]}
-                                    disableSelectionOnClick={true}
-                                    checkboxSelection={true}
-                                    experimentalFeatures={{ newEditingApi: true }}
-                                />
+
+                                <div style={{ height: 420, width: '100%', overflow: 'auto' }}>
+                                    <DataGrid
+                                        sx={{ backgroundColor: "white" }}
+                                        rows={rows}
+                                        onSelectionModelChange={(ids) => {
+                                            const selectedIDs = new Set(ids);
+                                            const selectedRowData = rows.filter((row) =>
+                                                selectedIDs.has(row.id),
+                                            );
+                                            if (selectedRowData) {
+                                                // console.log("selected row----------->>>>>",selectedRowData)
+                                                setreqinfo(selectedRowData)
+                                            }
+                                        }}
+                                        rowHeight={"auto"}
+                                        columns={columns}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                        disableSelectionOnClick={true}
+                                        checkboxSelection={true}
+                                        experimentalFeatures={{ newEditingApi: true }}
+                                    // autoHeight={false}
+                                    />
                                 </div>
-                               
+
                             </Box>
                             <div>
                                 <Dialog open={modalOpen} onClose={() => setModalOpen(false)} disableBackdropClick={true}>
@@ -603,7 +618,7 @@ function ApprovalRequest() {
                                             // onChange={(event, newValue) => setSelectedOptions(newValue)}
                                             onChange={(event, value) =>
                                                 handleVendorCode(event, value)
-                                              }
+                                            }
                                             renderOption={(props, option, { selected }) => (
                                                 <li key={option.Vendor_No} {...props}>
                                                     <Checkbox
@@ -624,14 +639,14 @@ function ApprovalRequest() {
 
                                     </DialogContent>
                                     <DialogActions>
-                                    <Button onClick={() => { setModalOpen(false); setsaveVendorCode(true);}}>Select</Button>
+                                        <Button onClick={() => { setModalOpen(false); setsaveVendorCode(true); }}>Select</Button>
 
-                                        <Button onClick={() => {setModalOpen(false);setsaveVendorCode(false);}}>Cancel</Button>
+                                        <Button onClick={() => { setModalOpen(false); setsaveVendorCode(false); }}>Cancel</Button>
 
                                     </DialogActions>
                                 </Dialog>
                             </div>
-                            <div className="float-end Request"  >
+                            <div className="float-end Request" style={{ marginTop: '10% !important' }} >
                                 <button type="button" onClick={(e) => handleRequest(e)} className="btn bankbtn btn-primary btn-md m-2">Request</button>
 
                             </div>

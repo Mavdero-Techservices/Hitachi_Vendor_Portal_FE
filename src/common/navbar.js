@@ -142,9 +142,19 @@ function App() {
   const redirectToMaster =(e)=>{
     let data = { master: false };
     sessionStorage.setItem("master", JSON.stringify(data));
-    sessionStorage.removeItem("UserFromMasterData");
-    navigate("/userCreation");
-
+    
+   
+    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'masterData') {
+      sessionStorage.removeItem("UserFromMasterData");
+      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+      item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      delete item.result.userId2;
+      delete item.result.usertype;
+      console.log("masterData------------>>>", item.result)
+      sessionStorage.setItem("jwt", JSON.stringify(item));
+      navigate("/userCreation");
+    }
     if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
       let item = JSON.parse(window.sessionStorage.getItem("jwt"));
       item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
