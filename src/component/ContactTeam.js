@@ -278,7 +278,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             // if (key === "GST_Doc") {
@@ -340,7 +340,8 @@ const ContactTeam = () => {
           statutoryArray.push("GST Doc");
         }
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === "" || value === null || value === undefined) {
+          console.log("valuekey::",key);
+          if (value === "" || value === null || value === undefined||value==="undefined") {
             if (key === 'form_10f_Doc') {
               statutoryArray.push('form 10f');
             }
@@ -356,7 +357,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             // if (key === "GST_Doc") {
@@ -890,7 +891,7 @@ const ContactTeam = () => {
     } else {
       if (basicInfo?.length > 0 && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === "" || value === null || value === undefined) {
+          if (value === "" || value === null || value === undefined||value==="undefined") {
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
             }
@@ -900,7 +901,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             if (key === "GST_Doc") {
@@ -957,7 +958,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             if (key === "GST_Doc") {

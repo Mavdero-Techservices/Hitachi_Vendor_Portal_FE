@@ -369,18 +369,24 @@ function ApprovalRequest() {
     }
     useEffect(() => {
         setvendorList([]);
+        // apiService.getErpResourcePortalVendorlist().then(response => {
+        //     const uniqueVendorList = response.data.value.reduce((uniqueList, vendor) => {
+        //         if (!uniqueList.find(item => item.Vendor_No === vendor.Vendor_No)) {
+        //             uniqueList.push(vendor);
+        //         }
+        //         return uniqueList;
+        //     }, []);
+
+        //     setvendorList(uniqueVendorList);
+
+        //     // setvendorList(prevState => [...prevState, ...response.data.value])
+        // })
         apiService.getErpResourcePortalVendorlist().then(response => {
-            const uniqueVendorList = response.data.value.reduce((uniqueList, vendor) => {
-                if (!uniqueList.find(item => item.Vendor_No === vendor.Vendor_No)) {
-                    uniqueList.push(vendor);
-                }
-                return uniqueList;
-            }, []);
-
+            const uniqueVendorList = response.data.value.filter((vendor, index, self) => {
+              return vendor.Vendor_No && index === self.findIndex(v => v.Vendor_No === vendor.Vendor_No);
+            });
             setvendorList(uniqueVendorList);
-
-            // setvendorList(prevState => [...prevState, ...response.data.value])
-        })
+          });
         apiService.getPeriodicReq().then(response => {
             const modifiedResult = response.data.result.map(item => {
                 return {

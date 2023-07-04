@@ -14,6 +14,7 @@ function ApprovalFields(props) {
   const [editStatData, seteditStatData] = useState([]);
   const [editFinanceData, seteditFinanceData] = useState([]);
   const [editContactData, seteditContactData] = useState([]);
+ 
 
 
   const reload = () => {
@@ -1547,7 +1548,7 @@ console.log("acmanager::",Vendor_Account_Manager);
       P_A_N_No: PAN_No || undefined,
       CIN_No: CIN_No || undefined,
       TAN_No: TAN_No || undefined,
-      // Vendor_Account_Manager: Vendor_Account_Manager || undefined,
+      Vendor_Account_Manager: Vendor_Account_Manager || undefined,
       // State_Code: "UTP",
       Finance_Contact_Name: fs_ContactName || undefined,
       Finance_Contact_Designation: fs_Designation || undefined,
@@ -2124,6 +2125,7 @@ console.log("acmanager::",Vendor_Account_Manager);
       data.append("approverFile", approverFile);
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
+        console.log("data::")
       });
 
       const userId = event;
@@ -2149,7 +2151,7 @@ console.log("acmanager::",Vendor_Account_Manager);
         P_A_N_No: PAN_No || undefined,
         CIN_No: CIN_No || undefined,
         TAN_No: TAN_No || undefined,
-        // Vendor_Account_Manager: Vendor_Account_Manager || undefined,
+        Vendor_Account_Manager: Vendor_Account_Manager || undefined,
         // State_Code: "UTP",
         Finance_Contact_Name: fs_ContactName || undefined,
         Finance_Contact_Designation: fs_Designation || undefined,
@@ -5189,8 +5191,8 @@ console.log("acmanager::",Vendor_Account_Manager);
                               type="radio"
                               name="acManager"
                               id="acManager1"
-                              value={"Rajender San"}
-                              checked={acManager === "Rajender San"}
+                              value={"MCIPL\\M0790"}
+                              checked={acManager === "MCIPL\\M0790"}
                               onChange={(e) => validateacManager(e)}
                             />
                             <label
@@ -5208,8 +5210,8 @@ console.log("acmanager::",Vendor_Account_Manager);
                               type="radio"
                               name="acManager"
                               id="acManager2"
-                              value={"Keshav San"}
-                              checked={acManager === "Keshav San"}
+                              value={"MCIPL\\M0716"}
+                              checked={acManager === "MCIPL\\M0716"}
                               onChange={(e) => validateacManager(e)}
                             />
                             <label
