@@ -152,7 +152,7 @@ const BankDetails = (props) => {
     });
   }
   const redirectToFinancialDetail = () => {
-    if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+    if ((redirectUrl && redirectUrl.FinancialDetail && redirectUrl.FinancialDetail?.length <= 0) || "" || undefined) {
       navigate("/FinancialDetail");
     } else {
       navigate(`/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`);
@@ -227,8 +227,8 @@ const BankDetails = (props) => {
       data.append("MICRcode", micr);
       data.append("Bank_Address", branchAdd);
       data.append("bankdetailDoc", fileBank);
-      if (params.userId) {
-        apiService.updateBankDetail(params.userId, data).then((response) => {
+      if (params?.userId) {
+        apiService.updateBankDetail(params?.userId, data).then((response) => {
           if (response) {
             Swal.fire({
               title: "Data updated",
@@ -388,7 +388,7 @@ const BankDetails = (props) => {
       event.preventDefault();
       setIsNewValueEntered(false);
       const data = new FormData();
-      data.append("userId", params.userId);
+      data.append("userId", params?.userId);
       data.append("Account_Holder_Name", acName);
       data.append("Bank_Name", bankname);
       data.append("Account_No", acno);
@@ -396,8 +396,8 @@ const BankDetails = (props) => {
       data.append("MICRcode", micr);
       data.append("Bank_Address", branchAdd);
       data.append("bankdetailDoc", fileBank);
-      if (params.userId) {
-        apiService.updateBankDetail(params.userId, data).then((response) => {
+      if (params?.userId) {
+        apiService.updateBankDetail(params?.userId, data).then((response) => {
           if (response) {
             Swal.fire({
               title: "Data updated",
@@ -448,13 +448,13 @@ const BankDetails = (props) => {
     let newuser = JSON.parse(
       window.sessionStorage.getItem("newregUser")
     )?.newregUser;
-    if (params.userId) {
+    if (params?.userId) {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
-      apiService.signupFindByUserId(params.userId).then((res) => {
+      apiService.signupFindByUserId(params?.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
       });
-      apiService.getAllCollection(params.userId).then((res) => {
+      apiService.getAllCollection(params?.userId).then((res) => {
         setredirectUrl(res.data);
 
         
@@ -529,13 +529,13 @@ const BankDetails = (props) => {
     let newuser = JSON.parse(
       window.sessionStorage.getItem("newregUser")
     )?.newregUser;
-    if (params.userId) {
+    if (params?.userId) {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
-      apiService.signupFindByUserId(params.userId).then((res) => {
+      apiService.signupFindByUserId(params?.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
       });
-      apiService.getAllCollection(params.userId).then((res) => {
+      apiService.getAllCollection(params?.userId).then((res) => {
         setredirectUrl(res.data);
         if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
           setStyle("notEditable");
@@ -597,7 +597,7 @@ const BankDetails = (props) => {
         });
       setEditBank(false);
     }
-  }, [params.userId]);
+  }, [params?.userId]);
   return (
     <div className="bank-details">
       <Navbar1 />
@@ -770,7 +770,7 @@ const BankDetails = (props) => {
               >
                 Cancel
               </button>
-              {params.userId &&
+              {params?.userId &&
                 JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
                 "Admin" ? (
                 <>
