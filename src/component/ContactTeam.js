@@ -95,12 +95,12 @@ const ContactTeam = () => {
       newErrors.contactNumber1 = "contactNumber";
     }
 
-    if (
-      !numberValidation.test(contactNumber1) ||
-      contactNumber1.length !== 10
-    ) {
-      newErrors.contactNumber1 = "Please enter a valid Phone Number";
-    }
+    // if (
+    //   !numberValidation.test(contactNumber1) ||
+    //   contactNumber1.length !== 10
+    // ) {
+    //   newErrors.contactNumber1 = "Please enter a valid Phone Number";
+    // }
 
     return newErrors;
   };
@@ -201,11 +201,11 @@ const ContactTeam = () => {
         }
 
         if (value && key === "financeSpocphoneNo") {
-          if (!numberValidation.test(value) || value.length !== 10)
+          if (!numberValidation.test(value))
             communicationArray.push("financeSpocphoneNo is invalid");
         }
         if (value && key === "managementSpocphoneNo") {
-          if (!numberValidation.test(value) || value.length !== 10)
+          if (!numberValidation.test(value))
             communicationArray.push("managementSpocphoneNo is invalid");
         }
 
@@ -278,7 +278,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             // if (key === "GST_Doc") {
@@ -340,7 +340,8 @@ const ContactTeam = () => {
           statutoryArray.push("GST Doc");
         }
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === "" || value === null || value === undefined) {
+          console.log("valuekey::",key);
+          if (value === "" || value === null || value === undefined||value==="undefined") {
             if (key === 'form_10f_Doc') {
               statutoryArray.push('form 10f');
             }
@@ -356,7 +357,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             // if (key === "GST_Doc") {
@@ -491,7 +492,7 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID || undefined
+      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 : JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID
     };
     if (params.userId) {
 
@@ -518,9 +519,24 @@ const ContactTeam = () => {
             apiService
               .updateVendordetail(userkey, basicInfo[0])
               .then((response) => {
-                Swal.fire(
-                  "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                );
+                Swal.fire({
+                  title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                  confirmButtonText: "Yes",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                      item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                      delete item.result.userId2;
+                      delete item.result.usertype;
+                      delete item.result.Ticket_ID2;
+                      console.log("new user response------------>>>", item.result)
+                      sessionStorage.setItem("jwt", JSON.stringify(item));
+                      navigate("/userCreation");
+                    }
+                  }
+                })
               });
           } else {
             Swal.fire({
@@ -608,7 +624,19 @@ const ContactTeam = () => {
                       sessionStorage.removeItem('newregUser')
                     }
                     if (result.isConfirmed) {
-                      navigate("/userCreation")
+                      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                        let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                        item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                        item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                        delete item.result.userId2;
+                        delete item.result.usertype;
+                        delete item.result.Ticket_ID2;
+                        console.log("new user response------------>>>", item.result)
+                        sessionStorage.setItem("jwt", JSON.stringify(item));
+                        navigate("/userCreation");
+                      } else {
+                        navigate("/userCreation")
+                      }
                     }
                   })
                 });
@@ -684,9 +712,24 @@ const ContactTeam = () => {
               apiService
                 .updateVendordetail(userkey, basicInfo[0])
                 .then((response) => {
-                  Swal.fire(
-                    "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update."
-                  );
+                    Swal.fire({
+                    title: "Your data has been successfully submitted to Hitachi Team and you will receive an email about the status update.",
+                    confirmButtonText: "Yes",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                        let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                        item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                        item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                        delete item.result.userId2;
+                        delete item.result.usertype;
+                        delete item.result.Ticket_ID2;
+                        console.log("new user response------------>>>", item.result)
+                        sessionStorage.setItem("jwt", JSON.stringify(item));
+                        navigate("/userCreation");
+                      }
+                    }
+                  })
                 });
             } else {
               Swal.fire({
@@ -848,7 +891,7 @@ const ContactTeam = () => {
     } else {
       if (basicInfo?.length > 0 && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
         Object.entries(statutory[0]).map(([key, value]) => {
-          if (value === "" || value === null || value === undefined) {
+          if (value === "" || value === null || value === undefined||value==="undefined") {
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
             }
@@ -858,7 +901,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             if (key === "GST_Doc") {
@@ -915,7 +958,7 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSME No") {
+            if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
             if (key === "GST_Doc") {
@@ -1050,7 +1093,7 @@ const ContactTeam = () => {
       contactName3: values.contactName3 || undefined,
       emailId3: values.emailId3 || undefined,
       contactNumber3: values.contactNumber3 || undefined,
-      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID || undefined
+      Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2 : JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID
     };
     if (params.userId) {
       apiService.updateContactTeam(params.userId, user).then((response) => {
@@ -1088,7 +1131,20 @@ const ContactTeam = () => {
                       confirmButtonText: "Yes",
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        navigate("/userCreation")
+                        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+                          let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+                          item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+                          item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+                          delete item.result.userId2;
+                          delete item.result.usertype;
+                          delete item.result.Ticket_ID2;
+                          console.log("new user response------------>>>", item.result)
+                          sessionStorage.setItem("jwt", JSON.stringify(item));
+                          navigate("/userCreation");
+                        } else {
+                          navigate("/userCreation")
+
+                        }
                       }
                     })
                     // chandran
@@ -1224,7 +1280,7 @@ const ContactTeam = () => {
       });
     } else {
       if (
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin"
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.role === "Admin" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration"
       ) {
         apiService.getAllCollection(params.userId).then((getAllCollection) => {
           setbasicInfo(getAllCollection.data.basicInfo);

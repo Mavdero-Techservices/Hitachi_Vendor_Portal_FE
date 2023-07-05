@@ -261,7 +261,7 @@ function JapanTeam() {
                                             {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width: '40px', backgroundColor: '#0001', borderRadius: '50%', textTransform: 'uppercase' }}> {item.companyName?.charAt(0)}</Typography>}
                                             <Typography >&nbsp;{item.companyName}</Typography>
                                         </IconButton>
-                                        <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>Review Vendor Details</Typography>
+                                        <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>{item.userStatus === "MasterData" ? "Review updated vendor details" : "Review Vendor Details"}</Typography>
                                         <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.createdAt}</Typography>
                                         <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
                                     </AccordionSummary>

@@ -244,6 +244,9 @@ class apiService {
   getErpVendor_APIByP_A_N_No(P_A_N_No) {
     return http.get(`/getErpVendor_APIByP_A_N_No/${P_A_N_No}`);
   }
+  getErpVendor_APIByVendorId(ticketId) {
+    return http.get(`/getErpVendor_APIByVendorId/${ticketId}`);
+  }
   updateTicketIdbyUserId(userId) {
     return http.put(`/updateTicketIdbyUserId/${userId}`);
   }
@@ -330,6 +333,15 @@ saveInvoiceInfo(data) {
   return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveInvoiceInfo`, data);
 }
 
+uploadDocbyVendorCode(data){
+  console.log("data-------->", data);
+  return axios.post(`${process.env.REACT_APP_API_URL}:12707/uploadDocbyVendorCode`, data);
+}
+
+getOutOfIndiaVcode(ticketId) {
+  return http.get(`/getOutOfIndiaVcode/${ticketId}`,);
+}
+
 getInvoiceinfo() {
   return http.get('/getInvoiceinfo');
 }
@@ -361,6 +373,8 @@ getSubuserId(subUserId) {
 getDocuments() {
   return http.get('/getDocuments');
 }
-
+  UpdateUserStatusByUserId(userId) {
+    return http.put(`/updateVdetail/userStatus/${userId}`);
+  }
 }
 export default new apiService();

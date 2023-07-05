@@ -24,6 +24,9 @@ function VendorPortalHeader({ handleVcode }) {
   const [vendoCode, setvendoCode] = useState();
 
   const [subUserId, setsubUserId] = useState([]);
+  const [outofIndVcode, setoutofIndVcode] = useState([]);
+
+  console.log("outofIndVcode------------->", outofIndVcode);
 
 
   const [headvendoCode, setheadvendoCode] = useState();
@@ -63,17 +66,33 @@ function VendorPortalHeader({ handleVcode }) {
       newMethod(res.data.result);
     });
 
+    if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.Country_Region_Code !== "IND") {
+
+      
+
+      let ticketId = JSON.parse(window.sessionStorage.getItem("jwt")).result?.Ticket_ID;
+
+      apiService.getOutOfIndiaVcode(ticketId).then((res) => [
+        console.log("res---------->", res.data[0]),
+        setoutofIndVcode(res.data),
+        setheadvendoCode(res.data[0].Vendor_No + "_" + res.data[0].City + "_" + res.data[0].Post_Code),
+        handleVcode(res.data[0].Vendor_No),
+      ])
+    }
+
+   
+
+    
+
     apiService.getErpVendor_API().then((res) => {});
     let arr = [];
     apiService.getErpVendor_API().then((res) => {
       for (let i = 0; i < res.data.value.length; i++) {
         if (res.data.value[i].Parent_Vendor_Code === "DKM-006") {
-          console.log("arr------------------>>>>>", res.data.value[i]);
           arr.push(res.data.value[i]);
         }
       }
       if (arr.length > 0) {
-        console.log("arr------------------>>>>>", arr);
       }
     });
   }, []);
@@ -215,7 +234,50 @@ function VendorPortalHeader({ handleVcode }) {
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
-              <Menu
+
+              {outofIndVcode.length > 0 ? 
+              (
+                <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {outofIndVcode?.map((setting, key) => (
+                  <MenuItem
+                    key={key}
+                    onClick={(e) => {
+                      handleCloseUserMenu(e, setting);
+                      handleVcode(setting?.Vendor_No);
+                      setheadvendoCode(
+                        setting?.Vendor_No +
+                          "_" +
+                          setting?.City +
+                          "_" +
+                          setting?.Post_Code
+                      );
+                    }}
+                  >
+                    <Typography textAlign="center">
+                      {setting.Vendor_No}_{setting.City}_{setting.Post_Code}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+              )
+               : 
+              (
+                <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
@@ -252,6 +314,8 @@ function VendorPortalHeader({ handleVcode }) {
                   </MenuItem>
                 ))}
               </Menu>
+              )}
+              
             </Box>
           </Toolbar>
         </Container>

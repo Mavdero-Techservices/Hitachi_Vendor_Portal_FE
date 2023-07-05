@@ -40,8 +40,7 @@ function App() {
   const VendorDetails = (e) => {
     const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
     if (
-      (editUser?.basicInfo?.length > 0 || editUser?.CommunicationDetails?.length > 0) &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin"
+      (editUser?.basicInfo?.length > 0 || editUser?.CommunicationDetails?.length > 0) 
     ) {
       console.log("user::")
       navigate(
@@ -63,8 +62,7 @@ function App() {
   const statutoryDetails = (e) => {
     const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
     if (
-      editUser?.Statutory?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      editUser?.Statutory?.length > 0 
     ) {
       navigate(
         `/statutory/${
@@ -84,8 +82,7 @@ function App() {
   const complianceDetails = (e) => {
     const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
     if (
-      editUser?.ComplianceDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      editUser?.ComplianceDetail?.length > 0
     ) {
       navigate(
         `/ComplianceDetail/${
@@ -105,8 +102,7 @@ function App() {
   const bankDetails = (e) => {
     const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
     if (
-      editUser?.Bankdetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      editUser?.Bankdetail?.length > 0 
     ) {
       navigate(
         `/bank/${
@@ -126,8 +122,7 @@ function App() {
   const financialDetails = (e) => {
     const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
     if (
-      editUser?.FinancialDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      editUser?.FinancialDetail?.length > 0 
     ) {
       navigate(
         `/FinancialDetail/${
@@ -147,14 +142,34 @@ function App() {
   const redirectToMaster =(e)=>{
     let data = { master: false };
     sessionStorage.setItem("master", JSON.stringify(data));
-    sessionStorage.removeItem("UserFromMasterData");
-    navigate("/userCreation");
-
+    
+   
+    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'masterData') {
+      sessionStorage.removeItem("UserFromMasterData");
+      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+      item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      delete item.result.userId2;
+      delete item.result.usertype;
+      console.log("masterData------------>>>", item.result)
+      sessionStorage.setItem("jwt", JSON.stringify(item));
+      navigate("/userCreation");
+    }
+    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === 'NewRegistration') {
+      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+      item.result.userId = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId2
+      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      delete item.result.userId2;
+      delete item.result.usertype;
+      delete item.result.Ticket_ID2;
+      console.log("new user response------------>>>", item.result)
+      sessionStorage.setItem("jwt", JSON.stringify(item));
+      navigate("/userCreation");
+    }
   }
   const contactDetails = (e) => {
     if (
-      editUser?.contactDetail?.length > 0 &&
-      JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== "Admin"
+      editUser?.contactDetail?.length > 0 
     ) {
       navigate(
         `/ContactTeam/${
@@ -248,14 +263,13 @@ else{
               <Nav.Link onClick={bankDetails}>Bank Details</Nav.Link>
               <Nav.Link onClick={financialDetails}>Financial Details</Nav.Link>
               <Nav.Link onClick={contactDetails}>Contact Team</Nav.Link>
-              {!hasmaster && (
-              <Nav.Link onClick={handleClickOpen} id="b3">
-              logOut
-            </Nav.Link>
-              )}
-              {hasmaster && (
+              {JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin' ?
+                <Nav.Link onClick={handleClickOpen} id="b3">
+                  logOut
+                </Nav.Link>
+                :
                 <Nav.Link onClick={redirectToMaster}>Back To Master</Nav.Link>
-              )}
+              }
             </Nav>
           </Navbar.Collapse>
         </Container>

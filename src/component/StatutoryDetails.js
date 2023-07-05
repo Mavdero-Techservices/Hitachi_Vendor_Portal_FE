@@ -43,8 +43,9 @@ export default function Statutory(props) {
     useState(true);
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
-  const [MSME, setMSME] = useState("Micro");
-  const [MSME_status, setMSME_status] = useState("Registered");
+  const [MSME, setMSME] = useState("1");
+  const[staticPAN_No,setstaticPAN_No]= useState("");
+  const [MSME_status, setMSME_status] = useState("1");
   const [GST_Doc, setFile] = useState();
   const [PAN_Doc, setPAN_Doc] = useState();
   const [PE_Declaration_Doc, setPE_Declaration_Doc] = useState();
@@ -81,6 +82,7 @@ export default function Statutory(props) {
     MSME_Type: "",
     TAN_No: "",
     Tax_residency_No: "",
+    userType: ""
   });
   const [isNewValueEntered, setIsNewValueEntered] = useState(false);
   function onChangeValue(event) {
@@ -88,7 +90,16 @@ export default function Statutory(props) {
     setGST_type(event.target.value);
     if (event.target.value === "UnRegistered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+        
+        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+          console.log("setstaticPAN_No",staticPAN_No);
+          setValues({ PAN_No: staticPAN_No });
+        }
+        else
+        {
+          setValues({ PAN_No: "" });
+        }
+        
       }
       sethideunRegisteredField(false);
     } else {
@@ -102,7 +113,14 @@ export default function Statutory(props) {
     }
     if (event.target.value === "Registered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        setValues({ PAN_No: "" });
+        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+          console.log("setstaticPAN_No",staticPAN_No);
+          setValues({ PAN_No: staticPAN_No });
+        }
+        else
+        {
+          setValues({ PAN_No: "" });
+        }
       }
     }
     if (event.target.value === "UnRegistered") {
@@ -138,8 +156,9 @@ export default function Statutory(props) {
   function onChangeValueMSME_status(event) {
     setIsNewValueEntered(true);
     setMSME_status(event.target.value);
-    if (event.target.value === "UnRegistered") {
+    if (event.target.value === "2") {
       sethideMSMEunRegisteredField(false);
+      setMSME("0");
     } else {
       sethideMSMEunRegisteredField(true);
     }
@@ -513,6 +532,7 @@ export default function Statutory(props) {
     }
   }
   function cancel(e) {
+    console.log("cancelbutton::")
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -525,30 +545,62 @@ export default function Statutory(props) {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        setValues({
-          GST_No: "",
-          GST_type: "",
-          MSME_No: "",
-          MSME_Type: "",
-          MSME_status: "",
-          PAN_No: "",
-          CIN_No: "",
-          TAN_No: "",
-          Tax_residency_No: "",
-        });
-        setFile(" ");
-        setPAN_Doc(" ");
-        setPE_Declaration_Doc(" ");
-        setMSME_Doc(" ");
-        setTax_residency_Doc(" ");
-        setdeleteTax_residencyUploadedFile(false);
-        setdeletePE_DeclarationUploadedFile(false);
-        seteditTax_residency_Doc(" ");
-        setform_10f_Doc("");
-        setdeleteform_10fUploadedFile(false);
-        setEditform_10f_Doc("");
-        setEditPE_Declaration_Doc(" ");
-        setIsNewValueEntered(true);
+        console.log("cancels")
+        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+          console.log("setstaticPAN_No",staticPAN_No);
+          setValues({
+            GST_No: "",
+            GST_type: "",
+            MSME_No: "",
+            MSME_Type: "",
+            MSME_status: "",
+            PAN_No: staticPAN_No,
+            CIN_No: "",
+            TAN_No: "",
+            Tax_residency_No: "",
+          });
+          setFile(" ");
+          setPAN_Doc(" ");
+          setPE_Declaration_Doc(" ");
+          setMSME_Doc(" ");
+          setTax_residency_Doc(" ");
+          setdeleteTax_residencyUploadedFile(false);
+          setdeletePE_DeclarationUploadedFile(false);
+          seteditTax_residency_Doc(" ");
+          setform_10f_Doc("");
+          setdeleteform_10fUploadedFile(false);
+          setEditform_10f_Doc("");
+          setEditPE_Declaration_Doc(" ");
+          setIsNewValueEntered(true);
+        }
+        else
+        {
+          setValues({
+            GST_No: "",
+            GST_type: "",
+            MSME_No: "",
+            MSME_Type: "",
+            MSME_status: "",
+            PAN_No: "",
+            CIN_No: "",
+            TAN_No: "",
+            Tax_residency_No: "",
+          });
+          setFile(" ");
+          setPAN_Doc(" ");
+          setPE_Declaration_Doc(" ");
+          setMSME_Doc(" ");
+          setTax_residency_Doc(" ");
+          setdeleteTax_residencyUploadedFile(false);
+          setdeletePE_DeclarationUploadedFile(false);
+          seteditTax_residency_Doc(" ");
+          setform_10f_Doc("");
+          setdeleteform_10fUploadedFile(false);
+          setEditform_10f_Doc("");
+          setEditPE_Declaration_Doc(" ");
+          setIsNewValueEntered(true);
+        }
+      
       }
     });
   }
@@ -569,8 +621,26 @@ export default function Statutory(props) {
           if (cName !== "IN" && cName !== null && cName !== undefined) {
             setValues({ PAN_No: "N/A" });
           }
-          if (masterData.master===true) {
+          if (masterData.master===true||JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
             setCountryName("IN");
+            if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+              console.log("vendorcodessss---inside-------------->>>>>>")
+              let masterid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.Ticket_ID
+      
+              setValues({ userType: "NewRegistration" })
+ apiService.getErpVendor_APIByVendorId(masterid).then((vendorCode) => {
+                if (vendorCode) {
+                  console.log("vendorcodessss-------vendorCode.data.result.P_A_N_No---------->>>>>>", vendorCode.data.response[0].P_A_N_No)
+                  if (vendorCode.data.response.length > 0) {
+                    setValues({ PAN_No: vendorCode.data.response[0].P_A_N_No })
+                    setstaticPAN_No(vendorCode.data.response[0].P_A_N_No);
+                  } else {
+                    setValues({ PAN_No: "" })
+                  }
+      
+                }
+              })
+            }
                 }
                 else
                 {
@@ -777,6 +847,7 @@ export default function Statutory(props) {
       );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
+        console.log("dataupdateNewReq::",data);
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
           setstatRes(statRes + 1);
           if (res.data.status === "success") {
@@ -912,6 +983,7 @@ export default function Statutory(props) {
     });
   };
   const updateStatutoryDetail = (e) => {
+    console.log("updatenew::")
     return new Promise((resolve) => {
       e.preventDefault();
       setIsNewValueEntered(false);
@@ -922,7 +994,8 @@ export default function Statutory(props) {
       }
       else if (GST_type === "Import"){
         data.append("GST_Registration_No", "N/A");
-      } else {
+      }
+       else {
         data.append("GST_Registration_No", values.GST_No);
       }
       if (countryName !== "IN") {
@@ -951,7 +1024,10 @@ export default function Statutory(props) {
       data.append("MSMED_Number", values.MSME_No);
       data.append("MSMED_Vendor_Type", MSME);
       data.append("TAN_No", values.TAN_No);
-      data.append("userId", params.userId);
+      data.append(
+        "userId",
+        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
@@ -1724,9 +1800,9 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME_status}
                                   type="radio"
-                                  value="Registered"
+                                  value="1"
                                   name="Registered"
-                                  checked={MSME_status === "Registered"}
+                                  checked={MSME_status === "1"}
                                 />{" "}
                                 Registered
                               </Col>
@@ -1734,9 +1810,9 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME_status}
                                   type="radio"
-                                  value="UnRegistered"
+                                  value="2"
                                   name="UnRegistered"
-                                  checked={MSME_status === "UnRegistered"}
+                                  checked={MSME_status === "2"}
                                 />{" "}
                                 UnRegistered
                               </Col>
@@ -1746,7 +1822,7 @@ export default function Statutory(props) {
                       </Row>
                       {hideMSMEunRegisteredField ? (
                         <>
-                          {MSME_status === "UnRegistered" ? (
+                          {MSME_status === "2" ? (
                             <Row>
                               <Col>
                                 <Form.Group
@@ -1766,7 +1842,7 @@ export default function Statutory(props) {
                                 {MSME_Doc !== "" &&
                                   MSME_Doc !== "null" &&
                                   MSME_Doc !== undefined &&
-                                  MSME_status === "Registered" ? (
+                                  MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1778,7 +1854,7 @@ export default function Statutory(props) {
                                       Delete MSME
                                     </button>
                                   </div>
-                                ) : MSME_status === "Registered" ? (
+                                ) : MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <label htmlFor="fileuploadMSME">
                                       Upload MSME
@@ -1837,7 +1913,7 @@ export default function Statutory(props) {
                                       Delete MSME
                                     </button>
                                   </div>
-                                ) : MSME_status === "Registered" ? (
+                                ) : MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <label htmlFor="fileuploadMSME">
                                       Upload MSME
@@ -1880,7 +1956,7 @@ export default function Statutory(props) {
                             {MSME_Doc !== "" &&
                               MSME_Doc !== "null" &&
                               MSME_Doc !== undefined &&
-                              MSME_status === "Registered" ? (
+                              MSME_status === "1" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1892,7 +1968,7 @@ export default function Statutory(props) {
                                   Delete MSME
                                 </button>
                               </div>
-                            ) : MSME_status === "Registered" ? (
+                            ) : MSME_status === "1" ? (
                               <div className="frame-input">
                                 <label htmlFor="fileuploadMSME">
                                   Upload MSME
@@ -1924,11 +2000,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Micro"
+                                  value="1"
                                   name="Micro"
-                                  checked={MSME === "Micro"}
+                                  checked={MSME === "1"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }
@@ -1939,11 +2015,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Small"
+                                  value="2"
                                   name="Small"
-                                  checked={MSME === "Small"}
+                                  checked={MSME === "2"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }
@@ -1954,11 +2030,11 @@ export default function Statutory(props) {
                                 <input
                                   onChange={onChangeValueMSME}
                                   type="radio"
-                                  value="Macro"
+                                  value="3"
                                   name="Macro"
-                                  checked={MSME === "Macro"}
+                                  checked={MSME === "3"}
                                   disabled={
-                                    MSME_status === "UnRegistered"
+                                    MSME_status === "2"
                                       ? true
                                       : false
                                   }
