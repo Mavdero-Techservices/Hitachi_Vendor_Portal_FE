@@ -11,6 +11,8 @@ const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const numberValidation = /^-?(0|[1-9]\d*)?$/;
 // /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/ 
 const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+const desiredDomain = 'hitachi-systems.com';
+const groupEmailValidation = /^VND-APPV-[1-3]@hitachi-systems\.com$/;
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 const ContactTeam = () => {
@@ -86,10 +88,12 @@ const ContactTeam = () => {
     if (!emailId1 || emailId1 === "") {
       newErrors.emailId1 = "EmailId";
     }
-
-    if (!emailValidation.test(emailId1)) {
+    if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId1)) {
       newErrors.emailId1 = "Please enter a valid Email";
-    }
+   }
+    // if (!groupEmailValidation.test(emailId1)) {
+    //   newErrors.emailId1 = "Please enter a valid Email";
+    // }
 
     if (!contactNumber1 || contactNumber1 === "") {
       newErrors.contactNumber1 = "contactNumber";
@@ -160,8 +164,8 @@ const ContactTeam = () => {
       communicationArray.push("managementSpoc-phoneNo");
       communicationArray.push("managementSpoc-Email");
       {
-        let role = JSON.parse(window.sessionStorage.getItem("jwt")).result.role;
-        if (role !== "Admin") {
+        let role = JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype;
+        if (role !== "NewRegistration") {
           communicationArray.push("mastervendor EmailId");
         }
       }
@@ -195,7 +199,8 @@ const ContactTeam = () => {
           if (key === "managementSpocemail") {
             communicationArray.push("managementSpoc-Email");
           }
-          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin') {
+        
+          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== 'NewRegistration') {
             communicationArray.push("mastervendor EmailId");
           }
         }
@@ -245,13 +250,13 @@ const ContactTeam = () => {
       }
     } else {
       if (basicInfo?.length > 0 && basicInfo[0]?.Country_Region_Code && basicInfo[0].Country_Region_Code === 'IN') {
-        if ((statutory[0].MSME_Doc === "" || null) && statutory[0].MSMED === "Registered") {
+        if ((statutory[0].MSME_Doc === "" || null) && statutory[0].MSMED === "1") {
           statutoryArray.push("MSME Doc");
         }
-        if ((statutory[0].MSMED_Number === "" || null) && statutory[0].MSMED === "Registered") {
+        if ((statutory[0].MSMED_Number === "" || null) && statutory[0].MSMED === "1") {
           statutoryArray.push("MSME No");
         }
-        if (statutory[0].MSMED === "Registered" && statutory[0].MSMED_Number==="N/A") {
+        if (statutory[0].MSMED === "1" && statutory[0].MSMED_Number==="N/A") {
           statutoryArray.push("MSME No is invalid");
         }
         if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
@@ -268,7 +273,9 @@ const ContactTeam = () => {
           statutoryArray.push("GST Doc");
         }
         Object.entries(statutory[0]).map(([key, value]) => {
+          
           if (value === "" || value === null || value === undefined) {
+            console.log("emptykeys::",key);
             if (key === "GST_Registration_No") {
               statutoryArray.push("GST No");
             }
@@ -278,9 +285,9 @@ const ContactTeam = () => {
             if (key === "CIN_No") {
               statutoryArray.push("CIN No");
             }
-            if (key === "MSMED_Number") {
-              statutoryArray.push("MSME No");
-            }
+            // if (key === "MSMED_Number") {
+            //   statutoryArray.push("MSME No4");
+            // }
             // if (key === "GST_Doc") {
             //   statutoryArray.push("GST Doc");
             // }
@@ -318,14 +325,14 @@ const ContactTeam = () => {
         });
       }
       else {
-        if ((statutory[0].MSME_Doc === "" || null) && statutory[0].MSMED === "Registered") {
+        if ((statutory[0].MSME_Doc === "" || null) && statutory[0].MSMED === "1") {
           statutoryArray.push("MSME Doc");
         }
-        if ((statutory[0].MSMED_Number === "" || null) && statutory[0].MSMED === "Registered") {
-          statutoryArray.push("MSME No");
+        if ((statutory[0].MSMED_Number === "" || null) && statutory[0].MSMED === "1") {
+          statutoryArray.push("MSME No6");
         }
         
-        if (statutory[0].MSMED === "Registered" && statutory[0].MSMED_Number==="N/A") {
+        if (statutory[0].MSMED === "1" && statutory[0].MSMED_Number==="N/A") {
           statutoryArray.push("MSME No is invalid");
         }
         if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type !== "Import" && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
@@ -358,7 +365,7 @@ const ContactTeam = () => {
               statutoryArray.push("CIN No");
             }
             if (key === "MSMED_Number") {
-              statutoryArray.push("MSME No");
+              statutoryArray.push("MSME No7");
             }
             // if (key === "GST_Doc") {
             //   statutoryArray.push("GST Doc");
@@ -862,7 +869,7 @@ const ContactTeam = () => {
           if (key === "managementSpocemail") {
             communicationArray.push("managementSpoc-Email");
           }
-          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin') {
+          if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== 'NewRegistration') {
             communicationArray.push("mastervendor EmailId");
           }
         }

@@ -87,6 +87,7 @@ function ApprovedVendors() {
   }, [])
 
   const getApprovedStatus = async () => {
+    console.log("VCT::")
     apiService.getApprovedStatus().then(res => {
       setFilter(res.data.result)
       if(res.data.result){

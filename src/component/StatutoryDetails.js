@@ -106,6 +106,7 @@ export default function Statutory(props) {
       sethideunRegisteredField(true);
     }
     if (event.target.value === "Import") {
+      console.log("import changed::",event);
       setValues({ PAN_No: "N/A" });
       setHideImport(false);
     } else {
@@ -164,6 +165,7 @@ export default function Statutory(props) {
     }
   }
   const handleChange = (name) => (event) => {
+    console.log("masmeno::",event);
     setIsNewValueEntered(true);
     event.preventDefault();
 
@@ -586,18 +588,20 @@ export default function Statutory(props) {
             TAN_No: "",
             Tax_residency_No: "",
           });
-          setFile(" ");
-          setPAN_Doc(" ");
-          setPE_Declaration_Doc(" ");
-          setMSME_Doc(" ");
-          setTax_residency_Doc(" ");
+          
+          setFile("");
+          setPAN_Doc("");
+          setPE_Declaration_Doc("");
+          setMSME_Doc("");
+          setTax_residency_Doc("");
           setdeleteTax_residencyUploadedFile(false);
           setdeletePE_DeclarationUploadedFile(false);
-          seteditTax_residency_Doc(" ");
+          seteditTax_residency_Doc("");
           setform_10f_Doc("");
           setdeleteform_10fUploadedFile(false);
           setEditform_10f_Doc("");
-          setEditPE_Declaration_Doc(" ");
+          setEditPE_Declaration_Doc("");
+          setTAN_Doc("");
           setIsNewValueEntered(true);
         }
       
@@ -799,8 +803,10 @@ export default function Statutory(props) {
       }
     })();
     seturl(pdf);
-  }, [statRes]);
+  }, []);
   const saveStatutoryDetail = (e) => {
+    console.log("valuesbeforupdate::",values.TAN_No);
+    console.log("valuesbeforupdatevalues.CIN_No::",values.CIN_No);
     return new Promise((resolve) => {
       // e.preventDefault();
       setIsNewValueEntered(false);
@@ -829,6 +835,13 @@ export default function Statutory(props) {
         data.append("GST_Doc", "");
         data.append("fileDisclosure", fileDisclosure);
       }
+      if (MSME_status === "2") {
+        data.append("MSMED_Number", "N/A");
+      }
+      else
+      {
+        data.append("MSMED_Number", values.MSME_No);
+      }
       data.append("form_10f_Doc", form_10f_Doc);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -838,7 +851,7 @@ export default function Statutory(props) {
       data.append("CIN_No", values.CIN_No);
       data.append("form_10f", values.form_10f);
       data.append("MSMED", MSME_status);
-      data.append("MSMED_Number", values.MSME_No);
+      
       data.append("MSMED_Vendor_Type", MSME);
       data.append("TAN_No", values.TAN_No);
       data.append(
@@ -847,9 +860,10 @@ export default function Statutory(props) {
       );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
-        console.log("dataupdateNewReq::",data);
+        console.log("dataupdateparams::",values.TAN_No,values.CIN_No);
+        console.log("dataupdatecinno::",values.CIN_No);
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-          setstatRes(statRes + 1);
+          
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data Updated",
@@ -922,7 +936,7 @@ export default function Statutory(props) {
           statdata.append("userId", newuser);
           statdata.append("Tax_residency_No", values.Tax_residency_No);
           apiService.saveStatutoryDetail(statdata).then((res) => {
-            setstatRes(res.data.status);
+           
             if (res.data.status === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -951,7 +965,7 @@ export default function Statutory(props) {
           });
         } else {
           apiService.saveStatutoryDetail(data).then((res) => {
-            setstatRes(res.data.status);
+           
             if (res.data.status === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -1031,7 +1045,7 @@ export default function Statutory(props) {
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-          setstatRes(res.data.status);
+          
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data Updated",
@@ -1594,7 +1608,7 @@ export default function Statutory(props) {
                         <Col>
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
-                              PAN_Doc !== "null" &&
+                              PAN_Doc !== "null" && GST_type !== "Import" &&
                               PAN_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button

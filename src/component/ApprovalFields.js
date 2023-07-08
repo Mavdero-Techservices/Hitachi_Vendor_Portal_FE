@@ -8,14 +8,24 @@ function ApprovalFields(props) {
   const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const numberValidation = /^-?(0|[1-9]\d*)?$/;
   const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
+  const groupEmailValidation = /^VND-APPV-[1-3]@hitachi-systems\.com$/;
+  const desiredDomain = 'hitachi-systems.com';
   const [editData, seteditData] = useState([]);
   const [editCommmData, seteditCommmData] = useState([]);
   const [editStatData, seteditStatData] = useState([]);
   const [editFinanceData, seteditFinanceData] = useState([]);
   const [editContactData, seteditContactData] = useState([]);
- 
-
+  const [editUploadFile, seteditUploadFile] = useState(false);
+  const [editGstUploadFile, seteditGstUploadFile] = useState(false);
+  const [editMSMEUploadFile, seteditMSMEUploadFile] = useState(false);
+  const [editPanUploadFile, seteditPanUploadFile] = useState(false);
+  const [editTanUploadFile, seteditTanUploadFile] = useState(false);
+  const [editRPDUploadFile, seteditRPDUploadFile] = useState(false);
+  const [editCOCUploadFile, seteditCOCUploadFile] = useState(false);
+  const [editNDAUploadFile, seteditNDAUploadFile] = useState(false);
+  const [editBankUploadFile, seteditBankUploadFile] = useState(false);
+  const [editfindataUploadFile, seteditfindataUploadFile] = useState(false);
+  const [editfindata2UploadFile, seteditfindata2UploadFile] = useState(false);
 
   const reload = () => {
     console.log("reloading------------------>>>>>")
@@ -1025,7 +1035,8 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setemail(e.target.value);
     if (e.target.value.length === 0) {
       setemailErr("Email is required");
-    } else if (!emailValidation.test(e.target.value)) {
+      
+    } else if (!new RegExp('@' + desiredDomain + '\\s*$').test(e.target.value)) {
       setemailErr("Email is invalid");
     } else {
       setemailErr("");
@@ -1282,6 +1293,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
   };
   // console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
+    
     // event.preventDefault(); bankdetailDoc
     if (
       (event === "logo" && logo) ||
@@ -1301,6 +1313,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       (event === "bankdetailDoc" && bankdetailDoc) ||
       (event === "approverFile" && approverFile)
     ) {
+      console.log("deletefile::")
       let bankDocument = "Copy of cancel Cheque.pdf";
       let title = event;
       Swal.fire({
@@ -1338,19 +1351,22 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               denyButton: "order-3",
             },
           }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed) {             
               if (event === "GST_Doc") {
+                seteditGstUploadFile(true);
                 setGST_Doc("");
                 setGST_DocErr("GST document is required");
               } else if (event === "fileDisclosure") {
                 setfileDisclosure("");
                 setfileDisclosureErr("FileDisclosure is required");
               } else if (event === "logo") {
+                seteditUploadFile(true);
                 setlogo("");
                 setlogoErr("Logo is required");
               } else if (event === "PAN_Doc") {
                 setPAN_Doc("");
                 setPAN_DocErr("PAN document is required");
+                seteditPanUploadFile(true);
               } else if (event === "form_10f") {
                 setform_10f("");
                 setform_10fErr("form_10f document is required");
@@ -1360,8 +1376,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               } else if (event === "MSME_Doc") {
                 setMSME_Doc("");
                 setMSME_DocErr("MSME document is required");
+                seteditMSMEUploadFile(true);
               } else if (event === "TAN_Doc") {
                 setTAN_Doc("");
+                seteditTanUploadFile(true);
                 // setTAN_DocErr("TAN document is required");
               } else if (event === "Tax_residency") {
                 setTax_residency("");
@@ -1369,17 +1387,23 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               } else if (event === "RPD_Doc") {
                 setRPD_Doc("");
                 setRPD_DocErr("RPD document is required");
+                seteditRPDUploadFile(true);
               } else if (event === "COC_Doc") {
                 setCOC_Doc("");
                 setCOC_DocErr("COC document is required");
+                seteditCOCUploadFile(true);
               } else if (event === "NDA_Doc") {
                 setNDA_Doc("");
                 setNDA_DocErr("NDA document is required");
+                seteditNDAUploadFile(true);
               } else if (event === "financial_data") {
                 setfinancial_data("");
+                seteditfindataUploadFile(true);
               } else if (event === "financial_data2") {
+                seteditfindata2UploadFile(true);
                 setfinancial_data2("");
               } else if (event === "bankdetailDoc") {
+                seteditBankUploadFile(true);
                 setbankdetailDoc("");
                 setbankdetailDocErr("Bank document is required");
               } else if (event === "approverFile") {
@@ -1417,6 +1441,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         },
       });
     } else {
+      console.log("editfile::")
       // let bankDocument = "Copy of cancel Cheque.pdf";
       // let title = event
       Swal.fire({
@@ -1447,13 +1472,17 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         // reader.readAsDataURL(result.value)
 
         if (result.isConfirmed) {
+
           if (event === "GST_Doc") {
+            seteditGstUploadFile(false);
             setGST_Doc(result.value);
             setGST_DocErr("");
           } else if (event === "fileDisclosure") {
+            
             setfileDisclosure(result.value);
             setfileDisclosureErr("");
           } else if (event === "logo") {
+            seteditUploadFile(false);
             var filereader = new FileReader();
             // filereader.readAsDataURL(result.value);
             filereader.readAsBinaryString(result.value);
@@ -1467,6 +1496,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
           } else if (event === "PAN_Doc") {
             setPAN_Doc(result.value);
             setPAN_DocErr("");
+seteditPanUploadFile(false);
           } else if (event === "form_10f") {
             setform_10f(result.value);
             setform_10fErr("");
@@ -1476,28 +1506,36 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
           } else if (event === "MSME_Doc") {
             setMSME_Doc(result.value);
             setMSME_DocErr("");
+            seteditMSMEUploadFile(false);
           } else if (event === "TAN_Doc") {
             setTAN_Doc(result.value);
             setTAN_DocErr("");
+seteditTanUploadFile(false);
           } else if (event === "Tax_residency") {
             setTax_residency(result.value);
             setTax_residencyErr("");
           } else if (event === "RPD_Doc") {
             setRPD_Doc(result.value);
             setRPD_DocErr("");
+            seteditRPDUploadFile(false);
           } else if (event === "COC_Doc") {
             setCOC_Doc(result.value);
             setCOC_DocErr("");
+            seteditCOCUploadFile(false);
           } else if (event === "NDA_Doc") {
             setNDA_Doc(result.value);
             setNDA_DocErr("");
+            seteditNDAUploadFile(false);
           } else if (event === "financial_data") {
             setfinancial_data(result.value);
+            seteditfindataUploadFile(false);
           } else if (event === "financial_data2") {
             setfinancial_data2(result.value);
+            seteditfindata2UploadFile(false);
           } else if (event === "bankdetailDoc") {
             setbankdetailDoc(result.value);
             setbankdetailDocErr("");
+            seteditBankUploadFile(false);
           }
           else if (event === "approverFile") {
             setapproverFile(result.value);
@@ -1539,8 +1577,8 @@ console.log("acmanager::",Vendor_Account_Manager);
       Address: Address || undefined,
       Address_2: Address_2 || undefined,
       City: City || undefined,
-      // MSMED: MSME_status || undefined,
       MSMED_Number: MSME_No || undefined,
+      MSMED: MSME_status || undefined,     
       MSMED_Vendor_Type: MSME_Type || undefined,
       Country_Region_Code: countryRegionCode || undefined,
       Post_Code: Post_Code || undefined,
@@ -1660,14 +1698,49 @@ console.log("acmanager::",Vendor_Account_Manager);
             }
             else {
               const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
-              Swal.fire({
-                title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
-                icon: "error",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              });
+              if(response.data.Result?.["odata.error"]?.message?.value==="The record already exists.")
+              {
+console.log("already exists::");
+const MasterVendor = {
+mastervendor_email: mastervendor_email || undefined,
+companyName: companyName || undefined,
+Ticket_ID: TicketID || undefined,
+Country_Region_Code: countryRegionCode || undefined,
+}
+apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+console.log("masterLogin::", Masterresponse);
+apiService.updateApprovalStatus(userId, data).then((responseData) => {
+  if (responseData.data.status === 'success') {
+    Swal.fire({
+      title: responseData.data.message,
+      icon: "success",
+      confirmButtonText: "OK",
+      showCloseButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+  } else {
+    Swal.fire({
+      title: responseData.data.message,
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+  }
+});
+})
+              }
+              else
+              {
+                const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                Swal.fire({
+                  title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                });
+              }
             }
           }
           else {
@@ -1919,7 +1992,7 @@ console.log("acmanager::",Vendor_Account_Manager);
     if (email.length === 0) {
       FormarrayErr.push("email")
       setemailErr("Email is required");
-    } else if (!emailValidation.test(email)) {
+    } else if (!new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
       FormarrayErr.push("email Invalid")
       setemailErr("Email is invalid");
     }
@@ -2142,8 +2215,8 @@ console.log("acmanager::",Vendor_Account_Manager);
         Address: Address || undefined,
         Address_2: Address_2 || undefined,
         City: City || undefined,
-        // MSMED: MSME_status || undefined,
         MSMED_Number: MSME_No || undefined,
+        MSMED: MSME_status || undefined,   
         MSMED_Vendor_Type: MSME_Type || undefined,
         Country_Region_Code: countryRegionCode || undefined,
         Post_Code: Post_Code || undefined,
@@ -2261,15 +2334,50 @@ console.log("acmanager::",Vendor_Account_Manager);
                 })
               }
               else {
-                const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
-                Swal.fire({
-                  title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                  showCloseButton: true,
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                });
+                if(response.data.Result?.["odata.error"]?.message?.value==="The record already exists.")
+                {
+console.log("already exists::");
+const MasterVendor = {
+  mastervendor_email: mastervendor_email || undefined,
+  companyName: companyName || undefined,
+  Ticket_ID: TicketID || undefined,
+  Country_Region_Code: countryRegionCode || undefined,
+}
+apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+  console.log("masterLogin::", Masterresponse);
+  apiService.updateApprovalStatus(userId, data1).then((responseData) => {
+    if (responseData.data.status === 'success') {
+      Swal.fire({
+        title: responseData.data.message,
+        icon: "success",
+        confirmButtonText: "OK",
+        showCloseButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      })
+    } else {
+      Swal.fire({
+        title: responseData.data.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+})
+                }
+                else
+                {
+                  const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                  Swal.fire({
+                    title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  });
+                }
+                
               }
             }
             else {
@@ -3746,9 +3854,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                       <button
                         type="button"
                         onClick={(e) => handleEditPopup("logo")}
-                        className="btn bankbtn btn-primary btn-md mt-3"
+                        className={`btn bankbtn ${editUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
                       >
-                        Delete Logo
+                       {editUploadFile ? "Upload Logo" : "Delete Logo"}
                       </button>
                     </>
                   ) : (
@@ -4247,13 +4355,20 @@ console.log("acmanager::",Vendor_Account_Manager);
                         <div className="col-sm-12 col-lg-4 m-auto">
                           {style === "cont2" ? (
                             <>
-                              <button
+                             <button
+                        type="button"
+                        onClick={(e) => handleEditPopup("GST_Doc")}
+                        className={`btn bankbtn ${editGstUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
+                      >
+                       {editGstUploadFile ? "Upload File" : "Delete File"}
+                      </button>
+                              {/* <button
                                 type="button"
                                 onClick={(e) => handleEditPopup("GST_Doc")}
-                                className="btn bankbtn btn-primary btn-md mt-3"
+                                className="btn bankbtn delete btn-primary btn-md mt-3"
                               >
                                 Delete File
-                              </button>
+                              </button> */}
                             </>
                           ) : (
                             <button
@@ -4276,7 +4391,7 @@ console.log("acmanager::",Vendor_Account_Manager);
                               <button
                                 type="button"
                                 onClick={(e) => handleEditPopup("fileDisclosure")}
-                                className="btn bankbtn btn-primary btn-md mt-3"
+                                className="btn bankbtn delete btn-primary btn-md mt-3"
                               >
                                 Delete File
                               </button>
@@ -4318,9 +4433,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                               type="button"
                               disabled={MSME_status === "2"}
                               onClick={(e) => handleEditPopup("MSME_Doc")}
-                              className="btn bankbtn btn-primary btn-md mt-3"
+                              className={`btn bankbtn ${editMSMEUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}                       
                             >
-                              Delete File
+                               {editMSMEUploadFile ? "Upload File" : "Delete File"}
                             </button>
                           ) : (
                             <button
@@ -4359,9 +4474,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                             <button
                               type="button"
                               onClick={(e) => handleEditPopup("PAN_Doc")}
-                              className="btn bankbtn btn-primary btn-md mt-3"
+                              className={`btn bankbtn ${editPanUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
                             >
-                              Delete File
+                           {editPanUploadFile ? "Upload File" : "Delete File"}
                             </button>
                           ) : (
                             <button
@@ -4475,9 +4590,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("TAN_Doc")}
-                            className="btn bankbtn btn-primary btn-md mt-3"
+                            className={`btn bankbtn ${editTanUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}   
                           >
-                            Delete File
+                        {editTanUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4504,7 +4619,7 @@ console.log("acmanager::",Vendor_Account_Manager);
                               <button
                                 type="button"
                                 onClick={(e) => handleEditPopup("form_10f")}
-                                className="btn bankbtn btn-primary btn-md mt-3"
+                                className="btn bankbtn delete btn-primary btn-md mt-3"
                               >
                                 Delete File
                               </button>
@@ -4545,7 +4660,7 @@ console.log("acmanager::",Vendor_Account_Manager);
                                 onClick={(e) =>
                                   handleEditPopup("Tax_residency")
                                 }
-                                className="btn bankbtn btn-primary btn-md mt-3"
+                                className="btn bankbtn delete btn-primary btn-md mt-3"
                               >
                                 Delete File
                               </button>
@@ -4584,7 +4699,7 @@ console.log("acmanager::",Vendor_Account_Manager);
                                 onClick={(e) =>
                                   handleEditPopup("pe_declaration")
                                 }
-                                className="btn bankbtn btn-primary btn-md mt-3"
+                                className="btn bankbtn delete btn-primary btn-md mt-3"
                               >
                                 Delete File
                               </button>
@@ -4629,9 +4744,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("RPD_Doc")}
-                            className="btn bankbtn btn-primary btn-md  m-1"
+                            className={`btn bankbtn ${editRPDUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
                           >
-                            Delete File
+                            {editRPDUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4659,9 +4774,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("COC_Doc")}
-                            className="btn bankbtn btn-primary btn-md m-1"
+                            className={`btn bankbtn ${editCOCUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
                           >
-                            Delete File
+                             {editCOCUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4689,9 +4804,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("NDA_Doc")}
-                            className="btn bankbtn btn-primary btn-md m-1"
+                            className={`btn bankbtn ${editNDAUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}  
                           >
-                            Delete File
+                           {editNDAUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4796,9 +4911,9 @@ console.log("acmanager::",Vendor_Account_Manager);
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("bankdetailDoc")}
-                            className="btn bankbtn btn-primary btn-md "
+                            className={`btn bankbtn ${editBankUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}  
                           >
-                            Delete File
+                           {editBankUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4976,9 +5091,10 @@ console.log("acmanager::",Vendor_Account_Manager);
                         <button
                           type="button"
                           onClick={(e) => handleEditPopup("financial_data")}
-                          className="btn bankbtn btn-primary btn-md mt-2"
+                          className={`btn bankbtn ${editfindataUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
                         >
-                          Delete Financials data
+                          {editfindataUploadFile ? "Upload Financials data" : "Delete Financials data"}
+                          
                         </button>
                       ) : (
                         <button
@@ -5002,9 +5118,10 @@ console.log("acmanager::",Vendor_Account_Manager);
                         <button
                           type="button"
                           onClick={(e) => handleEditPopup("financial_data2")}
-                          className="btn bankbtn btn-primary btn-md m-1"
+                          className={`btn bankbtn ${editfindata2UploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
                         >
-                          Delete Financials data 2
+                          {editfindata2UploadFile ? "Upload Financials data 2" : "Delete Financials data 2"}
+                          
                         </button>
                       ) : (
                         <button

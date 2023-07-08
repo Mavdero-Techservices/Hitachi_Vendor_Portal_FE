@@ -147,6 +147,7 @@ const BankDetails = (props) => {
         setMicr("");
         setbranchAdd("");
         setfileBank("");
+        seteditValuefileBank("");
         setdeleteUploadedFile(false);
       }
     });
