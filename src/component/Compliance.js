@@ -513,6 +513,7 @@ const ComplianceDetails = () => {
   };
 
   const updateComplianceDetail = (e) => {
+    setIsNewValueEntered(false);
     return new Promise((resolve) => {
       e.preventDefault();
       const data = new FormData();

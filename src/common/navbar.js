@@ -38,7 +38,7 @@ function App() {
     });
   };
   const VendorDetails = (e) => {
-    const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+    const vendoruserId=JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     if (
       (editUser?.basicInfo?.length > 0 || editUser?.CommunicationDetails?.length > 0) 
     ) {
@@ -56,11 +56,11 @@ function App() {
       console.log("Subuser::",vendoruserId);
       navigate(`/basic/${vendoruserId}`, { state: { editUser } });
     } else {
-      navigate("/basic", { state: { editUser } });
+      navigate("/basic");
     }
   };
   const statutoryDetails = (e) => {
-    const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+    const vendoruserId= JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     if (
       editUser?.Statutory?.length > 0 
     ) {
@@ -80,7 +80,7 @@ function App() {
     }
   };
   const complianceDetails = (e) => {
-    const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+    const vendoruserId= JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     if (
       editUser?.ComplianceDetail?.length > 0
     ) {
@@ -100,7 +100,7 @@ function App() {
     }
   };
   const bankDetails = (e) => {
-    const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+    const vendoruserId= JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     if (
       editUser?.Bankdetail?.length > 0 
     ) {
@@ -120,7 +120,7 @@ function App() {
     }
   };
   const financialDetails = (e) => {
-    const vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+    const vendoruserId= JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
     if (
       editUser?.FinancialDetail?.length > 0 
     ) {
@@ -181,7 +181,7 @@ function App() {
       editsubUser?.contactDetail?.length > 0 &&
       JSON.parse(window.sessionStorage.getItem("jwt")).result?.role === "Admin"
     ) {
-      navigate(`/ContactTeam/${params.userId}`, { state: { editUser } });
+      navigate(`/ContactTeam/${JSON.parse(window.sessionStorage.getItem("jwt")).result.userId}`, { state: { editUser } });
     } else {
       navigate("/ContactTeam", { state: { editUser } });
     }
@@ -197,26 +197,7 @@ console.log("newReg")
     } else {
       sethasmaster(false);
     }
-     const queryParams = new URLSearchParams(location.search);
-     const isMaster = queryParams.get("master") === "true";
-    (async () => {
-      var userFromMasterData = JSON.parse(sessionStorage.getItem("UserFromMasterData"));
-if(userFromMasterData && userFromMasterData !== "")
-{
-  var vendoruserId= JSON.parse(sessionStorage.getItem("UserFromMasterData"));
-  apiService
-  .getAllCollection(vendoruserId)
-  .then((res) => {
-    if (res.data.status === "success") {
-      setEdit(true);
-      seteditsubUser(res.data);
-    } else {
-      setEdit(false);
-    }
-  });
-}
-else{
-  await apiService
+    apiService
   .getAllCollection(
     JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
   )
@@ -228,20 +209,53 @@ else{
       setEdit(false);
     }
   });
-  await apiService
-  .getAllCollection(params.userId)
-  .then((res) => {
-    if (res.data.status === "success") {
-      setEdit(true);
-      seteditsubUser(res.data);
-    } else {
-      setEdit(false);
-    }
-  });
-}
+     const queryParams = new URLSearchParams(location.search);
+     const isMaster = queryParams.get("master") === "true";
+//     (async () => {
+//       var userFromMasterData = JSON.parse(sessionStorage.getItem("UserFromMasterData"));
+
+      
+// if(userFromMasterData && userFromMasterData !== "")
+// {
+//   var vendoruserId= JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId;
+//   apiService
+//   .getAllCollection(vendoruserId)
+//   .then((res) => {
+//     if (res.data.status === "success") {
+//       setEdit(true);
+//       seteditsubUser(res.data);
+//     } else {
+//       setEdit(false);
+//     }
+//   });
+// }
+// else{
+//   await apiService
+//   .getAllCollection(
+//     JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
+//   )
+//   .then((res) => {
+//     if (res.data.status === "success") {
+//       setEdit(true);
+//       seteditUser(res.data);
+//     } else {
+//       setEdit(false);
+//     }
+//   });
+//   await apiService
+//   .getAllCollection(params.userId)
+//   .then((res) => {
+//     if (res.data.status === "success") {
+//       setEdit(true);
+//       seteditsubUser(res.data);
+//     } else {
+//       setEdit(false);
+//     }
+//   });
+// }
 
   
-    })();
+//     })();
     
   }, [params.userId,location.search,location]);
   return (

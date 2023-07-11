@@ -135,7 +135,18 @@ function UserAccess() {
       setgetAllUser(res.data.result);
     });
     apiService.getErpVendor_APIByP_A_N_No(JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID).then((vendorCode) => {
+      if (
+        vendorCode.data.message ===
+          "No record found for the given Ticket_ID" ||
+        vendorCode.data.message === undefined ||
+        vendorCode.data.message === null ||
+        vendorCode.data.message === ""
+      ) {
+        setgetAllvendorcode([]);
+      } else if (vendorCode.data.message == "success") {
         setgetAllvendorcode(vendorCode.data.response);
+      }
+        
     });
    
     apiService.getAllVendorSubUser().then((res) => {

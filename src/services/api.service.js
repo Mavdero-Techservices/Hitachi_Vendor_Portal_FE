@@ -93,6 +93,9 @@ class apiService {
   updateVendordetail(userId, data) {
     return http.put(`/updateVdetail/${userId}`, data);
   }
+  updateErpResourcePortalVendorlist(Entry_No, data) {
+    return http.put(`/updateErpResourcePortalVendorlist/${Entry_No}`, data);
+  }
   getAllUserDetail() {
     return http.get('/getAllUserDetail');
   }

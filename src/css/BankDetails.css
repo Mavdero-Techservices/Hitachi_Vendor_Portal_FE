@@ -48,6 +48,20 @@
   background-color: #4f4f4f !important;
   color: rgb(255, 255, 255)!important;
 }
+.bankbtn.delete {
+  text-transform: unset !important;
+  font-size: 15px;
+  background-color: #B1000E !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.bankbtn.upload {
+  text-transform: unset !important;
+  font-size: 15px;
+  background-color: #4f4f4f !important;
+  color: rgb(255, 255, 255) !important;
+}
+
 .sectionbg {
   background-color: #fff !important;
   margin: 0px -2px !important;

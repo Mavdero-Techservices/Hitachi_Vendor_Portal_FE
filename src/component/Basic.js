@@ -93,35 +93,58 @@ export class Basic extends React.Component {
         )
         .then((response) => {
           console.log("res--------->", response);
+if(response&&response.data.status==="success")
+{
+  if (response.data.postalcodes.length === 0) {
+    this.setState({ getCityAndState: "" });
+    this.setState({ state: "" });
+    this.setState({ City: "" });
+  } else {
+    this.setState({
+      getCityAndState: response.data.postalcodes[0],
+    });
+    this.setState({
+      state: response.data.postalcodes[0].adminName1,
+    });
+    if (response.data.postalcodes[0].adminName3) {
+      for (let i = 0; i < response.data.postalcodes.length; i++) {
+        if(response.data.postalcodes[i].adminName3 !== "NA") {
+          this.setState({
+            City: response.data.postalcodes[i].adminName3,
+          });
+        }
+      }
 
-          if (response.data.postalcodes.length === 0) {
-            this.setState({ getCityAndState: "" });
-            this.setState({ state: "" });
-            this.setState({ City: "" });
-          } else {
-            this.setState({
-              getCityAndState: response.data.postalcodes[0],
-            });
-            this.setState({
-              state: response.data.postalcodes[0].adminName1,
-            });
-            if (response.data.postalcodes[0].adminName3) {
-              for (let i = 0; i < response.data.postalcodes.length; i++) {
-                if(response.data.postalcodes[i].adminName3 !== "NA") {
-                  this.setState({
-                    City: response.data.postalcodes[i].adminName3,
-                  });
-                }
-              }
-
-              
-            } else {
-              this.setState({
-                City: response.data.postalcodes[0].placeName,
-              });
-            }
-          }
-        });
+      
+    } else {
+      this.setState({
+        City: response.data.postalcodes[0].placeName,
+      });
+    }
+  }
+}
+else
+{
+  Swal.fire({
+    icon: 'error',
+    title: 'Error in Fetching Pincode',
+    confirmButtonText: "OK",
+    showCloseButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,                      
+  });
+}
+          
+        }).catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error in Fetching Pincode',
+            confirmButtonText: "OK",
+            showCloseButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,                      
+          });
+        })
     }
     else {
       
@@ -1132,196 +1155,196 @@ export class Basic extends React.Component {
     //     this.setState({ id: res.data.basicInfo[0].id });
     //   }
     // });
-    apiService.signupFindByUserId(userid).then((res) => {
-      this.setState({ approval: res.data.result?.role });
-      this.setState({ companyName: res.data.result?.companyName });
-      this.setState({ vendorId: res.data.result?.vendorId });
+    // apiService.signupFindByUserId(userid).then((res) => {
+    //   this.setState({ approval: res.data.result?.role });
+    //   this.setState({ companyName: res.data.result?.companyName });
+    //   this.setState({ vendorId: res.data.result?.vendorId });
+    // });
+    let finalstatus = "";
+    apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result
+    ?.userId).then((res) => {
+      finalstatus = res.data.result?.finalStatus;
+      console.log("finalstatus", finalstatus);
     });
-
-    if (this.props.params.userId) {
-      this.edit = true;
-      let finalstatus = "";
-      apiService.signupFindByUserId(this.props.params.userId).then((res) => {
-        finalstatus = res.data.result?.finalStatus;
-        console.log("finalstatus", finalstatus);
-      });
-      apiService.getAllCollection(this.props.params.userId).then((res) => {
-        console.log("basicres::",res.data.basicInfo?.length > 0);
-        if (res.data.basicInfo?.length > 0)
-        {
-          this.setState({     
-            basicInfoVendor: true,
-          });
-        }
-        
-        if(res.data.CommunicationDetails?.length > 0)
-        {
-          this.setState({
-            communicationDetailsInfo:true
-          })
-        }
-        console.log("basicInfotrue::",this.state.basicInfoVendor);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
-          this.setState({ setStyle: "notEditable" });
-        }
+    apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result
+    ?.userId).then((res) => {
+      console.log("basicresparamscol::",res.data.basicInfo?.length > 0);
+      if (res.data.basicInfo?.length > 0)
+      {
+        this.setState({     
+          basicInfoVendor: true,
+        });
+      }
+      
+      if(res.data.CommunicationDetails?.length > 0)
+      {
         this.setState({
-          editStatutory: res.data.Statutory,
-        });
-        Object.entries(res.data.basicInfo).map(([key, value]) => {
-          this.setState({
-            previousCompanyName: value.companyName,
-            previousAddress: value.Address,
-            previousAddress_2:
-              value.Address_2 === "null" ? "" : value.Address_2,
-            previousCity: value.City,
-            previousState: value.state,
-            previousCountry_Region_Code: value.Country_Region_Code,
-            previousPost_Code: value.Post_Code,
-            previousImage: value.image,
-          });
-          this.setState({
-            companyName: value.companyName,
-            Address: value.Address,
-            Address_2: value.Address_2 === "null" ? "" : value.Address_2,
-            City: value.City,
-            state: value.state,
-            Country_Region_Code: value.Country_Region_Code,
-            Post_Code: value.Post_Code,
-            image: value.image,
-          });
-          return null;
-        });
-        Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
-          this.setState({
-            commuDetail:
-              res.data.CommunicationDetails.length > 0 ? true : false,
-          });
-          this.setState({
-            previousfinanceSpoccontactName: value.financeSpoccontactName,
-            previousfinanceSpocdesignation: value.financeSpocdesignation,
-            previousfinanceSpocphoneNo: value.financeSpocphoneNo,
-            previousfinanceSpocemail: value.financeSpocemail,
-            previousoperationSpoccontactName:
-              value.operationSpoccontactName === "null"
-                ? ""
-                : value.operationSpoccontactName,
-            previousoperationSpocdesignation:
-              value.operationSpocdesignation === "null"
-                ? ""
-                : value.operationSpocdesignation,
-            previousoperationSpocphoneNo:
-              value.operationSpocphoneNo === "null"
-                ? ""
-                : value.operationSpocphoneNo,
-            previousoperationSpocemail:
-              value.operationSpocemail === "null"
-                ? ""
-                : value.operationSpocemail,
-            previouscollectionSpoccontactName:
-              value.collectionSpoccontactName === "null"
-                ? ""
-                : value.collectionSpoccontactName,
-            previouscollectionSpocdesignation:
-              value.collectionSpocdesignation === "null"
-                ? ""
-                : value.collectionSpocdesignation,
-            previouscollectionSpocphoneNo:
-              value.collectionSpocphoneNo === "null"
-                ? ""
-                : value.collectionSpocphoneNo,
-            previouscollectionSpocemail:
-              value.collectionSpocemail === "null"
-                ? ""
-                : value.collectionSpocemail,
-            previousmanagementSpoccontactName:
-              value.managementSpoccontactName === "null"
-                ? ""
-                : value.managementSpoccontactName,
-            previousmanagementSpocdesignation:
-              value.managementSpocdesignation === "null"
-                ? ""
-                : value.managementSpocdesignation,
-            previousmanagementSpocphoneNo:
-              value.managementSpocphoneNo === "null"
-                ? ""
-                : value.managementSpocphoneNo,
-            previousmanagementSpocemail:
-              value.managementSpocemail === "null"
-                ? ""
-                : value.managementSpocemail,
-            previouscontactName:
-              value.contactName === "null" ? "" : value.contactName,
-            previousdesignation:
-              value.designation === "null" ? "" : value.designation,
-            previousphoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
-            previousemail: value.email === "null" ? "" : value.email,
-            previousmastervendor_email: value.mastervendor_email,
-          });
-          this.setState({
-            financeSpoccontactName: value.financeSpoccontactName,
-            financeSpocdesignation: value.financeSpocdesignation,
-            financeSpocphoneNo: value.financeSpocphoneNo,
-            financeSpocemail: value.financeSpocemail,
-            operationSpoccontactName:
-              value.operationSpoccontactName === "null"
-                ? ""
-                : value.operationSpoccontactName,
-            operationSpocdesignation:
-              value.operationSpocdesignation === "null"
-                ? ""
-                : value.operationSpocdesignation,
-            operationSpocphoneNo:
-              value.operationSpocphoneNo === "null"
-                ? ""
-                : value.operationSpocphoneNo,
-            operationSpocemail:
-              value.operationSpocemail === "null"
-                ? ""
-                : value.operationSpocemail,
-            collectionSpoccontactName:
-              value.collectionSpoccontactName === "null"
-                ? ""
-                : value.collectionSpoccontactName,
-            collectionSpocdesignation:
-              value.collectionSpocdesignation === "null"
-                ? ""
-                : value.collectionSpocdesignation,
-            collectionSpocphoneNo:
-              value.collectionSpocphoneNo === "null"
-                ? ""
-                : value.collectionSpocphoneNo,
-            collectionSpocemail:
-              value.collectionSpocemail === "null"
-                ? ""
-                : value.collectionSpocemail,
-            managementSpoccontactName:
-              value.managementSpoccontactName === "null"
-                ? ""
-                : value.managementSpoccontactName,
-            managementSpocdesignation:
-              value.managementSpocdesignation === "null"
-                ? ""
-                : value.managementSpocdesignation,
-            managementSpocphoneNo:
-              value.managementSpocphoneNo === "null"
-                ? ""
-                : value.managementSpocphoneNo,
-            managementSpocemail:
-              value.managementSpocemail === "null"
-                ? ""
-                : value.managementSpocemail,
-            contactName: value.contactName === "null" ? "" : value.contactName,
-            designation: value.designation === "null" ? "" : value.designation,
-            phoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
-            email: value.email === "null" ? "" : value.email,
-            mastervendor_email: value.mastervendor_email,
-          });
-          return null;
-        });
+          communicationDetailsInfo:true
+        })
+      }
+      console.log("basicInfotrue::",this.state.basicInfoVendor);
+      if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+        this.setState({ setStyle: "notEditable" });
+      }
+      this.setState({
+        editStatutory: res.data.Statutory,
       });
-    } else if (newuser) {
+      Object.entries(res.data.basicInfo).map(([key, value]) => {
+        this.setState({
+          previousCompanyName: value.companyName,
+          previousAddress: value.Address,
+          previousAddress_2:
+            value.Address_2 === "null" ? "" : value.Address_2,
+          previousCity: value.City,
+          previousState: value.state,
+          previousCountry_Region_Code: value.Country_Region_Code,
+          previousPost_Code: value.Post_Code,
+          previousImage: value.image,
+        });
+        this.setState({
+          companyName: value.companyName,
+          Address: value.Address,
+          Address_2: value.Address_2 === "null" ? "" : value.Address_2,
+          City: value.City,
+          state: value.state,
+          Country_Region_Code: value.Country_Region_Code,
+          Post_Code: value.Post_Code,
+          image: value.image,
+        });
+        return null;
+      });
+      Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
+        this.setState({
+          commuDetail:
+            res.data.CommunicationDetails.length > 0 ? true : false,
+        });
+        this.setState({
+          previousfinanceSpoccontactName: value.financeSpoccontactName,
+          previousfinanceSpocdesignation: value.financeSpocdesignation,
+          previousfinanceSpocphoneNo: value.financeSpocphoneNo,
+          previousfinanceSpocemail: value.financeSpocemail,
+          previousoperationSpoccontactName:
+            value.operationSpoccontactName === "null"
+              ? ""
+              : value.operationSpoccontactName,
+          previousoperationSpocdesignation:
+            value.operationSpocdesignation === "null"
+              ? ""
+              : value.operationSpocdesignation,
+          previousoperationSpocphoneNo:
+            value.operationSpocphoneNo === "null"
+              ? ""
+              : value.operationSpocphoneNo,
+          previousoperationSpocemail:
+            value.operationSpocemail === "null"
+              ? ""
+              : value.operationSpocemail,
+          previouscollectionSpoccontactName:
+            value.collectionSpoccontactName === "null"
+              ? ""
+              : value.collectionSpoccontactName,
+          previouscollectionSpocdesignation:
+            value.collectionSpocdesignation === "null"
+              ? ""
+              : value.collectionSpocdesignation,
+          previouscollectionSpocphoneNo:
+            value.collectionSpocphoneNo === "null"
+              ? ""
+              : value.collectionSpocphoneNo,
+          previouscollectionSpocemail:
+            value.collectionSpocemail === "null"
+              ? ""
+              : value.collectionSpocemail,
+          previousmanagementSpoccontactName:
+            value.managementSpoccontactName === "null"
+              ? ""
+              : value.managementSpoccontactName,
+          previousmanagementSpocdesignation:
+            value.managementSpocdesignation === "null"
+              ? ""
+              : value.managementSpocdesignation,
+          previousmanagementSpocphoneNo:
+            value.managementSpocphoneNo === "null"
+              ? ""
+              : value.managementSpocphoneNo,
+          previousmanagementSpocemail:
+            value.managementSpocemail === "null"
+              ? ""
+              : value.managementSpocemail,
+          previouscontactName:
+            value.contactName === "null" ? "" : value.contactName,
+          previousdesignation:
+            value.designation === "null" ? "" : value.designation,
+          previousphoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+          previousemail: value.email === "null" ? "" : value.email,
+          previousmastervendor_email: value.mastervendor_email,
+        });
+        this.setState({
+          financeSpoccontactName: value.financeSpoccontactName,
+          financeSpocdesignation: value.financeSpocdesignation,
+          financeSpocphoneNo: value.financeSpocphoneNo,
+          financeSpocemail: value.financeSpocemail,
+          operationSpoccontactName:
+            value.operationSpoccontactName === "null"
+              ? ""
+              : value.operationSpoccontactName,
+          operationSpocdesignation:
+            value.operationSpocdesignation === "null"
+              ? ""
+              : value.operationSpocdesignation,
+          operationSpocphoneNo:
+            value.operationSpocphoneNo === "null"
+              ? ""
+              : value.operationSpocphoneNo,
+          operationSpocemail:
+            value.operationSpocemail === "null"
+              ? ""
+              : value.operationSpocemail,
+          collectionSpoccontactName:
+            value.collectionSpoccontactName === "null"
+              ? ""
+              : value.collectionSpoccontactName,
+          collectionSpocdesignation:
+            value.collectionSpocdesignation === "null"
+              ? ""
+              : value.collectionSpocdesignation,
+          collectionSpocphoneNo:
+            value.collectionSpocphoneNo === "null"
+              ? ""
+              : value.collectionSpocphoneNo,
+          collectionSpocemail:
+            value.collectionSpocemail === "null"
+              ? ""
+              : value.collectionSpocemail,
+          managementSpoccontactName:
+            value.managementSpoccontactName === "null"
+              ? ""
+              : value.managementSpoccontactName,
+          managementSpocdesignation:
+            value.managementSpocdesignation === "null"
+              ? ""
+              : value.managementSpocdesignation,
+          managementSpocphoneNo:
+            value.managementSpocphoneNo === "null"
+              ? ""
+              : value.managementSpocphoneNo,
+          managementSpocemail:
+            value.managementSpocemail === "null"
+              ? ""
+              : value.managementSpocemail,
+          contactName: value.contactName === "null" ? "" : value.contactName,
+          designation: value.designation === "null" ? "" : value.designation,
+          phoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+          email: value.email === "null" ? "" : value.email,
+          mastervendor_email: value.mastervendor_email,
+        });
+        return null;
+      });
+    });
+    if (newuser) {
       this.edit = true;
       apiService.getAllCollection(newuser).then((res) => {
+        console.log("newUsergetallcollect");
         this.setState({
           editStatutory: res.data.Statutory,
         });
@@ -1377,31 +1400,8 @@ export class Basic extends React.Component {
           return null;
         });
       });
-    } else {
-      this.edit = false;
-      apiService
-        .getAllCollection(
-          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
-        )
-        .then((res) => {
-          if (res.data.basicInfo?.length > 0)
-          {
-            this.setState({     
-              basicInfoVendor: true,
-            });
-          }
-          if(res.data.CommunicationDetails?.length > 0)
-          {
-            this.setState({
-              communicationDetailsInfo:true
-            })
-          }
-          console.log("basicres::",res);
-          this.setState({
-            editStatutory: res.data.Statutory,
-          });
-        });
-    }
+    } 
+   
     console.log("basicInfoVendor::",this.state.basicInfoVendor);
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
