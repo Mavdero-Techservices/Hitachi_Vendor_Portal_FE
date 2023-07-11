@@ -75,6 +75,12 @@ class apiService {
   saveContactTeam(data) {
     return http.post('/saveContactTeam', data);
   }
+  send2FactorOTP(data){
+    return http.post(`/twoFactorOTP`, data);
+  }
+  OTP2FactorVerification(data){
+    return http.post(`/twoFactorOTPVerification`, data);
+  }
   getAllCollection(userId) {
     return http.get(`/getAllCollection/${userId}`);
   }

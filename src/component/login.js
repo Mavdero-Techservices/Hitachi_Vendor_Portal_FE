@@ -31,6 +31,7 @@ import {
   MDBTextArea,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import LoginOTPValidationModal from "./LoginOTPValidationModal";
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const passwordValidation = RegExp(
   /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/
@@ -57,6 +58,8 @@ export default function Signin(props) {
   const [getAllUserDetail, setgetAllUserDetail] = useState();
   const [passwordType, setPasswordType] = useState("password");
   const [passwordInput, setPasswordInput] = useState("");
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [data, setData] = useState(null);
   const [values, setValues] = useState({
     userName: "",
     password: "",
@@ -161,20 +164,38 @@ export default function Signin(props) {
           setValues({ ...values, error: data.error });
         } else {
           if (data?.result?.verifiedUser === "approved") {
+            setData(data);
+            const user = {
+              userName: data?.result?.userName || undefined,
+            };
             apiService
-              .getAllCollection(data?.result?.userId)
-              .then((getAllCollection) => {
-                setgetAllUserDetail(getAllCollection.data);
-                seteditUser(getAllCollection.data.basicInfo);
-                setuserId(data?.result?.userId);
-                auth.authenticate(data, () => {
-                  setSubmit(true);
-                  dispatch(loginAction.login());
-                  setValues({ ...values, error: "", redirectToReferrer: true });
+              .send2FactorOTP(user)
+              .then(() => {
+                setShowOTPModal(true);
+              })
+              .catch(() => {
+                Swal.fire({
+                  title: "Error Sending OTP, try again later.",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
                 });
               });
-          }
-          else if (data?.result?.verifiedUser === "Pending") {
+            // apiService
+            //   .getAllCollection(data?.result?.userId)
+            //   .then((getAllCollection) => {
+            //     setgetAllUserDetail(getAllCollection.data);
+            //     seteditUser(getAllCollection.data.basicInfo);
+            //     setuserId(data?.result?.userId);
+            //     auth.authenticate(data, () => {
+            //       setSubmit(true);
+            //       dispatch(loginAction.login());
+            //       setValues({ ...values, error: "", redirectToReferrer: true });
+            //     });
+            //   });
+          } else if (data?.result?.verifiedUser === "Pending") {
             Swal.fire({
               title: "Please verify your email address.",
               icon: "warning",
@@ -182,14 +203,43 @@ export default function Signin(props) {
               showCloseButton: true,
               allowOutsideClick: false,
               allowEscapeKey: false,
-            })
-          }
-          else {
+            });
+          } else {
             setValues({ ...values, error: "Please verify your email" });
           }
         }
       });
     }
+  };
+
+  const submitOTP = (otp) => {
+    const user = {
+      userName: values.userName || undefined,
+      otp: otp,
+    };
+    apiService.OTP2FactorVerification(user).then((res) => {
+      let resp = res.data;
+      if (resp?.status == "success") {
+        apiService
+          .getAllCollection(data?.result?.userId)
+          .then((getAllCollection) => {
+            setgetAllUserDetail(getAllCollection.data);
+            seteditUser(getAllCollection.data.basicInfo);
+            setuserId(data?.result?.userId);
+            auth.authenticate(data, () => {
+              setSubmit(true);
+              dispatch(loginAction.login());
+              setValues({ ...values, error: "", redirectToReferrer: true });
+            });
+          });
+      } else {
+        Swal.fire({
+          title: "Error verifying OTP, try again!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    });
   };
 
   const onResetCode = (e) => {
@@ -245,13 +295,21 @@ export default function Signin(props) {
 
   const { redirectToReferrer } = values;
   if (redirectToReferrer) {
-    if (role === "Admin" && Country_Region_Code==="IND" && verifiedUser === "approved") {
+    if (
+      role === "Admin" &&
+      Country_Region_Code === "IND" &&
+      verifiedUser === "approved"
+    ) {
       return <Navigate to={"/userCreation"} />;
     }
     if (role === "vendor") {
       return <Navigate to={`/documents/${userName}`} />;
     }
-    if (role === "Admin" && Country_Region_Code!=="IND"&& verifiedUser === "approved") {
+    if (
+      role === "Admin" &&
+      Country_Region_Code !== "IND" &&
+      verifiedUser === "approved"
+    ) {
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (role === "user" && verifiedUser === "approved") {
@@ -295,6 +353,13 @@ export default function Signin(props) {
   }
   return (
     <div className="login">
+      <LoginOTPValidationModal
+        modalShow={showOTPModal}
+        setModalShow={() => {
+          setShowOTPModal(false);
+        }}
+        submitOTP={submitOTP}
+      />
       <Container>
         <Row md={2}>
           <Col xs={4}>
@@ -365,8 +430,8 @@ export default function Signin(props) {
                   <MDBRow>
                     <MDBCol>
                       {!showPasswordTab &&
-                        showLoginTab &&
-                        !showforgetPassowrd ? (
+                      showLoginTab &&
+                      !showforgetPassowrd ? (
                         <div className="form-group form-remember">
                           <button
                             className="ForgetBtn"
