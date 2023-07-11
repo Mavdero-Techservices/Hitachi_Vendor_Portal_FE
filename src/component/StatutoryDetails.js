@@ -44,7 +44,7 @@ export default function Statutory(props) {
   const [hideunRegisteredField, sethideunRegisteredField] = useState(true);
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("1");
-  const[staticPAN_No,setstaticPAN_No]= useState("");
+  const [staticPAN_No, setstaticPAN_No] = useState("");
   const [MSME_status, setMSME_status] = useState("1");
   const [GST_Doc, setFile] = useState();
   const [PAN_Doc, setPAN_Doc] = useState();
@@ -82,54 +82,98 @@ export default function Statutory(props) {
     MSME_Type: "",
     TAN_No: "",
     Tax_residency_No: "",
-    userType: ""
+    userType: "",
   });
   const [isNewValueEntered, setIsNewValueEntered] = useState(false);
+
   function onChangeValue(event) {
     setIsNewValueEntered(true);
     setGST_type(event.target.value);
-    if (event.target.value === "UnRegistered") {
+    const { name, value, type, checked } = event.target;
+
+    if (type === "checkbox") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: checked,
+      }));
+    } else if (name === "GST_type" && value !== GST_type) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    } else {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    }
+
+    if (value === "UnRegistered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        
-        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
-          console.log("setstaticPAN_No",staticPAN_No);
-          setValues({ PAN_No: staticPAN_No });
+        if (
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+          "NewRegistration"
+        ) {
+          setValues((prevValues) => ({
+            ...prevValues,
+            PAN_No: staticPAN_No,
+          }));
+        } else {
+          setValues((prevValues) => ({
+            ...prevValues,
+            PAN_No: "",
+          }));
         }
-        else
-        {
-          setValues({ PAN_No: "" });
-        }
-        
       }
       sethideunRegisteredField(false);
     } else {
       sethideunRegisteredField(true);
     }
-    if (event.target.value === "Import") {
-      console.log("import changed::",event);
-      setValues({ PAN_No: "N/A" });
+
+    if (value === "Import") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        PAN_No: "N/A",
+      }));
       setHideImport(false);
     } else {
       setHideImport(true);
     }
-    if (event.target.value === "Registered") {
+
+    if (value === "Registered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
-          console.log("setstaticPAN_No",staticPAN_No);
-          setValues({ PAN_No: staticPAN_No });
+        if (
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+          "NewRegistration"
+        ) {
+          setValues((prevValues) => ({
+            ...prevValues,
+            PAN_No: staticPAN_No,
+          }));
+        } else {
+          setValues((prevValues) => ({
+            ...prevValues,
+            PAN_No: "",
+            GST_No: "",
+          }));
         }
-        else
-        {
-          setValues({ PAN_No: "" });
-        }
+      }
+      else {
+        setValues((prevValues) => ({
+          ...prevValues,
+          GST_No: "",
+        }));
       }
     }
-    if (event.target.value === "UnRegistered") {
-      if (values.GST_Registration_No === "N/A") {
-        setValues({ GST_Registration_No: "N/A" });
-      }
+
+    if (value === "UnRegistered" && values.GST_Registration_No !== "N/A") {
+      setValues((prevValues) => ({
+        ...prevValues,
+        GST_Registration_No: "un",
+      }));
     }
   }
+
   function onFileDisclosurechange(e) {
     setIsNewValueEntered(true);
     e.preventDefault();
@@ -165,19 +209,46 @@ export default function Statutory(props) {
     }
   }
   const handleChange = (name) => (event) => {
-    console.log("masmeno::",event);
     setIsNewValueEntered(true);
     event.preventDefault();
 
-    setValues({ ...values, [name]: event.target.value });
-    setErrors(event);
-    if (!!errors[name])
-      setErrors({
-        ...errors,
-        [name]: null,
-      });
+    const newValue = event.target.value;
+
+    if (newValue !== values[name]) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: newValue,
+      }));
+    } else {
+      // If the new value is the same as the previous value, retain the previous value
+      setValues((prevValues) => ({
+        ...prevValues,
+        [name]: prevValues[name],
+      }));
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: null,
+    }));
+
     setSubmit(true);
   };
+
+  // const handleChange = (name) => (event) => {
+  //   console.log("masmeno::",event);
+  //   setIsNewValueEntered(true);
+  //   event.preventDefault();
+
+  //   setValues({ ...values, [name]: event.target.value });
+  //   setErrors(event);
+  //   if (!!errors[name])
+  //     setErrors({
+  //       ...errors,
+  //       [name]: null,
+  //     });
+  //   setSubmit(true);
+  // };
   const onFileChange = (event) => {
     setIsNewValueEntered(true);
     event.preventDefault();
@@ -534,7 +605,7 @@ export default function Statutory(props) {
     }
   }
   function cancel(e) {
-    console.log("cancelbutton::")
+    console.log("cancelbutton::");
     e.preventDefault();
     Swal.fire({
       title: "Are You Sure,You want to reset?",
@@ -547,9 +618,12 @@ export default function Statutory(props) {
       allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("cancels")
-        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
-          console.log("setstaticPAN_No",staticPAN_No);
+        console.log("cancels");
+        if (
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+          "NewRegistration"
+        ) {
+          console.log("setstaticPAN_No", staticPAN_No);
           setValues({
             GST_No: "",
             GST_type: "",
@@ -574,9 +648,7 @@ export default function Statutory(props) {
           setEditform_10f_Doc("");
           setEditPE_Declaration_Doc(" ");
           setIsNewValueEntered(true);
-        }
-        else
-        {
+        } else {
           setValues({
             GST_No: "",
             GST_type: "",
@@ -588,7 +660,7 @@ export default function Statutory(props) {
             TAN_No: "",
             Tax_residency_No: "",
           });
-          
+
           setFile("");
           setPAN_Doc("");
           setPE_Declaration_Doc("");
@@ -604,7 +676,6 @@ export default function Statutory(props) {
           setTAN_Doc("");
           setIsNewValueEntered(true);
         }
-      
       }
     });
   }
@@ -625,39 +696,53 @@ export default function Statutory(props) {
           if (cName !== "IN" && cName !== null && cName !== undefined) {
             setValues({ PAN_No: "N/A" });
           }
-          if (masterData.master===true||JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+          if (
+            masterData.master === true ||
+            JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.usertype === "NewRegistration"
+          ) {
             setCountryName("IN");
-            if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
-              console.log("vendorcodessss---inside-------------->>>>>>")
-              let masterid = JSON.parse(window.sessionStorage.getItem("jwt")).result?.Ticket_ID
-      
-              setValues({ userType: "NewRegistration" })
- apiService.getErpVendor_APIByVendorId(masterid).then((vendorCode) => {
-                if (vendorCode) {
-                  console.log("vendorcodessss-------vendorCode.data.result.P_A_N_No---------->>>>>>", vendorCode.data.response[0].P_A_N_No)
-                  if (vendorCode.data.response.length > 0) {
-                    setValues({ PAN_No: vendorCode.data.response[0].P_A_N_No })
-                    setstaticPAN_No(vendorCode.data.response[0].P_A_N_No);
-                  } else {
-                    setValues({ PAN_No: "" })
+            if (
+              JSON.parse(window.sessionStorage.getItem("jwt")).result
+                ?.usertype === "NewRegistration"
+            ) {
+              console.log("vendorcodessss---inside-------------->>>>>>");
+              let masterid = JSON.parse(window.sessionStorage.getItem("jwt"))
+                .result?.Ticket_ID;
+
+              setValues({ userType: "NewRegistration" });
+              apiService
+                .getErpVendor_APIByVendorId(masterid)
+                .then((vendorCode) => {
+                  if (vendorCode) {
+                    console.log(
+                      "vendorcodessss-------vendorCode.data.result.P_A_N_No---------->>>>>>",
+                      vendorCode.data.response[0].P_A_N_No
+                    );
+                    if (vendorCode.data.response.length > 0) {
+                      setValues({
+                        PAN_No: vendorCode.data.response[0].P_A_N_No,
+                      });
+                      setstaticPAN_No(vendorCode.data.response[0].P_A_N_No);
+                    } else {
+                      setValues({ PAN_No: "" });
+                    }
                   }
-      
-                }
-              })
+                });
             }
-                }
-                else
-                {
-                  setCountryName(
-                    res.data.basicInfo ? res.data.basicInfo[0]?.Country_Region_Code : ""
-                  );
-                }
+          } else {
+            setCountryName(
+              res.data.basicInfo
+                ? res.data.basicInfo[0]?.Country_Region_Code
+                : ""
+            );
+          }
           setcountry(res.data.basicInfo[0]?.Country_Region_Code);
           if (res.data.basicInfo[0]?.Country_Region_Code === "IN") {
             setshowLoginTab(false);
           }
         })
-        .then((result) => { });
+        .then((result) => {});
 
       let newuser = JSON.parse(
         window.sessionStorage.getItem("newregUser")
@@ -665,8 +750,8 @@ export default function Statutory(props) {
       let id = newuser
         ? newuser
         : params.userId
-          ? params.userId
-          : values.userId;
+        ? params.userId
+        : values.userId;
       // await apiService.getvendorDetail(id).then((res) => {
       //   setcountry(res.data.country);
       //   if (res.data.country === "IN") {
@@ -680,7 +765,12 @@ export default function Statutory(props) {
         });
         await apiService.getAllCollection(params.userId).then((res) => {
           setredirectUrl(res.data);
-          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          if (
+            res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+            finalstatus !== "Approved" &&
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+              "Admin"
+          ) {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {
@@ -744,7 +834,11 @@ export default function Statutory(props) {
         });
         await apiService.getAllCollection(newuser).then((res) => {
           setredirectUrl(res.data);
-          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          if (
+            res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+              "Admin"
+          ) {
             setStyle("notEditable");
           }
           Object.entries(res.data.Statutory).map(([key, value]) => {
@@ -805,8 +899,8 @@ export default function Statutory(props) {
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
-    console.log("valuesbeforupdate::",values.TAN_No);
-    console.log("valuesbeforupdatevalues.CIN_No::",values.CIN_No);
+    console.log("valuesbeforupdate::", values.TAN_No);
+    console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
     return new Promise((resolve) => {
       // e.preventDefault();
       setIsNewValueEntered(false);
@@ -814,11 +908,9 @@ export default function Statutory(props) {
       data.append("GST_Vendor_Type", GST_type);
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-      }
-      else if (GST_type === "Import"){
+      } else if (GST_type === "Import") {
         data.append("GST_Registration_No", "N/A");
-      }
-       else {
+      } else {
         data.append("GST_Registration_No", values.GST_No);
       }
       if (countryName !== "IN") {
@@ -837,9 +929,7 @@ export default function Statutory(props) {
       }
       if (MSME_status === "2") {
         data.append("MSMED_Number", "N/A");
-      }
-      else
-      {
+      } else {
         data.append("MSMED_Number", values.MSME_No);
       }
       data.append("form_10f_Doc", form_10f_Doc);
@@ -851,7 +941,7 @@ export default function Statutory(props) {
       data.append("CIN_No", values.CIN_No);
       data.append("form_10f", values.form_10f);
       data.append("MSMED", MSME_status);
-      
+
       data.append("MSMED_Vendor_Type", MSME);
       data.append("TAN_No", values.TAN_No);
       data.append(
@@ -860,10 +950,9 @@ export default function Statutory(props) {
       );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
-        console.log("dataupdateparams::",values.TAN_No,values.CIN_No);
-        console.log("dataupdatecinno::",values.CIN_No);
+        console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
+        console.log("dataupdatecinno::", values.CIN_No);
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-          
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data Updated",
@@ -901,8 +990,7 @@ export default function Statutory(props) {
           statdata.append("GST_Registration_No", values.GST_No);
           if (GST_type === "UnRegistered") {
             statdata.append("GST_Registration_No", "N/A");
-          }
-          else if (GST_type === "Import"){
+          } else if (GST_type === "Import") {
             statdata.append("GST_Registration_No", "N/A");
           } else {
             statdata.append("GST_Registration_No", values.GST_No);
@@ -936,7 +1024,6 @@ export default function Statutory(props) {
           statdata.append("userId", newuser);
           statdata.append("Tax_residency_No", values.Tax_residency_No);
           apiService.saveStatutoryDetail(statdata).then((res) => {
-           
             if (res.data.status === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -965,7 +1052,6 @@ export default function Statutory(props) {
           });
         } else {
           apiService.saveStatutoryDetail(data).then((res) => {
-           
             if (res.data.status === "success") {
               Swal.fire({
                 title: "Data saved",
@@ -997,7 +1083,7 @@ export default function Statutory(props) {
     });
   };
   const updateStatutoryDetail = (e) => {
-    console.log("updatenew::")
+    console.log("updatenew::");
     return new Promise((resolve) => {
       e.preventDefault();
       setIsNewValueEntered(false);
@@ -1005,11 +1091,9 @@ export default function Statutory(props) {
       data.append("GST_Vendor_Type", GST_type);
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-      }
-      else if (GST_type === "Import"){
+      } else if (GST_type === "Import") {
         data.append("GST_Registration_No", "N/A");
-      }
-       else {
+      } else {
         data.append("GST_Registration_No", values.GST_No);
       }
       if (countryName !== "IN") {
@@ -1045,7 +1129,6 @@ export default function Statutory(props) {
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-          
           if (res.data.status === "success") {
             Swal.fire({
               title: "Data Updated",
@@ -1251,8 +1334,8 @@ export default function Statutory(props) {
                                   </div>{" "} */}
 
                                       {fileDisclosure !== "" &&
-                                        fileDisclosure !== "null" &&
-                                        fileDisclosure !== undefined ? (
+                                      fileDisclosure !== "null" &&
+                                      fileDisclosure !== undefined ? (
                                         <div className="frame-input">
                                           <button
                                             type="button"
@@ -1355,8 +1438,8 @@ export default function Statutory(props) {
                                           </Col>
                                           <Col>
                                             {GST_Doc !== "" &&
-                                              GST_Doc !== "null" &&
-                                              GST_Doc !== undefined ? (
+                                            GST_Doc !== "null" &&
+                                            GST_Doc !== undefined ? (
                                               <div className="frame-input">
                                                 <button
                                                   type="button"
@@ -1432,8 +1515,8 @@ export default function Statutory(props) {
                                         </Col>
                                         <Col>
                                           {GST_Doc !== "" &&
-                                            GST_Doc !== "null" &&
-                                            GST_Doc !== undefined ? (
+                                          GST_Doc !== "null" &&
+                                          GST_Doc !== undefined ? (
                                             <div className="frame-input">
                                               <button
                                                 type="button"
@@ -1502,8 +1585,8 @@ export default function Statutory(props) {
                               ) : (
                                 <Row>
                                   {fileDisclosure !== "" &&
-                                    fileDisclosure !== "null" &&
-                                    fileDisclosure !== undefined ? (
+                                  fileDisclosure !== "null" &&
+                                  fileDisclosure !== undefined ? (
                                     <div className="frame-input">
                                       <button
                                         type="button"
@@ -1608,8 +1691,9 @@ export default function Statutory(props) {
                         <Col>
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
-                              PAN_Doc !== "null" && GST_type !== "Import" &&
-                              PAN_Doc !== undefined ? (
+                            PAN_Doc !== "null" &&
+                            GST_type !== "Import" &&
+                            PAN_Doc !== undefined ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -1683,10 +1767,10 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {Editform_10f_Doc != "" ||
-                                    undefined ||
-                                    null ? (
+                                  undefined ||
+                                  null ? (
                                     <div>
-                                      <span>File name:{" "}{Editform_10f_Doc}</span>
+                                      <span>File name: {Editform_10f_Doc}</span>
 
                                       <ClearIcon
                                         style={{ color: "red" }}
@@ -1703,17 +1787,25 @@ export default function Statutory(props) {
                                         required
                                         type="file"
                                         name="form_10f_Doc"
-                                          fileOrFiles={form_10f_Doc}
+                                        fileOrFiles={form_10f_Doc}
                                       />
                                       <span>
-                                        {form_10f_Doc
-                                            ? <> File name:{" "} ${form_10f_Doc.name} < ClearIcon
-                                          style={{ color: "red" }}
-                                          onClick={() => {
-                                            DeleteForm10FDoc("form_10f_Doc");
-                                          }}
-                                            /></>
-                                          : "No File Chosen"}
+                                        {form_10f_Doc ? (
+                                          <>
+                                            {" "}
+                                            File name: ${form_10f_Doc.name}{" "}
+                                            <ClearIcon
+                                              style={{ color: "red" }}
+                                              onClick={() => {
+                                                DeleteForm10FDoc(
+                                                  "form_10f_Doc"
+                                                );
+                                              }}
+                                            />
+                                          </>
+                                        ) : (
+                                          "No File Chosen"
+                                        )}
                                       </span>
                                     </div>
                                   )}
@@ -1729,15 +1821,21 @@ export default function Statutory(props) {
                                     fileOrFiles={form_10f_Doc}
                                   />
                                   <span>
-                                      {form_10f_Doc
-                                        ? <> File name:{" "} ${form_10f_Doc.name} < ClearIcon
+                                    {form_10f_Doc ? (
+                                      <>
+                                        {" "}
+                                        File name: ${form_10f_Doc.name}{" "}
+                                        <ClearIcon
                                           style={{ color: "red" }}
                                           onClick={() => {
                                             DeleteForm10FDoc("form_10f_Doc");
                                           }}
-                                            /></>
-                                          : "No File Chosen"}
-                                      </span>
+                                        />
+                                      </>
+                                    ) : (
+                                      "No File Chosen"
+                                    )}
+                                  </span>
                                 </div>
                               )}
                             </Form.Group>
@@ -1754,11 +1852,11 @@ export default function Statutory(props) {
                               <Form.Label>No PE declaration*</Form.Label>
                               {(params.userId &&
                                 EditPE_Declaration_Doc != "") ||
-                                undefined ||
-                                null ? (
+                              undefined ||
+                              null ? (
                                 <div>
                                   <span>
-                                    File name:{" "}{EditPE_Declaration_Doc}
+                                    File name: {EditPE_Declaration_Doc}
                                   </span>
                                   <ClearIcon
                                     style={{ color: "red" }}
@@ -1777,19 +1875,24 @@ export default function Statutory(props) {
                                     required
                                     type="file"
                                     name="PE_Declaration_Doc"
-                                    fileOrFiles={
-                                      PE_Declaration_Doc
-                                    }
+                                    fileOrFiles={PE_Declaration_Doc}
                                   />
                                   <span>
-                                    {PE_Declaration_Doc
-                                        ? <>File name:{" "} ${PE_Declaration_Doc.name}<ClearIcon
+                                    {PE_Declaration_Doc ? (
+                                      <>
+                                        File name: ${PE_Declaration_Doc.name}
+                                        <ClearIcon
                                           style={{ color: "red" }}
                                           onClick={() => {
-                                            DeletePEDeclaration("PE_Declaration_Doc");
+                                            DeletePEDeclaration(
+                                              "PE_Declaration_Doc"
+                                            );
                                           }}
-                                        /></> 
-                                      : "No File Chosen"}
+                                        />
+                                      </>
+                                    ) : (
+                                      "No File Chosen"
+                                    )}
                                   </span>
                                 </div>
                               )}
@@ -1854,9 +1957,9 @@ export default function Statutory(props) {
                               </Col>
                               <Col>
                                 {MSME_Doc !== "" &&
-                                  MSME_Doc !== "null" &&
-                                  MSME_Doc !== undefined &&
-                                  MSME_status === "1" ? (
+                                MSME_Doc !== "null" &&
+                                MSME_Doc !== undefined &&
+                                MSME_status === "1" ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1914,8 +2017,8 @@ export default function Statutory(props) {
                               </Col>
                               <Col>
                                 {MSME_Doc !== "" &&
-                                  MSME_Doc !== "null" &&
-                                  MSME_Doc !== undefined ? (
+                                MSME_Doc !== "null" &&
+                                MSME_Doc !== undefined ? (
                                   <div className="frame-input">
                                     <button
                                       type="button"
@@ -1968,9 +2071,9 @@ export default function Statutory(props) {
                           </Col>
                           <Col>
                             {MSME_Doc !== "" &&
-                              MSME_Doc !== "null" &&
-                              MSME_Doc !== undefined &&
-                              MSME_status === "1" ? (
+                            MSME_Doc !== "null" &&
+                            MSME_Doc !== undefined &&
+                            MSME_status === "1" ? (
                               <div className="frame-input">
                                 <button
                                   type="button"
@@ -2017,11 +2120,7 @@ export default function Statutory(props) {
                                   value="1"
                                   name="Micro"
                                   checked={MSME === "1"}
-                                  disabled={
-                                    MSME_status === "2"
-                                      ? true
-                                      : false
-                                  }
+                                  disabled={MSME_status === "2" ? true : false}
                                 />{" "}
                                 Micro
                               </Col>
@@ -2032,11 +2131,7 @@ export default function Statutory(props) {
                                   value="2"
                                   name="Small"
                                   checked={MSME === "2"}
-                                  disabled={
-                                    MSME_status === "2"
-                                      ? true
-                                      : false
-                                  }
+                                  disabled={MSME_status === "2" ? true : false}
                                 />{" "}
                                 Small
                               </Col>
@@ -2047,11 +2142,7 @@ export default function Statutory(props) {
                                   value="3"
                                   name="Macro"
                                   checked={MSME === "3"}
-                                  disabled={
-                                    MSME_status === "2"
-                                      ? true
-                                      : false
-                                  }
+                                  disabled={MSME_status === "2" ? true : false}
                                 />{" "}
                                 Medium
                               </Col>
@@ -2098,8 +2189,8 @@ export default function Statutory(props) {
                           </div> */}
 
                           {TAN_Doc !== "" &&
-                            TAN_Doc !== "null" &&
-                            TAN_Doc !== undefined ? (
+                          TAN_Doc !== "null" &&
+                          TAN_Doc !== undefined ? (
                             <div className="frame-input">
                               <button
                                 type="button"
@@ -2138,10 +2229,12 @@ export default function Statutory(props) {
                               {params.userId ? (
                                 <div>
                                   {editTax_residency_Doc != "" ||
-                                    undefined ||
-                                    null ? (
+                                  undefined ||
+                                  null ? (
                                     <div>
-                                      <span>File name:{" "}{Tax_residency_Doc}</span>
+                                      <span>
+                                        File name: {Tax_residency_Doc}
+                                      </span>
                                       <ClearIcon
                                         style={{ color: "red" }}
                                         onClick={() => {
@@ -2161,21 +2254,24 @@ export default function Statutory(props) {
                                         required
                                         type="file"
                                         name="Tax_residency_Doc"
-                                        fileOrFiles={
-                                          Tax_residency_Doc
-                                        }
+                                        fileOrFiles={Tax_residency_Doc}
                                       />
                                       <span>
-                                        {Tax_residency_Doc
-                                            ? <>File name:{" "} ${Tax_residency_Doc.name}<ClearIcon
+                                        {Tax_residency_Doc ? (
+                                          <>
+                                            File name: ${Tax_residency_Doc.name}
+                                            <ClearIcon
                                               style={{ color: "red" }}
                                               onClick={() => {
                                                 DeleteTax_residency(
                                                   "Tax_residency_Doc"
                                                 );
                                               }}
-                                            /></>
-                                          : "No File Chosen"}
+                                            />
+                                          </>
+                                        ) : (
+                                          "No File Chosen"
+                                        )}
                                       </span>
                                     </div>
                                   )}
@@ -2188,21 +2284,24 @@ export default function Statutory(props) {
                                     required
                                     type="file"
                                     name="Tax_residency_Doc"
-                                    fileOrFiles={
-                                      Tax_residency_Doc
-                                    }
+                                    fileOrFiles={Tax_residency_Doc}
                                   />
-                                 <span>
-                                    {Tax_residency_Doc
-                                        ? <>File name:{" "} ${Tax_residency_Doc.name}<ClearIcon
+                                  <span>
+                                    {Tax_residency_Doc ? (
+                                      <>
+                                        File name: ${Tax_residency_Doc.name}
+                                        <ClearIcon
                                           style={{ color: "red" }}
                                           onClick={() => {
                                             DeleteTax_residency(
                                               "Tax_residency_Doc"
                                             );
                                           }}
-                                        /></>
-                                      : "No File Chosen"}
+                                        />
+                                      </>
+                                    ) : (
+                                      "No File Chosen"
+                                    )}
                                   </span>
                                 </div>
                               )}
@@ -2217,10 +2316,13 @@ export default function Statutory(props) {
             </Card>
           </Col>
         </Row>
-        {!hideunRegisteredField || GST_type === 'UnRegistered' ? (
+        {!hideunRegisteredField || GST_type === "UnRegistered" ? (
           <Row>
             <Col>
-              <a href={url} download="Declaration of GST Non Enrollment Format.pdf">
+              <a
+                href={url}
+                download="Declaration of GST Non Enrollment Format.pdf"
+              >
                 <Button className="DownloadDisclosure">
                   Download Declaration under non-registered GST
                 </Button>
@@ -2233,9 +2335,8 @@ export default function Statutory(props) {
           <Col>
             <p className="statutory-Note">
               NOTE: If the vendor is not registered with the above compliance,
-              they can mention it as “UnRegistered” in that column and they
-              will upload the discloser for the same on the document upload
-              option.
+              they can mention it as “UnRegistered” in that column and they will
+              upload the discloser for the same on the document upload option.
             </p>
           </Col>
         </Row>
@@ -2249,7 +2350,7 @@ export default function Statutory(props) {
               Cancel
             </button>
             {params.userId &&
-              JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
               "Admin" ? (
               <>
                 <button

@@ -78,7 +78,7 @@ const ContactTeam = () => {
       });
   };
   const validateForm = () => {
-    const { contactName1, emailId1, contactNumber1 } = values;
+    const { contactName1, emailId1, contactNumber1,emailId2,emailId3} = values;
 
     const newErrors = {};
     if (!contactName1 || contactName1 === "") {
@@ -88,9 +88,21 @@ const ContactTeam = () => {
     if (!emailId1 || emailId1 === "") {
       newErrors.emailId1 = "EmailId";
     }
-    if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId1)) {
-      newErrors.emailId1 = "Please enter a valid Email";
-   }
+    if (emailId1) {
+      if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId1)) {
+        newErrors.emailId1 = "Please enter a valid Email";
+      }
+    }
+    if (emailId2) {
+      if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId2)) {
+        newErrors.emailId2 = "Please enter a valid Email";
+      }
+    }
+    if (emailId3) {
+      if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId3)) {
+        newErrors.emailId3 = "Please enter a valid Email";
+      }
+    }
     // if (!groupEmailValidation.test(emailId1)) {
     //   newErrors.emailId1 = "Please enter a valid Email";
     // }
