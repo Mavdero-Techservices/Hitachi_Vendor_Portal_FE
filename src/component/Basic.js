@@ -193,7 +193,8 @@ else
           if (this.state.basicInfoVendor) {
             console.log("update::",this.state.basicInfoVendor)
             apiService
-              .updateVendordetail(this.props.params.userId, basicInfo)
+              .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId, basicInfo)
               .then((response) => {
                 if (response) {
                   Swal.fire({
@@ -367,7 +368,8 @@ else
             if (this.state.commuDetail) {
               apiService
                 .updateCommunicationdetail(
-                  this.props.params.userId,
+                  JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId,
                   communicationDetails
                 )
                 .then((response) => {
@@ -579,16 +581,30 @@ else
         this.setState({
           isFormChanged: true,
         });
-        this.setState({
-          Address: "",
-          Address_2: "",
-          City: "",
-          state: "",
-          Country_Region_Code: "",
-          Post_Code: "",
-          companyName: "",
-          image: "",
-        });
+        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+          this.setState({
+            Address: "",
+            Address_2: "",
+            City: "",
+            state: "",
+            Country_Region_Code: "IN",
+            Post_Code: "",
+            image: "",
+          });
+        }
+        else
+        {
+          this.setState({
+            Address: "",
+            Address_2: "",
+            City: "",
+            state: "",
+            Country_Region_Code: "",
+            Post_Code: "",
+            image: "",
+          });
+        }
+       
       }
     });
   };
@@ -676,7 +692,8 @@ else
     if (this.state.basicInfoVendor) {
       console.log("update::",this.state.basicInfoVendor)
       apiService
-        .updateVendordetail(this.props.params.userId, basicInfo)
+        .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
+        ?.userId, basicInfo)
         .then((response) => {
           if (response) {
             this.fetchData();
@@ -772,7 +789,8 @@ else
     e.preventDefault();
     const basicInfo = {
       // id: this.state.id,
-      userId: this.props.params.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+      ?.userId,
       Address: this.state.Address,
       Address_2: this.state.Address_2,
       City: this.state.City,
@@ -786,7 +804,8 @@ else
     if (this.state.basicInfoVendor) {
       console.log("update::",this.state.basicInfoVendor)
       apiService
-        .updateVendordetail(this.props.params.userId, basicInfo)
+        .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
+        ?.userId, basicInfo)
         .then((response) => {
           if (response) {
             this.fetchData();
@@ -846,7 +865,8 @@ else
       if (this.state.commuDetail) {
         apiService
           .updateCommunicationdetail(
-            this.props.params.userId,
+            JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId,
             communicationDetails
           )
           .then((response) => {
@@ -983,7 +1003,8 @@ else
   updatehandleSubmitComDetail = (e) => {
     e.preventDefault();
     const communicationDetails = {
-      userId: this.props.params.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
+      ?.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,
       financeSpocdesignation: this.state.financeSpocdesignation,
       financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -1011,7 +1032,8 @@ else
       if (this.state.commuDetail) {
         apiService
           .updateCommunicationdetail(
-            this.props.params.userId,
+            JSON.parse(window.sessionStorage.getItem("jwt")).result
+              ?.userId,
             communicationDetails
           )
           .then((response) => {

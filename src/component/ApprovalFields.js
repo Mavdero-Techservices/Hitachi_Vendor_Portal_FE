@@ -1734,6 +1734,12 @@ companyName: companyName || undefined,
 Ticket_ID: TicketID || undefined,
 Country_Region_Code: countryRegionCode || undefined,
 }
+const UpdateMasterVendor = {
+  mastervendor_email: mastervendor_email || undefined,
+  companyName: companyName || undefined,
+  Ticket_ID: TicketID || undefined,
+  Country_Region_Code: countryRegionCode || undefined,
+  }
 const ERPData = {
   Entry_No: TicketID || undefined,
   Vendor_Type: Vendor_Type || undefined,
@@ -1799,29 +1805,30 @@ const ERPData = {
   Shareholder_Name: shareholderName || undefined,
   Organization_Type: organisationType || undefined,
 };
-// apiService.updateErpResourcePortalVendorlist(ErpData).then((Masterresponse) => {
+// apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
 // })
-apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-console.log("masterLogin::", Masterresponse);
-apiService.updateApprovalStatus(userId, data).then((responseData) => {
-  if (responseData.data.status === 'success') {
-    Swal.fire({
-      title: responseData.data.message,
-      icon: "success",
-      confirmButtonText: "OK",
-      showCloseButton: false,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    })
-  } else {
-    Swal.fire({
-      title: responseData.data.message,
-      icon: "error",
-      confirmButtonText: "OK",
-    });
-  }
-});
-})
+// apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {})
+apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
+  console.log("masterLogin::", Masterresponse);
+  apiService.updateApprovalStatus(userId, data).then((responseData) => {
+    if (responseData.data.status === 'success') {
+      Swal.fire({
+        title: responseData.data.message,
+        icon: "success",
+        confirmButtonText: "OK",
+        showCloseButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      })
+    } else {
+      Swal.fire({
+        title: responseData.data.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+  })
               }
               else
               {
@@ -2122,7 +2129,7 @@ apiService.updateApprovalStatus(userId, data).then((responseData) => {
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
+    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
       FormarrayErr.push("PAN_Doc")
       setPAN_DocErr("Pan doc is required");
     }
@@ -2438,13 +2445,13 @@ console.log("acmanager::",Vendor_Account_Manager);
 // console.log("updateresponse::")
 //                   })
 console.log("already exists::");
-const MasterVendor = {
+const UpdateMasterVendor = {
   mastervendor_email: mastervendor_email || undefined,
   companyName: companyName || undefined,
   Ticket_ID: TicketID || undefined,
   Country_Region_Code: countryRegionCode || undefined,
 }
-apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
+apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
   console.log("masterLogin::", Masterresponse);
   apiService.updateApprovalStatus(userId, data1).then((responseData) => {
     if (responseData.data.status === 'success') {
@@ -2464,7 +2471,7 @@ apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
       });
     }
   });
-})
+  })
                 }
                 else
                 {
@@ -2789,7 +2796,7 @@ apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
+    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
       FormarrayErr.push("PAN_Doc")
       setPAN_DocErr("Pan doc is required");
     }
@@ -3248,7 +3255,7 @@ apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
+    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
       FormarrayErr.push("PAN_Doc")
       setPAN_DocErr("Pan doc is required");
     }
@@ -3656,7 +3663,7 @@ console.log("financial_data",financial_data)
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN") {
+    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
       FormarrayErr.push("PAN_Doc")
       setPAN_DocErr("Pan doc is required");
     }
@@ -4578,7 +4585,7 @@ console.log("financial_data",financial_data)
                         />
                         <span className="formError">{PAN_NoErr}</span>
                       </div>
-                      {((GST_type !== 'Import') && (Country_Region_Code === "IN")) ?
+                      {((GST_type !== 'Import') && (Country_Region_Code === "IN") && userStatus !== "NewRegistration") ?
                         <div className="col-sm-12 col-lg-4 m-auto">
                           {style === "cont2" ? (
                             <button
@@ -5046,13 +5053,18 @@ console.log("financial_data",financial_data)
               </div>
               {/* { editFinanceData[0] ?<> */}
               {/* { editFinanceData[0]?.yearOfAuditedFinancial || editFinanceData[0]?.Revenue || editFinanceData[0]?.Profit || editFinanceData[0]?.netWorth || editFinanceData[0]?.currentAssets || editFinanceData[0]?.directorDetails || editFinanceData[0]?.financial_data || editFinanceData[0]?.financial_data2 ? <> */}
+            
               <div
                 className="row px-3 pt-2"
                 style={{ backgroundColor: "#fff" }}
               >
-                <h5 className="headlines">
+              {editFinanceData[0] ? (
+<h5 className="headlines">
                   <b>Financial Details</b>
                 </h5>
+):(
+  ""
+)}
                 <div className="row">
                   {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
                   {editFinanceData[0]?.yearOfAuditedFinancial !== "null" &&

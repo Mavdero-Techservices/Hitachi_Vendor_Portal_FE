@@ -130,6 +130,10 @@ const ContactTeam = () => {
     var statutoryArray = [];
     var bankDetailArray = [];
     var contactDetailArray = [];
+   
+  if (!basicInfo||!communicationDetail||!statutory) {
+    console.log('not loaded yet');
+  }
     if (basicInfo.length <= 0) {
       basicInfoArray.push("Address Line-1");
       basicInfoArray.push("City");
@@ -236,7 +240,7 @@ const ContactTeam = () => {
         }
         if (value && key === "mastervendor_email") {
           if (!emailValidation.test(value))
-            communicationArray.push("mastervendor_email Email is invalid");
+            communicationArray.push("mastervendor Email is invalid");
         }
       });
     }
@@ -247,7 +251,10 @@ const ContactTeam = () => {
         statutoryArray.push("CIN No");
         statutoryArray.push("MSME No");
         statutoryArray.push("GST Doc");
-        statutoryArray.push("PAN Doc");
+        if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+{
+  statutoryArray.push("PAN Doc");
+}        
         statutoryArray.push("MSME Doc");
       }
       else {
@@ -271,12 +278,21 @@ const ContactTeam = () => {
         if (statutory[0].MSMED === "1" && statutory[0].MSMED_Number==="N/A") {
           statutoryArray.push("MSME No is invalid");
         }
-        if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
-          statutoryArray.push("PAN Doc");
-        }
-        if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
-          statutoryArray.push("PAN Doc");
-        }
+       
+          if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
+            if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+            {
+            statutoryArray.push("PAN Doc");
+            }
+          }
+          if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
+            if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+            {
+            statutoryArray.push("PAN Doc");
+            }
+          }
+       
+
         if ((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
           statutoryArray.push("GST Doc");
         }
@@ -347,10 +363,15 @@ const ContactTeam = () => {
         if (statutory[0].MSMED === "1" && statutory[0].MSMED_Number==="N/A") {
           statutoryArray.push("MSME No is invalid");
         }
-        if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type !== "Import" && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
-          statutoryArray.push("PAN Doc");
-        }
+       
 
+        if ((statutory[0].PAN_Doc === "" || null) && statutory[0].GST_Vendor_Type !== "Import" && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
+          if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+          {
+          statutoryArray.push("PAN Doc");
+          }
+        }
+      
         if ((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
           statutoryArray.push("GST Doc");
         }
@@ -852,10 +873,14 @@ const ContactTeam = () => {
       communicationArray.push("managementSpoc-designation");
       communicationArray.push("managementSpoc-phoneNo");
       communicationArray.push("managementSpoc-Email");
+      if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== 'NewRegistration') {
+        communicationArray.push("mastervendor EmailId");
+      }
     } else {
       console.log("secondCheck:")
       Object.entries(communicationDetail[0]).map(([key, value]) => {
         if (value === "" || value === null || value === undefined) {
+          console.log("emptyKey::",key);
           if (key === "financeSpoccontactName") {
             communicationArray.push("financeSpoc-contactName");
           }
@@ -881,11 +906,66 @@ const ContactTeam = () => {
           if (key === "managementSpocemail") {
             communicationArray.push("managementSpoc-Email");
           }
+        
           if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== 'NewRegistration') {
             communicationArray.push("mastervendor EmailId");
           }
         }
+
+        if (value && key === "financeSpocphoneNo") {
+          if (!numberValidation.test(value))
+            communicationArray.push("financeSpocphoneNo is invalid");
+        }
+        if (value && key === "managementSpocphoneNo") {
+          if (!numberValidation.test(value))
+            communicationArray.push("managementSpocphoneNo is invalid");
+        }
+
+        if (value && key === "financeSpocemail") {
+          if (!emailValidation.test(value))
+            communicationArray.push("financeSpocemail Email is invalid");
+        }
+        if (value && key === "managementSpocemail") {
+          if (!emailValidation.test(value))
+            communicationArray.push("managementSpocemail Email is invalid");
+        }
+        if (value && key === "mastervendor_email") {
+          if (!emailValidation.test(value))
+            communicationArray.push("mastervendor Email is invalid");
+        }
       });
+      // Object.entries(communicationDetail[0]).map(([key, value]) => {
+      //   if (value === "" || value === null || value === undefined) {
+      //     if (key === "financeSpoccontactName") {
+      //       communicationArray.push("financeSpoc-contactName");
+      //     }
+      //     if (key === "financeSpocdesignation") {
+      //       communicationArray.push("financeSpoc-designation");
+      //     }
+      //     if (key === "financeSpocphoneNo") {
+      //       communicationArray.push("financeSpoc-phoneNo");
+      //     }
+      //     if (key === "financeSpocemail") {
+      //       communicationArray.push("financeSpoc-Email");
+      //     }
+
+      //     if (key === "managementSpoccontactName") {
+      //       communicationArray.push("managementSpoc-contactName");
+      //     }
+      //     if (key === "managementSpocdesignation") {
+      //       communicationArray.push("managementSpoc-designation");
+      //     }
+      //     if (key === "managementSpocphoneNo") {
+      //       communicationArray.push("managementSpoc-phoneNo");
+      //     }
+      //     if (key === "managementSpocemail") {
+      //       communicationArray.push("managementSpoc-Email");
+      //     }
+      //     if (key === "mastervendor_email" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== 'NewRegistration') {
+      //       communicationArray.push("mastervendor EmailId");
+      //     }
+      //   }
+      // });
     }
     if (statutory.length <= 0) {
       if (basicInfo?.length > 0 && basicInfo[0]?.Country_Region_Code && basicInfo[0]?.Country_Region_Code === 'IN') {
@@ -894,7 +974,10 @@ const ContactTeam = () => {
         statutoryArray.push("CIN No");
         statutoryArray.push("MSME No");
         statutoryArray.push("GST Doc");
+        if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+        {
         statutoryArray.push("PAN Doc");
+        }
         statutoryArray.push("MSME Doc");
       }
       else {
@@ -926,8 +1009,12 @@ const ContactTeam = () => {
             if (key === "GST_Doc") {
               statutoryArray.push("GST Doc");
             }
+            
             if (key === "PAN_Doc") {
+              if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
+              {
               statutoryArray.push("PAN Doc");
+              }
             }
             if (key === "MSME_Doc") {
               statutoryArray.push("MSME Doc");

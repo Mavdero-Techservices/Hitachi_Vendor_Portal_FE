@@ -385,5 +385,8 @@ getDocuments() {
   UpdateUserStatusByUserId(userId) {
     return http.put(`/updateVdetail/userStatus/${userId}`);
   }
+  updateMasterLogin(data) {
+    return http.put(`/updateMasterLogin`, data);
+  }
 }
 export default new apiService();

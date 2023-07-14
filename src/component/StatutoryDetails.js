@@ -110,20 +110,24 @@ export default function Statutory(props) {
 
     if (value === "UnRegistered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        if (
-          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
-          "NewRegistration"
-        ) {
-          setValues((prevValues) => ({
-            ...prevValues,
-            PAN_No: staticPAN_No,
-          }));
-        } else {
-          setValues((prevValues) => ({
-            ...prevValues,
-            PAN_No: "",
-          }));
-        }
+        setValues((prevValues) => ({
+          ...prevValues,
+          PAN_No: "",
+        }));
+        // if (
+        //   JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+        //   "NewRegistration"
+        // ) {
+        //   setValues((prevValues) => ({
+        //     ...prevValues,
+        //     PAN_No: staticPAN_No,
+        //   }));
+        // } else {
+        //   setValues((prevValues) => ({
+        //     ...prevValues,
+        //     PAN_No: "",
+        //   }));
+        // }
       }
       sethideunRegisteredField(false);
     } else {
@@ -142,21 +146,26 @@ export default function Statutory(props) {
 
     if (value === "Registered") {
       if (values.PAN_No === "N/A" && countryName === "IN") {
-        if (
-          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
-          "NewRegistration"
-        ) {
-          setValues((prevValues) => ({
-            ...prevValues,
-            PAN_No: staticPAN_No,
-          }));
-        } else {
-          setValues((prevValues) => ({
-            ...prevValues,
-            PAN_No: "",
-            GST_No: "",
-          }));
-        }
+        setValues((prevValues) => ({
+          ...prevValues,
+          PAN_No: "",
+          GST_No: "",
+        }));
+        // if (
+        //   JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+        //   "NewRegistration"
+        // ) {
+        //   setValues((prevValues) => ({
+        //     ...prevValues,
+        //     PAN_No: staticPAN_No,
+        //   }));
+        // } else {
+        //   setValues((prevValues) => ({
+        //     ...prevValues,
+        //     PAN_No: "",
+        //     GST_No: "",
+        //   }));
+        // }
       }
       else {
         setValues((prevValues) => ({
@@ -169,7 +178,7 @@ export default function Statutory(props) {
     if (value === "UnRegistered" && values.GST_Registration_No !== "N/A") {
       setValues((prevValues) => ({
         ...prevValues,
-        GST_Registration_No: "un",
+        GST_No: "",
       }));
     }
   }
@@ -209,18 +218,20 @@ export default function Statutory(props) {
     }
   }
   const handleChange = (name) => (event) => {
+    console.log("valuechanged::")
     setIsNewValueEntered(true);
     event.preventDefault();
 
     const newValue = event.target.value;
 
     if (newValue !== values[name]) {
+      console.log('newvalue::')
       setValues((prevValues) => ({
         ...prevValues,
         [name]: newValue,
       }));
     } else {
-      // If the new value is the same as the previous value, retain the previous value
+      console.log('previousvalue::')
       setValues((prevValues) => ({
         ...prevValues,
         [name]: prevValues[name],
@@ -635,19 +646,21 @@ export default function Statutory(props) {
             TAN_No: "",
             Tax_residency_No: "",
           });
-          setFile(" ");
-          setPAN_Doc(" ");
-          setPE_Declaration_Doc(" ");
-          setMSME_Doc(" ");
-          setTax_residency_Doc(" ");
+          setFile("");
+          setPAN_Doc("");
+          setPE_Declaration_Doc("");
+          setMSME_Doc("");
+          setTax_residency_Doc("");
           setdeleteTax_residencyUploadedFile(false);
           setdeletePE_DeclarationUploadedFile(false);
-          seteditTax_residency_Doc(" ");
+          seteditTax_residency_Doc("");
           setform_10f_Doc("");
           setdeleteform_10fUploadedFile(false);
           setEditform_10f_Doc("");
-          setEditPE_Declaration_Doc(" ");
+          setEditPE_Declaration_Doc("");
+          setTAN_Doc("");
           setIsNewValueEntered(true);
+          setfileDisclosure("");
         } else {
           setValues({
             GST_No: "",
@@ -675,6 +688,7 @@ export default function Statutory(props) {
           setEditPE_Declaration_Doc("");
           setTAN_Doc("");
           setIsNewValueEntered(true);
+          setfileDisclosure("");
         }
       }
     });
@@ -689,6 +703,7 @@ export default function Statutory(props) {
           JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         )
         .then((res) => {
+          console.log("getallcollectionvendor::",res.data.Statutory);
           setredirectUrl(res.data);
           let cName = res.data.basicInfo
             ? res.data.basicInfo[0]?.Country_Region_Code
@@ -720,9 +735,9 @@ export default function Statutory(props) {
                       vendorCode.data.response[0].P_A_N_No
                     );
                     if (vendorCode.data.response.length > 0) {
-                      setValues({
-                        PAN_No: vendorCode.data.response[0].P_A_N_No,
-                      });
+                      // setValues({
+                      //   PAN_No: vendorCode.data.response[0].P_A_N_No,
+                      // });
                       setstaticPAN_No(vendorCode.data.response[0].P_A_N_No);
                     } else {
                       setValues({ PAN_No: "" });
@@ -741,29 +756,18 @@ export default function Statutory(props) {
           if (res.data.basicInfo[0]?.Country_Region_Code === "IN") {
             setshowLoginTab(false);
           }
-        })
-        .then((result) => {});
+        });
+        
 
-      let newuser = JSON.parse(
-        window.sessionStorage.getItem("newregUser")
-      )?.newregUser;
-      let id = newuser
-        ? newuser
-        : params.userId
-        ? params.userId
-        : values.userId;
-      // await apiService.getvendorDetail(id).then((res) => {
-      //   setcountry(res.data.country);
-      //   if (res.data.country === "IN") {
-      //     setshowLoginTab(false);
-      //   }
-      // });
       if (params.userId) {
         let finalstatus = "";
-        await apiService.signupFindByUserId(params.userId).then((res) => {
+        await apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        ).then((res) => {
           finalstatus = res.data.result?.finalStatus;
         });
-        await apiService.getAllCollection(params.userId).then((res) => {
+        await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        ).then((res) => {
+          console.log("getallcollectionparamsuserid::",res.data.Statutory)
           setredirectUrl(res.data);
           if (
             res.data.basicInfo[0]?.submitStatus === "Submitted" &&
@@ -792,11 +796,8 @@ export default function Statutory(props) {
                 value.GST_Registration_No === "undefined"
                   ? ""
                   : value.GST_Registration_No,
-              // GST_type: value.GST_Vendor_Type,
               MSME_No:
                 value.MSMED_Number === "undefined" ? "" : value.MSMED_Number,
-              // MSME_Type: value.MSMED_Vendor_Type,
-              // MSME_status: value.MSMED,
               PAN_No: value.P_A_N_No === "undefined" ? "" : value.P_A_N_No,
               CIN_No: value.CIN_No === "undefined" ? "" : value.CIN_No,
               TAN_No: value.TAN_No === "undefined" ? "" : value.TAN_No,
@@ -804,10 +805,6 @@ export default function Statutory(props) {
                 value.Tax_residency_No === "undefined"
                   ? ""
                   : value.Tax_residency_No,
-              // GST_Doc: value.GST_Doc,
-              // PAN_Doc: value.PAN_Doc,
-              // TAN_Doc: value.TAN_Doc,
-              // MSME_Doc: value.MSME_Doc,
               Tax_residency_Doc: value.Tax_residency_Doc,
             });
 
@@ -827,78 +824,12 @@ export default function Statutory(props) {
             setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
         });
-      } else if (newuser) {
-        let finalstatus = "";
-        await apiService.signupFindByUserId(newuser).then((res) => {
-          finalstatus = res.data.result?.finalStatus;
-        });
-        await apiService.getAllCollection(newuser).then((res) => {
-          setredirectUrl(res.data);
-          if (
-            res.data.basicInfo[0]?.submitStatus === "Submitted" &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
-              "Admin"
-          ) {
-            setStyle("notEditable");
-          }
-          Object.entries(res.data.Statutory).map(([key, value]) => {
-            var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
-            var replaceform10fValue = form_10fUrl.replace("uploads/", "");
-            var PE_Declaration_DocUrl =
-              res.data.Statutory[0].PE_Declaration_Doc;
-            var replacePE_Declaration_DocValue = PE_Declaration_DocUrl.replace(
-              "uploads/",
-              ""
-            );
-            var Tax_residency_DocUrl = res.data.Statutory[0].Tax_residency_Doc;
-            var replaceTax_residency_DocValue = Tax_residency_DocUrl.replace(
-              "uploads/",
-              ""
-            );
-            setValues({
-              GST_No:
-                value.GST_Registration_No === "undefined"
-                  ? ""
-                  : value.GST_Registration_No,
-              // GST_type: value.GST_Vendor_Type,
-              MSME_No:
-                value.MSMED_Number === "undefined" ? "" : value.MSMED_Number,
-              // MSME_Type: value.MSMED_Vendor_Type,
-              // MSME_status: value.MSMED,
-              PAN_No: value.P_A_N_No === "undefined" ? "" : value.P_A_N_No,
-              CIN_No: value.CIN_No === "undefined" ? "" : value.CIN_No,
-              TAN_No: value.TAN_No === "undefined" ? "" : value.TAN_No,
-              Tax_residency_No:
-                value.Tax_residency_No === "undefined"
-                  ? ""
-                  : value.Tax_residency_No,
-              // GST_Doc: value.GST_Doc,
-              // PAN_Doc: value.PAN_Doc,
-              // TAN_Doc: value.TAN_Doc,
-              // MSME_Doc: value.MSME_Doc,
-              Tax_residency_Doc: value.Tax_residency_Doc,
-            });
-            setMSME(value.MSMED_Vendor_Type);
-            setGST_type(value.GST_Vendor_Type);
-            setMSME_status(value.MSMED);
-            setform_10f_Doc(value.form_10f_Doc);
-            setfileDisclosure(value.fileDisclosure);
-            setFile(value.GST_Doc);
-            setPAN_Doc(value.PAN_Doc);
-            setTAN_Doc(value.TAN_Doc);
-            setPE_Declaration_Doc(value.PE_Declaration_Doc);
-            setMSME_Doc(value.MSME_Doc);
-            setTax_residency_Doc(value.Tax_residency_Doc);
-            seteditTax_residency_Doc(replaceTax_residency_DocValue);
-            setEditform_10f_Doc(replaceform10fValue);
-            setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
-          });
-        });
-      }
+      } 
     })();
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
+    console.log("saveApi::");
     console.log("valuesbeforupdate::", values.TAN_No);
     console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
     return new Promise((resolve) => {
@@ -917,8 +848,17 @@ export default function Statutory(props) {
         data.append("P_A_N_No", "N/A");
         data.append("PAN_Doc", "");
       } else {
-        data.append("P_A_N_No", values.PAN_No);
-        data.append("PAN_Doc", PAN_Doc);
+        if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
+{
+  data.append("P_A_N_No",staticPAN_No);
+  data.append("PAN_Doc", "");
+}
+else
+{
+  data.append("P_A_N_No", values.PAN_No);
+  data.append("PAN_Doc", PAN_Doc);
+}
+       
       }
       if (GST_type === "Registered") {
         data.append("GST_Doc", GST_Doc);
@@ -946,12 +886,13 @@ export default function Statutory(props) {
       data.append("TAN_No", values.TAN_No);
       data.append(
         "userId",
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
       );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
         console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
         console.log("dataupdatecinno::", values.CIN_No);
+        console.log("update2::",values.CIN_No)
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
@@ -1083,9 +1024,11 @@ export default function Statutory(props) {
     });
   };
   const updateStatutoryDetail = (e) => {
-    console.log("updatenew::");
+    console.log("updatenew::",values.CIN_No);
+    console.log("valuesbeforupdate::", values.TAN_No);
+    console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
     return new Promise((resolve) => {
-      e.preventDefault();
+      // e.preventDefault();
       setIsNewValueEntered(false);
       const data = new FormData();
       data.append("GST_Vendor_Type", GST_type);
@@ -1110,6 +1053,11 @@ export default function Statutory(props) {
         data.append("GST_Doc", "");
         data.append("fileDisclosure", fileDisclosure);
       }
+      if (MSME_status === "2") {
+        data.append("MSMED_Number", "N/A");
+      } else {
+        data.append("MSMED_Number", values.MSME_No);
+      }
       data.append("form_10f_Doc", form_10f_Doc);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_DeclarationNo", values.PE_DeclarationNo);
@@ -1119,15 +1067,18 @@ export default function Statutory(props) {
       data.append("CIN_No", values.CIN_No);
       data.append("form_10f", values.form_10f);
       data.append("MSMED", MSME_status);
-      data.append("MSMED_Number", values.MSME_No);
+
       data.append("MSMED_Vendor_Type", MSME);
       data.append("TAN_No", values.TAN_No);
       data.append(
         "userId",
-        JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+        JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
       );
       data.append("Tax_residency_No", values.Tax_residency_No);
       if (params.userId) {
+        console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
+        console.log("dataupdatecinno::", values.CIN_No);
+        console.log("update2::",values.CIN_No)
         apiService.updateStatutoryDetail(params.userId, data).then((res) => {
           if (res.data.status === "success") {
             Swal.fire({
@@ -1153,8 +1104,108 @@ export default function Statutory(props) {
               allowOutsideClick: false,
               allowEscapeKey: false,
             });
+            resolve("error");
           }
         });
+      } else {
+        let newuser = JSON.parse(
+          window.sessionStorage.getItem("newregUser")
+        )?.newregUser;
+        if (newuser) {
+          const statdata = new FormData();
+          statdata.append("GST_Vendor_Type", GST_type);
+          statdata.append("GST_Registration_No", values.GST_No);
+          if (GST_type === "UnRegistered") {
+            statdata.append("GST_Registration_No", "N/A");
+          } else if (GST_type === "Import") {
+            statdata.append("GST_Registration_No", "N/A");
+          } else {
+            statdata.append("GST_Registration_No", values.GST_No);
+          }
+          if (countryName !== "IN") {
+            statdata.append("P_A_N_No", values.PAN_No);
+            statdata.append("PAN_Doc", PAN_Doc);
+          } else {
+            statdata.append("P_A_N_No", "N/A");
+            statdata.append("PAN_Doc", "");
+          }
+          if (GST_type === "Registered") {
+            statdata.append("GST_Doc", GST_Doc);
+            statdata.append("fileDisclosure", "");
+          } else {
+            statdata.append("GST_Doc", "");
+            statdata.append("fileDisclosure", fileDisclosure);
+          }
+          statdata.append("form_10f_Doc", form_10f_Doc);
+          statdata.append("TAN_Doc", TAN_Doc);
+          statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+          statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+          statdata.append("MSME_Doc", MSME_Doc);
+          statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+          statdata.append("CIN_No", values.CIN_No);
+          statdata.append("form_10f", values.form_10f);
+          statdata.append("MSMED", MSME_status);
+          statdata.append("MSMED_Number", values.MSME_No);
+          statdata.append("MSMED_Vendor_Type", MSME);
+          statdata.append("TAN_No", values.TAN_No);
+          statdata.append("userId", newuser);
+          statdata.append("Tax_residency_No", values.Tax_residency_No);
+          apiService.saveStatutoryDetail(statdata).then((res) => {
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
+          });
+        } else {
+          apiService.saveStatutoryDetail(data).then((res) => {
+            if (res.data.status === "success") {
+              Swal.fire({
+                title: "Data saved",
+                icon: "success",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  resolve("success");
+                } else {
+                  resolve("error");
+                }
+              });
+            } else {
+              Swal.fire({
+                title: "Error While Fetching",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            }
+          });
+        }
       }
     });
   };
@@ -1667,9 +1718,17 @@ export default function Statutory(props) {
                                   }}
                                   type="text"
                                   value={
-                                    countryName !== "IN" ? "N/A" : values.PAN_No
+                                    countryName !== "IN"
+                                      ? "N/A"
+                                      : JSON.parse(
+                                          window.sessionStorage.getItem("jwt")
+                                        ).result?.usertype === "NewRegistration"
+                                      ? staticPAN_No
+                                      : values.PAN_No
                                   }
-                                  disabled={countryName !== "IN"}
+                                  disabled={countryName !== "IN"||JSON.parse(
+                                    window.sessionStorage.getItem("jwt")
+                                  ).result?.usertype === "NewRegistration"}
                                   onChange={handleChange("PAN_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
@@ -1687,7 +1746,9 @@ export default function Statutory(props) {
                               )}
                             </Form.Group>
                           </Col>
-                        )}
+                        )
+                        }
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration" ? (
                         <Col>
                           {countryName === "IN" ? (
                             PAN_Doc !== "" &&
@@ -1726,6 +1787,10 @@ export default function Statutory(props) {
                             ""
                           )}
                         </Col>
+                        ):(
+                          <Col></Col>
+                        )
+                        }
                       </Row>
                       <Row>
                         <Col>
@@ -2350,12 +2415,14 @@ export default function Statutory(props) {
               Cancel
             </button>
             {params.userId &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+            JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.role ===
               "Admin" ? (
               <>
                 <button
                   type="button"
-                  onClick={updateStatutoryDetail}
+                  onClick={() => {
+                    saveStatutoryDetail();
+                  }}
                   className="btn statutorybtn btn-md m-1"
                 >
                   Update
