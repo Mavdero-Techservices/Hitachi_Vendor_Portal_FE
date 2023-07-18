@@ -623,7 +623,7 @@ const BankDetails = (props) => {
                   type="text"
                   className="mb-4 inputbox"
                   name="ifsc"
-                  value={ifsc}
+                  value={(ifsc|| '').toUpperCase()}
                   onChange={(e) => setIfsc(e.target.value)}
                 />
               </div>
@@ -633,7 +633,7 @@ const BankDetails = (props) => {
                   type="text"
                   className="mb-4 inputbox"
                   name="Bank_Name"
-                  value={bankname}
+                  value={(bankname|| '').toUpperCase()}
                   onChange={(e) => setBankname(e.target.value)}
                 />
               </div>
@@ -663,7 +663,7 @@ const BankDetails = (props) => {
                   type="text"
                   className="mb-4 inputbox"
                   name="branchAdd"
-                  value={branchAdd}
+                  value={(branchAdd|| '').toUpperCase()}
                   onChange={(e) => setbranchAdd(e.target.value)}
                 />
               </div>

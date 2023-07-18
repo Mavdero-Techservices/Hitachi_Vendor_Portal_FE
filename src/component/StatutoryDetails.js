@@ -1465,7 +1465,7 @@ else
                                                   }}
                                                   className="statInput"
                                                   type="text"
-                                                  value={values.GST_No}
+                                                  value={(values.GST_No || '').toUpperCase()}
                                                   onChange={handleChange(
                                                     "GST_No"
                                                   )}
@@ -1542,7 +1542,7 @@ else
                                                 }}
                                                 className="statInput"
                                                 type="text"
-                                                value={values.GST_No}
+                                                value={(values.GST_No || '').toUpperCase()}
                                                 onChange={handleChange(
                                                   "GST_No"
                                                 )}
@@ -1717,14 +1717,21 @@ else
                                     borderRadius: "25px",
                                   }}
                                   type="text"
+                                  // value={
+                                  //   countryName !== "IN"
+                                  //     ? "N/A"
+                                  //     : JSON.parse(
+                                  //         window.sessionStorage.getItem("jwt")
+                                  //       ).result?.usertype === "NewRegistration"
+                                  //     ? staticPAN_No.toUpperCase()
+                                  //     : values.PAN_No.toUpperCase()
+                                  // }
                                   value={
-                                    countryName !== "IN"
-                                      ? "N/A"
-                                      : JSON.parse(
-                                          window.sessionStorage.getItem("jwt")
-                                        ).result?.usertype === "NewRegistration"
-                                      ? staticPAN_No
-                                      : values.PAN_No
+                                    countryName !== 'IN'
+                                      ? 'N/A'
+                                      : JSON.parse(window.sessionStorage.getItem('jwt')).result?.usertype === 'NewRegistration'
+                                      ? (staticPAN_No || '').toUpperCase()
+                                      : (values.PAN_No || '').toUpperCase()
                                   }
                                   disabled={countryName !== "IN"||JSON.parse(
                                     window.sessionStorage.getItem("jwt")

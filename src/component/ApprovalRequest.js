@@ -316,42 +316,48 @@ function ApprovalRequest() {
             field: 'vendorCode',
             headerName: 'Vendor Code',
             renderCell: (params) => {
-                const rowId = params.row?.id;
-                const buttonName = params.row.vendorCode && params.row.vendorCode.length > 0 ? 'Vendor Code Selected' : 'Select Vendor Code';
-                const vendorCodeValues = params.row.vendorCode?.filter(obj => obj.Vendor_No).map(obj => obj.Vendor_No) || [];
-
-                return (
+              const rowId = params.row?.id;
+              const buttonName = params.row.vendorCode && params.row.vendorCode.length > 0 ? 'Vendor Code Selected' : 'Select Vendor Code';
+              const vendorCodeValues = params.row.vendorCode?.filter(obj => obj.Noo).map(obj => obj.No) || [];
+        
+              return (
+                <>
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : (
                     <>
-                        {params.row.vendorCode && params.row.vendorCode.length > 0 ? (
-                            <Tooltip title={vendorCodeValues.join(', ')} placement="top">
-                                <button
-                                    onClick={() => {
-                                        handleSetVendorCode(params.row, params.row.vendorCode);
-                                        setModalOpen(true);
-                                    }}
-                                    type="button"
-                                    className="btn bankbtn btn-primary btn-md m-2"
-                                >
-                                    {buttonName}
-                                </button>
-                            </Tooltip>
-                        ) : (
-                            <button
-                                onClick={() => {
-                                    handleSetVendorCode(params.row, []);
-                                    setModalOpen(true);
-                                }}
-                                type="button"
-                                className="btn bankbtn btn-primary btn-md m-2"
-                            >
-                                {buttonName}
-                            </button>
-                        )}
+                      {params.row.vendorCode && params.row.vendorCode.length > 0 ? (
+                        <Tooltip title={vendorCodeValues.join(', ')} placement="top">
+                          <button
+                            onClick={() => {
+                              handleSetVendorCode(params.row, params.row.vendorCode);
+                              setModalOpen(true);
+                            }}
+                            type="button"
+                            className="btn bankbtn btn-primary btn-md m-2"
+                          >
+                            {buttonName}
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            handleSetVendorCode(params.row, []);
+                            setModalOpen(true);
+                          }}
+                          type="button"
+                          className="btn bankbtn btn-primary btn-md m-2"
+                        >
+                          {buttonName}
+                        </button>
+                      )}
                     </>
-                );
+                  )}
+                </>
+              );
             },
             width: 500,
-        }
+          }
 
     ];
 
@@ -383,7 +389,7 @@ function ApprovalRequest() {
         // })
         apiService.getErpResourcePortalVendorlist().then(response => {
             const uniqueVendorList = response.data.value.filter((vendor, index, self) => {
-              return vendor.Vendor_No && index === self.findIndex(v => v.Vendor_No === vendor.Vendor_No);
+              return vendor.No && index === self.findIndex(v => v.No === vendor.No);
             });
             setvendorList(uniqueVendorList);
           });
@@ -619,21 +625,21 @@ function ApprovalRequest() {
                                             id="checkboxes-tags-demo"
                                             options={vendorList}
                                             disableCloseOnSelect
-                                            getOptionLabel={(option) => option.Vendor_No}
+                                            getOptionLabel={(option) => option.No}
                                             // value={selectedOptions}
                                             // onChange={(event, newValue) => setSelectedOptions(newValue)}
                                             onChange={(event, value) =>
                                                 handleVendorCode(event, value)
                                             }
                                             renderOption={(props, option, { selected }) => (
-                                                <li key={option.Vendor_No} {...props}>
+                                                <li key={option.No} {...props}>
                                                     <Checkbox
                                                         icon={icon}
                                                         checkedIcon={checkedIcon}
                                                         style={{ marginRight: 8 }}
                                                         checked={selected}
                                                     />
-                                                    {option.Vendor_No}
+                                                    {option.No}
                                                 </li>
                                             )}
                                             style={{ width: 500 }}

@@ -90,17 +90,17 @@ const ContactTeam = () => {
     }
     if (emailId1) {
       if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId1)) {
-        newErrors.emailId1 = "Please enter a valid Email";
+        newErrors.emailId1 = "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
       }
     }
     if (emailId2) {
       if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId2)) {
-        newErrors.emailId2 = "Please enter a valid Email";
+        newErrors.emailId2 = "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
       }
     }
     if (emailId3) {
       if (!new RegExp('@' + desiredDomain + '\\s*$').test(emailId3)) {
-        newErrors.emailId3 = "Please enter a valid Email";
+        newErrors.emailId3 = "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
       }
     }
     // if (!groupEmailValidation.test(emailId1)) {
@@ -298,7 +298,7 @@ const ContactTeam = () => {
         }
 
         if ((statutory[0].fileDisclosure === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
-          statutoryArray.push("GST Doc");
+          statutoryArray.push("UnRegistered GST Doc");
         }
         Object.entries(statutory[0]).map(([key, value]) => {
           
@@ -377,7 +377,7 @@ const ContactTeam = () => {
         }
 
         if ((statutory[0].fileDisclosure === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
-          statutoryArray.push("GST Doc");
+          statutoryArray.push("UnRegistered GST Doc");
         }
         Object.entries(statutory[0]).map(([key, value]) => {
           console.log("valuekey::",key);
@@ -1006,9 +1006,15 @@ const ContactTeam = () => {
             if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
-            if (key === "GST_Doc") {
+            if ((statutory[0].GST_Doc === "" || null) && statutory[0].GST_Vendor_Type === "Registered") {
               statutoryArray.push("GST Doc");
             }
+            if ((statutory[0].fileDisclosure === "" || null) && statutory[0].GST_Vendor_Type === "UnRegistered") {
+              statutoryArray.push("UnRegistered GST Doc");
+            }
+            // if (key === "GST_Doc") {
+            //   statutoryArray.push("GST Doc");
+            // }
             
             if (key === "PAN_Doc") {
               if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration")
@@ -1067,8 +1073,11 @@ const ContactTeam = () => {
             if (key === "MSMED_Number") {
               statutoryArray.push("MSME No");
             }
-            if (key === "GST_Doc") {
+            if (statutory[0].GST_Vendor_Type === "Registered" && key === "GST_Doc") {
               statutoryArray.push("GST Doc");
+            }
+            if ((key ==="fileDisclosure") && statutory[0].GST_Vendor_Type === "UnRegistered") {
+              statutoryArray.push("UnRegistered GST Doc");
             }
             if (key === "MSME_Doc") {
               statutoryArray.push("MSME Doc");
