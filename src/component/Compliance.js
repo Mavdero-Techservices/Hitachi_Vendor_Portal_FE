@@ -273,7 +273,7 @@ const ComplianceDetails = () => {
     apiService.downloadPdf(user).then((response) => { });
   };
   const redirectToBankdetail = () => {
-    if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+    if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
       navigate("/bank");
     } else {
       navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
@@ -306,7 +306,7 @@ const ComplianceDetails = () => {
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+          if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
             navigate("/bank");
           } else {
             navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
@@ -314,7 +314,7 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      if (redirectUrl.Bankdetail?.length <= 0 || "" || undefined) {
+      if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
         navigate("/bank");
       } else {
         navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
