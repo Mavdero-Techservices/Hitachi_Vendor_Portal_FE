@@ -25,6 +25,10 @@ export default function Signup(props) {
   });
 
   const formValChange = (name) => (event) => {
+    let newValue = event.target.value;
+    if (name === "companyName" && newValue.length > 100) {
+      newValue = newValue.slice(0, 100);
+    }
     setValues({ ...values, [name]: event.target.value });
     setErrors(event);
     if (!!errors[name])
@@ -40,6 +44,8 @@ export default function Signup(props) {
 
     if (!companyName || companyName === "") {
       newErrors.companyName = "Please enter companyName";
+    }else if (companyName.length > 100) {
+      newErrors.companyName = "Company name must be 100 characters or less";
     }
 
     if (!contactPerson || contactPerson === "") {

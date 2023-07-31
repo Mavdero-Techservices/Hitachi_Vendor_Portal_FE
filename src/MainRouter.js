@@ -140,7 +140,7 @@ const MainRouter = () => {
         <Route path="/Spinner" element={<Spinner />} />
         <Route path="/passwordGeneration" element={<Password />} />
         <Route
-          path="/passwordGeneration/:emailId/:mailConfirmationCode"
+          path="/passwordGeneration/:emailId/:mailConfirmationCode/:userName"
           element={<Password />}
         />
         <Route path="/approvalReq" element={<ApprovalRequest />} />

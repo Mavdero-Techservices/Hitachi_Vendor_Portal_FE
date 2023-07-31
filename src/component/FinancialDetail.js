@@ -197,6 +197,7 @@ const FinancialDetails = () => {
     }
   };
   function next(e) {
+    const formErrors = validateForm();
     if (isNewValueEntered) {
       Swal.fire({
         title: "Do you want to save?",
@@ -208,7 +209,10 @@ const FinancialDetails = () => {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveFinancialDetail().then((response) => {
+          if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+          } else {
+          saveFinancialDetail(e).then((response) => {
             if (response === "success") {
               redirectToContactTeam();
             } else {
@@ -222,6 +226,7 @@ const FinancialDetails = () => {
               });
             }
           });
+        }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
             navigate("/ContactTeam");
@@ -242,8 +247,7 @@ const FinancialDetails = () => {
   const handleChange = (name) => (event) => {
     setIsNewValueEntered(true);
     setValues({ ...values, [name]: event.target.value });
-    let e = { ...errors };
-    setErrors(e);
+    setErrors(event);
     if (!!errors[name])
       setErrors({
         ...errors,
@@ -251,16 +255,30 @@ const FinancialDetails = () => {
       });
   };
   const validateForm = () => {
-    const { yearOfAuditedFinancial } = values;
+    const { yearOfAuditedFinancial,currentAssets,directorDetails,shareholderName } = values;
 
     const newErrors = {};
 
-    if (yearOfAuditedFinancial.length < 4) {
-      newErrors.yearOfAuditedFinancial = "Please enter valid year";
+    if (yearOfAuditedFinancial.length > 10) {
+      newErrors.yearOfAuditedFinancial = "yearOfAuditedFinancial must be less than or equal to 10 characters";
+    }
+    if (currentAssets.length > 10) {
+      newErrors.currentAssets = "CurrentAssets must be less than or equal to 10 characters";
+    }
+
+if (directorDetails.length > 20) {
+      newErrors.directorDetails = "DirectorDetails must be less than or equal to 20 characters";
+    }
+    if (shareholderName.length > 100) {
+      newErrors.shareholderName = "shareholderName must be less than or equal to 100 characters";
     }
     return newErrors;
   };
   const saveFinancialDetail = (e) => {
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+    } else {
     return new Promise((resolve) => {
       // e.preventDefault();
       setIsNewValueEntered(false);
@@ -389,12 +407,16 @@ const FinancialDetails = () => {
         }
       }
     });
+  }
   };
-  const updateFinancialDetail = (e) => {
+  const updateFinancialDetail = () => {
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+    } else {
     return new Promise((resolve) => {
       // e.preventDefault();
       setIsNewValueEntered(false);
-      e.preventDefault();
       const data = new FormData();
       data.append("financial_data", fileFD);
       data.append("financial_data2", fileFD2);
@@ -437,6 +459,7 @@ const FinancialDetails = () => {
         });
       }
     });
+  }
   };
   useEffect(() => {
     let newuser = JSON.parse(
@@ -451,7 +474,15 @@ const FinancialDetails = () => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
           if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
             setStyle("notEditable");
+          }
+         else if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus === "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
+            setStyle("notEditable");
+          }
+         else{
+            setStyle("editable");
           }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
@@ -490,8 +521,16 @@ const FinancialDetails = () => {
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
         Object.entries(res.data.FinancialDetail).map(([key, value]) => {
-          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
             setStyle("notEditable");
+          }
+         else if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus === "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
+            setStyle("notEditable");
+          }
+         else{
+            setStyle("editable");
           }
           var initialUrlfinancial_data =
             res.data.FinancialDetail[0].financial_data;
@@ -523,12 +562,24 @@ const FinancialDetails = () => {
         });
       });
     } else {
+      let finalstatus = "";
       apiService
         .getAllCollection(
           JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         )
         .then((res) => {
           setredirectUrl(res.data);
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
+            setStyle("notEditable");
+          }
+         else if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus === "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
+            setStyle("notEditable");
+          }
+         else{
+            setStyle("editable");
+          }
         });
       setEditfinancialDetail(false);
     }
@@ -588,6 +639,13 @@ const FinancialDetails = () => {
                   value={values.currentAssets}
                   onChange={handleChange("currentAssets")}
                 />
+                {errors.currentAssets ? (
+                  <p className="text text-danger small">
+                    {errors.currentAssets}
+                  </p>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="Profit">Profit</label>
@@ -606,6 +664,13 @@ const FinancialDetails = () => {
                   value={values.directorDetails}
                   onChange={handleChange("directorDetails")}
                 />
+                {errors.directorDetails ? (
+                  <p className="text text-danger small">
+                    {errors.directorDetails}
+                  </p>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="Organisationtype">Organisation type</label>
@@ -634,6 +699,13 @@ const FinancialDetails = () => {
                   value={values.shareholderName}
                   onChange={handleChange("shareholderName")}
                 />
+                   {errors.shareholderName ? (
+                  <p className="text text-danger small">
+                    {errors.shareholderName}
+                  </p>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
@@ -798,7 +870,7 @@ const FinancialDetails = () => {
                 "Admin" ? (
                 <>
                   <button
-                    type="submit"
+                    type="button"
                     onClick={updateFinancialDetail}
                     className="btn financialbtn btn-md m-3"
                   >

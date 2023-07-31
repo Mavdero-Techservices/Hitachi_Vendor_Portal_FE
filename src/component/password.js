@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 export default function Password(props) {
-  const { emailId, mailConfirmationCode } = useParams();
+  const { emailId, mailConfirmationCode,userName } = useParams();
   const [passwordType, setPasswordType] = useState("password");
   const [ConfirmPasswordType, setConfirmPasswordType] = useState("password");
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function Password(props) {
   const [values, setValues] = useState({
     password: "",
     confirmPassword: "",
-    userName: "",
+    userName: userName,
     accountError: "",
     emailId: emailId,
     mailConfirmationCode: mailConfirmationCode,
@@ -51,9 +51,9 @@ export default function Password(props) {
     const digitsReg = digitsRegExp.test(password);
     const newErrors = {};
 
-    if (!userName || userName === "") {
-      newErrors.userName = "Please enter user name";
-    }
+    // if (!userName || userName === "") {
+    //   newErrors.userName = "Please enter user name";
+    // }
 
     if (!password || password === "") {
       newErrors.password = "Please enter password";
@@ -129,29 +129,10 @@ export default function Password(props) {
           <Row>
             <Col sm={12}>
               <img className="hitachi-logo" alt="" src={Logo} />
-              <h2 className="textReg">UserName and Password Generation</h2>
+              <h2 className="textReg">Reset Password</h2>
             </Col>
           </Row>
           <MDBCol>
-            <div>
-              <label htmlFor="userName">Username*</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                className="mb-4 loginInput"
-                value={values.userName || ""}
-                onChange={formValChange("userName")}
-              />
-              {errors.userName ? (
-                <p className="text text-danger small">{errors.userName}</p>
-              ) : (
-                ""
-              )}
-            </div>
-          </MDBCol>
-          <MDBRow className="mb-4">
-            <MDBCol>
               <div>
                 <label htmlFor="password">Password*</label>
               </div>
@@ -167,8 +148,8 @@ export default function Password(props) {
                 <VisibilityIcon
                   style={{
                     position: "absolute",
-                    right: "10%",
-                    marginTop: "0.6%",
+                    right: "11%",
+                    marginTop: "8.5%",
                   }}
                   onClick={toggleConfirmPassword}
                 />
@@ -179,6 +160,8 @@ export default function Password(props) {
                 )}{" "}
               </div>
             </MDBCol>
+          <MDBRow className="mb-4">
+           
             <MDBCol>
               <label>confirm Password*</label>
               <input
@@ -193,8 +176,8 @@ export default function Password(props) {
                 onClick={togglePassword}
                 style={{
                   position: "absolute",
-                  left: "60%",
-                  marginTop: "0.6%",
+                  left: "87%",
+                  marginTop: "-5.7%",
                 }}
               />
               {errors.confirmPassword ? (

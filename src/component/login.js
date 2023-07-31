@@ -59,6 +59,7 @@ export default function Signin(props) {
   const [passwordType, setPasswordType] = useState("password");
   const [passwordInput, setPasswordInput] = useState("");
   const [showOTPModal, setShowOTPModal] = useState(false);
+  const [vendorCodeStatus, setvendorCodeStatus] = useState(false);
   const [data, setData] = useState(null);
   const [values, setValues] = useState({
     userName: "",
@@ -145,6 +146,148 @@ export default function Signin(props) {
         setErrors(formErrors);
         if (data.status === "success") {
           console.log("LoggedIn");
+          if (data.result.role === "vendor") {
+            console.log("RoleVendor::");           
+const subUserid=data.result.subUserId;
+apiService.getSubuserId(subUserid).then((Vendorres) => {
+  console.log("vendorcodecheck::",Vendorres.data.result);
+  if (Vendorres.data.result.length > 0) {
+    // Array has elements, now check for each vendorCode
+    let allVendorCodesValid = true;
+  
+    for (const item of Vendorres.data.result) {
+      const vendorCode = item.vendorCode;
+      if (vendorCode === undefined || vendorCode === null || vendorCode.trim() === '') {
+        allVendorCodesValid = false;
+        break; // No need to continue checking once an invalid vendorCode is found
+      }
+    }
+  
+    if (allVendorCodesValid) {
+      setvendorCodeStatus(true);
+      console.log("All vendor codes are valid.");
+      const details = data?.result;
+      setValidation(data);
+      setUserName(data?.result?.userName);
+      setRole(data?.result?.role);
+      setverifiedUser(data?.result?.verifiedUser);
+      setCountry_Region_Code(data?.result?.Country_Region_Code);
+      if (data === "invalid user") {
+        setSubmit(false);
+        textFieldForPasswordRef.current.blur();
+        setValues({ ...values, error: data.error });
+      } else {
+        console.log("vendorCodeStatus1:",vendorCodeStatus);
+        if (data?.result?.verifiedUser === "approved") {
+          setData(data);
+          const user = {
+            userName: data?.result?.userName || undefined,
+          };
+          apiService
+            .send2FactorOTP(user)
+            .then(() => {
+              setShowOTPModal(true);
+            })
+            .catch(() => {
+              Swal.fire({
+                title: "Error Sending OTP, try again later.",
+                icon: "error",
+                confirmButtonText: "OK",
+                showCloseButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+            });
+        } else if (data?.result?.verifiedUser === "Pending") {
+          Swal.fire({
+            title: "Please verify your email address.",
+            icon: "warning",
+            confirmButtonText: "OK",
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+        } else {
+          setValues({ ...values, error: "Please verify your email" });
+        }
+      }
+    } else {
+      setvendorCodeStatus(false);
+      Swal.fire({
+        title: "Vendor Code not assigned,Please try again later.",
+        icon: "error",
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+      console.log("Some vendor codes are empty, null, or undefined.");
+    }
+  }
+  else
+  {
+    console.log("vendor code not created:::");
+    setvendorCodeStatus(false);
+    Swal.fire({
+      title: "Vendor Code not assigned,Please try again later.",
+      icon: "error",
+      confirmButtonText: "OK",
+      showCloseButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+  }
+
+    });
+          }
+          else
+          {
+            const details = data?.result;
+            setValidation(data);
+            setUserName(data?.result?.userName);
+            setRole(data?.result?.role);
+            setverifiedUser(data?.result?.verifiedUser);
+            setCountry_Region_Code(data?.result?.Country_Region_Code);
+            if (data === "invalid user") {
+              setSubmit(false);
+              textFieldForPasswordRef.current.blur();
+              setValues({ ...values, error: data.error });
+            } else {
+              console.log("vendorCodeStatus1:",vendorCodeStatus);
+              if (data?.result?.verifiedUser === "approved") {
+                setData(data);
+                const user = {
+                  userName: data?.result?.userName || undefined,
+                };
+                apiService
+                  .send2FactorOTP(user)
+                  .then(() => {
+                    setShowOTPModal(true);
+                  })
+                  .catch(() => {
+                    Swal.fire({
+                      title: "Error Sending OTP, try again later.",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                    });
+                  });
+              } else if (data?.result?.verifiedUser === "Pending") {
+                Swal.fire({
+                  title: "Please verify your email address.",
+                  icon: "warning",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                });
+              } else {
+                setValues({ ...values, error: "Please verify your email" });
+              }
+            }
+          }
         } else {
           Swal.fire({
             title: data.data.message,
@@ -152,65 +295,143 @@ export default function Signin(props) {
             confirmButtonText: "OK",
           });
         }
-        const details = data?.result;
-        setValidation(data);
-        setUserName(data?.result?.userName);
-        setRole(data?.result?.role);
-        setverifiedUser(data?.result?.verifiedUser);
-        setCountry_Region_Code(data?.result?.Country_Region_Code);
-        if (data === "invalid user") {
-          setSubmit(false);
-          textFieldForPasswordRef.current.blur();
-          setValues({ ...values, error: data.error });
-        } else {
-          if (data?.result?.verifiedUser === "approved") {
-            setData(data);
-            const user = {
-              userName: data?.result?.userName || undefined,
-            };
-            apiService
-              .send2FactorOTP(user)
-              .then(() => {
-                setShowOTPModal(true);
-              })
-              .catch(() => {
-                Swal.fire({
-                  title: "Error Sending OTP, try again later.",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                  showCloseButton: true,
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                });
-              });
-            // apiService
-            //   .getAllCollection(data?.result?.userId)
-            //   .then((getAllCollection) => {
-            //     setgetAllUserDetail(getAllCollection.data);
-            //     seteditUser(getAllCollection.data.basicInfo);
-            //     setuserId(data?.result?.userId);
-            //     auth.authenticate(data, () => {
-            //       setSubmit(true);
-            //       dispatch(loginAction.login());
-            //       setValues({ ...values, error: "", redirectToReferrer: true });
-            //     });
-            //   });
-          } else if (data?.result?.verifiedUser === "Pending") {
-            Swal.fire({
-              title: "Please verify your email address.",
-              icon: "warning",
-              confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-          } else {
-            setValues({ ...values, error: "Please verify your email" });
-          }
-        }
+      
       });
     }
   };
+//   const login = (e) => {
+//     e.preventDefault();
+//     const formErrors = validateForm();
+//     const user = {
+//       userName: values.userName || undefined,
+//       password: values.password || undefined,
+//     };
+//     if (Object.keys(formErrors).length > 0) {
+//       setErrors(formErrors);
+//     } else {
+//       signin(user).then((data) => {
+//         console.log("data------>", data);
+//         console.log("role------>", data.result.role);
+//         setErrors(formErrors);
+//         if (data.status === "success") {
+//           console.log("LoggedIn");
+//           if (data.result.role === "vendor") {
+//             console.log("RoleVendor::");           
+// const subUserid=data.result.subUserId;
+// apiService.getSubuserId(subUserid).then((Vendorres) => {
+//   console.log("vendorcodecheck::",Vendorres.data.result);
+//   if (Vendorres.data.result.length > 0) {
+//     // Array has elements, now check for each vendorCode
+//     let allVendorCodesValid = true;
+  
+//     for (const item of Vendorres.data.result) {
+//       const vendorCode = item.vendorCode;
+//       if (vendorCode === undefined || vendorCode === null || vendorCode.trim() === '') {
+//         allVendorCodesValid = false;
+//         break; // No need to continue checking once an invalid vendorCode is found
+//       }
+//     }
+  
+//     if (allVendorCodesValid) {
+//       setvendorCodeStatus(true);
+//       console.log("All vendor codes are valid.");
+//     } else {
+//       setvendorCodeStatus(false);
+//       console.log("Some vendor codes are empty, null, or undefined.");
+//     }
+//   }
+//   else
+//   {
+//     console.log("vendor code not created:::");
+//     setvendorCodeStatus(false);
+//   }
+
+//     });
+//           }
+//         } else {
+//           Swal.fire({
+//             title: data.data.message,
+//             icon: "error",
+//             confirmButtonText: "OK",
+//           });
+//         }
+//         const details = data?.result;
+//         setValidation(data);
+//         setUserName(data?.result?.userName);
+//         setRole(data?.result?.role);
+//         setverifiedUser(data?.result?.verifiedUser);
+//         setCountry_Region_Code(data?.result?.Country_Region_Code);
+//         if (data === "invalid user") {
+//           setSubmit(false);
+//           textFieldForPasswordRef.current.blur();
+//           setValues({ ...values, error: data.error });
+//         } else {
+//           console.log("vendorCodeStatus1:",vendorCodeStatus);
+//           if (data?.result?.verifiedUser === "approved") {
+//             setData(data);
+//             const user = {
+//               userName: data?.result?.userName || undefined,
+//             };
+//             if(data?.result?.role === "vendor" && vendorCodeStatus === false)
+//             {
+//               console.log("vendorCodeStatus2:",vendorCodeStatus);
+//              Swal.fire({
+//                               title: "Vendor Code not assigned,Please try again later.",
+//                               icon: "error",
+//                               confirmButtonText: "OK",
+//                               showCloseButton: true,
+//                               allowOutsideClick: false,
+//                               allowEscapeKey: false,
+//                             });
+//             }
+//             else
+//             {
+//               console.log("vendorCodeStatus3:",vendorCodeStatus);
+//               apiService
+//               .send2FactorOTP(user)
+//               .then(() => {
+//                 setShowOTPModal(true);
+//               })
+//               .catch(() => {
+//                 Swal.fire({
+//                   title: "Error Sending OTP, try again later.",
+//                   icon: "error",
+//                   confirmButtonText: "OK",
+//                   showCloseButton: true,
+//                   allowOutsideClick: false,
+//                   allowEscapeKey: false,
+//                 });
+//               });
+//             }
+
+//             // apiService
+//             //   .getAllCollection(data?.result?.userId)
+//             //   .then((getAllCollection) => {
+//             //     setgetAllUserDetail(getAllCollection.data);
+//             //     seteditUser(getAllCollection.data.basicInfo);
+//             //     setuserId(data?.result?.userId);
+//             //     auth.authenticate(data, () => {
+//             //       setSubmit(true);
+//             //       dispatch(loginAction.login());
+//             //       setValues({ ...values, error: "", redirectToReferrer: true });
+//             //     });
+//             //   });
+//           } else if (data?.result?.verifiedUser === "Pending") {
+//             Swal.fire({
+//               title: "Please verify your email address.",
+//               icon: "warning",
+//               confirmButtonText: "OK",
+//               showCloseButton: true,
+//               allowOutsideClick: false,
+//               allowEscapeKey: false,
+//             });
+//           } else {
+//             setValues({ ...values, error: "Please verify your email" });
+//           }
+//         }
+//       });
+//     }
+//   };
 
   const submitOTP = (otp) => {
     const user = {
@@ -303,6 +524,7 @@ export default function Signin(props) {
       return <Navigate to={"/userCreation"} />;
     }
     if (role === "vendor") {
+      console.log("vendorcode::")
       return <Navigate to={`/documents/${userName}`} />;
     }
     if (

@@ -35,6 +35,7 @@ export default function Statutory(props) {
   const [redirectUrl, setredirectUrl] = useState();
   const [fileDisclosure, setfileDisclosure] = useState();
   const [showLoginTab, setshowLoginTab] = useState(true);
+  const [validpanNo, setvalidpanNo] = useState(false);
   const [editTab, seteditTab] = useState(true);
   const [statRes, setstatRes] = useState(0);
   const [errors, setErrors] = useState({});
@@ -218,7 +219,7 @@ export default function Statutory(props) {
     }
   }
   const handleChange = (name) => (event) => {
-    console.log("valuechanged::")
+    console.log("valuechanged::",event)
     setIsNewValueEntered(true);
     event.preventDefault();
 
@@ -236,14 +237,38 @@ export default function Statutory(props) {
         ...prevValues,
         [name]: prevValues[name],
       }));
+      
     }
+        setErrors(event);
+    if (!!errors[name])
+      setErrors({
+        ...errors,
+        [name]: null,
+      });
 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: null,
-    }));
+    // const formErrors = validateForm();
+    // setErrors((prevErrors) => ({
+    //   ...prevErrors,
+    //   [name]: formErrors[name],
+    // }));
 
     setSubmit(true);
+    if (name === "PAN_No" && newValue.length === 10) {
+     console.log("panno length equal to 10",newValue);
+
+     //SearchpanNo
+     apiService.SearchpanNo(newValue).then((res) => {
+     console.log("responsepanno::",res.data.result);
+     if(res.data.result==="Pan no already exists!")
+     {
+      setvalidpanNo(true);
+     }
+     else
+     {
+      setvalidpanNo(false);
+     }
+     });
+    }
   };
 
   // const handleChange = (name) => (event) => {
@@ -416,6 +441,7 @@ export default function Statutory(props) {
     }
   };
   function next(e) {
+    const formErrors = validateForm();
     if (isNewValueEntered) {
       Swal.fire({
         title: "Do you want to save?",
@@ -427,7 +453,10 @@ export default function Statutory(props) {
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          saveStatutoryDetail().then((response) => {
+          if (Object.keys(formErrors)?.length > 0) {
+            setErrors(formErrors);
+          } else {
+          saveStatutoryDetail(e).then((response) => {
             if (response === "success") {
               redirectToComplianceDetail();
             } else {
@@ -441,6 +470,7 @@ export default function Statutory(props) {
               });
             }
           });
+        }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           redirectToComplianceDetail();
         }
@@ -451,15 +481,26 @@ export default function Statutory(props) {
   }
 
   const validateForm = () => {
-    const { GST_No, PAN_No } = values;
+    const { GST_No,PAN_No,PE_DeclarationNo,CIN_No,MSME_No,TAN_No } = values;
 
     const newErrors = {};
-
-    if (!GSTValidation.test(GST_No)) {
-      newErrors.GST_No = "Please enter a valid GST No";
+    if (GST_No && GST_No.length >= 16) {
+      newErrors.GST_No = "GST No must be 15 characters or less";
     }
-    if (!PANValidation.test(PAN_No)) {
-      newErrors.PAN_No = "Please enter a valid PAN No";
+    if (PAN_No && PAN_No.length > 20) {
+      newErrors.PAN_No = "PAN No must be 20 characters or less";
+    }
+    if (PAN_No && validpanNo) {
+      newErrors.PAN_No = "PAN No already exist";
+    }
+    if (CIN_No && CIN_No.length > 21) {
+      newErrors.CIN_No = "CIN No must be 21 characters or less";
+    }
+    if (MSME_No && MSME_No.length > 50) {
+      newErrors.MSME_No = "MSME No must be 50 characters or less";
+    }
+    if (TAN_No && TAN_No.length > 10) {
+      newErrors.TAN_No = "TAN No must be 10 characters or less";
     }
     return newErrors;
   };
@@ -761,22 +802,28 @@ export default function Statutory(props) {
 
       if (params.userId) {
         let finalstatus = "";
-        await apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+       apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         ).then((res) => {
           finalstatus = res.data.result?.finalStatus;
         });
-        await apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+       apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         ).then((res) => {
-          console.log("getallcollectionparamsuserid::",res.data.Statutory)
+          console.log("notEdotablestat::",finalstatus ,res.data.basicInfo[0]?.submitStatus,JSON.parse(window.sessionStorage.getItem("jwt")).result.role)
+          
+         console.log("getallcollectionparamsuserid::",res.data.Statutory)
           setredirectUrl(res.data);
-          if (
-            res.data.basicInfo[0]?.submitStatus === "Submitted" &&
-            finalstatus !== "Approved" &&
-            JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
-              "Admin"
-          ) {
+          if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
             setStyle("notEditable");
           }
+         else if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus === "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+          
+            setStyle("notEditable");
+          }
+         else{
+            setStyle("editable");
+          }
+         
           Object.entries(res.data.Statutory).map(([key, value]) => {
             var form_10fUrl = res.data.Statutory[0].form_10f_Doc;
             var replaceform10fValue = form_10fUrl.replace("uploads/", "");
@@ -824,7 +871,8 @@ export default function Statutory(props) {
             setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
         });
-      } 
+      }
+      console.log("country::") 
     })();
     seturl(pdf);
   }, []);
@@ -832,142 +880,77 @@ export default function Statutory(props) {
     console.log("saveApi::");
     console.log("valuesbeforupdate::", values.TAN_No);
     console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
-    return new Promise((resolve) => {
-      // e.preventDefault();
-      setIsNewValueEntered(false);
-      const data = new FormData();
-      data.append("GST_Vendor_Type", GST_type);
-      if (GST_type === "UnRegistered") {
-        data.append("GST_Registration_No", "N/A");
-      } else if (GST_type === "Import") {
-        data.append("GST_Registration_No", "N/A");
-      } else {
-        data.append("GST_Registration_No", values.GST_No);
-      }
-      if (countryName !== "IN") {
-        data.append("P_A_N_No", "N/A");
-        data.append("PAN_Doc", "");
-      } else {
-        if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
-{
-  data.append("P_A_N_No",staticPAN_No);
-  data.append("PAN_Doc", "");
-}
-else
-{
-  data.append("P_A_N_No", values.PAN_No);
-  data.append("PAN_Doc", PAN_Doc);
-}
-       
-      }
-      if (GST_type === "Registered") {
-        data.append("GST_Doc", GST_Doc);
-        data.append("fileDisclosure", "");
-      } else {
-        data.append("GST_Doc", "");
-        data.append("fileDisclosure", fileDisclosure);
-      }
-      if (MSME_status === "2") {
-        data.append("MSMED_Number", "N/A");
-      } else {
-        data.append("MSMED_Number", values.MSME_No);
-      }
-      data.append("form_10f_Doc", form_10f_Doc);
-      data.append("TAN_Doc", TAN_Doc);
-      data.append("PE_DeclarationNo", values.PE_DeclarationNo);
-      data.append("PE_Declaration_Doc", PE_Declaration_Doc);
-      data.append("MSME_Doc", MSME_Doc);
-      data.append("Tax_residency_Doc", Tax_residency_Doc);
-      data.append("CIN_No", values.CIN_No);
-      data.append("form_10f", values.form_10f);
-      data.append("MSMED", MSME_status);
-
-      data.append("MSMED_Vendor_Type", MSME);
-      data.append("TAN_No", values.TAN_No);
-      data.append(
-        "userId",
-        JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
-      );
-      data.append("Tax_residency_No", values.Tax_residency_No);
-      if (params.userId) {
-        console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
-        console.log("dataupdatecinno::", values.CIN_No);
-        console.log("update2::",values.CIN_No)
-        apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-          if (res.data.status === "success") {
-            Swal.fire({
-              title: "Data Updated",
-              icon: "success",
-              confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                resolve("success");
-              } else {
-                resolve("error");
-              }
-            });
-          } else {
-            Swal.fire({
-              title: "Error While Fetching",
-              icon: "error",
-              confirmButtonText: "OK",
-              showCloseButton: true,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-            });
-            resolve("error");
-          }
-        });
-      } else {
-        let newuser = JSON.parse(
-          window.sessionStorage.getItem("newregUser")
-        )?.newregUser;
-        if (newuser) {
-          const statdata = new FormData();
-          statdata.append("GST_Vendor_Type", GST_type);
-          statdata.append("GST_Registration_No", values.GST_No);
-          if (GST_type === "UnRegistered") {
-            statdata.append("GST_Registration_No", "N/A");
-          } else if (GST_type === "Import") {
-            statdata.append("GST_Registration_No", "N/A");
-          } else {
-            statdata.append("GST_Registration_No", values.GST_No);
-          }
-          if (countryName !== "IN") {
-            statdata.append("P_A_N_No", values.PAN_No);
-            statdata.append("PAN_Doc", PAN_Doc);
-          } else {
-            statdata.append("P_A_N_No", "N/A");
-            statdata.append("PAN_Doc", "");
-          }
-          if (GST_type === "Registered") {
-            statdata.append("GST_Doc", GST_Doc);
-            statdata.append("fileDisclosure", "");
-          } else {
-            statdata.append("GST_Doc", "");
-            statdata.append("fileDisclosure", fileDisclosure);
-          }
-          statdata.append("form_10f_Doc", form_10f_Doc);
-          statdata.append("TAN_Doc", TAN_Doc);
-          statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
-          statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
-          statdata.append("MSME_Doc", MSME_Doc);
-          statdata.append("Tax_residency_Doc", Tax_residency_Doc);
-          statdata.append("CIN_No", values.CIN_No);
-          statdata.append("form_10f", values.form_10f);
-          statdata.append("MSMED", MSME_status);
-          statdata.append("MSMED_Number", values.MSME_No);
-          statdata.append("MSMED_Vendor_Type", MSME);
-          statdata.append("TAN_No", values.TAN_No);
-          statdata.append("userId", newuser);
-          statdata.append("Tax_residency_No", values.Tax_residency_No);
-          apiService.saveStatutoryDetail(statdata).then((res) => {
+    const formErrors = validateForm();
+    e.preventDefault();
+    if (Object.keys(formErrors)?.length > 0) {
+      setErrors(formErrors);
+    } else {
+      
+      return new Promise((resolve) => {
+        // e.preventDefault();
+        setIsNewValueEntered(false);
+        const data = new FormData();
+        data.append("GST_Vendor_Type", GST_type);
+        if (GST_type === "UnRegistered") {
+          data.append("GST_Registration_No", "N/A");
+        } else if (GST_type === "Import") {
+          data.append("GST_Registration_No", "N/A");
+        } else {
+          data.append("GST_Registration_No", values.GST_No);
+        }
+        if (countryName !== "IN") {
+          data.append("P_A_N_No", "N/A");
+          data.append("PAN_Doc", "");
+        } else {
+          if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
+  {
+    data.append("P_A_N_No",staticPAN_No);
+    data.append("PAN_Doc", "");
+  }
+  else
+  {
+    data.append("P_A_N_No", values.PAN_No);
+    data.append("PAN_Doc", PAN_Doc);
+  }
+         
+        }
+        if (GST_type === "Registered") {
+          data.append("GST_Doc", GST_Doc);
+          data.append("fileDisclosure", "");
+        } else {
+          data.append("GST_Doc", "");
+          data.append("fileDisclosure", fileDisclosure);
+        }
+        if (MSME_status === "2") {
+          data.append("MSMED_Number", "N/A");
+        } else {
+          data.append("MSMED_Number", values.MSME_No);
+        }
+        data.append("form_10f_Doc", form_10f_Doc);
+        data.append("TAN_Doc", TAN_Doc);
+        data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+        data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+        data.append("MSME_Doc", MSME_Doc);
+        data.append("Tax_residency_Doc", Tax_residency_Doc);
+        data.append("CIN_No", values.CIN_No);
+        data.append("form_10f", values.form_10f);
+        data.append("MSMED", MSME_status);
+  
+        data.append("MSMED_Vendor_Type", MSME);
+        data.append("TAN_No", values.TAN_No);
+        data.append(
+          "userId",
+          JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
+        );
+        data.append("Tax_residency_No", values.Tax_residency_No);
+        if (params.userId) {
+          console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
+          console.log("dataupdatecinno::", values.CIN_No);
+          console.log("update2::",values.CIN_No)
+          apiService.updateStatutoryDetail(params.userId, data).then((res) => {
             if (res.data.status === "success") {
               Swal.fire({
-                title: "Data saved",
+                title: "Data Updated",
                 icon: "success",
                 confirmButtonText: "OK",
                 showCloseButton: true,
@@ -989,39 +972,112 @@ else
                 allowOutsideClick: false,
                 allowEscapeKey: false,
               });
+              resolve("error");
             }
           });
         } else {
-          apiService.saveStatutoryDetail(data).then((res) => {
-            if (res.data.status === "success") {
-              Swal.fire({
-                title: "Data saved",
-                icon: "success",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  resolve("success");
-                } else {
-                  resolve("error");
-                }
-              });
+          let newuser = JSON.parse(
+            window.sessionStorage.getItem("newregUser")
+          )?.newregUser;
+          if (newuser) {
+            const statdata = new FormData();
+            statdata.append("GST_Vendor_Type", GST_type);
+            statdata.append("GST_Registration_No", values.GST_No);
+            if (GST_type === "UnRegistered") {
+              statdata.append("GST_Registration_No", "N/A");
+            } else if (GST_type === "Import") {
+              statdata.append("GST_Registration_No", "N/A");
             } else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              });
+              statdata.append("GST_Registration_No", values.GST_No);
             }
-          });
+            if (countryName !== "IN") {
+              statdata.append("P_A_N_No", values.PAN_No);
+              statdata.append("PAN_Doc", PAN_Doc);
+            } else {
+              statdata.append("P_A_N_No", "N/A");
+              statdata.append("PAN_Doc", "");
+            }
+            if (GST_type === "Registered") {
+              statdata.append("GST_Doc", GST_Doc);
+              statdata.append("fileDisclosure", "");
+            } else {
+              statdata.append("GST_Doc", "");
+              statdata.append("fileDisclosure", fileDisclosure);
+            }
+            statdata.append("form_10f_Doc", form_10f_Doc);
+            statdata.append("TAN_Doc", TAN_Doc);
+            statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+            statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+            statdata.append("MSME_Doc", MSME_Doc);
+            statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+            statdata.append("CIN_No", values.CIN_No);
+            statdata.append("form_10f", values.form_10f);
+            statdata.append("MSMED", MSME_status);
+            statdata.append("MSMED_Number", values.MSME_No);
+            statdata.append("MSMED_Vendor_Type", MSME);
+            statdata.append("TAN_No", values.TAN_No);
+            statdata.append("userId", newuser);
+            statdata.append("Tax_residency_No", values.Tax_residency_No);
+            apiService.saveStatutoryDetail(statdata).then((res) => {
+              if (res.data.status === "success") {
+                Swal.fire({
+                  title: "Data saved",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    resolve("success");
+                  } else {
+                    resolve("error");
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: "Error While Fetching",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                });
+              }
+            });
+          } else {
+            apiService.saveStatutoryDetail(data).then((res) => {
+              if (res.data.status === "success") {
+                Swal.fire({
+                  title: "Data saved",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    resolve("success");
+                  } else {
+                    resolve("error");
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: "Error While Fetching",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                  showCloseButton: true,
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                });
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    }
+  
   };
   const updateStatutoryDetail = (e) => {
     console.log("updatenew::",values.CIN_No);
@@ -1312,6 +1368,7 @@ else
                                 onChange={onChangeValue}
                                 type="radio"
                                 value="Registered"
+                                id="GST_typeRegistered"
                                 name="GST_type"
                                 checked={GST_type === "Registered"}
                               />{" "}
@@ -1323,17 +1380,21 @@ else
                                 type="radio"
                                 value="UnRegistered"
                                 name="GST_type"
+                                id="GST_typeUnRegistered"
                                 checked={GST_type === "UnRegistered"}
                               />{" "}
                               UnRegistered
                             </Col>
+                           
                             <Col sm={4}>
                               <input
                                 onChange={onChangeValue}
                                 type="radio"
                                 value="Import"
                                 name="GST_type"
+                                id="GST_typeImport"
                                 checked={GST_type === "Import"}
+                                disabled={countryName === "IN"}
                               />{" "}
                               Import
                             </Col>
@@ -1433,13 +1494,7 @@ else
                                           // onChange={handleChange("GST_No")}
                                           disabled="true"
                                         />
-                                        {errors.GST_No ? (
-                                          <p className="text text-danger small">
-                                            {errors.GST_No}
-                                          </p>
-                                        ) : (
-                                          ""
-                                        )}
+                                     
                                       </Form.Group>
                                     </Col>
                                     <Col></Col>
@@ -1540,6 +1595,7 @@ else
                                                   outline: "none",
                                                   outlineOffset: "none",
                                                 }}
+                                                id="GST_No"
                                                 className="statInput"
                                                 type="text"
                                                 value={(values.GST_No || '').toUpperCase()}
@@ -1621,13 +1677,7 @@ else
                                   // onChange={handleChange("GST_No")}
                                   disabled="true"
                                 />
-                                {errors.GST_No ? (
-                                  <p className="text text-danger small">
-                                    {errors.GST_No}
-                                  </p>
-                                ) : (
-                                  ""
-                                )}
+                              
                               </Form.Group>
                             </Col>
                             <Col>
@@ -1686,6 +1736,7 @@ else
                                   type="text"
                                   value="N/A"
                                   disabled="true"
+                                  id="pan_no"
                                   onChange={handleChange("PAN_No")}
                                 />
                                 <InputGroup.Text style={{ border: "none" }}>
@@ -1694,13 +1745,6 @@ else
                                   </Tooltip>
                                 </InputGroup.Text>
                               </InputGroup>
-                              {errors.PAN_No ? (
-                                <p className="text text-danger small">
-                                  {errors.PAN_No}
-                                </p>
-                              ) : (
-                                ""
-                              )}
                             </Form.Group>
                           </Col>
                         ) : (
@@ -1717,15 +1761,7 @@ else
                                     borderRadius: "25px",
                                   }}
                                   type="text"
-                                  // value={
-                                  //   countryName !== "IN"
-                                  //     ? "N/A"
-                                  //     : JSON.parse(
-                                  //         window.sessionStorage.getItem("jwt")
-                                  //       ).result?.usertype === "NewRegistration"
-                                  //     ? staticPAN_No.toUpperCase()
-                                  //     : values.PAN_No.toUpperCase()
-                                  // }
+                                  id="pan_no"
                                   value={
                                     countryName !== 'IN'
                                       ? 'N/A'
@@ -1814,6 +1850,7 @@ else
                                 }}
                                 type="text"
                                 value={values.CIN_No}
+                                id="Cin_no"
                                 onChange={handleChange("CIN_No")}
                               />
                               <InputGroup.Text style={{ border: "none" }}>
@@ -1822,6 +1859,13 @@ else
                                 </Tooltip>
                               </InputGroup.Text>
                             </InputGroup>
+                            {errors.CIN_No ? (
+                                <p className="text text-danger small">
+                                  {errors.CIN_No}
+                                </p>
+                              ) : (
+                                ""
+                              )}
                           </Form.Group>
                         </Col>
                         <Col></Col>
@@ -2025,6 +2069,7 @@ else
                                     value="N/A"
                                     disabled="true"
                                   />
+                                  
                                 </Form.Group>
                               </Col>
                               <Col>
@@ -2075,6 +2120,7 @@ else
                                         border: "none",
                                         borderRadius: "25px",
                                       }}
+                                      id="Msme_no"
                                       type="text"
                                       value={values.MSME_No}
                                       onChange={handleChange("MSME_No")}
@@ -2085,6 +2131,13 @@ else
                                       </Tooltip>
                                     </InputGroup.Text>
                                   </InputGroup>
+                                  {errors.MSME_No ? (
+                                <p className="text text-danger small">
+                                  {errors.MSME_No}
+                                </p>
+                              ) : (
+                                ""
+                              )}
                                 </Form.Group>
                               </Col>
                               <Col>
@@ -2236,6 +2289,7 @@ else
                                   borderRadius: "25px",
                                 }}
                                 type="text"
+                                id="Tan_no"
                                 value={values.TAN_No}
                                 onChange={handleChange("TAN_No")}
                               />
@@ -2244,7 +2298,14 @@ else
                                   <InfoIcon />
                                 </Tooltip>
                               </InputGroup.Text>
-                            </InputGroup>
+                            </InputGroup>                          
+   {errors.TAN_No ? (
+                                <p className="text text-danger small">
+                                  {errors.TAN_No}
+                                </p>
+                              ) : (
+                                ""
+                              )}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -2427,8 +2488,8 @@ else
               <>
                 <button
                   type="button"
-                  onClick={() => {
-                    saveStatutoryDetail();
+                  onClick={(e) => {
+                    saveStatutoryDetail(e);
                   }}
                   className="btn statutorybtn btn-md m-1"
                 >
@@ -2439,8 +2500,8 @@ else
               <>
                 <button
                   type="button"
-                  onClick={() => {
-                    saveStatutoryDetail();
+                  onClick={(e) => {
+                    saveStatutoryDetail(e);
                   }}
                   className="btn bankbtn btn-md m-1"
                 >

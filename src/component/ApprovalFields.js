@@ -9,7 +9,7 @@ function ApprovalFields(props) {
   const numberValidation = /^-?(0|[1-9]\d*)?$/;
   const emailValidation = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   const groupEmailValidation = /^VND-APPV-[1-3]@hitachi-systems\.com$/;
-  const desiredDomain = 'hitachi-systems.com';
+  const desiredDomain = "hitachi-systems.com";
   const [editData, seteditData] = useState([]);
   const [editCommmData, seteditCommmData] = useState([]);
   const [editStatData, seteditStatData] = useState([]);
@@ -17,6 +17,10 @@ function ApprovalFields(props) {
   const [editContactData, seteditContactData] = useState([]);
   const [editUploadFile, seteditUploadFile] = useState(false);
   const [editGstUploadFile, seteditGstUploadFile] = useState(false);
+  const [editform10fUploadFile, seteditform10fUploadFile] = useState(false);
+  const [editTRCUploadFile, seteditTRCUploadFile] = useState(false);
+  const [editNPDUploadFile, seteditNPDUploadFile] = useState(false);
+  const [editUnRegGstUploadFile, seteditUnRegGstUploadFile] = useState(false);
   const [editMSMEUploadFile, seteditMSMEUploadFile] = useState(false);
   const [editPanUploadFile, seteditPanUploadFile] = useState(false);
   const [editTanUploadFile, seteditTanUploadFile] = useState(false);
@@ -28,78 +32,80 @@ function ApprovalFields(props) {
   const [editfindata2UploadFile, seteditfindata2UploadFile] = useState(false);
 
   const reload = () => {
-    console.log("reloading------------------>>>>>")
+    console.log("reloading------------------>>>>>");
     apiService.getAllCollection(props.userid).then((res) => {
-      console.log("res.data.basicInfo[0].Vendor_Account_Manager",res.data.basicInfo[0].Vendor_Account_Manager);
+      console.log(
+        "res.data.basicInfo[0].Vendor_Account_Manager",
+        res.data.basicInfo[0].Vendor_Account_Manager
+      );
       if (res.data.basicInfo[0] !== "null" && res.data.basicInfo?.length > 0) {
         var abc = res.data.basicInfo;
         const countryCode = res.data.basicInfo[0]?.Country_Region_Code;
-        if (countryCode === 'GH') {
-          setCountry('ACCRA');
-        } else if (countryCode === 'CF') {
-          setCountry('AFRICA');
-        } else if (countryCode === 'AU') {
-          setCountry('AUS');
-        } else if (countryCode === 'BD') {
-          setCountry('BANGLADESH');
-        } else if (countryCode === 'CA') {
-          setCountry('CANADA');
-        } else if (countryCode === 'CN') {
-          setCountry('CHINA');
-        } else if (countryCode === 'AE') {
-          setCountry('DUBAI');
-        } else if (countryCode === 'EG') {
-          setCountry('EGY');
-        } else if (countryCode === 'GB') {
-          setCountry('UK');
-        } else if (countryCode === 'FI') {
-          setCountry('FINLAND');
-        } else if (countryCode === 'FR') {
-          setCountry('FRANCE');
-        } else if (countryCode === 'DE') {
-          setCountry('GER');
-        } else if (countryCode === 'HK') {
-          setCountry('HONG KONG');
-        } else if (countryCode === 'IN') {
-          setCountry('IND');
-        } else if (countryCode === 'IE') {
-          setCountry('IER');
-        } else if (countryCode === 'IT') {
-          setCountry('ITL');
-        } else if (countryCode === 'HM') {
-          setCountry('JAM');
-        } else if (countryCode === 'JP') {
-          setCountry('JAPAN');
-        } else if (countryCode === 'KP') {
-          setCountry('KOREA');
-        } else if (countryCode === 'LU') {
-          setCountry('LUX');
-        } else if (countryCode === 'MY') {
-          setCountry('MALAYSIA');
-        } else if (countryCode === 'NL') {
-          setCountry('NETHERLAND');
-        } else if (countryCode === 'NP') {
-          setCountry('NPL');
-        } else if (countryCode === 'NZ') {
-          setCountry('NZD');
-        } else if (countryCode === 'OM') {
-          setCountry('OMAN');
-        } else if (countryCode === 'PH') {
-          setCountry('PHIL');
-        } else if (countryCode === 'ZA') {
-          setCountry('SAF');
-        } else if (countryCode === 'SG') {
-          setCountry('SG');
-        } else if (countryCode === 'LK') {
-          setCountry('SRL');
-        } else if (countryCode === 'CH') {
-          setCountry('SWITZ');
-        } else if (countryCode === 'TW') {
-          setCountry('TAIWAN');
-        } else if (countryCode === 'US') {
-          setCountry('USA');
-        }
-        else {
+        if (countryCode === "GH") {
+          setCountry("ACCRA");
+        } else if (countryCode === "CF") {
+          setCountry("AFRICA");
+        } else if (countryCode === "AU") {
+          setCountry("AUS");
+        } else if (countryCode === "BD") {
+          setCountry("BANGLADESH");
+        } else if (countryCode === "CA") {
+          setCountry("CANADA");
+        } else if (countryCode === "CN") {
+          setCountry("CHINA");
+        } else if (countryCode === "AE") {
+          setCountry("DUBAI");
+        } else if (countryCode === "EG") {
+          setCountry("EGY");
+        } else if (countryCode === "GB") {
+          setCountry("UK");
+        } else if (countryCode === "FI") {
+          setCountry("FINLAND");
+        } else if (countryCode === "FR") {
+          setCountry("FRANCE");
+        } else if (countryCode === "DE") {
+          setCountry("GER");
+        } else if (countryCode === "HK") {
+          setCountry("HONG KONG");
+        } else if (countryCode === "IN") {
+          setCountry("IND");
+        } else if (countryCode === "IE") {
+          setCountry("IER");
+        } else if (countryCode === "IT") {
+          setCountry("ITL");
+        } else if (countryCode === "HM") {
+          setCountry("JAM");
+        } else if (countryCode === "JP") {
+          setCountry("JAPAN");
+        } else if (countryCode === "KP") {
+          setCountry("KOREA");
+        } else if (countryCode === "LU") {
+          setCountry("LUX");
+        } else if (countryCode === "MY") {
+          setCountry("MALAYSIA");
+        } else if (countryCode === "NL") {
+          setCountry("NETHERLAND");
+        } else if (countryCode === "NP") {
+          setCountry("NPL");
+        } else if (countryCode === "NZ") {
+          setCountry("NZD");
+        } else if (countryCode === "OM") {
+          setCountry("OMAN");
+        } else if (countryCode === "PH") {
+          setCountry("PHIL");
+        } else if (countryCode === "ZA") {
+          setCountry("SAF");
+        } else if (countryCode === "SG") {
+          setCountry("SG");
+        } else if (countryCode === "LK") {
+          setCountry("SRL");
+        } else if (countryCode === "CH") {
+          setCountry("SWITZ");
+        } else if (countryCode === "TW") {
+          setCountry("TAIWAN");
+        } else if (countryCode === "US") {
+          setCountry("USA");
+        } else {
           setCountry("");
         }
         seteditData([]);
@@ -107,6 +113,7 @@ function ApprovalFields(props) {
         setaddress1(res.data.basicInfo[0].Address);
         setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
+        setstateCode(res.data.basicInfo[0].stateCode);
         setcountry(res.data.basicInfo[0].Country_Region_Code);
         setstate(res.data.basicInfo[0].state);
         setcity(res.data.basicInfo[0].City);
@@ -114,9 +121,10 @@ function ApprovalFields(props) {
         setlogo(res.data.basicInfo[0].image);
         setuserStatus(res.data.basicInfo[0].userStatus);
         setVendor_Account_Manager(res.data.basicInfo[0].Vendor_Account_Manager);
-setVendor_Type(res.data.basicInfo[0].Vendor_Type);
+        setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       } else {
         setaddress1("");
+        setstateCode("");
         setaddress2("");
         setcompanyName("");
         setcountry("");
@@ -127,7 +135,6 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         userStatus("");
         setVendor_Account_Manager("");
         setVendor_Type("");
-
       }
 
       if (
@@ -204,15 +211,23 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
 
       if (res.data.Statutory[0] !== "null" && res.data.Statutory.length > 0) {
         var statarr = res.data.Statutory;
-        console.log("res.data.Statutory", res.data.Statutory[0])
+        console.log("res.data.Statutory", res.data.Statutory[0]);
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
         setGST_type(res.data.Statutory[0].GST_Vendor_Type);
         setGST_No(res.data.Statutory[0].GST_Registration_No);
         setGST_Doc(res.data.Statutory[0].GST_Doc);
         setfileDisclosure(res.data.Statutory[0].fileDisclosure);
-        setPAN_No(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].P_A_N_No : "N/A");
-        setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc : "");
+        setPAN_No(
+          res.data.basicInfo[0].Country_Region_Code === "IN"
+            ? res.data.Statutory[0].P_A_N_No
+            : "N/A"
+        );
+        setPAN_Doc(
+          res.data.basicInfo[0].Country_Region_Code === "IN"
+            ? res.data.Statutory[0].PAN_Doc
+            : ""
+        );
         setCIN_No(res.data.Statutory[0].CIN_No);
         setform_10f(res.data.Statutory[0].form_10f_Doc);
         setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);
@@ -223,8 +238,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
-        setTax_residency(res.data.Statutory[0].Tax_residency_Doc
-        );
+        setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
       } else {
         setGST_type("");
         setGST_No("");
@@ -260,7 +274,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         res.data.FinancialDetail[0] !== "null" &&
         res.data.FinancialDetail.length > 0
       ) {
-        console.log("responsefromfinance")
+        console.log("responsefromfinance");
         var fD = res.data.FinancialDetail;
         seteditFinanceData([]);
         seteditFinanceData((prevState) => [...prevState, ...fD]);
@@ -283,13 +297,13 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setnetWorth("");
         setcurrentAssets("");
         setdirectorDetails("");
-        setorganisationType("")
-        setshareholderName("")
+        setorganisationType("");
+        setshareholderName("");
         setfinancial_data("");
         setfinancial_data2("");
       }
 
-      if (res.data.Bankdetail[0] !== 'null' && res.data.Bankdetail.length > 0) {
+      if (res.data.Bankdetail[0] !== "null" && res.data.Bankdetail.length > 0) {
         setbankAccountName(res.data.Bankdetail[0].Account_Holder_Name);
         setbankName(res.data.Bankdetail[0].Bank_Name);
         setbankAccountNumber(res.data.Bankdetail[0].Account_No);
@@ -337,85 +351,85 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setTicketID("");
       }
     });
-  }
+  };
 
   useEffect(() => {
     apiService.getAllCollection(props.userid).then((res) => {
-      console.log("acmanager::",res.data.basicInfo[0].Vendor_Account_Manager);
+      console.log("acmanager::", res.data.basicInfo[0].Vendor_Account_Manager);
       if (res.data.basicInfo[0] !== "null" && res.data.basicInfo?.length > 0) {
         var abc = res.data.basicInfo;
         const countryCode = res.data.basicInfo[0]?.Country_Region_Code;
-        if (countryCode === 'GH') {
-          setCountry('ACCRA');
-        } else if (countryCode === 'CF') {
-          setCountry('AFRICA');
-        } else if (countryCode === 'AU') {
-          setCountry('AUS');
-        } else if (countryCode === 'BD') {
-          setCountry('BANGLADESH');
-        } else if (countryCode === 'CA') {
-          setCountry('CANADA');
-        } else if (countryCode === 'CN') {
-          setCountry('CHINA');
-        } else if (countryCode === 'AE') {
-          setCountry('DUBAI');
-        } else if (countryCode === 'EG') {
-          setCountry('EGY');
-        } else if (countryCode === 'GB') {
-          setCountry('UK');
-        } else if (countryCode === 'FI') {
-          setCountry('FINLAND');
-        } else if (countryCode === 'FR') {
-          setCountry('FRANCE');
-        } else if (countryCode === 'DE') {
-          setCountry('GER');
-        } else if (countryCode === 'HK') {
-          setCountry('HONG KONG');
-        } else if (countryCode === 'IN') {
-          setCountry('IND');
-        } else if (countryCode === 'IE') {
-          setCountry('IER');
-        } else if (countryCode === 'IT') {
-          setCountry('ITL');
-        } else if (countryCode === 'HM') {
-          setCountry('JAM');
-        } else if (countryCode === 'JP') {
-          setCountry('JAPAN');
-        } else if (countryCode === 'KP') {
-          setCountry('KOREA');
-        } else if (countryCode === 'LU') {
-          setCountry('LUX');
-        } else if (countryCode === 'MY') {
-          setCountry('MALAYSIA');
-        } else if (countryCode === 'NL') {
-          setCountry('NETHERLAND');
-        } else if (countryCode === 'NP') {
-          setCountry('NPL');
-        } else if (countryCode === 'NZ') {
-          setCountry('NZD');
-        } else if (countryCode === 'OM') {
-          setCountry('OMAN');
-        } else if (countryCode === 'PH') {
-          setCountry('PHIL');
-        } else if (countryCode === 'ZA') {
-          setCountry('SAF');
-        } else if (countryCode === 'SG') {
-          setCountry('SG');
-        } else if (countryCode === 'LK') {
-          setCountry('SRL');
-        } else if (countryCode === 'CH') {
-          setCountry('SWITZ');
-        } else if (countryCode === 'TW') {
-          setCountry('TAIWAN');
-        } else if (countryCode === 'US') {
-          setCountry('USA');
-        }
-        else {
-          setCountry('');
+        if (countryCode === "GH") {
+          setCountry("ACCRA");
+        } else if (countryCode === "CF") {
+          setCountry("AFRICA");
+        } else if (countryCode === "AU") {
+          setCountry("AUS");
+        } else if (countryCode === "BD") {
+          setCountry("BANGLADESH");
+        } else if (countryCode === "CA") {
+          setCountry("CANADA");
+        } else if (countryCode === "CN") {
+          setCountry("CHINA");
+        } else if (countryCode === "AE") {
+          setCountry("DUBAI");
+        } else if (countryCode === "EG") {
+          setCountry("EGY");
+        } else if (countryCode === "GB") {
+          setCountry("UK");
+        } else if (countryCode === "FI") {
+          setCountry("FINLAND");
+        } else if (countryCode === "FR") {
+          setCountry("FRANCE");
+        } else if (countryCode === "DE") {
+          setCountry("GER");
+        } else if (countryCode === "HK") {
+          setCountry("HONG KONG");
+        } else if (countryCode === "IN") {
+          setCountry("IND");
+        } else if (countryCode === "IE") {
+          setCountry("IER");
+        } else if (countryCode === "IT") {
+          setCountry("ITL");
+        } else if (countryCode === "HM") {
+          setCountry("JAM");
+        } else if (countryCode === "JP") {
+          setCountry("JAPAN");
+        } else if (countryCode === "KP") {
+          setCountry("KOREA");
+        } else if (countryCode === "LU") {
+          setCountry("LUX");
+        } else if (countryCode === "MY") {
+          setCountry("MALAYSIA");
+        } else if (countryCode === "NL") {
+          setCountry("NETHERLAND");
+        } else if (countryCode === "NP") {
+          setCountry("NPL");
+        } else if (countryCode === "NZ") {
+          setCountry("NZD");
+        } else if (countryCode === "OM") {
+          setCountry("OMAN");
+        } else if (countryCode === "PH") {
+          setCountry("PHIL");
+        } else if (countryCode === "ZA") {
+          setCountry("SAF");
+        } else if (countryCode === "SG") {
+          setCountry("SG");
+        } else if (countryCode === "LK") {
+          setCountry("SRL");
+        } else if (countryCode === "CH") {
+          setCountry("SWITZ");
+        } else if (countryCode === "TW") {
+          setCountry("TAIWAN");
+        } else if (countryCode === "US") {
+          setCountry("USA");
+        } else {
+          setCountry("");
         }
         seteditData([]);
         seteditData((prevState) => [...prevState, ...abc]);
         setaddress1(res.data.basicInfo[0].Address);
+        setstateCode(res.data.basicInfo[0].stateCode);
         setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
         setcountry(res.data.basicInfo[0].Country_Region_Code);
@@ -425,9 +439,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setlogo(res.data.basicInfo[0].image);
         setuserStatus(res.data.basicInfo[0].userStatus);
         setVendor_Account_Manager(res.data.basicInfo[0].Vendor_Account_Manager);
-setVendor_Type(res.data.basicInfo[0].Vendor_Type);
+        setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       } else {
         setaddress1("");
+        setstateCode("");
         setaddress2("");
         setcompanyName("");
         setcountry("");
@@ -513,15 +528,23 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
 
       if (res.data.Statutory[0] !== "null" && res.data.Statutory?.length > 0) {
         var statarr = res.data.Statutory;
-        console.log("res.data.Statutory", res.data.Statutory[0])
+        console.log("res.data.Statutory", res.data.Statutory[0]);
         seteditStatData([]);
         seteditStatData((prevState) => [...prevState, ...statarr]);
         setGST_type(res.data.Statutory[0].GST_Vendor_Type);
         setGST_No(res.data.Statutory[0].GST_Registration_No);
         setGST_Doc(res.data.Statutory[0].GST_Doc);
         setfileDisclosure(res.data.Statutory[0].fileDisclosure);
-        setPAN_No(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].P_A_N_No : "N/A");
-        setPAN_Doc(res.data.basicInfo[0].Country_Region_Code === "IN" ? res.data.Statutory[0].PAN_Doc : "");
+        setPAN_No(
+          res.data.basicInfo[0].Country_Region_Code === "IN"
+            ? res.data.Statutory[0].P_A_N_No
+            : "N/A"
+        );
+        setPAN_Doc(
+          res.data.basicInfo[0].Country_Region_Code === "IN"
+            ? res.data.Statutory[0].PAN_Doc
+            : ""
+        );
         setCIN_No(res.data.Statutory[0].CIN_No);
         setform_10f(res.data.Statutory[0].form_10f_Doc);
         setpe_declaration(res.data.Statutory[0].PE_Declaration_Doc);
@@ -532,8 +555,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setTAN_No(res.data.Statutory[0].TAN_No);
         setTAN_Doc(res.data.Statutory[0].TAN_Doc);
         setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
-        setTax_residency(res.data.Statutory[0].Tax_residency_Doc
-        );
+        setTax_residency(res.data.Statutory[0].Tax_residency_Doc);
       } else {
         setGST_type("");
         setGST_No("");
@@ -591,13 +613,16 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         setnetWorth("");
         setcurrentAssets("");
         setdirectorDetails("");
-        setorganisationType("")
-        setshareholderName("")
+        setorganisationType("");
+        setshareholderName("");
         setfinancial_data("");
         setfinancial_data2("");
       }
 
-      if (res.data.Bankdetail[0] !== 'null' && res.data.Bankdetail?.length > 0) {
+      if (
+        res.data.Bankdetail[0] !== "null" &&
+        res.data.Bankdetail?.length > 0
+      ) {
         setbankAccountName(res.data.Bankdetail[0].Account_Holder_Name);
         setbankName(res.data.Bankdetail[0].Bank_Name);
         setbankAccountNumber(res.data.Bankdetail[0].Account_No);
@@ -649,6 +674,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
   const [Vendor_Type, setVendor_Type] = useState("");
   const [Vendor_Account_Manager, setVendor_Account_Manager] = useState("");
   const [Address, setaddress1] = useState("");
+  const [stateCode, setstateCode] = useState("");
   const [Address_2, setaddress2] = useState("");
   const [companyName, setcompanyName] = useState("");
   const [Country_Region_Code, setcountry] = useState("");
@@ -851,8 +877,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setpinCode(e.target.value);
     if (e.target.value.length === 0) {
       setpinCodeErr("Pincode is required");
-    } else if (
-      !numberValidation.test(e.target.value)) {
+    } else if (!numberValidation.test(e.target.value)) {
       // setpinCodeErr("Pincode is invalid");
     } else {
       setpinCodeErr("");
@@ -882,9 +907,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setfs_PhoneNo(e.target.value);
     if (e.target.value.length === 0) {
       setfs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(e.target.value) 
-    ) {
+    } else if (!numberValidation.test(e.target.value)) {
       setfs_PhoneNoErr("Phone number is invalid");
     } else {
       setfs_PhoneNoErr("");
@@ -924,9 +947,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setmngs_PhoneNo(e.target.value);
     if (e.target.value.length === 0) {
       setmngs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(e.target.value)
-    ) {
+    } else if (!numberValidation.test(e.target.value)) {
       setmngs_PhoneNoErr("Phone number is invalid");
     } else {
       setmngs_PhoneNoErr("");
@@ -1036,9 +1057,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setemail(e.target.value);
     if (e.target.value.length === 0) {
       setemailErr("Email is required");
-      
-    } else if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(e.target.value)) {
-      
+    } else if (
+      email &&
+      !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
+    ) {
       setemailErr("Email is invalid");
     } else {
       setemailErr("");
@@ -1049,8 +1071,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setemail(e.target.value);
     if (e.target.value.length === 0) {
       setemailErr("Email is required");
-      
-    } else if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(e.target.value)) {
+    } else if (
+      email &&
+      !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
+    ) {
       setemailErr("Email is invalid");
     } else {
       setemailErr("");
@@ -1061,8 +1085,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     setemail3(e.target.value);
     if (e.target.value.length === 0) {
       setemailErr("Email is required");
-      
-    } else if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(e.target.value)) {
+    } else if (
+      email &&
+      !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
+    ) {
       setemailErr("Email is invalid");
     } else {
       setemailErr("");
@@ -1103,38 +1129,37 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     if (e.target.value.length === 0) {
       setGST_typeErr("GST type is required");
     } else if (e.target.value === "UnRegistered") {
-      setGST_No('N/A');
+      setGST_No("N/A");
       setGST_typeErr("");
       setGST_NoErr("");
-
     } else if (e.target.value === "Import") {
-      setGST_No('N/A');
-      setPAN_No('N/A');
+      setGST_No("N/A");
+      setPAN_No("N/A");
       setGST_typeErr("");
       setGST_NoErr("");
       setPAN_NoErr("");
-      setfileDisclosureErr("")
-      setGST_DocErr("")
-      setPAN_DocErr("")
+      setfileDisclosureErr("");
+      setGST_DocErr("");
+      setPAN_DocErr("");
       // setGST_Doc("");
       // setfileDisclosure("");
     } else if (e.target.value === "N/A") {
       setGST_typeErr("GST type is required");
-    }
-    else {
+    } else {
       setGST_No(GST_No);
       setGST_typeErr("");
-      setfileDisclosureErr("")
+      setfileDisclosureErr("");
       setGST_type(e.target.value);
     }
-
-
   };
   const validateGST_No = (e) => {
     setGST_No(e.target.value);
     if (e.target.value.length === 0) {
       setGST_NoErr("GST Number is required");
-    } else if (!GSTValidation.test(e.target.value) && (e.target.value !== 'N/A')) {
+    } else if (
+      !GSTValidation.test(e.target.value) &&
+      e.target.value !== "N/A"
+    ) {
       setGST_NoErr("GST Number is not valid");
     } else {
       setGST_NoErr("");
@@ -1202,11 +1227,11 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     if (e.target.value.length === 0) {
       setMSME_statusErr("MSME status is required");
     } else if (e.target.value === "UnRegistered") {
-      setMSME_No("N/A")
-      setMSME_Type("")
-      setMSME_NoErr("")
-      setMSME_TypeErr("")
-      setMSME_DocErr("")
+      setMSME_No("N/A");
+      setMSME_Type("");
+      setMSME_NoErr("");
+      setMSME_TypeErr("");
+      setMSME_DocErr("");
     } else {
       setMSME_statusErr("");
       setMSME_status(e.target.value);
@@ -1280,7 +1305,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
     }
   };
   const handleLogoView = (event) => {
-    console.log("event------------------logo--->>>>", event)
+    console.log("event------------------logo--->>>>", event);
     Swal.fire({
       title: "Company Logo",
       html: ` <img className="camera-img" src='data:image/jpeg;base64,${event}' alt="image" width='100px' width='100px'/> `,
@@ -1293,21 +1318,20 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       // console.log("event-----if---------", event)
       const blobData = new Blob([event], { type: event.type });
       const blobUrl = URL.createObjectURL(blobData);
-      window.open(blobUrl, '_blank');
-    }
-    else {
+      window.open(blobUrl, "_blank");
+    } else {
       // console.log("event------else--------", event)
       if (event) {
         let text = event;
         let fname = text.split("/");
-        fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
-          (response) => {
-            response.blob().then((blob) => {
-              let url = URL.createObjectURL(blob, "application/pdf");
-              window.open(url, "_blank");
-            });
-          }
-        );
+        fetch(
+          `${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`
+        ).then((response) => {
+          response.blob().then((blob) => {
+            let url = URL.createObjectURL(blob, "application/pdf");
+            window.open(url, "_blank");
+          });
+        });
       } else {
         Swal.fire({
           title: "File not found",
@@ -1319,7 +1343,6 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
   };
   // console.log("btoa(base64)-------------------------->>>>", logo)
   const handleEditPopup = (event) => {
-    
     // event.preventDefault(); bankdetailDoc
     if (
       (event === "logo" && logo) ||
@@ -1339,7 +1362,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
       (event === "bankdetailDoc" && bankdetailDoc) ||
       (event === "approverFile" && approverFile)
     ) {
-      console.log("deletefile::")
+      console.log("deletefile::");
       let bankDocument = "Copy of cancel Cheque.pdf";
       let title = event;
       Swal.fire({
@@ -1377,12 +1400,14 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               denyButton: "order-3",
             },
           }).then((result) => {
-            if (result.isConfirmed) {             
+            if (result.isConfirmed) {
               if (event === "GST_Doc") {
                 seteditGstUploadFile(true);
+                seteditUnRegGstUploadFile(false);
                 setGST_Doc("");
                 setGST_DocErr("GST document is required");
               } else if (event === "fileDisclosure") {
+                seteditUnRegGstUploadFile(true);
                 setfileDisclosure("");
                 setfileDisclosureErr("FileDisclosure is required");
               } else if (event === "logo") {
@@ -1396,9 +1421,11 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               } else if (event === "form_10f") {
                 setform_10f("");
                 setform_10fErr("form_10f document is required");
+                seteditform10fUploadFile(true);
               } else if (event === "pe_declaration") {
                 setpe_declaration("");
                 setpe_declarationErr("Pe_declaration document is required");
+                seteditNPDUploadFile(true);
               } else if (event === "MSME_Doc") {
                 setMSME_Doc("");
                 setMSME_DocErr("MSME document is required");
@@ -1410,6 +1437,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
               } else if (event === "Tax_residency") {
                 setTax_residency("");
                 setTax_residencyErr("TAX document is required");
+                seteditTRCUploadFile(true);
               } else if (event === "RPD_Doc") {
                 setRPD_Doc("");
                 setRPD_DocErr("RPD document is required");
@@ -1467,7 +1495,7 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         },
       });
     } else {
-      console.log("editfile::")
+      console.log("editfile::");
       // let bankDocument = "Copy of cancel Cheque.pdf";
       // let title = event
       Swal.fire({
@@ -1498,13 +1526,12 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
         // reader.readAsDataURL(result.value)
 
         if (result.isConfirmed) {
-
           if (event === "GST_Doc") {
             seteditGstUploadFile(false);
             setGST_Doc(result.value);
             setGST_DocErr("");
           } else if (event === "fileDisclosure") {
-            
+            seteditUnRegGstUploadFile(false);
             setfileDisclosure(result.value);
             setfileDisclosureErr("");
           } else if (event === "logo") {
@@ -1514,7 +1541,10 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
             filereader.readAsBinaryString(result.value);
             filereader.onload = function (evt) {
               var base64 = evt.target.result;
-              console.log("btoa(base64)-------------------------->>>>", btoa(base64))
+              console.log(
+                "btoa(base64)-------------------------->>>>",
+                btoa(base64)
+              );
               setlogo(btoa(base64));
             };
 
@@ -1522,11 +1552,13 @@ setVendor_Type(res.data.basicInfo[0].Vendor_Type);
           } else if (event === "PAN_Doc") {
             setPAN_Doc(result.value);
             setPAN_DocErr("");
-seteditPanUploadFile(false);
+            seteditPanUploadFile(false);
           } else if (event === "form_10f") {
+            seteditform10fUploadFile(false);
             setform_10f(result.value);
             setform_10fErr("");
           } else if (event === "pe_declaration") {
+            seteditNPDUploadFile(false);
             setpe_declaration(result.value);
             setpe_declarationErr("");
           } else if (event === "MSME_Doc") {
@@ -1536,8 +1568,9 @@ seteditPanUploadFile(false);
           } else if (event === "TAN_Doc") {
             setTAN_Doc(result.value);
             setTAN_DocErr("");
-seteditTanUploadFile(false);
+            seteditTanUploadFile(false);
           } else if (event === "Tax_residency") {
+            seteditTRCUploadFile(false);
             setTax_residency(result.value);
             setTax_residencyErr("");
           } else if (event === "RPD_Doc") {
@@ -1562,8 +1595,7 @@ seteditTanUploadFile(false);
             setbankdetailDoc(result.value);
             setbankdetailDocErr("");
             seteditBankUploadFile(false);
-          }
-          else if (event === "approverFile") {
+          } else if (event === "approverFile") {
             setapproverFile(result.value);
             setapproverFileErr("");
           }
@@ -1594,8 +1626,8 @@ seteditTanUploadFile(false);
     data.append("level2Date", new Date());
     // data.append('level2RejectComment', "");
     // data.append('level2rejectFileDoc', "");
-    console.log("vendortype",Vendor_Type);
-console.log("acmanager::",Vendor_Account_Manager);
+    console.log("vendortype", Vendor_Type);
+    console.log("acmanager::", Vendor_Account_Manager);
     const ERPData = {
       Entry_No: TicketID || undefined,
       Vendor_Type: Vendor_Type || undefined,
@@ -1604,7 +1636,7 @@ console.log("acmanager::",Vendor_Account_Manager);
       Address_2: Address_2 || undefined,
       City: City || undefined,
       MSMED_Number: MSME_No || undefined,
-      MSMED: MSME_status || undefined,     
+      MSMED: MSME_status || undefined,
       MSMED_Vendor_Type: MSME_Type || undefined,
       Country_Region_Code: countryRegionCode || undefined,
       Post_Code: Post_Code || undefined,
@@ -1613,7 +1645,7 @@ console.log("acmanager::",Vendor_Account_Manager);
       CIN_No: CIN_No || undefined,
       TAN_No: TAN_No || undefined,
       Vendor_Account_Manager: Vendor_Account_Manager || undefined,
-      // State_Code: "UTP",
+      State_Code: stateCode || undefined,
       Finance_Contact_Name: fs_ContactName || undefined,
       Finance_Contact_Designation: fs_Designation || undefined,
       Finance_Contact_Phone_No: fs_PhoneNo || undefined,
@@ -1678,209 +1710,234 @@ console.log("acmanager::",Vendor_Account_Manager);
       financial_data: financial_data,
       financial_data2: financial_data2,
       bankdetailDoc: bankdetailDoc,
-    }
+    };
     const MasterVendor = {
       mastervendor_email: mastervendor_email || undefined,
       companyName: companyName || undefined,
       Ticket_ID: TicketID || undefined,
       Country_Region_Code: countryRegionCode || undefined,
-    }
-    apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
-      console.log("Sharepointresponse::", response);
-      if (response.data.message === "success") {
-        apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-          console.log("ERPData---->", ERPData);
-          if (response && response.data.msg !== "error") {
-            if (response && !response.data.Result?.["odata.error"]) {
-              console.log("ErpResponse::", response);
-              const MasterVendor = {
-                mastervendor_email: mastervendor_email || undefined,
-                companyName: companyName || undefined,
-                Ticket_ID: TicketID || undefined,
-                Country_Region_Code: countryRegionCode || undefined,
-              }
-              apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-                console.log("masterLogin::", Masterresponse);
-                apiService.updateApprovalStatus(userId, data).then((responseData) => {
-                  if (responseData.data.status === 'success') {
-                    Swal.fire({
-                      title: "Approved",
-                      icon: "success",
-                      confirmButtonText: "OK",
-                      showCloseButton: false,
-                      allowOutsideClick: false,
-                      allowEscapeKey: false,
-                    })
-                   
+    };
+    apiService
+      .createsharepointFolderByTicketId(sharepointDocumentUpload)
+      .then((response) => {
+        console.log("Sharepointresponse::", response);
+        if (response.data.message === "success") {
+          apiService
+            .postErpResourcePortalVendorlist(ERPData)
+            .then((response) => {
+              console.log("ERPData---->", ERPData);
+              if (response && response.data.msg !== "error") {
+                if (response && !response.data.Result?.["odata.error"]) {
+                  console.log("ErpResponse::", response);
+                  const VendorCodeGenration = {
+                    ticketID: TicketID || undefined,
+                  };
+
+                  apiService
+                    .GenerateVendorCode(VendorCodeGenration)
+                    .then((response) => {
+                      console.log("vendorCodeGenerate::", response);
+                    });
+                  const MasterVendor = {
+                    mastervendor_email: mastervendor_email || undefined,
+                    companyName: companyName || undefined,
+                    Ticket_ID: TicketID || undefined,
+                    Country_Region_Code: countryRegionCode || undefined,
+                  };
+                  apiService
+                    .saveMasterLogin(MasterVendor)
+                    .then((Masterresponse) => {
+                      console.log("masterLogin::", Masterresponse);
+                      apiService
+                        .updateApprovalStatus(userId, data)
+                        .then((responseData) => {
+                          if (responseData.data.status === "success") {
+                            Swal.fire({
+                              title: "Approved",
+                              icon: "success",
+                              confirmButtonText: "OK",
+                              showCloseButton: false,
+                              allowOutsideClick: false,
+                              allowEscapeKey: false,
+                            });
+                          } else {
+                            Swal.fire({
+                              title: responseData.data.message,
+                              icon: "error",
+                              confirmButtonText: "OK",
+                            });
+                          }
+                        });
+                    });
+                } else {
+                  const errorMessage =
+                    response.data.Result?.["odata.error"]?.message?.value ||
+                    "An error occurred while processing the request.";
+                  if (
+                    response.data.Result?.["odata.error"]?.message?.value ===
+                    "The record already exists."
+                  ) {
+                    console.log("already exists::");
+                    const MasterVendor = {
+                      mastervendor_email: mastervendor_email || undefined,
+                      companyName: companyName || undefined,
+                      Ticket_ID: TicketID || undefined,
+                      Country_Region_Code: countryRegionCode || undefined,
+                    };
+                    const UpdateMasterVendor = {
+                      mastervendor_email: mastervendor_email || undefined,
+                      companyName: companyName || undefined,
+                      Ticket_ID: TicketID || undefined,
+                      Country_Region_Code: countryRegionCode || undefined,
+                    };
+                    const ERPData = {
+                      Entry_No: TicketID || undefined,
+                      Vendor_Type: Vendor_Type || undefined,
+                      Name: companyName || undefined,
+                      Address: Address || undefined,
+                      Address_2: Address_2 || undefined,
+                      City: City || undefined,
+                      MSMED_Number: MSME_No || undefined,
+                      MSMED: MSME_status || undefined,
+                      MSMED_Vendor_Type: MSME_Type || undefined,
+                      Country_Region_Code: countryRegionCode || undefined,
+                      Post_Code: Post_Code || undefined,
+                      E_Mail: mastervendor_email || undefined,
+                      P_A_N_No: PAN_No || undefined,
+                      CIN_No: CIN_No || undefined,
+                      TAN_No: TAN_No || undefined,
+                      Vendor_Account_Manager:
+                        Vendor_Account_Manager || undefined,
+                      State_Code: stateCode || undefined,
+                      Finance_Contact_Name: fs_ContactName || undefined,
+                      Finance_Contact_Designation: fs_Designation || undefined,
+                      Finance_Contact_Phone_No: fs_PhoneNo || undefined,
+                      Finance_Contact_E_Mail: fs_Email || undefined,
+                      Operation_Contact_Name: ops_ContactName || undefined,
+                      Operation_Contact_Designation:
+                        ops_Designation || undefined,
+                      Operation_Contact_Phone_No: ops_PhoneNo || undefined,
+                      Operation_Contact_E_Mail: ops_Email || undefined,
+                      Collection_Contact_Name: colls_ContactName || undefined,
+                      Collection_Contact_Designation:
+                        colls_Designation || undefined,
+                      Collection_Contact_Phone_No: colls_PhoneNo || undefined,
+                      Collection_Contact_E_Mail: colls_Email || undefined,
+                      Management_Contact_Name: mngs_ContactName || undefined,
+                      Management_Contact_Designation:
+                        mngs_Designation || undefined,
+                      Management_Contact_Phone_No: mngs_PhoneNo || undefined,
+                      Management_Contact_E_Mail: mngs_Email || undefined,
+                      Others_Contact_Name: others_ContactName || undefined,
+                      Others_Contact_Designation:
+                        others_Designation || undefined,
+                      Others_Contact_Phone_No: others_PhoneNo || undefined,
+                      Others_Contact_E_Mail: others_Email || undefined,
+                      Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
+                      MICR_Swift_Code: MICRcode || undefined,
+                      Year_of_audited_financials:
+                        yearOfAuditedFinancial || undefined,
+                      Revenue: Revenue || undefined,
+                      Profit: Profit || undefined,
+                      Networth: netWorth || undefined,
+                      Current_Assets: currentAssets || undefined,
+                      Director_Detail: directorDetails || undefined,
+                      GST_Registration_No: GST_No || undefined,
+                      GST_Vendor_Type: GST_type || undefined,
+                      Account_Holder_Name: bankAccountName || undefined,
+                      Account_No: bankAccountNumber || undefined,
+                      Bank_Name: bankName || undefined,
+                      Bank_Address: branchAddress || undefined,
+                      IFSC_Code: ifscCode || undefined,
+                      HSI_Contact_Name_1: name || undefined,
+                      HSI_Contact_E_Mail_1: email || undefined,
+                      HSI_Contact_Contact_No_1: contactNumber || undefined,
+                      HSI_Contact_Name_2: name2 || undefined,
+                      HSI_Contact_E_Mail_2: email2 || undefined,
+                      HSI_Contact_Contact_No_2: contactNumber2 || undefined,
+                      HSI_Contact_Name_3: name3 || undefined,
+                      HSI_Contact_E_Mail_3: email3 || undefined,
+                      HSI_Contact_Contact_No_3: contactNumber3 || undefined,
+                      Shareholder_Name: shareholderName || undefined,
+                      Organization_Type: organisationType || undefined,
+                    };
+                    // apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
+                    // })
+                    // apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {})
+                    apiService
+                      .updateMasterLogin(UpdateMasterVendor)
+                      .then((Masterresponse) => {
+                        console.log("masterLogin::", Masterresponse);
+                        apiService
+                          .updateApprovalStatus(userId, data)
+                          .then((responseData) => {
+                            if (responseData.data.status === "success") {
+                              Swal.fire({
+                                title: responseData.data.message,
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                showCloseButton: false,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                              });
+                            } else {
+                              Swal.fire({
+                                title: responseData.data.message,
+                                icon: "error",
+                                confirmButtonText: "OK",
+                              });
+                            }
+                          });
+                      });
                   } else {
+                    const errorMessage =
+                      response.data.Result?.["odata.error"]?.message?.value ||
+                      "An error occurred while processing the request.";
                     Swal.fire({
-                      title: responseData.data.message,
+                      title: errorMessage
+                        ? `In ERP, ${errorMessage}`
+                        : "An error occurred while processing the request in ERP",
                       icon: "error",
                       confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
                     });
                   }
-                });
-              })
-            }
-            else {
-              const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
-              if(response.data.Result?.["odata.error"]?.message?.value==="The record already exists.")
-              {
-                
-console.log("already exists::");
-const MasterVendor = {
-mastervendor_email: mastervendor_email || undefined,
-companyName: companyName || undefined,
-Ticket_ID: TicketID || undefined,
-Country_Region_Code: countryRegionCode || undefined,
-}
-const UpdateMasterVendor = {
-  mastervendor_email: mastervendor_email || undefined,
-  companyName: companyName || undefined,
-  Ticket_ID: TicketID || undefined,
-  Country_Region_Code: countryRegionCode || undefined,
-  }
-const ERPData = {
-  Entry_No: TicketID || undefined,
-  Vendor_Type: Vendor_Type || undefined,
-  Name: companyName || undefined,
-  Address: Address || undefined,
-  Address_2: Address_2 || undefined,
-  City: City || undefined,
-  MSMED_Number: MSME_No || undefined,
-  MSMED: MSME_status || undefined,     
-  MSMED_Vendor_Type: MSME_Type || undefined,
-  Country_Region_Code: countryRegionCode || undefined,
-  Post_Code: Post_Code || undefined,
-  E_Mail: mastervendor_email || undefined,
-  P_A_N_No: PAN_No || undefined,
-  CIN_No: CIN_No || undefined,
-  TAN_No: TAN_No || undefined,
-  Vendor_Account_Manager: Vendor_Account_Manager || undefined,
-  // State_Code: "UTP",
-  Finance_Contact_Name: fs_ContactName || undefined,
-  Finance_Contact_Designation: fs_Designation || undefined,
-  Finance_Contact_Phone_No: fs_PhoneNo || undefined,
-  Finance_Contact_E_Mail: fs_Email || undefined,
-  Operation_Contact_Name: ops_ContactName || undefined,
-  Operation_Contact_Designation: ops_Designation || undefined,
-  Operation_Contact_Phone_No: ops_PhoneNo || undefined,
-  Operation_Contact_E_Mail: ops_Email || undefined,
-  Collection_Contact_Name: colls_ContactName || undefined,
-  Collection_Contact_Designation: colls_Designation || undefined,
-  Collection_Contact_Phone_No: colls_PhoneNo || undefined,
-  Collection_Contact_E_Mail: colls_Email || undefined,
-  Management_Contact_Name: mngs_ContactName || undefined,
-  Management_Contact_Designation: mngs_Designation || undefined,
-  Management_Contact_Phone_No: mngs_PhoneNo || undefined,
-  Management_Contact_E_Mail: mngs_Email || undefined,
-  Others_Contact_Name: others_ContactName || undefined,
-  Others_Contact_Designation: others_Designation || undefined,
-  Others_Contact_Phone_No: others_PhoneNo || undefined,
-  Others_Contact_E_Mail: others_Email || undefined,
-  Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
-  MICR_Swift_Code: MICRcode || undefined,
-  Year_of_audited_financials: yearOfAuditedFinancial || undefined,
-  Revenue: Revenue || undefined,
-  Profit: Profit || undefined,
-  Networth: netWorth || undefined,
-  Current_Assets: currentAssets || undefined,
-  Director_Detail: directorDetails || undefined,
-  GST_Registration_No: GST_No || undefined,
-  GST_Vendor_Type: GST_type || undefined,
-  Account_Holder_Name: bankAccountName || undefined,
-  Account_No: bankAccountNumber || undefined,
-  Bank_Name: bankName || undefined,
-  Bank_Address: branchAddress || undefined,
-  IFSC_Code: ifscCode || undefined,
-  HSI_Contact_Name_1: name || undefined,
-  HSI_Contact_E_Mail_1: email || undefined,
-  HSI_Contact_Contact_No_1: contactNumber || undefined,
-  HSI_Contact_Name_2: name2 || undefined,
-  HSI_Contact_E_Mail_2: email2 || undefined,
-  HSI_Contact_Contact_No_2: contactNumber2 || undefined,
-  HSI_Contact_Name_3: name3 || undefined,
-  HSI_Contact_E_Mail_3: email3 || undefined,
-  HSI_Contact_Contact_No_3: contactNumber3 || undefined,
-  Shareholder_Name: shareholderName || undefined,
-  Organization_Type: organisationType || undefined,
-};
-// apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
-// })
-// apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {})
-apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
-  console.log("masterLogin::", Masterresponse);
-  apiService.updateApprovalStatus(userId, data).then((responseData) => {
-    if (responseData.data.status === 'success') {
-      Swal.fire({
-        title: responseData.data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        showCloseButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      })
-    } else {
-      Swal.fire({
-        title: responseData.data.message,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  });
-  })
-              }
-              else
-              {
-                const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                }
+              } else {
+                const erpErrorResponse = response.data.error;
                 Swal.fire({
-                  title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
                   icon: "error",
+                  title: `In ERP,${erpErrorResponse}`,
                   confirmButtonText: "OK",
-                  showCloseButton: true,
+                  showCloseButton: false,
                   allowOutsideClick: false,
                   allowEscapeKey: false,
                 });
               }
-            }
-          }
-          else {
-            const erpErrorResponse = response.data.error;
-            Swal.fire({
-              icon: 'error',
-              title: `In ERP,${erpErrorResponse}`,
-              confirmButtonText: "OK",
-              showCloseButton: false,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
             });
-          }
-
-        })
-      }
-      else {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error in Fetching Api to Sharepoint",
+            confirmButtonText: "OK",
+            showCloseButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+        }
+      })
+      .catch((error) => {
         Swal.fire({
-          icon: 'error',
-          title: 'Error in Fetching Api to Sharepoint',
+          icon: "error",
+          title: "Error in Fetching Api to Sharepoint",
           confirmButtonText: "OK",
           showCloseButton: false,
           allowOutsideClick: false,
           allowEscapeKey: false,
         });
-      }
-
-    }).catch((error) => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error in Fetching Api to Sharepoint',
-        confirmButtonText: "OK",
-        showCloseButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
       });
-    })
-
-
   };
   const handleConcernFound = (event) => {
     // Swal.fire({
@@ -1910,7 +1967,7 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     data.append("level2Date", new Date());
     const userId = event;
     apiService.updateApprovalStatus(userId, data).then((responseData) => {
-      if (responseData.data.status === 'success') {
+      if (responseData.data.status === "success") {
         Swal.fire({
           title: "Rejected",
           icon: "success",
@@ -1932,31 +1989,31 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
   const handleMRTApprove = (event) => {
     let FormarrayErr = [];
     if (companyName.length === 0) {
-      FormarrayErr.push("companyName")
+      FormarrayErr.push("companyName");
       setcompanyNameErr("Company name is required");
     }
     if (Address.length === 0) {
-      FormarrayErr.push("Address")
+      FormarrayErr.push("Address");
       setaddress1Err("Address 1 is required");
     }
     if (Country_Region_Code.length === 0) {
-      FormarrayErr.push("Country_Region_Code")
+      FormarrayErr.push("Country_Region_Code");
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      FormarrayErr.push("state")
+      FormarrayErr.push("state");
       setstateErr("State is required");
     }
     if (City.length === 0) {
-      FormarrayErr.push("City")
+      FormarrayErr.push("City");
       setcityErr("City is required");
     }
 
     if (Post_Code.length === 0) {
-      FormarrayErr.push("Post_Code")
+      FormarrayErr.push("Post_Code");
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
-      FormarrayErr.push("Post_Code Invalid")
+      FormarrayErr.push("Post_Code Invalid");
       setpinCodeErr("Pincode is Invalid");
     }
 
@@ -1966,29 +2023,27 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     //   console.log("hellossssssss", logoErr);
     // }
     if (fs_ContactName.length === 0) {
-      FormarrayErr.push("fs_ContactName")
+      FormarrayErr.push("fs_ContactName");
       setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      FormarrayErr.push("fs_Designation")
+      FormarrayErr.push("fs_Designation");
       setfs_DesignationErr("Designation is required");
     }
 
     if (fs_PhoneNo.length === 0) {
-      FormarrayErr.push("fs_PhoneNo")
+      FormarrayErr.push("fs_PhoneNo");
       setfs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(fs_PhoneNo)
-    ) {
-      FormarrayErr.push("fs_PhoneNo Invalid")
+    } else if (!numberValidation.test(fs_PhoneNo)) {
+      FormarrayErr.push("fs_PhoneNo Invalid");
       setfs_PhoneNoErr("Phone number is invalid");
     }
 
     if (fs_Email.length === 0) {
-      FormarrayErr.push("fs_Email")
+      FormarrayErr.push("fs_Email");
       setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(fs_Email)) {
-      FormarrayErr.push("fs_Email Invalid")
+      FormarrayErr.push("fs_Email Invalid");
       setfs_EmailErr("Email is invalid");
     }
     // console.log("fs_Email",fs_Email);
@@ -1999,162 +2054,179 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      FormarrayErr.push("mngs_ContactName")
+      FormarrayErr.push("mngs_ContactName");
       setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      FormarrayErr.push("mngs_Designation")
+      FormarrayErr.push("mngs_Designation");
       setmngs_DesignationErr("Designation is required");
     }
 
     if (mngs_PhoneNo.length === 0) {
-      FormarrayErr.push("mngs_PhoneNo")
+      FormarrayErr.push("mngs_PhoneNo");
       setmngs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(mngs_PhoneNo) 
-    ) {
-      FormarrayErr.push("mngs_PhoneNo Invalid")
+    } else if (!numberValidation.test(mngs_PhoneNo)) {
+      FormarrayErr.push("mngs_PhoneNo Invalid");
       setmngs_PhoneNoErr("Phone number is invalid");
     }
 
     if (mngs_Email.length === 0) {
-      FormarrayErr.push("mngs_Email")
+      FormarrayErr.push("mngs_Email");
       setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(mngs_Email)) {
-      FormarrayErr.push("mngs_Email Invalid")
+      FormarrayErr.push("mngs_Email Invalid");
       setmngs_EmailErr("Email is invalid");
     }
 
     if (mastervendor_email.length === 0) {
-      FormarrayErr.push("mastervendor_email")
+      FormarrayErr.push("mastervendor_email");
       setmastervendor_emailErr("Email is required");
     } else if (!emailValidation.test(mastervendor_email)) {
-      FormarrayErr.push("mastervendor_email Invalid")
+      FormarrayErr.push("mastervendor_email Invalid");
       setmastervendor_emailErr("Email is invalid");
     }
 
     if (bankAccountName.length === 0) {
-      FormarrayErr.push("bankAccountName")
+      FormarrayErr.push("bankAccountName");
       setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      FormarrayErr.push("bankName")
+      FormarrayErr.push("bankName");
       setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      FormarrayErr.push("bankAccountNumber")
+      FormarrayErr.push("bankAccountNumber");
       setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      FormarrayErr.push("ifscCode")
+      FormarrayErr.push("ifscCode");
       setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      FormarrayErr.push("MICRcode")
+      FormarrayErr.push("MICRcode");
       setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      FormarrayErr.push("branchAddress")
+      FormarrayErr.push("branchAddress");
       setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      FormarrayErr.push("bankdetailDoc")
+      FormarrayErr.push("bankdetailDoc");
       setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      FormarrayErr.push("RPD_Doc")
+      FormarrayErr.push("RPD_Doc");
       setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      FormarrayErr.push("COC_Doc")
+      FormarrayErr.push("COC_Doc");
       setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      FormarrayErr.push("NDA_Doc")
+      FormarrayErr.push("NDA_Doc");
       setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      FormarrayErr.push("name")
+      FormarrayErr.push("name");
       setnameErr("Name is required");
     }
 
     if (contactNumber.length === 0) {
-      FormarrayErr.push("contactNumber")
+      FormarrayErr.push("contactNumber");
       setcontactNumberErr("Contact number is required");
-    } else if (
-      !numberValidation.test(contactNumber) 
-    ) {
-      FormarrayErr.push("contactNumber Invalid")
+    } else if (!numberValidation.test(contactNumber)) {
+      FormarrayErr.push("contactNumber Invalid");
       setcontactNumberErr("Phone number is invalid");
     }
 
     if (email.length === 0) {
-      FormarrayErr.push("email")
+      FormarrayErr.push("email");
       setemailErr("Email is required");
-    } else if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
-      FormarrayErr.push("email Invalid")
+    } else if (
+      email &&
+      !new RegExp("@" + desiredDomain + "\\s*$").test(email)
+    ) {
+      FormarrayErr.push("email Invalid");
       setemailErr("Email is invalid");
     }
 
-
     if (GST_type.length === 0) {
-      FormarrayErr.push("GST_type")
+      FormarrayErr.push("GST_type");
       setGST_typeErr("GST type is required");
     }
 
-    if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
-      FormarrayErr.push("GST_No")
+    if (
+      (GST_No.length === 0 || GST_No === "N/A") &&
+      GST_type === "Registered"
+    ) {
+      FormarrayErr.push("GST_No");
       setGST_NoErr("GST Number is required");
-    } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
-      FormarrayErr.push("GST_No Invalid")
+    } else if (!GSTValidation.test(GST_No) && GST_No !== "N/A") {
+      FormarrayErr.push("GST_No Invalid");
       setGST_NoErr("GST Number is not valid");
     }
 
-    if (!GST_Doc && GST_type === 'Registered') {
-      FormarrayErr.push("GST_Doc")
+    if (!GST_Doc && GST_type === "Registered") {
+      FormarrayErr.push("GST_Doc");
       setGST_DocErr("GST doc is required");
     }
-    if (!fileDisclosure && GST_type === 'UnRegistered') {
-      FormarrayErr.push("fileDisclosure")
+    if (!fileDisclosure && GST_type === "UnRegistered") {
+      FormarrayErr.push("fileDisclosure");
       setfileDisclosureErr("File Disclosure is required");
     }
 
-    if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No")
+    if (
+      (PAN_No.length === 0 || PAN_No === "N/A") &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No");
       setPAN_NoErr("Pan number is required");
-    } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No Invalid")
+    } else if (
+      !PANValidation.test(PAN_No) &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No Invalid");
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
-      FormarrayErr.push("PAN_Doc")
+    if (
+      !PAN_Doc &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN" &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("PAN_Doc");
       setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      FormarrayErr.push("CIN_No")
+      FormarrayErr.push("CIN_No");
       setCIN_NoErr("CIN number is required");
     }
-    if (!form_10f && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("form_10f")
+    if (!form_10f && Country_Region_Code !== "IN") {
+      FormarrayErr.push("form_10f");
       setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      FormarrayErr.push("MSME_status")
+      FormarrayErr.push("MSME_status");
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_No")
+    if ((MSME_No.length === 0 || MSME_No === "N/A") && MSME_status === "1") {
+      FormarrayErr.push("MSME_No");
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === '1') {
-      FormarrayErr.push("MSME_Doc")
+    if (!MSME_Doc && MSME_status === "1") {
+      FormarrayErr.push("MSME_Doc");
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_Type")
+    if (
+      (MSME_Type.length === 0 || MSME_Type === "N/A") &&
+      MSME_status === "1"
+    ) {
+      FormarrayErr.push("MSME_Type");
       setMSME_TypeErr("MSME type is required");
     }
     // if (TAN_No.length === 0) {
@@ -2163,23 +2235,22 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // if (!TAN_Doc) {
     //   setTAN_DocErr("TAN doc is required");
     // }
-    if (!Tax_residency && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("Tax_residency")
+    if (!Tax_residency && Country_Region_Code !== "IN") {
+      FormarrayErr.push("Tax_residency");
       setTax_residencyErr("Tax residency is required");
     }
-    if (!pe_declaration && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("pe_declaration")
+    if (!pe_declaration && Country_Region_Code !== "IN") {
+      FormarrayErr.push("pe_declaration");
       setpe_declarationErr("PE declaration is required");
     }
-    if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
-      FormarrayErr.push("Email")
+    if (email && !new RegExp("@" + desiredDomain + "\\s*$").test(email)) {
+      FormarrayErr.push("Email");
       setemailErr("Email is invalid");
     }
     const userId = props.userid;
 
-    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
+    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr);
     if (FormarrayErr.length === 0) {
-
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -2216,15 +2287,13 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("mastervendor_email", mastervendor_email);
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-        data.append("GST_Doc", '');
+        data.append("GST_Doc", "");
 
         data.append("fileDisclosure", fileDisclosure);
 
         data.append("P_A_N_No", PAN_No);
         data.append("PAN_Doc", PAN_Doc);
-
       } else if (GST_type === "Import") {
-
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", "");
         data.append("fileDisclosure", "");
@@ -2235,9 +2304,8 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
         // setPAN_No("N/A");
         // setGST_Doc("");
         // setPAN_Doc("")
-        // setfileDisclosure("");  
-      }
-      else {
+        // setfileDisclosure("");
+      } else {
         data.append("GST_Registration_No", GST_No);
         data.append("GST_Doc", GST_Doc);
         data.append("fileDisclosure", "");
@@ -2250,7 +2318,6 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("COC_Doc", COC_Doc);
       data.append("GST_Vendor_Type", GST_type);
 
-
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_Declaration_Doc", pe_declaration);
@@ -2258,9 +2325,9 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
       if (MSME_status === "2") {
-        data.append("MSMED_Number", 'N/A');
-        data.append("MSMED_Vendor_Type", '');
-        data.append("MSME_Doc", '');
+        data.append("MSMED_Number", "N/A");
+        data.append("MSMED_Vendor_Type", "");
+        data.append("MSME_Doc", "");
 
         // setMSME_No("N/A");
         // setMSME_Type("");
@@ -2283,12 +2350,12 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("directorDetails", directorDetails);
       data.append("organisationType", organisationType);
       data.append("shareholderName", shareholderName);
-      data.append('Account_Holder_Name', bankAccountName);
-      data.append('Bank_Name', bankName);
-      data.append('Account_No', bankAccountNumber);
-      data.append('IFSC_Code', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('Bank_Address', branchAddress);
+      data.append("Account_Holder_Name", bankAccountName);
+      data.append("Bank_Name", bankName);
+      data.append("Account_No", bankAccountNumber);
+      data.append("IFSC_Code", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("Bank_Address", branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -2302,7 +2369,7 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("approverFile", approverFile);
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
-        console.log("data::")
+        console.log("data::");
       });
 
       const userId = event;
@@ -2310,8 +2377,8 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data1.append("userId", event);
       data1.append("level3Status", "approved");
       data1.append("level3Date", new Date());
-console.log("vendortype",Vendor_Type);
-console.log("acmanager::",Vendor_Account_Manager);
+      console.log("vendortype", Vendor_Type);
+      console.log("acmanager::", Vendor_Account_Manager);
       const ERPData = {
         Entry_No: TicketID || undefined,
         Vendor_Type: Vendor_Type || undefined,
@@ -2320,7 +2387,7 @@ console.log("acmanager::",Vendor_Account_Manager);
         Address_2: Address_2 || undefined,
         City: City || undefined,
         MSMED_Number: MSME_No || undefined,
-        MSMED: MSME_status || undefined,   
+        MSMED: MSME_status || undefined,
         MSMED_Vendor_Type: MSME_Type || undefined,
         Country_Region_Code: countryRegionCode || undefined,
         Post_Code: Post_Code || undefined,
@@ -2329,7 +2396,7 @@ console.log("acmanager::",Vendor_Account_Manager);
         CIN_No: CIN_No || undefined,
         TAN_No: TAN_No || undefined,
         Vendor_Account_Manager: Vendor_Account_Manager || undefined,
-        // State_Code: "UTP",
+        State_Code: stateCode || undefined,
         Finance_Contact_Name: fs_ContactName || undefined,
         Finance_Contact_Designation: fs_Designation || undefined,
         Finance_Contact_Phone_No: fs_PhoneNo || undefined,
@@ -2394,135 +2461,155 @@ console.log("acmanager::",Vendor_Account_Manager);
         financial_data: financial_data,
         financial_data2: financial_data2,
         bankdetailDoc: bankdetailDoc,
-      }
+      };
       const MasterVendor = {
         mastervendor_email: mastervendor_email || undefined,
         companyName: companyName || undefined,
         Ticket_ID: TicketID || undefined,
         Country_Region_Code: countryRegionCode || undefined,
-      }
-      apiService.createsharepointFolderByTicketId(sharepointDocumentUpload).then((response) => {
-        console.log("Sharepointresponse::", response);
-        if (response.data.message === "success") {
-          apiService.postErpResourcePortalVendorlist(ERPData).then((response) => {
-            console.log("ERPData---->", ERPData);
-            if (response && response.data.msg !== "error") {
-              if (response && !response.data.Result?.["odata.error"]) {
-                console.log("ErpResponse::", response);
-                const MasterVendor = {
-                  mastervendor_email: mastervendor_email || undefined,
-                  companyName: companyName || undefined,
-                  Ticket_ID: TicketID || undefined,
-                  Country_Region_Code: countryRegionCode || undefined,
-                }
-                apiService.saveMasterLogin(MasterVendor).then((Masterresponse) => {
-                  console.log("masterLogin::", Masterresponse);
-                  apiService.updateApprovalStatus(userId, data1).then((responseData) => {
-                    if (responseData.data.status === 'success') {
-                      Swal.fire({
-                        title: "Approved",
-                        icon: "success",
-                        confirmButtonText: "OK",
-                        showCloseButton: false,
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                      })
+      };
+      apiService
+        .createsharepointFolderByTicketId(sharepointDocumentUpload)
+        .then((response) => {
+          console.log("Sharepointresponse::", response);
+          if (response.data.message === "success") {
+            apiService
+              .postErpResourcePortalVendorlist(ERPData)
+              .then((response) => {
+                console.log("ERPData---->", ERPData);
+                if (response && response.data.msg !== "error") {
+                  if (response && !response.data.Result?.["odata.error"]) {
+                    console.log("ErpResponse::", response);
+                    const VendorCodeGenration = {
+                      ticketID: TicketID || undefined,
+                    };
+
+                    apiService
+                      .GenerateVendorCode(VendorCodeGenration)
+                      .then((response) => {
+                        console.log("vendorCodeGenerate::", response);
+                      });
+                    const MasterVendor = {
+                      mastervendor_email: mastervendor_email || undefined,
+                      companyName: companyName || undefined,
+                      Ticket_ID: TicketID || undefined,
+                      Country_Region_Code: countryRegionCode || undefined,
+                    };
+                    apiService
+                      .saveMasterLogin(MasterVendor)
+                      .then((Masterresponse) => {
+                        console.log("masterLogin::", Masterresponse);
+                        apiService
+                          .updateApprovalStatus(userId, data1)
+                          .then((responseData) => {
+                            if (responseData.data.status === "success") {
+                              Swal.fire({
+                                title: "Approved",
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                showCloseButton: false,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                              });
+                            } else {
+                              Swal.fire({
+                                title: responseData.data.message,
+                                icon: "error",
+                                confirmButtonText: "OK",
+                              });
+                            }
+                          });
+                      });
+                  } else {
+                    if (
+                      response.data.Result?.["odata.error"]?.message?.value ===
+                      "The record already exists."
+                    ) {
+                      //                   apiService.updateErpResourcePortalVendorlist(ERPData).then((updateresponse) => {
+
+                      // console.log("updateresponse::")
+                      //                   })
+                      console.log("already exists::");
+                      const UpdateMasterVendor = {
+                        mastervendor_email: mastervendor_email || undefined,
+                        companyName: companyName || undefined,
+                        Ticket_ID: TicketID || undefined,
+                        Country_Region_Code: countryRegionCode || undefined,
+                      };
+                      apiService
+                        .updateMasterLogin(UpdateMasterVendor)
+                        .then((Masterresponse) => {
+                          console.log("masterLogin::", Masterresponse);
+                          apiService
+                            .updateApprovalStatus(userId, data1)
+                            .then((responseData) => {
+                              if (responseData.data.status === "success") {
+                                Swal.fire({
+                                  title: responseData.data.message,
+                                  icon: "success",
+                                  confirmButtonText: "OK",
+                                  showCloseButton: false,
+                                  allowOutsideClick: false,
+                                  allowEscapeKey: false,
+                                });
+                              } else {
+                                Swal.fire({
+                                  title: responseData.data.message,
+                                  icon: "error",
+                                  confirmButtonText: "OK",
+                                });
+                              }
+                            });
+                        });
                     } else {
+                      const errorMessage =
+                        response.data.Result?.["odata.error"]?.message?.value ||
+                        "An error occurred while processing the request.";
                       Swal.fire({
-                        title: responseData.data.message,
+                        title: errorMessage
+                          ? `In ERP, ${errorMessage}`
+                          : "An error occurred while processing the request in ERP",
                         icon: "error",
                         confirmButtonText: "OK",
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                       });
                     }
-                  });
-                })
-              }
-              else {
-                if(response.data.Result?.["odata.error"]?.message?.value==="The record already exists.")
-                {
-//                   apiService.updateErpResourcePortalVendorlist(ERPData).then((updateresponse) => {
-  
-// console.log("updateresponse::")
-//                   })
-console.log("already exists::");
-const UpdateMasterVendor = {
-  mastervendor_email: mastervendor_email || undefined,
-  companyName: companyName || undefined,
-  Ticket_ID: TicketID || undefined,
-  Country_Region_Code: countryRegionCode || undefined,
-}
-apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
-  console.log("masterLogin::", Masterresponse);
-  apiService.updateApprovalStatus(userId, data1).then((responseData) => {
-    if (responseData.data.status === 'success') {
-      Swal.fire({
-        title: responseData.data.message,
-        icon: "success",
-        confirmButtonText: "OK",
-        showCloseButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      })
-    } else {
-      Swal.fire({
-        title: responseData.data.message,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-  });
-  })
-                }
-                else
-                {
-                  const errorMessage = response.data.Result?.["odata.error"]?.message?.value || "An error occurred while processing the request.";
+                  }
+                } else {
+                  const erpErrorResponse = response.data.error;
                   Swal.fire({
-                    title: errorMessage ? `In ERP, ${errorMessage}` : "An error occurred while processing the request in ERP",
                     icon: "error",
+                    title: `In ERP,${erpErrorResponse}`,
                     confirmButtonText: "OK",
-                    showCloseButton: true,
+                    showCloseButton: false,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                   });
                 }
-                
-              }
-            }
-            else {
-              const erpErrorResponse = response.data.error;
-              Swal.fire({
-                icon: 'error',
-                title: `In ERP,${erpErrorResponse}`,
-                confirmButtonText: "OK",
-                showCloseButton: false,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
               });
-            }
-
-          })
-        }
-        else {
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error in Fetching Api to Sharepoint",
+              confirmButtonText: "OK",
+              showCloseButton: false,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            });
+          }
+        })
+        .catch((error) => {
           Swal.fire({
-            icon: 'error',
-            title: 'Error in Fetching Api to Sharepoint',
+            icon: "error",
+            title: "Error in Fetching Api to Sharepoint",
             confirmButtonText: "OK",
             showCloseButton: false,
             allowOutsideClick: false,
             allowEscapeKey: false,
           });
-        }
-
-      }).catch((error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error in Fetching Api to Sharepoint',
-          confirmButtonText: "OK",
-          showCloseButton: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
         });
-      })
     } else {
       Swal.fire({
         title: "Please fill the mandatory fields",
@@ -2559,7 +2646,7 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
           data.append("level3Date", new Date());
           const userId = event;
           apiService.updateApprovalStatus(userId, data).then((responseData) => {
-            if (responseData.data.status === 'success') {
+            if (responseData.data.status === "success") {
               Swal.fire({
                 title: "Rejected",
                 icon: "success",
@@ -2583,28 +2670,28 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // event.preventDefault();
     let FormarrayErr = [];
     if (companyName.length === 0) {
-      FormarrayErr.push("companyName")
+      FormarrayErr.push("companyName");
       setcompanyNameErr("Company name is required");
     }
     if (Address.length === 0) {
-      FormarrayErr.push("Address")
+      FormarrayErr.push("Address");
       setaddress1Err("Address 1 is required");
     }
     if (Country_Region_Code.length === 0) {
-      FormarrayErr.push("Country_Region_Code")
+      FormarrayErr.push("Country_Region_Code");
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      FormarrayErr.push("state")
+      FormarrayErr.push("state");
       setstateErr("State is required");
     }
     if (City.length === 0) {
-      FormarrayErr.push("City")
+      FormarrayErr.push("City");
       setcityErr("City is required");
     }
 
     if (Post_Code.length === 0) {
-      FormarrayErr.push("Post_Code")
+      FormarrayErr.push("Post_Code");
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
       // FormarrayErr.push("Post_Code Invalid")
@@ -2617,29 +2704,27 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     //   console.log("hellossssssss", logoErr);
     // }
     if (fs_ContactName.length === 0) {
-      FormarrayErr.push("fs_ContactName")
+      FormarrayErr.push("fs_ContactName");
       setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      FormarrayErr.push("fs_Designation")
+      FormarrayErr.push("fs_Designation");
       setfs_DesignationErr("Designation is required");
     }
 
     if (fs_PhoneNo.length === 0) {
-      FormarrayErr.push("fs_PhoneNo")
+      FormarrayErr.push("fs_PhoneNo");
       setfs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(fs_PhoneNo)
-    ) {
-      FormarrayErr.push("fs_PhoneNo Invalid")
+    } else if (!numberValidation.test(fs_PhoneNo)) {
+      FormarrayErr.push("fs_PhoneNo Invalid");
       setfs_PhoneNoErr("Phone number is invalid");
     }
 
     if (fs_Email.length === 0) {
-      FormarrayErr.push("fs_Email")
+      FormarrayErr.push("fs_Email");
       setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(fs_Email)) {
-      FormarrayErr.push("fs_Email Invalid")
+      FormarrayErr.push("fs_Email Invalid");
       setfs_EmailErr("Email is invalid");
     }
     // console.log("fs_Email",fs_Email);
@@ -2650,178 +2735,196 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      FormarrayErr.push("mngs_ContactName")
+      FormarrayErr.push("mngs_ContactName");
       setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      FormarrayErr.push("mngs_Designation")
+      FormarrayErr.push("mngs_Designation");
       setmngs_DesignationErr("Designation is required");
     }
 
     if (mngs_PhoneNo.length === 0) {
-      FormarrayErr.push("mngs_PhoneNo")
+      FormarrayErr.push("mngs_PhoneNo");
       setmngs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(mngs_PhoneNo) 
-    ) {
-      FormarrayErr.push("mngs_PhoneNo Invalid")
+    } else if (!numberValidation.test(mngs_PhoneNo)) {
+      FormarrayErr.push("mngs_PhoneNo Invalid");
       setmngs_PhoneNoErr("Phone number is invalid");
     }
 
     if (mngs_Email.length === 0) {
-      FormarrayErr.push("mngs_Email")
+      FormarrayErr.push("mngs_Email");
       setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(mngs_Email)) {
-      FormarrayErr.push("mngs_Email Invalid")
+      FormarrayErr.push("mngs_Email Invalid");
       setmngs_EmailErr("Email is invalid");
     }
 
     if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email")
+      FormarrayErr.push("mastervendor_email");
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email Invalid")
+    } else if (
+      !emailValidation.test(mastervendor_email) &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("mastervendor_email Invalid");
       setmastervendor_emailErr("Email is invalid");
     }
 
     if (bankAccountName.length === 0) {
-      FormarrayErr.push("bankAccountName")
+      FormarrayErr.push("bankAccountName");
       setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      FormarrayErr.push("bankName")
+      FormarrayErr.push("bankName");
       setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      FormarrayErr.push("bankAccountNumber")
+      FormarrayErr.push("bankAccountNumber");
       setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      FormarrayErr.push("ifscCode")
+      FormarrayErr.push("ifscCode");
       setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      FormarrayErr.push("MICRcode")
+      FormarrayErr.push("MICRcode");
       setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      FormarrayErr.push("branchAddress")
+      FormarrayErr.push("branchAddress");
       setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      FormarrayErr.push("bankdetailDoc")
+      FormarrayErr.push("bankdetailDoc");
       setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      FormarrayErr.push("RPD_Doc")
+      FormarrayErr.push("RPD_Doc");
       setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      FormarrayErr.push("COC_Doc")
+      FormarrayErr.push("COC_Doc");
       setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      FormarrayErr.push("NDA_Doc")
+      FormarrayErr.push("NDA_Doc");
       setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      FormarrayErr.push("name")
+      FormarrayErr.push("name");
       setnameErr("Name is required");
     }
 
     if (contactNumber.length === 0) {
-      FormarrayErr.push("contactNumber")
+      FormarrayErr.push("contactNumber");
       setcontactNumberErr("Contact number is required");
-    } else if (
-      !numberValidation.test(contactNumber) 
-    ) {
-      FormarrayErr.push("contactNumber Invalid")
+    } else if (!numberValidation.test(contactNumber)) {
+      FormarrayErr.push("contactNumber Invalid");
       setcontactNumberErr("Phone number is invalid");
     }
 
     if (email.length === 0) {
-      FormarrayErr.push("email")
+      FormarrayErr.push("email");
       setemailErr("Email is required");
     } else if (!emailValidation.test(email)) {
-      FormarrayErr.push("email Invalid")
+      FormarrayErr.push("email Invalid");
       setemailErr("Email is invalid");
     }
 
     if (vendorType.length === 0) {
-      FormarrayErr.push("vendorType required")
+      FormarrayErr.push("vendorType required");
       setvendorTypeErr("Vendor type is required");
     }
     if (acManager.length === 0) {
-      FormarrayErr.push("acManager required")
+      FormarrayErr.push("acManager required");
       setacManagerErr("A/C manager is required");
     }
     if (mkcheck === false) {
-      FormarrayErr.push("mkcheck required")
+      FormarrayErr.push("mkcheck required");
       setmkcheckErr("Check is required");
     }
     if (!approverFile) {
-      FormarrayErr.push("approverFile required")
+      FormarrayErr.push("approverFile required");
       setapproverFileErr("File is required");
     }
 
     if (GST_type.length === 0) {
-      FormarrayErr.push("GST_type")
+      FormarrayErr.push("GST_type");
       setGST_typeErr("GST type is required");
     }
 
-    if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
-      FormarrayErr.push("GST_No")
+    if (
+      (GST_No.length === 0 || GST_No === "N/A") &&
+      GST_type === "Registered"
+    ) {
+      FormarrayErr.push("GST_No");
       setGST_NoErr("GST Number is required");
-    } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
-      FormarrayErr.push("GST_No Invalid")
+    } else if (!GSTValidation.test(GST_No) && GST_No !== "N/A") {
+      FormarrayErr.push("GST_No Invalid");
       setGST_NoErr("GST Number is not valid");
     }
 
-    if (!GST_Doc && GST_type === 'Registered') {
-      FormarrayErr.push("GST_Doc")
+    if (!GST_Doc && GST_type === "Registered") {
+      FormarrayErr.push("GST_Doc");
       setGST_DocErr("GST doc is required");
     }
-    if (!fileDisclosure && GST_type === 'UnRegistered') {
-      FormarrayErr.push("fileDisclosure")
+    if (!fileDisclosure && GST_type === "UnRegistered") {
+      FormarrayErr.push("fileDisclosure");
       setfileDisclosureErr("File Disclosure is required");
     }
 
-    if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No")
+    if (
+      (PAN_No.length === 0 || PAN_No === "N/A") &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No");
       setPAN_NoErr("Pan number is required");
-    } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No Invalid")
+    } else if (
+      !PANValidation.test(PAN_No) &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No Invalid");
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
-      FormarrayErr.push("PAN_Doc")
+    if (
+      !PAN_Doc &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN" &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("PAN_Doc");
       setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      FormarrayErr.push("CIN_No")
+      FormarrayErr.push("CIN_No");
       setCIN_NoErr("CIN number is required");
     }
-    if (!form_10f && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("form_10f")
+    if (!form_10f && Country_Region_Code !== "IN") {
+      FormarrayErr.push("form_10f");
       setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      FormarrayErr.push("MSME_status")
+      FormarrayErr.push("MSME_status");
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_No")
+    if ((MSME_No.length === 0 || MSME_No === "N/A") && MSME_status === "1") {
+      FormarrayErr.push("MSME_No");
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === '1') {
-      FormarrayErr.push("MSME_Doc")
+    if (!MSME_Doc && MSME_status === "1") {
+      FormarrayErr.push("MSME_Doc");
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_Type")
+    if (
+      (MSME_Type.length === 0 || MSME_Type === "N/A") &&
+      MSME_status === "1"
+    ) {
+      FormarrayErr.push("MSME_Type");
       setMSME_TypeErr("MSME type is required");
     }
     // if (TAN_No.length === 0) {
@@ -2830,23 +2933,22 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // if (!TAN_Doc) {
     //   setTAN_DocErr("TAN doc is required");
     // }
-    if (!Tax_residency && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("Tax_residency")
+    if (!Tax_residency && Country_Region_Code !== "IN") {
+      FormarrayErr.push("Tax_residency");
       setTax_residencyErr("Tax residency is required");
     }
-    if (!pe_declaration && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("pe_declaration")
+    if (!pe_declaration && Country_Region_Code !== "IN") {
+      FormarrayErr.push("pe_declaration");
       setpe_declarationErr("PE declaration is required");
     }
-    if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
-      FormarrayErr.push("Email")
+    if (email && !new RegExp("@" + desiredDomain + "\\s*$").test(email)) {
+      FormarrayErr.push("Email");
       setemailErr("Email is invalid");
     }
     const userId = props.userid;
 
-    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
+    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr);
     if (FormarrayErr.length === 0) {
-
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -2883,15 +2985,13 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("mastervendor_email", mastervendor_email);
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-        data.append("GST_Doc", '');
+        data.append("GST_Doc", "");
 
         data.append("fileDisclosure", fileDisclosure);
 
         data.append("P_A_N_No", PAN_No);
         data.append("PAN_Doc", PAN_Doc);
-
       } else if (GST_type === "Import") {
-
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", "");
         data.append("fileDisclosure", "");
@@ -2902,9 +3002,8 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
         // setPAN_No("N/A");
         // setGST_Doc("");
         // setPAN_Doc("")
-        // setfileDisclosure("");  
-      }
-      else {
+        // setfileDisclosure("");
+      } else {
         data.append("GST_Registration_No", GST_No);
         data.append("GST_Doc", GST_Doc);
         data.append("fileDisclosure", "");
@@ -2917,7 +3016,6 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("COC_Doc", COC_Doc);
       data.append("GST_Vendor_Type", GST_type);
 
-
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_Declaration_Doc", pe_declaration);
@@ -2925,9 +3023,9 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
       if (MSME_status === "2") {
-        data.append("MSMED_Number", 'N/A');
-        data.append("MSMED_Vendor_Type", '');
-        data.append("MSME_Doc", '');
+        data.append("MSMED_Number", "N/A");
+        data.append("MSMED_Vendor_Type", "");
+        data.append("MSME_Doc", "");
 
         // setMSME_No("N/A");
         // setMSME_Type("");
@@ -2950,12 +3048,12 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("directorDetails", directorDetails);
       data.append("organisationType", organisationType);
       data.append("shareholderName", shareholderName);
-      data.append('Account_Holder_Name', bankAccountName);
-      data.append('Bank_Name', bankName);
-      data.append('Account_No', bankAccountNumber);
-      data.append('IFSC_Code', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('Bank_Address', branchAddress);
+      data.append("Account_Holder_Name", bankAccountName);
+      data.append("Bank_Name", bankName);
+      data.append("Account_No", bankAccountNumber);
+      data.append("IFSC_Code", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("Bank_Address", branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -2968,15 +3066,13 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("email3", email3);
       data.append("approverFile", approverFile);
 
-      apiService.updateAllCollection(props.userid, data).then((response) => {
-      });
-
+      apiService.updateAllCollection(props.userid, data).then((response) => {});
 
       const data1 = new FormData();
       data1.append("level1Status", "approved");
       data1.append("userId", event);
       apiService.saveApproval(data1).then((responseData) => {
-        if (responseData.data.status === 'success') {
+        if (responseData.data.status === "success") {
           Swal.fire({
             title: "Approved",
             icon: "success",
@@ -3025,7 +3121,7 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
           data.append("level1rejectFileDoc", rejectdoc);
 
           apiService.saveApproval(data).then((responseData) => {
-            if (responseData.data.status === 'success') {
+            if (responseData.data.status === "success") {
               Swal.fire({
                 title: "Rejected",
                 icon: "success",
@@ -3048,28 +3144,28 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     e.preventDefault();
     let FormarrayErr = [];
     if (companyName.length === 0) {
-      FormarrayErr.push("companyName")
+      FormarrayErr.push("companyName");
       setcompanyNameErr("Company name is required");
     }
     if (Address.length === 0) {
-      FormarrayErr.push("Address")
+      FormarrayErr.push("Address");
       setaddress1Err("Address 1 is required");
     }
     if (Country_Region_Code.length === 0) {
-      FormarrayErr.push("Country_Region_Code")
+      FormarrayErr.push("Country_Region_Code");
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      FormarrayErr.push("state")
+      FormarrayErr.push("state");
       setstateErr("State is required");
     }
     if (City.length === 0) {
-      FormarrayErr.push("City")
+      FormarrayErr.push("City");
       setcityErr("City is required");
     }
 
     if (Post_Code.length === 0) {
-      FormarrayErr.push("Post_Code")
+      FormarrayErr.push("Post_Code");
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
       // FormarrayErr.push("Post_Code Invalid")
@@ -3082,29 +3178,27 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     //   console.log("hellossssssss", logoErr);
     // }
     if (fs_ContactName.length === 0) {
-      FormarrayErr.push("fs_ContactName")
+      FormarrayErr.push("fs_ContactName");
       setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      FormarrayErr.push("fs_Designation")
+      FormarrayErr.push("fs_Designation");
       setfs_DesignationErr("Designation is required");
     }
 
     if (fs_PhoneNo.length === 0) {
-      FormarrayErr.push("fs_PhoneNo")
+      FormarrayErr.push("fs_PhoneNo");
       setfs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(fs_PhoneNo) 
-    ) {
-      FormarrayErr.push("fs_PhoneNo Invalid")
+    } else if (!numberValidation.test(fs_PhoneNo)) {
+      FormarrayErr.push("fs_PhoneNo Invalid");
       setfs_PhoneNoErr("Phone number is invalid");
     }
 
     if (fs_Email.length === 0) {
-      FormarrayErr.push("fs_Email")
+      FormarrayErr.push("fs_Email");
       setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(fs_Email)) {
-      FormarrayErr.push("fs_Email Invalid")
+      FormarrayErr.push("fs_Email Invalid");
       setfs_EmailErr("Email is invalid");
     }
     // console.log("fs_Email",fs_Email);
@@ -3115,102 +3209,101 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      FormarrayErr.push("mngs_ContactName")
+      FormarrayErr.push("mngs_ContactName");
       setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      FormarrayErr.push("mngs_Designation")
+      FormarrayErr.push("mngs_Designation");
       setmngs_DesignationErr("Designation is required");
     }
 
     if (mngs_PhoneNo.length === 0) {
-      FormarrayErr.push("mngs_PhoneNo")
+      FormarrayErr.push("mngs_PhoneNo");
       setmngs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(mngs_PhoneNo)
-    ) {
-      FormarrayErr.push("mngs_PhoneNo Invalid")
+    } else if (!numberValidation.test(mngs_PhoneNo)) {
+      FormarrayErr.push("mngs_PhoneNo Invalid");
       setmngs_PhoneNoErr("Phone number is invalid");
     }
 
     if (mngs_Email.length === 0) {
-      FormarrayErr.push("mngs_Email")
+      FormarrayErr.push("mngs_Email");
       setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(mngs_Email)) {
-      FormarrayErr.push("mngs_Email Invalid")
+      FormarrayErr.push("mngs_Email Invalid");
       setmngs_EmailErr("Email is invalid");
     }
 
     if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email")
+      FormarrayErr.push("mastervendor_email");
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email Invalid")
+    } else if (
+      !emailValidation.test(mastervendor_email) &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("mastervendor_email Invalid");
       setmastervendor_emailErr("Email is invalid");
     }
 
     if (bankAccountName.length === 0) {
-      FormarrayErr.push("bankAccountName")
+      FormarrayErr.push("bankAccountName");
       setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      FormarrayErr.push("bankName")
+      FormarrayErr.push("bankName");
       setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      FormarrayErr.push("bankAccountNumber")
+      FormarrayErr.push("bankAccountNumber");
       setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      FormarrayErr.push("ifscCode")
+      FormarrayErr.push("ifscCode");
       setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      FormarrayErr.push("MICRcode")
+      FormarrayErr.push("MICRcode");
       setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      FormarrayErr.push("branchAddress")
+      FormarrayErr.push("branchAddress");
       setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      FormarrayErr.push("bankdetailDoc")
+      FormarrayErr.push("bankdetailDoc");
       setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      FormarrayErr.push("RPD_Doc")
+      FormarrayErr.push("RPD_Doc");
       setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      FormarrayErr.push("COC_Doc")
+      FormarrayErr.push("COC_Doc");
       setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      FormarrayErr.push("NDA_Doc")
+      FormarrayErr.push("NDA_Doc");
       setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      FormarrayErr.push("name")
+      FormarrayErr.push("name");
       setnameErr("Name is required");
     }
 
     if (contactNumber.length === 0) {
-      FormarrayErr.push("contactNumber")
+      FormarrayErr.push("contactNumber");
       setcontactNumberErr("Contact number is required");
-    } else if (
-      !numberValidation.test(contactNumber) 
-    ) {
-      FormarrayErr.push("contactNumber Invalid")
+    } else if (!numberValidation.test(contactNumber)) {
+      FormarrayErr.push("contactNumber Invalid");
       setcontactNumberErr("Phone number is invalid");
     }
 
     if (email.length === 0) {
-      FormarrayErr.push("email")
+      FormarrayErr.push("email");
       setemailErr("Email is required");
     } else if (!emailValidation.test(email)) {
-      FormarrayErr.push("email Invalid")
+      FormarrayErr.push("email Invalid");
       setemailErr("Email is invalid");
     }
 
@@ -3225,62 +3318,81 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // }
 
     if (GST_type.length === 0) {
-      FormarrayErr.push("GST_type")
+      FormarrayErr.push("GST_type");
       setGST_typeErr("GST type is required");
     }
 
-    if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
-      FormarrayErr.push("GST_No")
+    if (
+      (GST_No.length === 0 || GST_No === "N/A") &&
+      GST_type === "Registered"
+    ) {
+      FormarrayErr.push("GST_No");
       setGST_NoErr("GST Number is required");
-    } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
-      FormarrayErr.push("GST_No Invalid")
+    } else if (!GSTValidation.test(GST_No) && GST_No !== "N/A") {
+      FormarrayErr.push("GST_No Invalid");
       setGST_NoErr("GST Number is not valid");
     }
 
-    if (!GST_Doc && GST_type === 'Registered') {
-      FormarrayErr.push("GST_Doc")
+    if (!GST_Doc && GST_type === "Registered") {
+      FormarrayErr.push("GST_Doc");
       setGST_DocErr("GST doc is required");
     }
-    if (!fileDisclosure && GST_type === 'UnRegistered') {
-      FormarrayErr.push("fileDisclosure")
+    if (!fileDisclosure && GST_type === "UnRegistered") {
+      FormarrayErr.push("fileDisclosure");
       setfileDisclosureErr("File Disclosure is required");
     }
-    console.log("PAN_No****************************", PAN_No)
-    console.log("PAN_Doc****************************", PAN_Doc)
-    if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No")
+    console.log("PAN_No****************************", PAN_No);
+    console.log("PAN_Doc****************************", PAN_Doc);
+    if (
+      (PAN_No.length === 0 || PAN_No === "N/A") &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No");
       setPAN_NoErr("Pan number is required");
-    } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No Invalid")
+    } else if (
+      !PANValidation.test(PAN_No) &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No Invalid");
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
-      FormarrayErr.push("PAN_Doc")
+    if (
+      !PAN_Doc &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN" &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("PAN_Doc");
       setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      FormarrayErr.push("CIN_No")
+      FormarrayErr.push("CIN_No");
       setCIN_NoErr("CIN number is required");
     }
-    if (!form_10f && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("form_10f")
+    if (!form_10f && Country_Region_Code !== "IN") {
+      FormarrayErr.push("form_10f");
       setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      FormarrayErr.push("MSME_status")
+      FormarrayErr.push("MSME_status");
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_No")
+    if ((MSME_No.length === 0 || MSME_No === "N/A") && MSME_status === "1") {
+      FormarrayErr.push("MSME_No");
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === '1') {
-      FormarrayErr.push("MSME_Doc")
+    if (!MSME_Doc && MSME_status === "1") {
+      FormarrayErr.push("MSME_Doc");
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_Type")
+    if (
+      (MSME_Type.length === 0 || MSME_Type === "N/A") &&
+      MSME_status === "1"
+    ) {
+      FormarrayErr.push("MSME_Type");
       setMSME_TypeErr("MSME type is required");
     }
     // if (TAN_No.length === 0) {
@@ -3289,23 +3401,22 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
     // if (!TAN_Doc) {
     //   setTAN_DocErr("TAN doc is required");
     // }
-    if (!Tax_residency && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("Tax_residency")
+    if (!Tax_residency && Country_Region_Code !== "IN") {
+      FormarrayErr.push("Tax_residency");
       setTax_residencyErr("Tax residency is required");
     }
-    if (!pe_declaration && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("pe_declaration")
+    if (!pe_declaration && Country_Region_Code !== "IN") {
+      FormarrayErr.push("pe_declaration");
       setpe_declarationErr("PE declaration is required");
     }
-    if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
-      FormarrayErr.push("Email")
+    if (email && !new RegExp("@" + desiredDomain + "\\s*$").test(email)) {
+      FormarrayErr.push("Email");
       setemailErr("Email is invalid");
     }
     const userId = props.userid;
 
-    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
+    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr);
     if (FormarrayErr.length === 0) {
-
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -3342,16 +3453,14 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("mastervendor_email", mastervendor_email);
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-        data.append("GST_Doc", '');
+        data.append("GST_Doc", "");
 
         data.append("fileDisclosure", fileDisclosure);
 
         data.append("P_A_N_No", PAN_No);
         data.append("PAN_Doc", PAN_Doc);
-
       }
       if (GST_type === "Import") {
-
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", "");
         data.append("fileDisclosure", "");
@@ -3372,7 +3481,6 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("COC_Doc", COC_Doc);
       data.append("GST_Vendor_Type", GST_type);
 
-
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_Declaration_Doc", pe_declaration);
@@ -3380,9 +3488,9 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
       if (MSME_status === "2") {
-        data.append("MSMED_Number", 'N/A');
-        data.append("MSMED_Vendor_Type", '');
-        data.append("MSME_Doc", '');
+        data.append("MSMED_Number", "N/A");
+        data.append("MSMED_Vendor_Type", "");
+        data.append("MSME_Doc", "");
 
         // setMSME_No("N/A");
         // setMSME_Type("");
@@ -3393,7 +3501,7 @@ apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
         data.append("MSMED_Vendor_Type", MSME_Type);
         data.append("MSME_Doc", MSME_Doc);
       }
-console.log("financial_data",financial_data)
+      console.log("financial_data", financial_data);
       data.append("TAN_No", TAN_No);
       data.append("financial_data", financial_data);
       data.append("financial_data2", financial_data2);
@@ -3405,12 +3513,12 @@ console.log("financial_data",financial_data)
       data.append("directorDetails", directorDetails);
       data.append("organisationType", organisationType);
       data.append("shareholderName", shareholderName);
-      data.append('Account_Holder_Name', bankAccountName);
-      data.append('Bank_Name', bankName);
-      data.append('Account_No', bankAccountNumber);
-      data.append('IFSC_Code', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('Bank_Address', branchAddress);
+      data.append("Account_Holder_Name", bankAccountName);
+      data.append("Bank_Name", bankName);
+      data.append("Account_No", bankAccountNumber);
+      data.append("IFSC_Code", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("Bank_Address", branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -3424,7 +3532,10 @@ console.log("financial_data",financial_data)
       data.append("approverFile", approverFile);
 
       for (var pair of data.entries()) {
-        console.log("test------------->>>>>>>>>>>>>>>>>>", pair[0] + ', ' + pair[1]);
+        console.log(
+          "test------------->>>>>>>>>>>>>>>>>>",
+          pair[0] + ", " + pair[1]
+        );
       }
 
       apiService.updateAllCollection(userId, data).then((response) => {
@@ -3457,28 +3568,28 @@ console.log("financial_data",financial_data)
     e.preventDefault();
     let FormarrayErr = [];
     if (companyName.length === 0) {
-      FormarrayErr.push("companyName")
+      FormarrayErr.push("companyName");
       setcompanyNameErr("Company name is required");
     }
     if (Address.length === 0) {
-      FormarrayErr.push("Address")
+      FormarrayErr.push("Address");
       setaddress1Err("Address 1 is required");
     }
     if (Country_Region_Code.length === 0) {
-      FormarrayErr.push("Country_Region_Code")
+      FormarrayErr.push("Country_Region_Code");
       setcountryErr("Country is required");
     }
     if (state.length === 0) {
-      FormarrayErr.push("state")
+      FormarrayErr.push("state");
       setstateErr("State is required");
     }
     if (City.length === 0) {
-      FormarrayErr.push("City")
+      FormarrayErr.push("City");
       setcityErr("City is required");
     }
 
     if (Post_Code.length === 0) {
-      FormarrayErr.push("Post_Code")
+      FormarrayErr.push("Post_Code");
       setpinCodeErr("Pincode is required");
     } else if (!numberValidation.test(Post_Code)) {
       // FormarrayErr.push("Post_Code Invalid")
@@ -3491,29 +3602,27 @@ console.log("financial_data",financial_data)
     //   console.log("hellossssssss", logoErr);
     // }
     if (fs_ContactName.length === 0) {
-      FormarrayErr.push("fs_ContactName")
+      FormarrayErr.push("fs_ContactName");
       setfs_ContactNameErr("Contact name is required");
     }
     if (fs_Designation.length === 0) {
-      FormarrayErr.push("fs_Designation")
+      FormarrayErr.push("fs_Designation");
       setfs_DesignationErr("Designation is required");
     }
 
     if (fs_PhoneNo.length === 0) {
-      FormarrayErr.push("fs_PhoneNo")
+      FormarrayErr.push("fs_PhoneNo");
       setfs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(fs_PhoneNo) 
-    ) {
-      FormarrayErr.push("fs_PhoneNo Invalid")
+    } else if (!numberValidation.test(fs_PhoneNo)) {
+      FormarrayErr.push("fs_PhoneNo Invalid");
       setfs_PhoneNoErr("Phone number is invalid");
     }
 
     if (fs_Email.length === 0) {
-      FormarrayErr.push("fs_Email")
+      FormarrayErr.push("fs_Email");
       setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(fs_Email)) {
-      FormarrayErr.push("fs_Email Invalid")
+      FormarrayErr.push("fs_Email Invalid");
       setfs_EmailErr("Email is invalid");
     }
     // console.log("fs_Email",fs_Email);
@@ -3524,102 +3633,101 @@ console.log("financial_data",financial_data)
     // console.log("mastervendor_email",mastervendor_email);
 
     if (mngs_ContactName.length === 0) {
-      FormarrayErr.push("mngs_ContactName")
+      FormarrayErr.push("mngs_ContactName");
       setmngs_ContactNameErr("Contact name is required");
     }
     if (mngs_Designation.length === 0) {
-      FormarrayErr.push("mngs_Designation")
+      FormarrayErr.push("mngs_Designation");
       setmngs_DesignationErr("Designation is required");
     }
 
     if (mngs_PhoneNo.length === 0) {
-      FormarrayErr.push("mngs_PhoneNo")
+      FormarrayErr.push("mngs_PhoneNo");
       setmngs_PhoneNoErr("Phone number is required");
-    } else if (
-      !numberValidation.test(mngs_PhoneNo)
-    ) {
-      FormarrayErr.push("mngs_PhoneNo Invalid")
+    } else if (!numberValidation.test(mngs_PhoneNo)) {
+      FormarrayErr.push("mngs_PhoneNo Invalid");
       setmngs_PhoneNoErr("Phone number is invalid");
     }
 
     if (mngs_Email.length === 0) {
-      FormarrayErr.push("mngs_Email")
+      FormarrayErr.push("mngs_Email");
       setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(mngs_Email)) {
-      FormarrayErr.push("mngs_Email Invalid")
+      FormarrayErr.push("mngs_Email Invalid");
       setmngs_EmailErr("Email is invalid");
     }
 
     if (mastervendor_email?.length === 0 && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email")
+      FormarrayErr.push("mastervendor_email");
       setmastervendor_emailErr("Email is required");
-    } else if (!emailValidation.test(mastervendor_email) && userStatus !== "NewRegistration") {
-      FormarrayErr.push("mastervendor_email Invalid")
+    } else if (
+      !emailValidation.test(mastervendor_email) &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("mastervendor_email Invalid");
       setmastervendor_emailErr("Email is invalid");
     }
 
     if (bankAccountName.length === 0) {
-      FormarrayErr.push("bankAccountName")
+      FormarrayErr.push("bankAccountName");
       setbankAccountNameErr("Account name is required");
     }
     if (bankName.length === 0) {
-      FormarrayErr.push("bankName")
+      FormarrayErr.push("bankName");
       setbankNameErr("Bank name is required");
     }
     if (bankAccountNumber.length === 0) {
-      FormarrayErr.push("bankAccountNumber")
+      FormarrayErr.push("bankAccountNumber");
       setbankAccountNumberErr("Account number is required");
     }
     if (ifscCode.length === 0) {
-      FormarrayErr.push("ifscCode")
+      FormarrayErr.push("ifscCode");
       setifscCodeErr("IFSC code is required");
     }
     if (MICRcode.length === 0) {
-      FormarrayErr.push("MICRcode")
+      FormarrayErr.push("MICRcode");
       setMICRcodeErr("MICR code is required");
     }
     if (branchAddress.length === 0) {
-      FormarrayErr.push("branchAddress")
+      FormarrayErr.push("branchAddress");
       setbranchAddressErr("Branch address is required");
     }
     if (!bankdetailDoc) {
-      FormarrayErr.push("bankdetailDoc")
+      FormarrayErr.push("bankdetailDoc");
       setbankdetailDocErr("Bank document is required");
     }
 
     if (!RPD_Doc) {
-      FormarrayErr.push("RPD_Doc")
+      FormarrayErr.push("RPD_Doc");
       setRPD_DocErr("RPD document is required");
     }
     if (!COC_Doc) {
-      FormarrayErr.push("COC_Doc")
+      FormarrayErr.push("COC_Doc");
       setCOC_DocErr("COC document is required");
     }
     if (!NDA_Doc) {
-      FormarrayErr.push("NDA_Doc")
+      FormarrayErr.push("NDA_Doc");
       setNDA_DocErr("NDA document is required");
     }
 
     if (name.length === 0) {
-      FormarrayErr.push("name")
+      FormarrayErr.push("name");
       setnameErr("Name is required");
     }
 
     if (contactNumber.length === 0) {
-      FormarrayErr.push("contactNumber")
+      FormarrayErr.push("contactNumber");
       setcontactNumberErr("Contact number is required");
-    } else if (
-      !numberValidation.test(contactNumber) 
-    ) {
-      FormarrayErr.push("contactNumber Invalid")
+    } else if (!numberValidation.test(contactNumber)) {
+      FormarrayErr.push("contactNumber Invalid");
       setcontactNumberErr("Phone number is invalid");
     }
 
     if (email.length === 0) {
-      FormarrayErr.push("email")
+      FormarrayErr.push("email");
       setemailErr("Email is required");
     } else if (!emailValidation.test(email)) {
-      FormarrayErr.push("email Invalid")
+      FormarrayErr.push("email Invalid");
       setemailErr("Email is invalid");
     }
 
@@ -3634,61 +3742,80 @@ console.log("financial_data",financial_data)
     // }
 
     if (GST_type.length === 0) {
-      FormarrayErr.push("GST_type")
+      FormarrayErr.push("GST_type");
       setGST_typeErr("GST type is required");
     }
 
-    if ((GST_No.length === 0 || GST_No === 'N/A') && GST_type === 'Registered') {
-      FormarrayErr.push("GST_No")
+    if (
+      (GST_No.length === 0 || GST_No === "N/A") &&
+      GST_type === "Registered"
+    ) {
+      FormarrayErr.push("GST_No");
       setGST_NoErr("GST Number is required");
-    } else if (!GSTValidation.test(GST_No) && (GST_No !== 'N/A')) {
-      FormarrayErr.push("GST_No Invalid")
+    } else if (!GSTValidation.test(GST_No) && GST_No !== "N/A") {
+      FormarrayErr.push("GST_No Invalid");
       setGST_NoErr("GST Number is not valid");
     }
 
-    if (!GST_Doc && GST_type === 'Registered') {
-      FormarrayErr.push("GST_Doc")
+    if (!GST_Doc && GST_type === "Registered") {
+      FormarrayErr.push("GST_Doc");
       setGST_DocErr("GST doc is required");
     }
-    if (!fileDisclosure && GST_type === 'UnRegistered') {
-      FormarrayErr.push("fileDisclosure")
+    if (!fileDisclosure && GST_type === "UnRegistered") {
+      FormarrayErr.push("fileDisclosure");
       setfileDisclosureErr("File Disclosure is required");
     }
 
-    if ((PAN_No.length === 0 || PAN_No === 'N/A') && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No")
+    if (
+      (PAN_No.length === 0 || PAN_No === "N/A") &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No");
       setPAN_NoErr("Pan number is required");
-    } else if ((!PANValidation.test(PAN_No)) && GST_type !== 'Import' && Country_Region_Code === "IN") {
-      FormarrayErr.push("PAN_No Invalid")
+    } else if (
+      !PANValidation.test(PAN_No) &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN"
+    ) {
+      FormarrayErr.push("PAN_No Invalid");
       setPAN_NoErr("Pan number is not valid");
     }
 
-    if (!PAN_Doc && GST_type !== 'Import' && Country_Region_Code === "IN"&& userStatus !== "NewRegistration") {
-      FormarrayErr.push("PAN_Doc")
+    if (
+      !PAN_Doc &&
+      GST_type !== "Import" &&
+      Country_Region_Code === "IN" &&
+      userStatus !== "NewRegistration"
+    ) {
+      FormarrayErr.push("PAN_Doc");
       setPAN_DocErr("Pan doc is required");
     }
     if (CIN_No.length === 0) {
-      FormarrayErr.push("CIN_No")
+      FormarrayErr.push("CIN_No");
       setCIN_NoErr("CIN number is required");
     }
-    if (!form_10f && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("form_10f")
+    if (!form_10f && Country_Region_Code !== "IN") {
+      FormarrayErr.push("form_10f");
       setform_10fErr("Form 10f is required");
     }
     if (MSME_status.length === 0) {
-      FormarrayErr.push("MSME_status")
+      FormarrayErr.push("MSME_status");
       setMSME_statusErr("MSME status is required");
     }
-    if ((MSME_No.length === 0 || MSME_No === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_No")
+    if ((MSME_No.length === 0 || MSME_No === "N/A") && MSME_status === "1") {
+      FormarrayErr.push("MSME_No");
       setMSME_NoErr("MSME number is required");
     }
-    if (!MSME_Doc && MSME_status === '1') {
-      FormarrayErr.push("MSME_Doc")
+    if (!MSME_Doc && MSME_status === "1") {
+      FormarrayErr.push("MSME_Doc");
       setMSME_DocErr("MSME doc is required");
     }
-    if ((MSME_Type.length === 0 || MSME_Type === 'N/A') && MSME_status === '1') {
-      FormarrayErr.push("MSME_Type")
+    if (
+      (MSME_Type.length === 0 || MSME_Type === "N/A") &&
+      MSME_status === "1"
+    ) {
+      FormarrayErr.push("MSME_Type");
       setMSME_TypeErr("MSME type is required");
     }
     // if (TAN_No.length === 0) {
@@ -3697,23 +3824,22 @@ console.log("financial_data",financial_data)
     // if (!TAN_Doc) {
     //   setTAN_DocErr("TAN doc is required");
     // }
-    if (!Tax_residency && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("Tax_residency")
+    if (!Tax_residency && Country_Region_Code !== "IN") {
+      FormarrayErr.push("Tax_residency");
       setTax_residencyErr("Tax residency is required");
     }
-    if (!pe_declaration && Country_Region_Code !== 'IN') {
-      FormarrayErr.push("pe_declaration")
+    if (!pe_declaration && Country_Region_Code !== "IN") {
+      FormarrayErr.push("pe_declaration");
       setpe_declarationErr("PE declaration is required");
     }
-    if (email && !new RegExp('@' + desiredDomain + '\\s*$').test(email)) {
-      FormarrayErr.push("Email")
+    if (email && !new RegExp("@" + desiredDomain + "\\s*$").test(email)) {
+      FormarrayErr.push("Email");
       setemailErr("Email is invalid");
     }
     const userId = props.userid;
 
-    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr)
+    console.log("FormarrayErr######chandrasekaran##############", FormarrayErr);
     if (FormarrayErr.length === 0) {
-
       const data = new FormData();
       data.append("userId", props.userid);
       data.append("Address", Address);
@@ -3749,7 +3875,6 @@ console.log("financial_data",financial_data)
       data.append("others_Email", others_Email);
       data.append("mastervendor_email", mastervendor_email);
 
-
       data.append("TAN_No", TAN_No);
       data.append("financial_data", financial_data);
       data.append("financial_data2", financial_data2);
@@ -3761,12 +3886,12 @@ console.log("financial_data",financial_data)
       data.append("directorDetails", directorDetails);
       data.append("organisationType", organisationType);
       data.append("shareholderName", shareholderName);
-      data.append('Account_Holder_Name', bankAccountName);
-      data.append('Bank_Name', bankName);
-      data.append('Account_No', bankAccountNumber);
-      data.append('IFSC_Code', ifscCode);
-      data.append('MICRcode', MICRcode);
-      data.append('Bank_Address', branchAddress);
+      data.append("Account_Holder_Name", bankAccountName);
+      data.append("Bank_Name", bankName);
+      data.append("Account_No", bankAccountNumber);
+      data.append("IFSC_Code", ifscCode);
+      data.append("MICRcode", MICRcode);
+      data.append("Bank_Address", branchAddress);
       data.append("bankdetailDoc", bankdetailDoc);
       data.append("name", name);
       data.append("contactNumber", contactNumber);
@@ -3779,18 +3904,16 @@ console.log("financial_data",financial_data)
       data.append("email3", email3);
       data.append("approverFile", approverFile);
 
-
       if (GST_type === "UnRegistered") {
         data.append("GST_Registration_No", "N/A");
-        data.append("GST_Doc", '');
+        data.append("GST_Doc", "");
 
         data.append("fileDisclosure", fileDisclosure);
 
         data.append("P_A_N_No", PAN_No);
         data.append("PAN_Doc", PAN_Doc);
-
-      } if (GST_type === "Import") {
-
+      }
+      if (GST_type === "Import") {
         data.append("GST_Registration_No", "N/A");
         data.append("GST_Doc", "");
         data.append("fileDisclosure", "");
@@ -3811,7 +3934,6 @@ console.log("financial_data",financial_data)
       data.append("COC_Doc", COC_Doc);
       data.append("GST_Vendor_Type", GST_type);
 
-
       data.append("form_10f_Doc", form_10f);
       data.append("TAN_Doc", TAN_Doc);
       data.append("PE_Declaration_Doc", pe_declaration);
@@ -3819,9 +3941,9 @@ console.log("financial_data",financial_data)
       data.append("CIN_No", CIN_No);
       data.append("MSMED", MSME_status);
       if (MSME_status === "2") {
-        data.append("MSMED_Number", 'N/A');
-        data.append("MSMED_Vendor_Type", '');
-        data.append("MSME_Doc", '');
+        data.append("MSMED_Number", "N/A");
+        data.append("MSMED_Vendor_Type", "");
+        data.append("MSME_Doc", "");
 
         // setMSME_No("N/A");
         // setMSME_Type("");
@@ -3833,10 +3955,11 @@ console.log("financial_data",financial_data)
         data.append("MSME_Doc", MSME_Doc);
       }
 
-
-
       for (var pair of data.entries()) {
-        console.log("test------------->>>>>>>>>>>>>>>>>>", pair[0] + ', ' + pair[1]);
+        console.log(
+          "test------------->>>>>>>>>>>>>>>>>>",
+          pair[0] + ", " + pair[1]
+        );
       }
 
       apiService.updateAllCollection(userId, data).then((response) => {
@@ -3971,9 +4094,11 @@ console.log("financial_data",financial_data)
                       <button
                         type="button"
                         onClick={(e) => handleEditPopup("logo")}
-                        className={`btn bankbtn ${editUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
+                        className={`btn bankbtn ${
+                          editUploadFile ? "upload" : "delete"
+                        } btn-primary btn-md mt-3`}
                       >
-                       {editUploadFile ? "Upload Logo" : "Delete Logo"}
+                        {editUploadFile ? "Upload Logo" : "Delete Logo"}
                       </button>
                     </>
                   ) : (
@@ -4065,12 +4190,12 @@ console.log("financial_data",financial_data)
                 <>
                   {(editCommmData[0]?.operationSpoccontactName !== "null" &&
                     editCommmData[0]?.operationSpoccontactName) ||
-                    (editCommmData[0]?.operationSpocdesignation !== "null" &&
-                      editCommmData[0]?.operationSpocdesignation) ||
-                    (editCommmData[0]?.operationSpocphoneNo !== "null" &&
-                      editCommmData[0]?.operationSpocphoneNo) ||
-                    (editCommmData[0]?.operationSpocemail !== "null" &&
-                      editCommmData[0]?.operationSpocemail) ? (
+                  (editCommmData[0]?.operationSpocdesignation !== "null" &&
+                    editCommmData[0]?.operationSpocdesignation) ||
+                  (editCommmData[0]?.operationSpocphoneNo !== "null" &&
+                    editCommmData[0]?.operationSpocphoneNo) ||
+                  (editCommmData[0]?.operationSpocemail !== "null" &&
+                    editCommmData[0]?.operationSpocemail) ? (
                     <p>
                       <b>Operation Spoc</b>
                     </p>
@@ -4078,8 +4203,8 @@ console.log("financial_data",financial_data)
                     ""
                   )}
                   <div className="row">
-                    {(editCommmData[0]?.operationSpoccontactName !== "null" &&
-                      editCommmData[0]?.operationSpoccontactName) ?
+                    {editCommmData[0]?.operationSpoccontactName !== "null" &&
+                    editCommmData[0]?.operationSpoccontactName ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_ContactName">Contact Name</label>
                         <input
@@ -4089,9 +4214,12 @@ console.log("financial_data",financial_data)
                           value={ops_ContactName}
                           onChange={(e) => setops_ContactName(e.target.value)}
                         />
-                      </div> : ""}
-                    {(editCommmData[0]?.operationSpocdesignation !== "null" &&
-                      editCommmData[0]?.operationSpocdesignation) ?
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.operationSpocdesignation !== "null" &&
+                    editCommmData[0]?.operationSpocdesignation ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_Designation">Designation</label>
                         <input
@@ -4102,9 +4230,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setops_Designation(e.target.value)}
                         />
                       </div>
-                      : ""}
-                    {(editCommmData[0]?.operationSpocphoneNo !== "null" &&
-                      editCommmData[0]?.operationSpocphoneNo) ?
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.operationSpocphoneNo !== "null" &&
+                    editCommmData[0]?.operationSpocphoneNo ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_PhoneNo">Phone no</label>
                         <input
@@ -4115,9 +4245,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setops_PhoneNo(e.target.value)}
                         />
                       </div>
-                      : ""}
-                    {(editCommmData[0]?.operationSpocemail !== "null" &&
-                      editCommmData[0]?.operationSpocemail) ?
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.operationSpocemail !== "null" &&
+                    editCommmData[0]?.operationSpocemail ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="ops_Email">Email</label>
                         <input
@@ -4127,19 +4259,22 @@ console.log("financial_data",financial_data)
                           value={ops_Email}
                           onChange={(e) => setops_Email(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </>
 
                 <>
                   {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
                     editCommmData[0]?.collectionSpoccontactName) ||
-                    (editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                      editCommmData[0]?.collectionSpocdesignation) ||
-                    (editCommmData[0]?.collectionSpocphoneNo !== "null" &&
-                      editCommmData[0]?.collectionSpocphoneNo) ||
-                    (editCommmData[0]?.collectionSpocemail !== "null" &&
-                      editCommmData[0]?.collectionSpocemail) ? (
+                  (editCommmData[0]?.collectionSpocdesignation !== "null" &&
+                    editCommmData[0]?.collectionSpocdesignation) ||
+                  (editCommmData[0]?.collectionSpocphoneNo !== "null" &&
+                    editCommmData[0]?.collectionSpocphoneNo) ||
+                  (editCommmData[0]?.collectionSpocemail !== "null" &&
+                    editCommmData[0]?.collectionSpocemail) ? (
                     <p>
                       <b>Collection Spoc</b>
                     </p>
@@ -4147,8 +4282,8 @@ console.log("financial_data",financial_data)
                     ""
                   )}
                   <div className="row">
-                    {(editCommmData[0]?.collectionSpoccontactName !== "null" &&
-                      editCommmData[0]?.collectionSpoccontactName) ?
+                    {editCommmData[0]?.collectionSpoccontactName !== "null" &&
+                    editCommmData[0]?.collectionSpoccontactName ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Contact Name</label>
                         <input
@@ -4158,9 +4293,12 @@ console.log("financial_data",financial_data)
                           value={colls_ContactName}
                           onChange={(e) => setcolls_ContactName(e.target.value)}
                         />
-                      </div> : ""}
-                    {(editCommmData[0]?.collectionSpocdesignation !== "null" &&
-                      editCommmData[0]?.collectionSpocdesignation) ?
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.collectionSpocdesignation !== "null" &&
+                    editCommmData[0]?.collectionSpocdesignation ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Designation</label>
                         <input
@@ -4170,9 +4308,12 @@ console.log("financial_data",financial_data)
                           value={colls_Designation}
                           onChange={(e) => setcolls_Designation(e.target.value)}
                         />
-                      </div> : ""}
-                    {(editCommmData[0]?.collectionSpocphoneNo !== "null" &&
-                      editCommmData[0]?.collectionSpocphoneNo) ?
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.collectionSpocphoneNo !== "null" &&
+                    editCommmData[0]?.collectionSpocphoneNo ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Phone no</label>
                         <input
@@ -4183,9 +4324,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setcolls_PhoneNo(e.target.value)}
                         />
                       </div>
-                      : ""}
-                    {(editCommmData[0]?.collectionSpocemail !== "null" &&
-                      editCommmData[0]?.collectionSpocemail) ?
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.collectionSpocemail !== "null" &&
+                    editCommmData[0]?.collectionSpocemail ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="country">Email</label>
                         <input
@@ -4195,10 +4338,12 @@ console.log("financial_data",financial_data)
                           value={colls_Email}
                           onChange={(e) => setcolls_Email(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </>
-
 
                 <p>
                   <b>Management Spoc</b>
@@ -4253,12 +4398,12 @@ console.log("financial_data",financial_data)
                 <>
                   {(editCommmData[0]?.contactName !== "null" &&
                     editCommmData[0]?.contactName) ||
-                    (editCommmData[0]?.designation !== "null" &&
-                      editCommmData[0]?.designation) ||
-                    (editCommmData[0]?.phoneNo !== "null" &&
-                      editCommmData[0]?.phoneNo) ||
-                    (editCommmData[0]?.email !== "null" &&
-                      editCommmData[0]?.email) ? (
+                  (editCommmData[0]?.designation !== "null" &&
+                    editCommmData[0]?.designation) ||
+                  (editCommmData[0]?.phoneNo !== "null" &&
+                    editCommmData[0]?.phoneNo) ||
+                  (editCommmData[0]?.email !== "null" &&
+                    editCommmData[0]?.email) ? (
                     <p>
                       <b>Others</b>
                     </p>
@@ -4266,8 +4411,8 @@ console.log("financial_data",financial_data)
                     ""
                   )}
                   <div className="row">
-                    {(editCommmData[0]?.contactName !== "null" &&
-                      editCommmData[0]?.contactName) ?
+                    {editCommmData[0]?.contactName !== "null" &&
+                    editCommmData[0]?.contactName ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_ContactName">Contact Name</label>
                         <input
@@ -4280,10 +4425,12 @@ console.log("financial_data",financial_data)
                           }
                         />
                       </div>
-                      : ""}
+                    ) : (
+                      ""
+                    )}
 
-                    {(editCommmData[0]?.designation !== "null" &&
-                      editCommmData[0]?.designation) ?
+                    {editCommmData[0]?.designation !== "null" &&
+                    editCommmData[0]?.designation ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_Designation">Designation</label>
                         <input
@@ -4296,9 +4443,11 @@ console.log("financial_data",financial_data)
                           }
                         />
                       </div>
-                      : ""}
-                    {(editCommmData[0]?.phoneNo !== "null" &&
-                      editCommmData[0]?.phoneNo) ?
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.phoneNo !== "null" &&
+                    editCommmData[0]?.phoneNo ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_PhoneNo">Phone no</label>
                         <input
@@ -4309,9 +4458,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setothers_PhoneNo(e.target.value)}
                         />
                       </div>
-                      : ""}
-                    {(editCommmData[0]?.email !== "null" &&
-                      editCommmData[0]?.email) ?
+                    ) : (
+                      ""
+                    )}
+                    {editCommmData[0]?.email !== "null" &&
+                    editCommmData[0]?.email ? (
                       <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                         <label htmlFor="others_Email">Email</label>
                         <input
@@ -4321,10 +4472,15 @@ console.log("financial_data",financial_data)
                           value={others_Email}
                           onChange={(e) => setothers_Email(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </>
-                {userStatus === "NewRegistration" ? "" :
+                {userStatus === "NewRegistration" ? (
+                  ""
+                ) : (
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="Post_Code">Master vendor email id*</label>
                     <input
@@ -4336,7 +4492,7 @@ console.log("financial_data",financial_data)
                     />
                     <span className="formError">{mastervendor_emailErr}</span>
                   </div>
-                }
+                )}
               </div>
 
               <div className="row px-3" style={{ backgroundColor: "#fff" }}>
@@ -4463,7 +4619,9 @@ console.log("financial_data",financial_data)
                           className="mb-2 inputbox"
                           name="GST_Registration_No"
                           value={GST_No}
-                          readOnly={GST_type === "UnRegistered" || GST_type === "Import"}
+                          readOnly={
+                            GST_type === "UnRegistered" || GST_type === "Import"
+                          }
                           onChange={(e) => validateGST_No(e)}
                         />
                         <span className="formError">{GST_NoErr}</span>
@@ -4472,13 +4630,17 @@ console.log("financial_data",financial_data)
                         <div className="col-sm-12 col-lg-4 m-auto">
                           {style === "cont2" ? (
                             <>
-                             <button
-                        type="button"
-                        onClick={(e) => handleEditPopup("GST_Doc")}
-                        className={`btn bankbtn ${editGstUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
-                      >
-                       {editGstUploadFile ? "Upload File" : "Delete File"}
-                      </button>
+                              <button
+                                type="button"
+                                onClick={(e) => handleEditPopup("GST_Doc")}
+                                className={`btn bankbtn ${
+                                  editGstUploadFile ? "upload" : "delete"
+                                } btn-primary btn-md mt-3`}
+                              >
+                                {editGstUploadFile
+                                  ? "Upload File"
+                                  : "Delete File"}
+                              </button>
                               {/* <button
                                 type="button"
                                 onClick={(e) => handleEditPopup("GST_Doc")}
@@ -4507,10 +4669,16 @@ console.log("financial_data",financial_data)
                             <>
                               <button
                                 type="button"
-                                onClick={(e) => handleEditPopup("fileDisclosure")}
-                                className="btn bankbtn delete btn-primary btn-md mt-3"
+                                onClick={(e) =>
+                                  handleEditPopup("fileDisclosure")
+                                }
+                                className={`btn bankbtn ${
+                                  editUnRegGstUploadFile ? "upload" : "delete"
+                                } btn-primary btn-md mt-3`}
                               >
-                                Delete File
+                                {editUnRegGstUploadFile
+                                  ? "Upload File"
+                                  : "Delete File"}
                               </button>
                             </>
                           ) : (
@@ -4550,9 +4718,13 @@ console.log("financial_data",financial_data)
                               type="button"
                               disabled={MSME_status === "2"}
                               onClick={(e) => handleEditPopup("MSME_Doc")}
-                              className={`btn bankbtn ${editMSMEUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}                       
+                              className={`btn bankbtn ${
+                                editMSMEUploadFile ? "upload" : "delete"
+                              } btn-primary btn-md mt-3`}
                             >
-                               {editMSMEUploadFile ? "Upload File" : "Delete File"}
+                              {editMSMEUploadFile
+                                ? "Upload File"
+                                : "Delete File"}
                             </button>
                           ) : (
                             <button
@@ -4579,21 +4751,30 @@ console.log("financial_data",financial_data)
                           type="text"
                           className="mb-2 inputbox"
                           name="P_A_N_No"
-                          value={Country_Region_Code !== "IN" ? 'N/A' : PAN_No}
-                          readOnly={GST_type === "Import" || Country_Region_Code !== "IN"}
+                          value={Country_Region_Code !== "IN" ? "N/A" : PAN_No}
+                          readOnly={
+                            GST_type === "Import" ||
+                            Country_Region_Code !== "IN"
+                          }
                           onChange={(e) => validatePAN_No(e)}
                         />
                         <span className="formError">{PAN_NoErr}</span>
                       </div>
-                      {((GST_type !== 'Import') && (Country_Region_Code === "IN") && userStatus !== "NewRegistration") ?
+                      {GST_type !== "Import" &&
+                      Country_Region_Code === "IN" &&
+                      userStatus !== "NewRegistration" ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
                           {style === "cont2" ? (
                             <button
                               type="button"
                               onClick={(e) => handleEditPopup("PAN_Doc")}
-                              className={`btn bankbtn ${editPanUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
+                              className={`btn bankbtn ${
+                                editPanUploadFile ? "upload" : "delete"
+                              } btn-primary btn-md mt-3`}
                             >
-                           {editPanUploadFile ? "Upload File" : "Delete File"}
+                              {editPanUploadFile
+                                ? "Upload File"
+                                : "Delete File"}
                             </button>
                           ) : (
                             <button
@@ -4605,7 +4786,10 @@ console.log("financial_data",financial_data)
                             </button>
                           )}
                           <p className="formError">{PAN_DocErr}</p>
-                        </div> : <></>}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12 pt-1">
@@ -4707,9 +4891,11 @@ console.log("financial_data",financial_data)
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("TAN_Doc")}
-                            className={`btn bankbtn ${editTanUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}   
+                            className={`btn bankbtn ${
+                              editTanUploadFile ? "upload" : "delete"
+                            } btn-primary btn-md mt-3`}
                           >
-                        {editTanUploadFile ? "Upload File" : "Delete File"}
+                            {editTanUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4736,9 +4922,13 @@ console.log("financial_data",financial_data)
                               <button
                                 type="button"
                                 onClick={(e) => handleEditPopup("form_10f")}
-                                className="btn bankbtn delete btn-primary btn-md mt-3"
+                                className={`btn bankbtn ${
+                                  editform10fUploadFile ? "upload" : "delete"
+                                } btn-primary btn-md mt-3`}
                               >
-                                Delete File
+                                {editform10fUploadFile
+                                  ? "Upload File"
+                                  : "Delete File"}
                               </button>
                             ) : (
                               <button
@@ -4777,9 +4967,13 @@ console.log("financial_data",financial_data)
                                 onClick={(e) =>
                                   handleEditPopup("Tax_residency")
                                 }
-                                className="btn bankbtn delete btn-primary btn-md mt-3"
+                                className={`btn bankbtn ${
+                                  editTRCUploadFile ? "upload" : "delete"
+                                } btn-primary btn-md mt-3`}
                               >
-                                Delete File
+                                {editTRCUploadFile
+                                  ? "Upload File"
+                                  : "Delete File"}
                               </button>
                             ) : (
                               <button
@@ -4816,9 +5010,13 @@ console.log("financial_data",financial_data)
                                 onClick={(e) =>
                                   handleEditPopup("pe_declaration")
                                 }
-                                className="btn bankbtn delete btn-primary btn-md mt-3"
+                                className={`btn bankbtn ${
+                                  editNPDUploadFile ? "upload" : "delete"
+                                } btn-primary btn-md mt-3`}
                               >
-                                Delete File
+                                {editNPDUploadFile
+                                  ? "Upload File"
+                                  : "Delete File"}
                               </button>
                             ) : (
                               <button
@@ -4861,7 +5059,9 @@ console.log("financial_data",financial_data)
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("RPD_Doc")}
-                            className={`btn bankbtn ${editRPDUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
+                            className={`btn bankbtn ${
+                              editRPDUploadFile ? "upload" : "delete"
+                            } btn-primary btn-md mt-3`}
                           >
                             {editRPDUploadFile ? "Upload File" : "Delete File"}
                           </button>
@@ -4891,9 +5091,11 @@ console.log("financial_data",financial_data)
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("COC_Doc")}
-                            className={`btn bankbtn ${editCOCUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`} 
+                            className={`btn bankbtn ${
+                              editCOCUploadFile ? "upload" : "delete"
+                            } btn-primary btn-md mt-3`}
                           >
-                             {editCOCUploadFile ? "Upload File" : "Delete File"}
+                            {editCOCUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -4921,9 +5123,11 @@ console.log("financial_data",financial_data)
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("NDA_Doc")}
-                            className={`btn bankbtn ${editNDAUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}  
+                            className={`btn bankbtn ${
+                              editNDAUploadFile ? "upload" : "delete"
+                            } btn-primary btn-md mt-3`}
                           >
-                           {editNDAUploadFile ? "Upload File" : "Delete File"}
+                            {editNDAUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -5028,9 +5232,11 @@ console.log("financial_data",financial_data)
                           <button
                             type="button"
                             onClick={(e) => handleEditPopup("bankdetailDoc")}
-                            className={`btn bankbtn ${editBankUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}  
+                            className={`btn bankbtn ${
+                              editBankUploadFile ? "upload" : "delete"
+                            } btn-primary btn-md mt-3`}
                           >
-                           {editBankUploadFile ? "Upload File" : "Delete File"}
+                            {editBankUploadFile ? "Upload File" : "Delete File"}
                           </button>
                         ) : (
                           <button
@@ -5053,22 +5259,22 @@ console.log("financial_data",financial_data)
               </div>
               {/* { editFinanceData[0] ?<> */}
               {/* { editFinanceData[0]?.yearOfAuditedFinancial || editFinanceData[0]?.Revenue || editFinanceData[0]?.Profit || editFinanceData[0]?.netWorth || editFinanceData[0]?.currentAssets || editFinanceData[0]?.directorDetails || editFinanceData[0]?.financial_data || editFinanceData[0]?.financial_data2 ? <> */}
-            
+
               <div
                 className="row px-3 pt-2"
                 style={{ backgroundColor: "#fff" }}
               >
-              {editFinanceData[0] ? (
-<h5 className="headlines">
-                  <b>Financial Details</b>
-                </h5>
-):(
-  ""
-)}
+                {editFinanceData[0] ? (
+                  <h5 className="headlines">
+                    <b>Financial Details</b>
+                  </h5>
+                ) : (
+                  ""
+                )}
                 <div className="row">
                   {/* {editFinanceData[0]?.yearOfAuditedFinancial ? ( */}
                   {editFinanceData[0]?.yearOfAuditedFinancial !== "null" &&
-                    editFinanceData[0]?.yearOfAuditedFinancial ? (
+                  editFinanceData[0]?.yearOfAuditedFinancial ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">
                         Year of audited financials
@@ -5088,7 +5294,7 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.Revenue ? ( */}
                   {editFinanceData[0]?.Revenue !== "null" &&
-                    editFinanceData[0]?.Revenue ? (
+                  editFinanceData[0]?.Revenue ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
@@ -5104,7 +5310,7 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.Profit ? ( */}
                   {editFinanceData[0]?.Profit !== "null" &&
-                    editFinanceData[0]?.Profit ? (
+                  editFinanceData[0]?.Profit ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
@@ -5120,7 +5326,7 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.netWorth ? ( */}
                   {editFinanceData[0]?.netWorth !== "null" &&
-                    editFinanceData[0]?.netWorth ? (
+                  editFinanceData[0]?.netWorth ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
@@ -5136,7 +5342,7 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.currentAssets ? ( */}
                   {editFinanceData[0]?.currentAssets !== "null" &&
-                    editFinanceData[0]?.currentAssets ? (
+                  editFinanceData[0]?.currentAssets ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Current Assets</label>
                       <input
@@ -5152,7 +5358,7 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.directorDetails ? ( */}
                   {editFinanceData[0]?.directorDetails !== "null" &&
-                    editFinanceData[0]?.directorDetails ? (
+                  editFinanceData[0]?.directorDetails ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Director detail</label>
                       <input
@@ -5167,9 +5373,11 @@ console.log("financial_data",financial_data)
                     ""
                   )}
                   {editFinanceData[0]?.organisationType !== "null" &&
-                    editFinanceData[0]?.organisationType ? (
+                  editFinanceData[0]?.organisationType ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                      <label htmlFor="Organisationtype">Organisation type</label>
+                      <label htmlFor="Organisationtype">
+                        Organisation type
+                      </label>
                       <select
                         className="form-select"
                         id="Distributors"
@@ -5179,10 +5387,14 @@ console.log("financial_data",financial_data)
                         disabled={style === "approvalsform" ? true : false}
                         onChange={(e) => setorganisationType(e.target.value)}
                       >
-                        <option value="null">- Select Organisation Type -</option>
+                        <option value="null">
+                          - Select Organisation Type -
+                        </option>
                         <option value="Company">Company</option>
                         <option value="LLP">LLP</option>
-                        <option value="Partnership Firm">Partnership Firm</option>
+                        <option value="Partnership Firm">
+                          Partnership Firm
+                        </option>
                         <option value="Proprietorship">Proprietorship</option>
                       </select>
                     </div>
@@ -5190,7 +5402,7 @@ console.log("financial_data",financial_data)
                     ""
                   )}
                   {editFinanceData[0]?.shareholderName !== "null" &&
-                    editFinanceData[0]?.shareholderName ? (
+                  editFinanceData[0]?.shareholderName ? (
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label htmlFor="Shareholdername">Shareholder name</label>
                       <input
@@ -5207,16 +5419,19 @@ console.log("financial_data",financial_data)
                   {/* {editFinanceData[0]?.financial_data ? ( */}
 
                   {editFinanceData[0]?.financial_data !== "null" &&
-                    editFinanceData[0]?.financial_data ? (
+                  editFinanceData[0]?.financial_data ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6  my-auto">
                       {style === "cont2" ? (
                         <button
                           type="button"
                           onClick={(e) => handleEditPopup("financial_data")}
-                          className={`btn bankbtn ${editfindataUploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
+                          className={`btn bankbtn ${
+                            editfindataUploadFile ? "upload" : "delete"
+                          } btn-primary btn-md mt-3`}
                         >
-                          {editfindataUploadFile ? "Upload Financials data" : "Delete Financials data"}
-                          
+                          {editfindataUploadFile
+                            ? "Upload Financials data"
+                            : "Delete Financials data"}
                         </button>
                       ) : (
                         <button
@@ -5234,16 +5449,19 @@ console.log("financial_data",financial_data)
                   )}
                   {/* {editFinanceData[0]?.financial_data2 ? ( */}
                   {editFinanceData[0]?.financial_data2 !== "null" &&
-                    editFinanceData[0]?.financial_data2 ? (
+                  editFinanceData[0]?.financial_data2 ? (
                     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                       {style === "cont2" ? (
                         <button
                           type="button"
                           onClick={(e) => handleEditPopup("financial_data2")}
-                          className={`btn bankbtn ${editfindata2UploadFile ? "upload" : "delete"} btn-primary btn-md mt-3`}
+                          className={`btn bankbtn ${
+                            editfindata2UploadFile ? "upload" : "delete"
+                          } btn-primary btn-md mt-3`}
                         >
-                          {editfindata2UploadFile ? "Upload Financials data 2" : "Delete Financials data 2"}
-                          
+                          {editfindata2UploadFile
+                            ? "Upload Financials data 2"
+                            : "Delete Financials data 2"}
                         </button>
                       ) : (
                         <button
@@ -5309,7 +5527,7 @@ console.log("financial_data",financial_data)
                 <>
                   <div className="row">
                     {editContactData[0]?.contactName2 !== "null" &&
-                      editContactData[0]?.contactName2 ?
+                    editContactData[0]?.contactName2 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Name*</label>
                         <input
@@ -5320,10 +5538,12 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setname2(e.target.value)}
                         />
                       </div>
-                      : ""}
+                    ) : (
+                      ""
+                    )}
 
                     {editContactData[0]?.emailId2 !== "null" &&
-                      editContactData[0]?.emailId2 ?
+                    editContactData[0]?.emailId2 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -5333,9 +5553,12 @@ console.log("financial_data",financial_data)
                           value={email2}
                           onChange={(e) => setemail2(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     {editContactData[0]?.contactNumber2 !== "null" &&
-                      editContactData[0]?.contactNumber2 ?
+                    editContactData[0]?.contactNumber2 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Contact Number*</label>
                         <input
@@ -5345,15 +5568,17 @@ console.log("financial_data",financial_data)
                           value={contactNumber2}
                           onChange={(e) => setcontactNumber2(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </>
-
 
                 <>
                   <div className="row">
                     {editContactData[0]?.contactName3 !== "null" &&
-                      editContactData[0]?.contactName3 ?
+                    editContactData[0]?.contactName3 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Name*</label>
                         <input
@@ -5364,9 +5589,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setname3(e.target.value)}
                         />
                       </div>
-                      : ""}
+                    ) : (
+                      ""
+                    )}
                     {editContactData[0]?.emailId3 !== "null" &&
-                      editContactData[0]?.emailId3 ?
+                    editContactData[0]?.emailId3 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Email*</label>
                         <input
@@ -5377,9 +5604,11 @@ console.log("financial_data",financial_data)
                           onChange={(e) => setemail3(e.target.value)}
                         />
                       </div>
-                      : ""}
+                    ) : (
+                      ""
+                    )}
                     {editContactData[0]?.contactNumber3 !== "null" &&
-                      editContactData[0]?.contactNumber3 ?
+                    editContactData[0]?.contactNumber3 ? (
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Contact Number*</label>
                         <input
@@ -5389,10 +5618,12 @@ console.log("financial_data",financial_data)
                           value={contactNumber3}
                           onChange={(e) => setcontactNumber3(e.target.value)}
                         />
-                      </div> : ""}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </>
-
               </div>
             </div>
 
@@ -5483,13 +5714,15 @@ console.log("financial_data",financial_data)
                         </div>
 
                         <div className="approvalManagerfile col-lg-3 col-sm-12 col-xs-12">
-                          <button disabled={style === "approvalsform" ? true : false}
+                          <button
+                            disabled={style === "approvalsform" ? true : false}
                             type="button"
                             onClick={(e) => handleEditPopup("approverFile")}
                             className="btn bankbtn btn-primary btn-md m-1"
                           >
                             {approverFile ? "Delete file" : "Select File"}
-                          </button><br></br>
+                          </button>
+                          <br></br>
                           <span className="formError">{approverFileErr}</span>
                         </div>
                       </div>
@@ -5563,7 +5796,6 @@ console.log("financial_data",financial_data)
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
                   {style === "cont2" ? "View" : "Edit"}
-
                 </button>
                 <button
                   type="button"

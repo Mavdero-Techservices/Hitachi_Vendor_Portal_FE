@@ -160,7 +160,7 @@ const ComplianceDetails = () => {
       if (e.size > 5000000) {
         setfileNDA(null);
         setdeleteNdaFile(null);
-        e=null;
+        e = null;
         document.getElementsByName("fileNDA")[0].value = null;
         Swal.fire({
           title: "file size should be less than 5mb",
@@ -270,7 +270,7 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => { });
+    apiService.downloadPdf(user).then((response) => {});
   };
   const redirectToBankdetail = () => {
     if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
@@ -332,8 +332,22 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+        if (
+          res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+          finalstatus !== "Approved" &&
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+            "Admin"
+        ) {
           setStyle("notEditable");
+        } else if (
+          res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+          finalstatus === "Approved" &&
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+            "Admin"
+        ) {
+          setStyle("notEditable");
+        } else {
+          setStyle("editable");
         }
         Object.entries(res.data.ComplianceDetail).map(([key, value]) => {
           var initialUrlRPD_Doc = res.data.ComplianceDetail[0].RPD_Doc;
@@ -358,7 +372,11 @@ const ComplianceDetails = () => {
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
-        if (res.data.basicInfo[0]?.submitStatus === "Submitted" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
+        if (
+          res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+            "Admin"
+        ) {
           setStyle("notEditable");
         }
         if (res.data.ComplianceDetail?.length > 0) {
@@ -395,9 +413,9 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => { });
-    apiService.createCocPdf(user).then((res) => { });
-    apiService.createNDAPdf(user).then((res) => { });
+    apiService.createRelatedDisclosurePdf(user).then((res) => {});
+    apiService.createCocPdf(user).then((res) => {});
+    apiService.createNDAPdf(user).then((res) => {});
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
     });
@@ -581,7 +599,7 @@ const ComplianceDetails = () => {
                           <div>
                             {editVlauefileRPD ? (
                               <div>
-                                <span>File name:{" "}{editVlauefileRPD}</span>
+                                <span>File name: {editVlauefileRPD}</span>
                               </div>
                             ) : (
                               <div>
@@ -596,9 +614,11 @@ const ComplianceDetails = () => {
                                   }
                                 />
                                 <span>
-                                  {fileRPD
-                                      ? <>File name:{" "}${fileRPD.name}</>
-                                    : "No File Chosen"}
+                                  {fileRPD ? (
+                                    <>File name: ${fileRPD.name}</>
+                                  ) : (
+                                    "No File Chosen"
+                                  )}
                                 </span>
                               </div>
                             )}
@@ -614,9 +634,11 @@ const ComplianceDetails = () => {
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
-                              {fileRPD
-                                  ? <>File name:{" "}${fileRPD.name}</>
-                                : "No File Chosen"}
+                              {fileRPD ? (
+                                <>File name: ${fileRPD.name}</>
+                              ) : (
+                                "No File Chosen"
+                              )}
                             </span>
                           </div>
                         )}
@@ -666,7 +688,7 @@ const ComplianceDetails = () => {
                       </Col>
                       <Col sm={6}>
                         {editVlauefileCOC ? (
-                          <span>File name:{" "}{editVlauefileCOC}</span>
+                          <span>File name: {editVlauefileCOC}</span>
                         ) : (
                           <div>
                             <FileUploader
@@ -678,9 +700,11 @@ const ComplianceDetails = () => {
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
-                              {fileCOC
-                                  ? <>File name:{" "} ${fileCOC.name}</>
-                                : "No File Chosen"}
+                              {fileCOC ? (
+                                <>File name: ${fileCOC.name}</>
+                              ) : (
+                                "No File Chosen"
+                              )}
                             </span>
                           </div>
                         )}
@@ -728,7 +752,7 @@ const ComplianceDetails = () => {
                       </Col>
                       <Col sm={6}>
                         {editVlauefileNDA ? (
-                          <span>File name:{" "}{editVlauefileNDA}</span>
+                          <span>File name: {editVlauefileNDA}</span>
                         ) : (
                           <div>
                             <FileUploader
@@ -740,9 +764,11 @@ const ComplianceDetails = () => {
                               disabled={style === "notEditable" ? true : false}
                             />
                             <span>
-                              {fileNDA
-                                  ? <>File name:{" "}${fileNDA.name}</>
-                                : "No File Chosen"}
+                              {fileNDA ? (
+                                <>File name: ${fileNDA.name}</>
+                              ) : (
+                                "No File Chosen"
+                              )}
                             </span>
                           </div>
                         )}
@@ -805,7 +831,7 @@ const ComplianceDetails = () => {
                   Cancel
                 </button>
                 {params.userId &&
-                  JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
+                JSON.parse(window.sessionStorage.getItem("jwt")).result.role ===
                   "Admin" ? (
                   <>
                     <button

@@ -118,7 +118,7 @@ function MRTteam() {
                         var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24));
 
                         let arr = [3, 2, 1]
-                        item.updatedAt = arr.indexOf(Difference_In_Days) + 1;
+                        item.updatedAt = -(arr.indexOf(Difference_In_Days));
                         const s = moment(item.level2Date).format('MMM DD');
                         item.level2Date = s
                         Level2rejected.push(item)

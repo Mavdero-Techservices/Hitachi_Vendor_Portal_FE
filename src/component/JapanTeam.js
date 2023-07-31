@@ -111,7 +111,7 @@ function JapanTeam() {
                     var Difference_In_Time = dueDate.getTime() - currentdate.getTime();
                     var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24));
                     let arr = [3, 2, 1]
-                    item.updatedAt = arr.indexOf(Difference_In_Days) + 1;
+                    item.updatedAt = -(arr.indexOf(Difference_In_Days));
                     const s = moment(item.createdAt).format('MMM DD');
                     item.createdAt = s
                 });

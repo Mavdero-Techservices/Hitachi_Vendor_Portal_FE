@@ -388,5 +388,17 @@ getDocuments() {
   updateMasterLogin(data) {
     return http.put(`/updateMasterLogin`, data);
   }
+  getErpStateCode(state) {
+    return http.get(`/getErpStateCode/${state}`);
+  }
+  GenerateVendorCode(data)
+  {
+    return http.post("/GenerateVendorCode",data);
+  }
+  SearchpanNo(P_A_N_No)
+  {
+    return http.get(`/SearchpanNo/${P_A_N_No}`);
+  }
+  
 }
 export default new apiService();

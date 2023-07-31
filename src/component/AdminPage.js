@@ -1,7 +1,7 @@
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
-import TextField1 from '@mui/material/TextField';
+import TextField1 from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -27,7 +27,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Button from "@mui/material/Button";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 
 function getModalStyle() {
   const top = 50;
@@ -38,6 +38,7 @@ function getModalStyle() {
     transform: `translate(-${top}%, -${left}%)`,
   };
 }
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -85,12 +86,12 @@ function AdminPage() {
 
   useEffect(() => {
     getApprovalList();
-  }, [])
+  }, []);
 
   const getApprovalList = async () => {
     let applist = [];
     apiService.getApprovalList().then((res) => {
-      setapproveList(res.data.result)
+      setapproveList(res.data.result);
       applist = res.data.result;
     });
 
@@ -112,10 +113,19 @@ function AdminPage() {
         var dueDate = new Date();
         dueDate.setDate(subDate.getDate() + 3);
         var Difference_In_Time = dueDate.getTime() - currentdate.getTime();
-        var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24));
-        console.log("Difference_In_Days--------------->>>>>>>>>", Difference_In_Days)
-        let arr = [3, 2, 1]
-
+        var Difference_In_Days = Math.trunc(
+          Difference_In_Time / (1000 * 3600 * 24)
+        );
+        console.log(
+          "Difference_In_Days--------------->>>>>>>>>",
+          Difference_In_Days
+        );
+        console.log("subDate::", subDate);
+        let arr = [3, 2, 1];
+        console.log(
+          "(arr.indexOf(Difference_In_Days))",
+          arr.indexOf(Difference_In_Days)
+        );
         // if (Difference_In_Days === 3) {
         //   item.updatedAt = 1;
         // } else if (Difference_In_Days === 2) {
@@ -128,7 +138,8 @@ function AdminPage() {
         // }
         // item.updatedAt = Difference_In_Days === 3 ? 1 : Difference_In_Days === 2 ? 2 : Difference_In_Days === 1?3;
 
-        item.updatedAt = arr.indexOf(Difference_In_Days) + 1;
+        item.updatedAt = -arr.indexOf(Difference_In_Days);
+
         const s = moment(item.submitDate).format("MMM DD");
         item.submitDate = s;
       });
@@ -159,11 +170,7 @@ function AdminPage() {
     }
   };
 
-  
-
-
   const filterHandler = (e) => {
-    
     setOpen(false);
     let newFilteredSuggestions;
     let newFilteredSuggestions1;
@@ -172,26 +179,30 @@ function AdminPage() {
       newFilteredSuggestions = filter?.filter(
         (suggestion) =>
           suggestion.submitDate === submitDate &&
-          suggestion.submitStatus === "Submitted" 
+          suggestion.submitStatus === "Submitted"
       );
 
-      if(newFilteredSuggestions) {
-        console.log("newFilteredSuggestions---------->", newFilteredSuggestions);
+      if (newFilteredSuggestions) {
+        console.log(
+          "newFilteredSuggestions---------->",
+          newFilteredSuggestions
+        );
       }
-
 
       newFilteredSuggestions1 = newFilteredSuggestions?.filter(
         (suggestion) =>
-        !approveList?.find((item1) => item1.userId === suggestion.userId)    
+          !approveList?.find((item1) => item1.userId === suggestion.userId)
       );
 
-      if(newFilteredSuggestions1) {
-        console.log("newFilteredSuggestions1---------->", newFilteredSuggestions1);
+      if (newFilteredSuggestions1) {
+        console.log(
+          "newFilteredSuggestions1---------->",
+          newFilteredSuggestions1
+        );
       }
-      
+
       setvendors(newFilteredSuggestions1);
-    } 
-    else if (dueDay) {
+    } else if (dueDay) {
       let newFilteredSuggestions2;
       let newFilteredSuggestions3;
       newFilteredSuggestions2 = filter?.filter(
@@ -202,10 +213,10 @@ function AdminPage() {
 
       newFilteredSuggestions3 = newFilteredSuggestions2?.filter(
         (suggestion) =>
-        !approveList?.find((item1) => item1.userId === suggestion.userId)    
+          !approveList?.find((item1) => item1.userId === suggestion.userId)
       );
 
-    console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
+      console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
       setvendors(newFilteredSuggestions3);
     } else {
       getApprovalList();
@@ -217,26 +228,31 @@ function AdminPage() {
   };
 
   const dueDayHandler = (e) => {
-    console.log("setdueDay", e.target.value)
+    console.log("setdueDay", e.target.value);
     setdueDay(e.target.value);
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Box style={{ backgroundColor: '#f3f4f7' }}  >
+      <Box style={{ backgroundColor: "#f3f4f7" }}>
         <CssBaseline />
         <AdminHeader team="vendor" />
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: "flex" }}>
           <SideBar />
-          <Box sx={{ mt: 2, width: '100%' }}>
+          <Box sx={{ mt: 2, width: "100%" }}>
             <Container>
-              <Accordion className='accordion1' sx={{ mt: 1 }}>
+              <Accordion className="accordion1" sx={{ mt: 1 }}>
                 <AccordionSummary
                   aria-controls="panel3a-content"
                   id="panel3a-header"
                 >
-                  <Typography variant="h5" sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Approvals</Typography>
-                  <Typography sx={{ width: '36%', }}></Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ width: "40%", flexShrink: 0, fontWeight: "bold" }}
+                  >
+                    Approvals
+                  </Typography>
+                  <Typography sx={{ width: "36%" }}></Typography>
                   <TextField
                     InputProps={{
                       endAdornment: (
@@ -245,7 +261,7 @@ function AdminPage() {
                             <SearchIcon />
                           </IconButton>
                         </InputAdornment>
-                      )
+                      ),
                     }}
                     onChange={searchHandler}
                   />
@@ -258,37 +274,109 @@ function AdminPage() {
                   />
                 </AccordionSummary>
               </Accordion>
-              <Accordion className='accordion1' >
+              <Accordion className="accordion1">
                 <AccordionSummary
                   aria-controls="panel3a-content"
                   id="panel3a-header"
                 >
-                  <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Company name</Typography>
-                  <Typography sx={{ width: '36%', }}></Typography>
-                  <Typography sx={{ width: '12%', fontWeight: "bold" }}>Submit date</Typography>
+                  <Typography
+                    sx={{ width: "40%", flexShrink: 0, fontWeight: "bold" }}
+                  >
+                    Company name
+                  </Typography>
+                  <Typography sx={{ width: "36%" }}></Typography>
+                  <Typography sx={{ width: "12%", fontWeight: "bold" }}>
+                    Submit date
+                  </Typography>
                   <Typography sx={{ fontWeight: "bold" }}>Age</Typography>
                 </AccordionSummary>
               </Accordion>
-              {vendors?.map((item, key) => <>
-                <Accordion expanded={expanded === 'panel' + item.id} key={key} onChange={handleChange('panel' + item.id)} >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panelbh-content"
-                    id={"panel1bh-header"}
+              {vendors?.map((item, key) => (
+                <>
+                  <Accordion
+                    expanded={expanded === "panel" + item.id}
+                    key={key}
+                    onChange={handleChange("panel" + item.id)}
                   >
-                    <IconButton sx={{ p: 0, width: '18%', justifyContent: 'flex-start' }} >
-                    {item.image && item.image !== 'null' ? <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64, ${item.image}`} /> : <Typography variant="h6" sx={{ border: 'none', width:'40px',backgroundColor:'#0001', borderRadius: '50%',textTransform:'uppercase' }}> {item.companyName?.charAt(0)}</Typography>}
-                      <Typography >&nbsp;{item.companyName}</Typography>
-                    </IconButton>
-                    <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>{item.userStatus === "MasterData" ? "Review updated vendor details" : "Review Vendor Details"}</Typography>
-                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.submitDate}</Typography>
-                    <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <ApprovalFields userid={item.userId} approvedV="approvalTeam"/>
-                  </AccordionDetails>
-                </Accordion>
-              </>)}
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panelbh-content"
+                      id={"panel1bh-header"}
+                    >
+                      <IconButton
+                        sx={{
+                          p: 0,
+                          width: "18%",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        {item.image && item.image !== "null" ? (
+                          <Avatar
+                            alt="Remy Sharp"
+                            src={`data:image/jpeg;base64, ${item.image}`}
+                          />
+                        ) : (
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              border: "none",
+                              width: "40px",
+                              backgroundColor: "#0001",
+                              borderRadius: "50%",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {" "}
+                            {item.companyName?.charAt(0)}
+                          </Typography>
+                        )}
+                        <Typography>&nbsp;{item.companyName}</Typography>
+                      </IconButton>
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          width: "55%",
+                          flexShrink: 0,
+                          my: "auto",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.userStatus === "MasterData"
+                          ? "Review updated vendor details"
+                          : "Review Vendor Details"}
+                      </Typography>
+                      <Typography
+                        textAlign="right"
+                        sx={{
+                          width: "10%",
+                          flexShrink: 0,
+                          my: "auto",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.submitDate}
+                      </Typography>
+                      <Typography
+                        textAlign="right"
+                        sx={{
+                          width: "10%",
+                          flexShrink: 0,
+                          my: "auto",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <ApprovalFields
+                        userid={item.userId}
+                        approvedV="approvalTeam"
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                </>
+              ))}
             </Container>
           </Box>
         </Box>
@@ -301,7 +389,11 @@ function AdminPage() {
       >
         <div style={modalStyle} className={classes.paper}>
           <Box>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: "16px",fontWeight: 600 }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontSize: "16px", fontWeight: 600 }}
+            >
               Filter Results For Approval
             </Typography>
 
@@ -314,26 +406,26 @@ function AdminPage() {
           </Box>
 
           <Grid container spacing={2}>
-              <Grid item xs={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Submit Date" onChange={dateHandler} />
-              </DemoContainer>
-            </LocalizationProvider>
-          </Grid>
             <Grid item xs={6}>
-            <TextField1
-              id="outlined-number"
-              placeholder="Due Day"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-                  onChange={(e) => dueDayHandler(e)}
-              sx={{ top: "9px" }}
-            />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Submit Date" onChange={dateHandler} />
+                </DemoContainer>
+              </LocalizationProvider>
             </Grid>
+            <Grid item xs={6}>
+              <TextField1
+                id="outlined-number"
+                placeholder="Due Day"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(e) => dueDayHandler(e)}
+                sx={{ top: "9px" }}
+              />
             </Grid>
+          </Grid>
 
           <Button
             variant="contained"
@@ -345,7 +437,7 @@ function AdminPage() {
         </div>
       </Modal>
     </ThemeProvider>
-  )
+  );
 }
 
-export default AdminPage
+export default AdminPage;

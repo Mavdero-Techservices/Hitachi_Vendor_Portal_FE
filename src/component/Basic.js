@@ -29,6 +29,7 @@ export class Basic extends React.Component {
       Post_Code: "",
       companyName: "",
       image: "",
+      stateCode: "",
       financeSpoccontactName: "",
       financeSpocdesignation: "",
       financeSpocphoneNo: "",
@@ -57,10 +58,37 @@ export class Basic extends React.Component {
       commuDetail: false,
       dataEntered: false,
       phoneNumber: "please enter your valid phone number",
-      newMasterReg:false,
-      basicInfoVendor:false,
-      communicationDetailsInfo:false,
-      userType: ''
+      newMasterReg: false,
+      basicInfoVendor: false,
+      communicationDetailsInfo: false,
+      userType: "",
+      AddressError: null,
+      Address_2Error: null,
+      cityError: null,
+      pinCodeError: null,
+      fieldErrors: {
+        financeSpoccontactNameError: null,
+        financeSpocdesignationError: null,
+        financeSpocphoneNoError: null,
+        financeSpocemailError: null,
+        operationSpoccontactNameError: null,
+        operationSpocdesignationError: null,
+        operationSpocphoneNoError: null,
+        operationSpocemailError: null,
+        collectionSpoccontactNameError: null,
+        collectionSpocdesignationError: null,
+        collectionSpocphoneNoError: null,
+        collectionSpocemailError: null,
+        managementSpoccontactNameError: null,
+        managementSpocdesignationError: null,
+        managementSpocphoneNoError: null,
+        managementSpocemailError: null,
+        contactNameError: null,
+        designationError: null,
+        phoneNoError: null,
+        emailError: null,
+        mastervendor_emailError: null,
+      },
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -69,10 +97,114 @@ export class Basic extends React.Component {
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
   }
-
+  validateField = (name, value) => {
+    switch (name) {
+      case "financeSpoccontactName":
+        return value.length > 30
+          ? "financeSpoccontactName must be 30 characters or less."
+          : null;
+      case "financeSpocdesignation":
+        return value.length > 30
+          ? "financeSpocdesignation must be 30 characters or less."
+          : null;
+      case "financeSpocphoneNo":
+        return value.length > 50
+          ? "financeSpocphone number must be 50 characters or less."
+          : null;
+      case "financeSpocemail":
+        return value.length > 50
+          ? "financeSpocemail must be 50 characters or less."
+          : null;
+      case "operationSpoccontactName":
+        return value.length > 30
+          ? "operationSpoccontactName must be 30 characters or less."
+          : null;
+      case "operationSpocdesignation":
+        return value.length > 30
+          ? "operationSpocdesignation must be 30 characters or less."
+          : null;
+      case "operationSpocphoneNo":
+        return value.length > 50
+          ? "operationSpocphone number must be 50 characters or less."
+          : null;
+      case "operationSpocemail":
+        return value.length > 50
+          ? "operationSpocemail must be 50 characters or less."
+          : null;
+      case "collectionSpoccontactName":
+        return value.length > 30
+          ? "collectionSpoccontactName must be 30 characters or less."
+          : null;
+      case "collectionSpocdesignation":
+        return value.length > 30
+          ? "collectionSpocdesignation must be 30 characters or less."
+          : null;
+      case "collectionSpocphoneNo":
+        return value.length > 50
+          ? "collectionSpocphone number must be 50 characters or less."
+          : null;
+      case "collectionSpocemail":
+        return value.length > 50
+          ? "collectionSpocemail must be 50 characters or less."
+          : null;
+      case "managementSpoccontactName":
+        return value.length > 30
+          ? "managementSpoccontactName must be 30 characters or less."
+          : null;
+      case "managementSpocdesignation":
+        return value.length > 30
+          ? "managementSpocdesignation must be 30 characters or less."
+          : null;
+      case "managementSpocphoneNo":
+        return value.length > 50
+          ? "managementSpocphone number must be 50 characters or less."
+          : null;
+      case "managementSpocemail":
+        return value.length > 50
+          ? "managementSpocemail must be 50 characters or less."
+          : null;
+      case "contactName":
+        return value.length > 30
+          ? "contactName must be 30 characters or less."
+          : null;
+      case "designation":
+        return value.length > 30
+          ? "designation must be 30 characters or less."
+          : null;
+      case "phoneNo":
+        return value.length > 50
+          ? "phone number must be 50 characters or less."
+          : null;
+      case "email":
+        return value.length > 50
+          ? "email must be 50 characters or less."
+          : null;
+      case "mastervendor_email":
+        return value.length > 50
+          ? "mastervendor_email must be 50 characters or less."
+          : null;
+      default:
+        return null;
+    }
+  };
   mouseEnter(e) {
     e.preventDefault();
     const { name, value } = e.target;
+    let newValue = value;
+    if (name === "Post_Code" && value.length > 20) {
+      newValue = value.slice(0, 20);
+      this.setState({
+        [name]: newValue,
+        isFormChanged: true,
+        pinCodeError: "PinCode/Zipcode must be 20 or less.",
+      });
+    } else {
+      this.setState({
+        [name]: newValue,
+        isFormChanged: true,
+        pinCodeError: null,
+      });
+    }
     this.setState({
       [name]: value,
     });
@@ -81,11 +213,30 @@ export class Basic extends React.Component {
   mouseOut(e) {
     e.preventDefault();
     const { name, value } = e.target;
+    let newValue = value;
+    if (name === "Post_Code" && value.length > 20) {
+      newValue = value.slice(0, 20);
+      this.setState({
+        [name]: newValue,
+        isFormChanged: true,
+        pinCodeError: "PinCode/Zipcode must be 20 or less.",
+      });
+    } else {
+      this.setState({
+        [name]: newValue,
+        isFormChanged: true,
+        pinCodeError: null,
+      });
+    }
     this.setState({
       [name]: value,
     });
     this.setState({ Post_Code: e.target.value });
-    if (this.state.Country_Region_Code && this.state.Post_Code && this.state.Post_Code.includes("/") === false) {
+    if (
+      this.state.Country_Region_Code &&
+      this.state.Post_Code &&
+      this.state.Post_Code.includes("/") === false
+    ) {
       apiService
         .getStateAndcityByzipcode(
           this.state.Country_Region_Code,
@@ -93,65 +244,87 @@ export class Basic extends React.Component {
         )
         .then((response) => {
           console.log("res--------->", response);
-if(response&&response.data.status==="success")
-{
-  if (response.data.postalcodes.length === 0) {
-    this.setState({ getCityAndState: "" });
-    this.setState({ state: "" });
-    this.setState({ City: "" });
-  } else {
-    this.setState({
-      getCityAndState: response.data.postalcodes[0],
-    });
-    this.setState({
-      state: response.data.postalcodes[0].adminName1,
-    });
-    if (response.data.postalcodes[0].adminName3) {
-      for (let i = 0; i < response.data.postalcodes.length; i++) {
-        if(response.data.postalcodes[i].adminName3 !== "NA") {
-          this.setState({
-            City: response.data.postalcodes[i].adminName3,
-          });
-        }
-      }
+          if (response && response.data.status === "success") {
+            if (response.data.postalcodes.length === 0) {
+              this.setState({ getCityAndState: "" });
+              this.setState({ state: "" });
+              this.setState({ City: "" });
+            } else {
+              this.setState(
+                {
+                  getCityAndState: response.data.postalcodes[0],
+                },
+                () => {
+                  this.setState(
+                    {
+                      state: response.data.postalcodes[0].adminName1,
+                    },
+                    () => {
+                      apiService
+                        .getErpStateCode(this.state.state)
+                        .then((response) => {
+                          console.log("ERP API response:", response);
+                          if (
+                            response.data.message === "Success" &&
+                            response.data.result.length > 0
+                          ) {
+                            const firstCodeValue = response.data.result[0].Code;
+                            console.log("First value of Code:", firstCodeValue);
+                            this.setState({
+                              stateCode: response.data.result[0].Code,
+                            });
+                          } else {
+                            console.log("No data found or an error occurred.");
+                          }
+                        })
+                        .catch((error) => {
+                          console.log("ERP API error:", error);
+                        });
+                    }
+                  );
 
-      
-    } else {
-      this.setState({
-        City: response.data.postalcodes[0].placeName,
-      });
-    }
-  }
-}
-else
-{
-  Swal.fire({
-    icon: 'error',
-    title: 'Error in Fetching Pincode',
-    confirmButtonText: "OK",
-    showCloseButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false,                      
-  });
-}
-          
-        }).catch((error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error in Fetching Pincode',
-            confirmButtonText: "OK",
-            showCloseButton: false,
-            allowOutsideClick: false,
-            allowEscapeKey: false,                      
-          });
+                  if (response.data.postalcodes[0].adminName3) {
+                    for (let i = 0; i < response.data.postalcodes.length; i++) {
+                      if (response.data.postalcodes[i].adminName3 !== "NA") {
+                        this.setState({
+                          City: response.data.postalcodes[i].adminName3,
+                        });
+                      }
+                    }
+                  } else {
+                    this.setState({
+                      City: response.data.postalcodes[0].placeName,
+                    });
+                  }
+                }
+              );
+            }
+          } else {
+            // Swal.fire({
+            //   icon: 'error',
+            //   title: 'Error in Fetching Pincode',
+            //   confirmButtonText: "OK",
+            //   showCloseButton: false,
+            //   allowOutsideClick: false,
+            //   allowEscapeKey: false,
+            // });
+          }
         })
-    }
-    else {
-      
+        .catch((error) => {
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'Error in Fetching Pincode',
+          //   confirmButtonText: "OK",
+          //   showCloseButton: false,
+          //   allowOutsideClick: false,
+          //   allowEscapeKey: false,
+          // });
+        });
+    } else {
     }
   }
   togglebutton() {
-    console.log("basic::")
+    console.log("basic::");
     this.setState({
       open: true,
       commu: false,
@@ -177,6 +350,12 @@ else
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
+          const { AddressError, Address_2Error, cityError, pinCodeError } =
+            this.state;
+          if (AddressError || Address_2Error || cityError || pinCodeError) {
+            console.log("Form has errors. Please correct the input fields.");
+            return;
+          }
           const basicInfo = {
             userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
               ?.userId,
@@ -188,13 +367,21 @@ else
             Post_Code: this.state.Post_Code,
             companyName: this.state.companyName,
             image: this.state.image,
-            userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
+            userStatus:
+              JSON.parse(window.sessionStorage.getItem("jwt")).result
+                ?.usertype === "NewRegistration"
+                ? "NewRegistration"
+                : JSON.parse(window.sessionStorage.getItem("master"))
+                ? "MasterData"
+                : "",
           };
           if (this.state.basicInfoVendor) {
-            console.log("update::",this.state.basicInfoVendor)
+            console.log("update::", this.state.basicInfoVendor);
             apiService
-              .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId, basicInfo)
+              .updateVendordetail(
+                JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
+                basicInfo
+              )
               .then((response) => {
                 if (response) {
                   Swal.fire({
@@ -236,7 +423,13 @@ else
                 Post_Code: this.state.Post_Code,
                 companyName: this.state.companyName,
                 image: this.state.image,
-                userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
+                userStatus:
+                  JSON.parse(window.sessionStorage.getItem("jwt")).result
+                    ?.usertype === "NewRegistration"
+                    ? "NewRegistration"
+                    : JSON.parse(window.sessionStorage.getItem("master"))
+                    ? "MasterData"
+                    : "",
               };
               apiService.saveNewRegVendordetail(basicInfo).then((response) => {
                 this.setState({ newUser: response.data.result.userId });
@@ -270,7 +463,7 @@ else
                 }
               });
             } else {
-              console.log("save::",this.state.basicInfoVendor)
+              console.log("save::", this.state.basicInfoVendor);
               apiService.saveVendordetail(basicInfo).then((response) => {
                 if (response) {
                   Swal.fire({
@@ -285,7 +478,7 @@ else
                       open: false,
                       commu: true,
                     });
-                    this.setState({     
+                    this.setState({
                       basicInfoVendor: true,
                     });
                     this.setState({
@@ -338,6 +531,13 @@ else
         allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
+          if (this.hasFieldErrors()) {
+            // Show an error message or take appropriate action
+            console.log(
+              "Please fix the field errors before submitting the form."
+            );
+            return;
+          }
           const communicationDetails = {
             userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
               ?.userId,
@@ -363,13 +563,13 @@ else
             email: this.state.email,
             mastervendor_email: this.state.mastervendor_email,
           };
-          
+
           if (this.state.communicationDetailsInfo) {
             if (this.state.commuDetail) {
               apiService
                 .updateCommunicationdetail(
                   JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId,
+                    ?.userId,
                   communicationDetails
                 )
                 .then((response) => {
@@ -421,8 +621,8 @@ else
                       allowOutsideClick: false,
                     }).then((response) => {
                       this.setState({
-                        communicationDetailsInfo:true
-                      })
+                        communicationDetailsInfo: true,
+                      });
                       this.setState({
                         isFormChangedCommunication: false,
                       });
@@ -468,8 +668,8 @@ else
                       allowOutsideClick: false,
                     }).then((response) => {
                       this.setState({
-                        communicationDetailsInfo:true
-                      })
+                        communicationDetailsInfo: true,
+                      });
                       this.setState({
                         isFormChangedCommunication: false,
                       });
@@ -509,8 +709,8 @@ else
                       allowOutsideClick: false,
                     }).then((response) => {
                       this.setState({
-                        communicationDetailsInfo:true
-                      })
+                        communicationDetailsInfo: true,
+                      });
                       this.setState({
                         isFormChangedCommunication: false,
                       });
@@ -581,7 +781,10 @@ else
         this.setState({
           isFormChanged: true,
         });
-        if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
+        if (
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+          "NewRegistration"
+        ) {
           this.setState({
             Address: "",
             Address_2: "",
@@ -591,9 +794,7 @@ else
             Post_Code: "",
             image: "",
           });
-        }
-        else
-        {
+        } else {
           this.setState({
             Address: "",
             Address_2: "",
@@ -604,7 +805,6 @@ else
             image: "",
           });
         }
-       
       }
     });
   };
@@ -659,23 +859,124 @@ else
   formValChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
+    let newValue = value;
+    let addressError = this.state.AddressError;
+    let address2Error = this.state.Address_2Error;
+    let cityError = this.state.cityError;
+
+    if (name === "Address") {
+      if (value.length > 50) {
+        newValue = value.slice(0, 50);
+        addressError = "Address Line-1 must be 50 characters or less.";
+      } else {
+        addressError = null; // No error, so set to null
+      }
+    }
+
+    if (name === "Address_2") {
+      if (value.length > 50) {
+        newValue = value.slice(0, 50);
+        address2Error = "Address Line-2 must be 50 characters or less.";
+      } else {
+        address2Error = null; // No error, so set to null
+      }
+    }
+
+    if (name === "City") {
+      if (value.length > 30) {
+        newValue = value.slice(0, 30);
+        cityError = "City must be 30 characters or less.";
+      } else {
+        cityError = null; // No error, so set to null
+      }
+    }
+
     this.setState({
-      [name]: value,
+      [name]: newValue,
       isFormChanged: true,
+      AddressError: addressError,
+      Address_2Error: address2Error,
+      cityError: cityError,
     });
-    this.setState({ [e.target.id]: e.target.value });
   };
+
+  // formValChange = (e) => {
+  //   e.preventDefault();
+  //   const { name, value } = e.target;
+  //   let newValue = value;
+  //   if (name === "Address" && value.length > 50) {
+  //     newValue = value.slice(0, 50);
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       AddressError: "Address Line-1 must be 50 characters or less.",
+  //     });
+  //   }else {
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       AddressError: null,
+  //     });
+  //   }
+  //   if (name === "Address_2" && value.length > 50) {
+  //     newValue = value.slice(0, 50);
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       Address_2Error: "Address Line-2 must be 50 characters or less.",
+  //     });
+  //   }else {
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       Address_2Error: null,
+  //     });
+  //   }
+
+  //  if (name === "City" && value.length > 30) {
+  //     newValue = value.slice(0, 30);
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       cityError: "city must be 30 or less.",
+  //     });
+  //   }else {
+  //     this.setState({
+  //       [name]: newValue,
+  //       isFormChanged: true,
+  //       cityError: null,
+  //     });
+  //   }
+  //   this.setState({
+  //     [name]: value,
+  //     isFormChanged: true,
+  //   });
+  //   this.setState({ [e.target.id]: e.target.value });
+  // };
   formValChangeCommunication = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    this.setState({
-      [name]: value,
+    let newValue = value;
+    const error = this.validateField(name, value);
+
+    this.setState((prevState) => ({
+      [name]: newValue,
       isFormChangedCommunication: true,
-    });
+      fieldErrors: {
+        ...prevState.fieldErrors,
+        [`${name}Error`]: error,
+      },
+    }));
     this.setState({ [e.target.id]: e.target.value });
   };
   handleSubmit = (e) => {
     // e.preventDefault();
+    const { AddressError, Address_2Error, cityError, pinCodeError } =
+      this.state;
+    if (AddressError || Address_2Error || cityError || pinCodeError) {
+      console.log("Form has errors. Please correct the input fields.");
+      return;
+    }
     const basicInfo = {
       // id: this.state.id,
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
@@ -687,13 +988,22 @@ else
       Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
-      userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
+      stateCode: this.state.stateCode,
+      userStatus:
+        JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+        "NewRegistration"
+          ? "NewRegistration"
+          : JSON.parse(window.sessionStorage.getItem("master"))
+          ? "MasterData"
+          : "",
     };
     if (this.state.basicInfoVendor) {
-      console.log("update::",this.state.basicInfoVendor)
+      console.log("update::", this.state.basicInfoVendor);
       apiService
-        .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
-        ?.userId, basicInfo)
+        .updateVendordetail(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
+          basicInfo
+        )
         .then((response) => {
           if (response) {
             this.fetchData();
@@ -752,7 +1062,7 @@ else
           }
         });
       } else {
-        console.log("save::",this.state.basicInfoVendor)
+        console.log("save::", this.state.basicInfoVendor);
         apiService.saveVendordetail(basicInfo).then((response) => {
           if (response) {
             this.fetchData();
@@ -764,7 +1074,7 @@ else
               allowOutsideClick: false,
             }).then((result) => {
               if (result.isConfirmed) {
-                this.setState({     
+                this.setState({
                   basicInfoVendor: true,
                 });
                 this.setState({
@@ -787,10 +1097,15 @@ else
   };
   updatehandleSubmit = (e) => {
     e.preventDefault();
+    const { AddressError, Address_2Error, cityError, pinCodeError } =
+      this.state;
+    if (AddressError || Address_2Error || cityError || pinCodeError) {
+      console.log("Form has errors. Please correct the input fields.");
+      return;
+    }
     const basicInfo = {
       // id: this.state.id,
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-      ?.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
       Address: this.state.Address,
       Address_2: this.state.Address_2,
       City: this.state.City,
@@ -799,13 +1114,22 @@ else
       Post_Code: this.state.Post_Code,
       companyName: this.state.companyName,
       image: this.state.image,
-      userStatus: JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration" ? "NewRegistration" : JSON.parse(window.sessionStorage.getItem("master")) ? "MasterData" : ""
+      stateCode: this.state.stateCode,
+      userStatus:
+        JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+        "NewRegistration"
+          ? "NewRegistration"
+          : JSON.parse(window.sessionStorage.getItem("master"))
+          ? "MasterData"
+          : "",
     };
     if (this.state.basicInfoVendor) {
-      console.log("update::",this.state.basicInfoVendor)
+      console.log("update::", this.state.basicInfoVendor);
       apiService
-        .updateVendordetail(JSON.parse(window.sessionStorage.getItem("jwt")).result
-        ?.userId, basicInfo)
+        .updateVendordetail(
+          JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
+          basicInfo
+        )
         .then((response) => {
           if (response) {
             this.fetchData();
@@ -834,9 +1158,23 @@ else
         });
     }
   };
+  hasFieldErrors = () => {
+    const fieldErrorKeys = Object.keys(this.state.fieldErrors);
+    for (const key of fieldErrorKeys) {
+      if (this.state.fieldErrors[key] !== null) {
+        return true; // Found a field error
+      }
+    }
+    return false; // No field errors found
+  };
 
   handleSubmitComDetail = (e) => {
     // e.preventDefault();
+    if (this.hasFieldErrors()) {
+      // Show an error message or take appropriate action
+      console.log("Please fix the field errors before submitting the form.");
+      return;
+    }
     const communicationDetails = {
       userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,
@@ -865,8 +1203,7 @@ else
       if (this.state.commuDetail) {
         apiService
           .updateCommunicationdetail(
-            JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId,
+            JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             communicationDetails
           )
           .then((response) => {
@@ -910,8 +1247,8 @@ else
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
-                    communicationDetailsInfo:true
-                  })
+                    communicationDetailsInfo: true,
+                  });
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -948,8 +1285,8 @@ else
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
-                    communicationDetailsInfo:true
-                  })
+                    communicationDetailsInfo: true,
+                  });
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -980,8 +1317,8 @@ else
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
-                    communicationDetailsInfo:true
-                  })
+                    communicationDetailsInfo: true,
+                  });
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -1002,9 +1339,13 @@ else
   };
   updatehandleSubmitComDetail = (e) => {
     e.preventDefault();
+    if (this.hasFieldErrors()) {
+      // Show an error message or take appropriate action
+      console.log("Please fix the field errors before submitting the form.");
+      return;
+    }
     const communicationDetails = {
-      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result
-      ?.userId,
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
       financeSpoccontactName: this.state.financeSpoccontactName,
       financeSpocdesignation: this.state.financeSpocdesignation,
       financeSpocphoneNo: this.state.financeSpocphoneNo,
@@ -1032,8 +1373,7 @@ else
       if (this.state.commuDetail) {
         apiService
           .updateCommunicationdetail(
-            JSON.parse(window.sessionStorage.getItem("jwt")).result
-              ?.userId,
+            JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId,
             communicationDetails
           )
           .then((response) => {
@@ -1077,8 +1417,8 @@ else
               }).then((result) => {
                 if (result.isConfirmed) {
                   this.setState({
-                    communicationDetailsInfo:true
-                  })
+                    communicationDetailsInfo: true,
+                  });
                   this.setState({
                     isFormChangedCommunication: false,
                   });
@@ -1136,19 +1476,17 @@ else
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => { });
+    apiService.updateVendordetail(userId, data).then((response) => {});
   }
   fetchData() {
     const storedData = sessionStorage.getItem("master");
     const data = storedData ? JSON.parse(storedData) : {};
-    console.log("basicmaster::",data.master)
-    if(data.master===true)
-    {
-      console.log("indianmaster::")
+    console.log("basicmaster::", data.master);
+    if (data.master === true) {
+      console.log("indianmaster::");
       this.setState({
         newMasterReg: true,
       });
-      
     }
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
       ?.userId;
@@ -1183,186 +1521,205 @@ else
     //   this.setState({ vendorId: res.data.result?.vendorId });
     // });
     let finalstatus = "";
-    apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result
-    ?.userId).then((res) => {
-      finalstatus = res.data.result?.finalStatus;
-      console.log("finalstatus", finalstatus);
-    });
-    apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result
-    ?.userId).then((res) => {
-      console.log("basicresparamscol::",res.data.basicInfo?.length > 0);
-      if (res.data.basicInfo?.length > 0)
-      {
-        this.setState({     
-          basicInfoVendor: true,
-        });
-      }
-      
-      if(res.data.CommunicationDetails?.length > 0)
-      {
-        this.setState({
-          communicationDetailsInfo:true
-        })
-      }
-      console.log("basicInfotrue::",this.state.basicInfoVendor);
-      if (res.data.basicInfo[0]?.submitStatus === "Submitted" && finalstatus !== "Approved" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== "Admin") {
-        this.setState({ setStyle: "notEditable" });
-      }
-      this.setState({
-        editStatutory: res.data.Statutory,
+    apiService
+      .signupFindByUserId(
+        JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
+      )
+      .then((res) => {
+        finalstatus = res.data.result?.finalStatus;
+        console.log("finalstatus", finalstatus);
       });
-      Object.entries(res.data.basicInfo).map(([key, value]) => {
+    apiService
+      .getAllCollection(
+        JSON.parse(window.sessionStorage.getItem("jwt")).result?.userId
+      )
+      .then((res) => {
+        console.log("basicresparamscol::", res.data.basicInfo?.length > 0);
+        if (res.data.basicInfo?.length > 0) {
+          this.setState({
+            basicInfoVendor: true,
+          });
+        }
+
+        if (res.data.CommunicationDetails?.length > 0) {
+          this.setState({
+            communicationDetailsInfo: true,
+          });
+        }
+        console.log("basicInfotrue::", this.state.basicInfoVendor);
+        if (
+          res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+          finalstatus !== "Approved" &&
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+            "Admin"
+        ) {
+          this.setState({ setStyle: "notEditable" });
+        } else if (
+          res.data.basicInfo[0]?.submitStatus === "Submitted" &&
+          finalstatus === "Approved" &&
+          JSON.parse(window.sessionStorage.getItem("jwt")).result.role !==
+            "Admin"
+        ) {
+          this.setState({ setStyle: "notEditable" });
+        } else {
+          this.setState({ setStyle: "editable" });
+        }
+
         this.setState({
-          previousCompanyName: value.companyName,
-          previousAddress: value.Address,
-          previousAddress_2:
-            value.Address_2 === "null" ? "" : value.Address_2,
-          previousCity: value.City,
-          previousState: value.state,
-          previousCountry_Region_Code: value.Country_Region_Code,
-          previousPost_Code: value.Post_Code,
-          previousImage: value.image,
+          editStatutory: res.data.Statutory,
         });
-        this.setState({
-          companyName: value.companyName,
-          Address: value.Address,
-          Address_2: value.Address_2 === "null" ? "" : value.Address_2,
-          City: value.City,
-          state: value.state,
-          Country_Region_Code: value.Country_Region_Code,
-          Post_Code: value.Post_Code,
-          image: value.image,
+        Object.entries(res.data.basicInfo).map(([key, value]) => {
+          this.setState({
+            previousCompanyName: value.companyName,
+            previousAddress: value.Address,
+            previousAddress_2:
+              value.Address_2 === "null" ? "" : value.Address_2,
+            previousCity: value.City,
+            previousState: value.state,
+            previousCountry_Region_Code: value.Country_Region_Code,
+            previousPost_Code: value.Post_Code,
+            previousImage: value.image,
+          });
+          this.setState({
+            companyName: value.companyName,
+            Address: value.Address,
+            Address_2: value.Address_2 === "null" ? "" : value.Address_2,
+            City: value.City,
+            state: value.state,
+            Country_Region_Code: value.Country_Region_Code,
+            Post_Code: value.Post_Code,
+            image: value.image,
+          });
+          return null;
         });
-        return null;
+        Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
+          this.setState({
+            commuDetail:
+              res.data.CommunicationDetails.length > 0 ? true : false,
+          });
+          this.setState({
+            previousfinanceSpoccontactName: value.financeSpoccontactName,
+            previousfinanceSpocdesignation: value.financeSpocdesignation,
+            previousfinanceSpocphoneNo: value.financeSpocphoneNo,
+            previousfinanceSpocemail: value.financeSpocemail,
+            previousoperationSpoccontactName:
+              value.operationSpoccontactName === "null"
+                ? ""
+                : value.operationSpoccontactName,
+            previousoperationSpocdesignation:
+              value.operationSpocdesignation === "null"
+                ? ""
+                : value.operationSpocdesignation,
+            previousoperationSpocphoneNo:
+              value.operationSpocphoneNo === "null"
+                ? ""
+                : value.operationSpocphoneNo,
+            previousoperationSpocemail:
+              value.operationSpocemail === "null"
+                ? ""
+                : value.operationSpocemail,
+            previouscollectionSpoccontactName:
+              value.collectionSpoccontactName === "null"
+                ? ""
+                : value.collectionSpoccontactName,
+            previouscollectionSpocdesignation:
+              value.collectionSpocdesignation === "null"
+                ? ""
+                : value.collectionSpocdesignation,
+            previouscollectionSpocphoneNo:
+              value.collectionSpocphoneNo === "null"
+                ? ""
+                : value.collectionSpocphoneNo,
+            previouscollectionSpocemail:
+              value.collectionSpocemail === "null"
+                ? ""
+                : value.collectionSpocemail,
+            previousmanagementSpoccontactName:
+              value.managementSpoccontactName === "null"
+                ? ""
+                : value.managementSpoccontactName,
+            previousmanagementSpocdesignation:
+              value.managementSpocdesignation === "null"
+                ? ""
+                : value.managementSpocdesignation,
+            previousmanagementSpocphoneNo:
+              value.managementSpocphoneNo === "null"
+                ? ""
+                : value.managementSpocphoneNo,
+            previousmanagementSpocemail:
+              value.managementSpocemail === "null"
+                ? ""
+                : value.managementSpocemail,
+            previouscontactName:
+              value.contactName === "null" ? "" : value.contactName,
+            previousdesignation:
+              value.designation === "null" ? "" : value.designation,
+            previousphoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+            previousemail: value.email === "null" ? "" : value.email,
+            previousmastervendor_email: value.mastervendor_email,
+          });
+          this.setState({
+            financeSpoccontactName: value.financeSpoccontactName,
+            financeSpocdesignation: value.financeSpocdesignation,
+            financeSpocphoneNo: value.financeSpocphoneNo,
+            financeSpocemail: value.financeSpocemail,
+            operationSpoccontactName:
+              value.operationSpoccontactName === "null"
+                ? ""
+                : value.operationSpoccontactName,
+            operationSpocdesignation:
+              value.operationSpocdesignation === "null"
+                ? ""
+                : value.operationSpocdesignation,
+            operationSpocphoneNo:
+              value.operationSpocphoneNo === "null"
+                ? ""
+                : value.operationSpocphoneNo,
+            operationSpocemail:
+              value.operationSpocemail === "null"
+                ? ""
+                : value.operationSpocemail,
+            collectionSpoccontactName:
+              value.collectionSpoccontactName === "null"
+                ? ""
+                : value.collectionSpoccontactName,
+            collectionSpocdesignation:
+              value.collectionSpocdesignation === "null"
+                ? ""
+                : value.collectionSpocdesignation,
+            collectionSpocphoneNo:
+              value.collectionSpocphoneNo === "null"
+                ? ""
+                : value.collectionSpocphoneNo,
+            collectionSpocemail:
+              value.collectionSpocemail === "null"
+                ? ""
+                : value.collectionSpocemail,
+            managementSpoccontactName:
+              value.managementSpoccontactName === "null"
+                ? ""
+                : value.managementSpoccontactName,
+            managementSpocdesignation:
+              value.managementSpocdesignation === "null"
+                ? ""
+                : value.managementSpocdesignation,
+            managementSpocphoneNo:
+              value.managementSpocphoneNo === "null"
+                ? ""
+                : value.managementSpocphoneNo,
+            managementSpocemail:
+              value.managementSpocemail === "null"
+                ? ""
+                : value.managementSpocemail,
+            contactName: value.contactName === "null" ? "" : value.contactName,
+            designation: value.designation === "null" ? "" : value.designation,
+            phoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
+            email: value.email === "null" ? "" : value.email,
+            mastervendor_email: value.mastervendor_email,
+          });
+          return null;
+        });
       });
-      Object.entries(res.data.CommunicationDetails).map(([key, value]) => {
-        this.setState({
-          commuDetail:
-            res.data.CommunicationDetails.length > 0 ? true : false,
-        });
-        this.setState({
-          previousfinanceSpoccontactName: value.financeSpoccontactName,
-          previousfinanceSpocdesignation: value.financeSpocdesignation,
-          previousfinanceSpocphoneNo: value.financeSpocphoneNo,
-          previousfinanceSpocemail: value.financeSpocemail,
-          previousoperationSpoccontactName:
-            value.operationSpoccontactName === "null"
-              ? ""
-              : value.operationSpoccontactName,
-          previousoperationSpocdesignation:
-            value.operationSpocdesignation === "null"
-              ? ""
-              : value.operationSpocdesignation,
-          previousoperationSpocphoneNo:
-            value.operationSpocphoneNo === "null"
-              ? ""
-              : value.operationSpocphoneNo,
-          previousoperationSpocemail:
-            value.operationSpocemail === "null"
-              ? ""
-              : value.operationSpocemail,
-          previouscollectionSpoccontactName:
-            value.collectionSpoccontactName === "null"
-              ? ""
-              : value.collectionSpoccontactName,
-          previouscollectionSpocdesignation:
-            value.collectionSpocdesignation === "null"
-              ? ""
-              : value.collectionSpocdesignation,
-          previouscollectionSpocphoneNo:
-            value.collectionSpocphoneNo === "null"
-              ? ""
-              : value.collectionSpocphoneNo,
-          previouscollectionSpocemail:
-            value.collectionSpocemail === "null"
-              ? ""
-              : value.collectionSpocemail,
-          previousmanagementSpoccontactName:
-            value.managementSpoccontactName === "null"
-              ? ""
-              : value.managementSpoccontactName,
-          previousmanagementSpocdesignation:
-            value.managementSpocdesignation === "null"
-              ? ""
-              : value.managementSpocdesignation,
-          previousmanagementSpocphoneNo:
-            value.managementSpocphoneNo === "null"
-              ? ""
-              : value.managementSpocphoneNo,
-          previousmanagementSpocemail:
-            value.managementSpocemail === "null"
-              ? ""
-              : value.managementSpocemail,
-          previouscontactName:
-            value.contactName === "null" ? "" : value.contactName,
-          previousdesignation:
-            value.designation === "null" ? "" : value.designation,
-          previousphoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
-          previousemail: value.email === "null" ? "" : value.email,
-          previousmastervendor_email: value.mastervendor_email,
-        });
-        this.setState({
-          financeSpoccontactName: value.financeSpoccontactName,
-          financeSpocdesignation: value.financeSpocdesignation,
-          financeSpocphoneNo: value.financeSpocphoneNo,
-          financeSpocemail: value.financeSpocemail,
-          operationSpoccontactName:
-            value.operationSpoccontactName === "null"
-              ? ""
-              : value.operationSpoccontactName,
-          operationSpocdesignation:
-            value.operationSpocdesignation === "null"
-              ? ""
-              : value.operationSpocdesignation,
-          operationSpocphoneNo:
-            value.operationSpocphoneNo === "null"
-              ? ""
-              : value.operationSpocphoneNo,
-          operationSpocemail:
-            value.operationSpocemail === "null"
-              ? ""
-              : value.operationSpocemail,
-          collectionSpoccontactName:
-            value.collectionSpoccontactName === "null"
-              ? ""
-              : value.collectionSpoccontactName,
-          collectionSpocdesignation:
-            value.collectionSpocdesignation === "null"
-              ? ""
-              : value.collectionSpocdesignation,
-          collectionSpocphoneNo:
-            value.collectionSpocphoneNo === "null"
-              ? ""
-              : value.collectionSpocphoneNo,
-          collectionSpocemail:
-            value.collectionSpocemail === "null"
-              ? ""
-              : value.collectionSpocemail,
-          managementSpoccontactName:
-            value.managementSpoccontactName === "null"
-              ? ""
-              : value.managementSpoccontactName,
-          managementSpocdesignation:
-            value.managementSpocdesignation === "null"
-              ? ""
-              : value.managementSpocdesignation,
-          managementSpocphoneNo:
-            value.managementSpocphoneNo === "null"
-              ? ""
-              : value.managementSpocphoneNo,
-          managementSpocemail:
-            value.managementSpocemail === "null"
-              ? ""
-              : value.managementSpocemail,
-          contactName: value.contactName === "null" ? "" : value.contactName,
-          designation: value.designation === "null" ? "" : value.designation,
-          phoneNo: value.phoneNo === "null" ? "" : value.phoneNo,
-          email: value.email === "null" ? "" : value.email,
-          mastervendor_email: value.mastervendor_email,
-        });
-        return null;
-      });
-    });
     if (newuser) {
       this.edit = true;
       apiService.getAllCollection(newuser).then((res) => {
@@ -1370,17 +1727,15 @@ else
         this.setState({
           editStatutory: res.data.Statutory,
         });
-        if (res.data.basicInfo?.length > 0)
-        {
-          this.setState({     
+        if (res.data.basicInfo?.length > 0) {
+          this.setState({
             basicInfoVendor: true,
           });
         }
-        if(res.data.CommunicationDetails?.length > 0)
-        {
+        if (res.data.CommunicationDetails?.length > 0) {
           this.setState({
-            communicationDetailsInfo:true
-          })
+            communicationDetailsInfo: true,
+          });
         }
         Object.entries(res.data.basicInfo).map(([key, value]) => {
           this.setState({
@@ -1422,9 +1777,9 @@ else
           return null;
         });
       });
-    } 
-   
-    console.log("basicInfoVendor::",this.state.basicInfoVendor);
+    }
+
+    console.log("basicInfoVendor::", this.state.basicInfoVendor);
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
     });
@@ -1440,12 +1795,15 @@ else
     }
   }
   componentDidMount() {
-    if (JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration") {
-      this.setState({ Country_Region_Code: "IN" })
-      this.setState({ userType: "NewRegistration" })
+    if (
+      JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
+      "NewRegistration"
+    ) {
+      this.setState({ Country_Region_Code: "IN" });
+      this.setState({ userType: "NewRegistration" });
     } else {
-      this.setState({ Country_Region_Code: "" })
-      this.setState({ userType: "" })
+      this.setState({ Country_Region_Code: "" });
+      this.setState({ userType: "" });
     }
     console.log("this.state.image", this.state.image);
     this.fetchData();
@@ -1457,6 +1815,10 @@ else
       Post_Code,
       contactName,
       companyName,
+      AddressError,
+      Address_2Error,
+      cityError,
+      pinCodeError,
       open,
       commu,
     } = this.state;
@@ -1490,6 +1852,26 @@ else
       phoneNo,
       email,
       mastervendor_email,
+      financeSpocdesignationError,
+      financeSpoccontactNameError,
+      financeSpocphoneNoError,
+      financeSpocemailError,
+      operationSpoccontactNameError,
+      operationSpocdesignationError,
+      operationSpocphoneNoError,
+      operationSpocemailError,
+      collectionSpoccontactNameError,
+      collectionSpocdesignationError,
+      collectionSpocphoneNoError,
+      collectionSpocemailError,
+      managementSpoccontactNameError,
+      managementSpocdesignationError,
+      managementSpocphoneNoError,
+      managementSpocemailError,
+      designationError,
+      phoneNoError,
+      emailError,
+      mastervendor_emailError,
     } = this.state;
     return (
       <>
@@ -1544,7 +1926,7 @@ else
                                             id="companyName"
                                             onChange={this.formValChange}
                                             value={companyName}
-                                            readOnly = {true}
+                                            readOnly={true}
                                           />
                                         </div>
                                       </MDBCol>
@@ -1567,11 +1949,16 @@ else
                                             value={Address}
                                             disabled={
                                               this.state.setStyle ===
-                                                "notEditable"
+                                              "notEditable"
                                                 ? true
                                                 : false
                                             }
                                           ></textarea>
+                                          {AddressError && (
+                                            <p className="text text-danger small">
+                                              {AddressError}
+                                            </p>
+                                          )}
                                         </div>
                                       </MDBCol>
                                     </MDBRow>
@@ -1594,6 +1981,11 @@ else
                                             : false
                                         }
                                       ></textarea>
+                                      {Address_2Error && (
+                                        <p className="text text-danger small">
+                                          {Address_2Error}
+                                        </p>
+                                      )}
                                     </div>
                                     <MDBRow className="mb-4">
                                       <MDBCol>
@@ -1603,34 +1995,35 @@ else
                                           </label>
                                         </div>
                                         <div>
-                                        {this.state.newMasterReg ? (
-        <input
-          className="mb-4 VendorInput"
-          name="Country_Region_Code"
-          id="Country_Region_Code"
-          value="India"
-          readOnly
-        />
-      ) : (
-        <select
-        className="mb-4 VendorInput"
-        name="Country_Region_Code"
-        id="Country_Region_Code"
-        value={
-          this.state.Country_Region_Code
-        }
-        onChange={this.handleChange}
-        disabled={
-          this.state.setStyle ===
-            "notEditable" || this.state.userType === 'NewRegistration'
-            ? true
-            : false
-        }
-      >
-        {countriesList}
-      </select>
-      )}
-                                        
+                                          {this.state.newMasterReg ? (
+                                            <input
+                                              className="mb-4 VendorInput"
+                                              name="Country_Region_Code"
+                                              id="Country_Region_Code"
+                                              value="India"
+                                              readOnly
+                                            />
+                                          ) : (
+                                            <select
+                                              className="mb-4 VendorInput"
+                                              name="Country_Region_Code"
+                                              id="Country_Region_Code"
+                                              value={
+                                                this.state.Country_Region_Code
+                                              }
+                                              onChange={this.handleChange}
+                                              disabled={
+                                                this.state.setStyle ===
+                                                  "notEditable" ||
+                                                this.state.userType ===
+                                                  "NewRegistration"
+                                                  ? true
+                                                  : false
+                                              }
+                                            >
+                                              {countriesList}
+                                            </select>
+                                          )}
                                         </div>
                                       </MDBCol>
                                       <MDBCol>
@@ -1649,8 +2042,11 @@ else
                                             onMouseLeave={this.mouseOut}
                                             onChange={this.mouseEnter}
                                           />
-                                            <Tooltip class="tooltipstyle"
-                                            title={'Please fill the exact code relevant to your country and click outside, State & City will auto populate'}
+                                          <Tooltip
+                                            class="tooltipstyle"
+                                            title={
+                                              "Please fill the exact code relevant to your country and click outside, State & City will auto populate"
+                                            }
                                             placement="right"
                                           >
                                             <div
@@ -1663,6 +2059,11 @@ else
                                               <InfoIcon />
                                             </div>
                                           </Tooltip>
+                                          {pinCodeError && (
+                                            <p className="text text-danger small">
+                                              {pinCodeError}
+                                            </p>
+                                          )}
                                         </div>
                                       </MDBCol>
                                     </MDBRow>
@@ -1695,6 +2096,11 @@ else
                                             onChange={this.formValChange}
                                             value={this.state.City}
                                           />
+                                          {cityError && (
+                                            <p className="text text-danger small">
+                                              {cityError}
+                                            </p>
+                                          )}
                                         </div>
                                       </MDBCol>
                                     </MDBRow>
@@ -1705,7 +2111,9 @@ else
                             <MDBCol md="4" className="mb-4">
                               <MDBCard className="mb-4 imageUpload">
                                 <MDBCol>
-                                  {this.state.image !== "" && this.state.image !== undefined && this.state.image !== null ? (
+                                  {this.state.image !== "" &&
+                                  this.state.image !== undefined &&
+                                  this.state.image !== null ? (
                                     <div>
                                       <img
                                         className="camera-img"
@@ -1762,8 +2170,8 @@ else
                                   Cancel
                                 </button>
                                 {this.props.params.userId &&
-                                  JSON.parse(window.sessionStorage.getItem("jwt"))
-                                    .result?.role === "Admin" ? (
+                                JSON.parse(window.sessionStorage.getItem("jwt"))
+                                  .result?.role === "Admin" ? (
                                   <>
                                     <button
                                       type="button"
@@ -1834,6 +2242,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={financeSpoccontactName}
                                   />
+                                  {this.state.fieldErrors
+                                    .financeSpoccontactNameError && (
+                                    <p className="text text-danger small">
+                                      {
+                                        this.state.fieldErrors
+                                          .financeSpoccontactNameError
+                                      }
+                                    </p>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Designation</label>
@@ -1845,14 +2262,23 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={financeSpocdesignation}
                                   />
+                                  {this.state.fieldErrors
+                                    .financeSpocdesignationError && (
+                                    <p className="text text-danger small">
+                                      {
+                                        this.state.fieldErrors
+                                          .financeSpocdesignationError
+                                      }
+                                    </p>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
                                   <div
-                                    // style={{
-                                    //   display: "flex",
-                                    //   alignItems: "center",
-                                    // }}
+                                  // style={{
+                                  //   display: "flex",
+                                  //   alignItems: "center",
+                                  // }}
                                   >
                                     <input
                                       type="number"
@@ -1870,12 +2296,21 @@ else
                                         style={{
                                           position: "absolute",
                                           marginTop: "7px",
-                                          marginLeft: '-30px'
+                                          marginLeft: "-30px",
                                         }}
                                       >
                                         <InfoIcon />
                                       </span>
                                     </Tooltip>
+                                    {this.state.fieldErrors
+                                      .financeSpocphoneNoError && (
+                                      <span style={{ color: "red" }}>
+                                        {
+                                          this.state.fieldErrors
+                                            .financeSpocphoneNoError
+                                        }
+                                      </span>
+                                    )}
                                   </div>
                                 </MDBCol>
                                 <MDBCol>
@@ -1888,6 +2323,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={financeSpocemail}
                                   />
+                                  {this.state.fieldErrors
+                                    .financeSpocemailError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .financeSpocemailError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                               </MDBRow>
                               <label className="fieldHeader">
@@ -1904,6 +2348,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpoccontactName}
                                   />
+                                  {this.state.fieldErrors
+                                    .operationSpoccontactNameError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .operationSpoccontactNameError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Designation</label>
@@ -1915,6 +2368,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpocdesignation}
                                   />
+                                  {this.state.fieldErrors
+                                    .operationSpocdesignationError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .operationSpocdesignationError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
@@ -1926,6 +2388,7 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpocphoneNo}
                                   />
+
                                   <Tooltip
                                     title={this.state.phoneNumber}
                                     placement="right"
@@ -1934,12 +2397,21 @@ else
                                       style={{
                                         position: "absolute",
                                         marginTop: "7px",
-                                        marginLeft: '-30px'
+                                        marginLeft: "-30px",
                                       }}
                                     >
                                       <InfoIcon />
                                     </span>
                                   </Tooltip>
+                                  {this.state.fieldErrors
+                                    .operationSpocphoneNoError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .operationSpocphoneNoError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -1951,6 +2423,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={operationSpocemail}
                                   />
+                                  {this.state.fieldErrors
+                                    .operationSpocemailError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .operationSpocemailError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                               </MDBRow>
                               <label className="fieldHeader">
@@ -1967,6 +2448,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpoccontactName}
                                   />
+                                  {this.state.fieldErrors
+                                    .collectionSpoccontactNameError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .collectionSpoccontactNameError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Designation</label>
@@ -1978,6 +2468,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpocdesignation}
                                   />
+                                  {this.state.fieldErrors
+                                    .collectionSpocdesignationError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .collectionSpocdesignationError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
@@ -1989,6 +2488,7 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpocphoneNo}
                                   />
+
                                   <Tooltip
                                     title={this.state.phoneNumber}
                                     placement="right"
@@ -1997,12 +2497,21 @@ else
                                       style={{
                                         position: "absolute",
                                         marginTop: "7px",
-                                        marginLeft: '-30px'
+                                        marginLeft: "-30px",
                                       }}
                                     >
                                       <InfoIcon />
                                     </span>
                                   </Tooltip>
+                                  {this.state.fieldErrors
+                                    .collectionSpocphoneNoError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .collectionSpocphoneNoError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -2014,6 +2523,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={collectionSpocemail}
                                   />
+                                  {this.state.fieldErrors
+                                    .collectionSpocemailError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .collectionSpocemailError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                               </MDBRow>
                               <label className="fieldHeader">
@@ -2031,6 +2549,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpoccontactName}
                                   />
+                                  {this.state.fieldErrors
+                                    .managementSpoccontactNameError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .managementSpoccontactNameError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Designation</label>
@@ -2042,6 +2569,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpocdesignation}
                                   />
+                                  {this.state.fieldErrors
+                                    .managementSpocdesignationError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .managementSpocdesignationError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
@@ -2053,20 +2589,30 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpocphoneNo}
                                   />
+
                                   <Tooltip
                                     title={this.state.phoneNumber}
                                     placement="right"
                                   >
-                                      <span
+                                    <span
                                       style={{
                                         position: "absolute",
                                         marginTop: "7px",
-                                        marginLeft: '-30px'
+                                        marginLeft: "-30px",
                                       }}
                                     >
                                       <InfoIcon />
                                     </span>
                                   </Tooltip>
+                                  {this.state.fieldErrors
+                                    .managementSpocphoneNoError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .managementSpocphoneNoError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -2078,6 +2624,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={managementSpocemail}
                                   />
+                                  {this.state.fieldErrors
+                                    .managementSpocemailError && (
+                                    <span style={{ color: "red" }}>
+                                      {
+                                        this.state.fieldErrors
+                                          .managementSpocemailError
+                                      }
+                                    </span>
+                                  )}
                                 </MDBCol>
                               </MDBRow>
                               <label className="fieldHeader">others</label>
@@ -2092,6 +2647,11 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={contactName}
                                   />
+                                  {this.state.fieldErrors.contactNameError && (
+                                    <span style={{ color: "red" }}>
+                                      {this.state.fieldErrors.contactNameError}
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Designation</label>
@@ -2103,6 +2663,11 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={designation}
                                   />
+                                  {this.state.fieldErrors.designationError && (
+                                    <span style={{ color: "red" }}>
+                                      {this.state.fieldErrors.designationError}
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Phone No</label>
@@ -2114,6 +2679,7 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={phoneNo}
                                   />
+
                                   <Tooltip
                                     title={this.state.phoneNumber}
                                     placement="right"
@@ -2122,12 +2688,17 @@ else
                                       style={{
                                         position: "absolute",
                                         marginTop: "7px",
-                                        marginLeft: '-30px'
+                                        marginLeft: "-30px",
                                       }}
                                     >
                                       <InfoIcon />
                                     </span>
                                   </Tooltip>
+                                  {this.state.fieldErrors.phoneNoError && (
+                                    <span style={{ color: "red" }}>
+                                      {this.state.fieldErrors.phoneNoError}
+                                    </span>
+                                  )}
                                 </MDBCol>
                                 <MDBCol>
                                   <label>Email</label>
@@ -2139,9 +2710,15 @@ else
                                     onChange={this.formValChangeCommunication}
                                     value={email}
                                   />
+                                  {this.state.fieldErrors.emailError && (
+                                    <span style={{ color: "red" }}>
+                                      {this.state.fieldErrors.emailError}
+                                    </span>
+                                  )}
                                 </MDBCol>
                               </MDBRow>
-                              {this.state.approval === "Admin" || this.state.userType === 'NewRegistration' ? (
+                              {this.state.approval === "Admin" ||
+                              this.state.userType === "NewRegistration" ? (
                                 ""
                               ) : (
                                 <MDBRow>
@@ -2158,6 +2735,15 @@ else
                                       onChange={this.formValChangeCommunication}
                                       value={mastervendor_email}
                                     />
+                                    {this.state.fieldErrors
+                                      .mastervendor_emailError && (
+                                      <span style={{ color: "red" }}>
+                                        {
+                                          this.state.fieldErrors
+                                            .mastervendor_emailError
+                                        }
+                                      </span>
+                                    )}
                                   </MDBCol>
                                   <MDBCol></MDBCol>
                                   <MDBCol></MDBCol>
@@ -2174,9 +2760,12 @@ else
                                       Cancel
                                     </button>
                                     {this.props.params.userId &&
-                                      JSON.parse(
-                                        window.sessionStorage.getItem("jwt")
-                                      ).result?.role === "Admin" && JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype !== "NewRegistration" ? (
+                                    JSON.parse(
+                                      window.sessionStorage.getItem("jwt")
+                                    ).result?.role === "Admin" &&
+                                    JSON.parse(
+                                      window.sessionStorage.getItem("jwt")
+                                    ).result?.usertype !== "NewRegistration" ? (
                                       <>
                                         <button
                                           type="button"
