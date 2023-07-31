@@ -465,6 +465,8 @@ const ContactTeam = () => {
 
             if (
               key === "GST_Registration_No" &&
+              value !== undefined &&
+              value !== "undefined" &&
               value.trim() !== "" &&
               value !== "N/A" &&
               value !== "null"
@@ -525,7 +527,7 @@ const ContactTeam = () => {
             (statutory[0].MSMED_Number === "" || null) &&
             statutory[0].MSMED === "1"
           ) {
-            statutoryArray.push("MSME No6");
+            statutoryArray.push("MSME No");
           }
 
           if (
@@ -576,13 +578,13 @@ const ContactTeam = () => {
               value === undefined ||
               value === "undefined"
             ) {
-              if (key === "form_10f_Doc") {
+              if (key === "form_10f_Doc" && JSON.parse(window.sessionStorage.getItem("jwt")).result.role !=="Admin") {
                 statutoryArray.push("form 10f");
               }
-              if (key === "PE_Declaration_Doc") {
+              if (key === "PE_Declaration_Doc"&& JSON.parse(window.sessionStorage.getItem("jwt")).result.role !=="Admin") {
                 statutoryArray.push("No PE declaration");
               }
-              if (key === "Tax_residency_Doc") {
+              if (key === "Tax_residency_Doc"&& JSON.parse(window.sessionStorage.getItem("jwt")).result.role !=="Admin") {
                 statutoryArray.push("Tax Residency Certificate");
               }
               if (key === "GST_Registration_No") {
@@ -592,7 +594,7 @@ const ContactTeam = () => {
                 statutoryArray.push("CIN No");
               }
               if (key === "MSMED_Number") {
-                statutoryArray.push("MSME No7");
+                statutoryArray.push("MSME No");
               }
               // if (key === "GST_Doc") {
               //   statutoryArray.push("GST Doc");
@@ -603,6 +605,8 @@ const ContactTeam = () => {
             }
             if (
               key === "GST_Registration_No" &&
+              value !== undefined &&
+              value !== "undefined" &&
               value.trim() !== "" &&
               value !== "N/A" &&
               value !== "null"
@@ -1582,7 +1586,10 @@ const ContactTeam = () => {
                   statutoryArray.push("PAN Doc");
                 }
               }
-              if (key === "MSME_Doc") {
+              if (
+                (statutory[0].MSME_Doc === "" || null) &&
+                statutory[0].MSMED === "1"
+              ) {
                 statutoryArray.push("MSME Doc");
               }
             }
@@ -1680,15 +1687,21 @@ const ContactTeam = () => {
                 statutoryArray.push("UnRegistered GST Doc");
                 unregDocPushed = true;
               }
-              if (key === "MSME_Doc") {
+              if (
+                (statutory[0].MSME_Doc === "" || null) &&
+                statutory[0].MSMED === "1"
+              ) {
                 statutoryArray.push("MSME Doc");
               }
             }
             if (
               key === "GST_Registration_No" &&
+              value !== undefined &&
+              value !== "undefined" &&
               value.trim() !== "" &&
               value !== "N/A" &&
               value !== "null"
+              
             ) {
               if (!GSTValidation.test(value)) {
                 statutoryArray.push("GST No is invalid");

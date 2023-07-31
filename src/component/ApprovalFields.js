@@ -352,6 +352,12 @@ function ApprovalFields(props) {
       }
     });
   };
+  const handleKeyDown = (event) => {
+    // Prevent the letter 'e' from being typed in the input field
+    if (event.key === 'e' || event.key === 'E') {
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     apiService.getAllCollection(props.userid).then((res) => {
@@ -765,6 +771,7 @@ function ApprovalFields(props) {
 
   // Error states start
   const [address1Err, setaddress1Err] = useState("");
+  const [address2Err, setaddress2Err] = useState("");
   // const [address2Err, setaddress2Err] = useState(false);
   const [companyNameErr, setcompanyNameErr] = useState("");
   const [countryErr, setcountryErr] = useState("");
@@ -815,8 +822,11 @@ function ApprovalFields(props) {
 
   const [nameErr, setnameErr] = useState("");
   const [contactNumberErr, setcontactNumberErr] = useState("");
+  const [contactNumber2Err, setcontactNumber2Err] = useState("");
+  const [contactNumber3Err, setcontactNumber3Err] = useState("");
   const [emailErr, setemailErr] = useState("");
-
+  const [email2Err, setemail2Err] = useState("");
+  const [email3Err, setemail3Err] = useState("");
   const [vendorTypeErr, setvendorTypeErr] = useState("");
   const [acManagerErr, setacManagerErr] = useState("");
   const [mkcheckErr, setmkcheckErr] = useState("");
@@ -828,7 +838,12 @@ function ApprovalFields(props) {
     setcompanyName(e.target.value);
     if (e.target.value.length === 0) {
       setcompanyNameErr("Company name is required");
-    } else {
+    }
+    else if(e.target.value.length>100)
+    {
+      setcompanyNameErr("Company name must be 100 characters or less");
+    }
+     else {
       setcompanyNameErr("");
       setcompanyName(e.target.value);
     }
@@ -838,6 +853,10 @@ function ApprovalFields(props) {
     setaddress1(e.target.value);
     if (e.target.value.length === 0) {
       setaddress1Err("Address 1 is required");
+    }
+    else if(e.target.value.length>50)
+    {
+      setaddress1Err("Address line-1  must be 50 characters or less");
     } else {
       setaddress1Err("");
       setaddress1(e.target.value);
@@ -845,6 +864,10 @@ function ApprovalFields(props) {
   };
   const validateaddress2 = (e) => {
     setaddress2(e.target.value);
+    if(e.target.value.length>50)
+    {
+      setaddress2Err("Address line-2  must be 50 characters or less");
+    }
   };
   const validatecountry = (e) => {
     setcountry(e.target.value);
@@ -868,6 +891,9 @@ function ApprovalFields(props) {
     setcity(e.target.value);
     if (e.target.value.length === 0) {
       setcityErr("City is required");
+    }
+    else if (e.target.value.length > 30) {
+      setcityErr("City must be 30 characters or less.");
     } else {
       setcityErr("");
       setcity(e.target.value);
@@ -877,8 +903,12 @@ function ApprovalFields(props) {
     setpinCode(e.target.value);
     if (e.target.value.length === 0) {
       setpinCodeErr("Pincode is required");
-    } else if (!numberValidation.test(e.target.value)) {
-      // setpinCodeErr("Pincode is invalid");
+    } 
+    // else if (!numberValidation.test(e.target.value)) {
+    //   // setpinCodeErr("Pincode is invalid");
+    // }
+    else if (e.target.value.length > 20) {
+      setpinCodeErr("PinCode/Zipcode must be 20 or less.");
     } else {
       setpinCodeErr("");
       setpinCode(e.target.value);
@@ -889,6 +919,9 @@ function ApprovalFields(props) {
     setfs_ContactName(e.target.value);
     if (e.target.value.length === 0) {
       setfs_ContactNameErr("Contact name is required");
+    }
+    else if (e.target.value.length > 30) {
+      setfs_ContactNameErr("Contact Name must be 30 or less.");
     } else {
       setfs_ContactNameErr("");
       setfs_ContactName(e.target.value);
@@ -898,6 +931,9 @@ function ApprovalFields(props) {
     setfs_Designation(e.target.value);
     if (e.target.value.length === 0) {
       setfs_DesignationErr("Designation is required");
+    }
+    else if (e.target.value.length > 30) {
+      setfs_DesignationErr("Designation must be 30 or less.");
     } else {
       setfs_DesignationErr("");
       setfs_Designation(e.target.value);
@@ -907,8 +943,12 @@ function ApprovalFields(props) {
     setfs_PhoneNo(e.target.value);
     if (e.target.value.length === 0) {
       setfs_PhoneNoErr("Phone number is required");
-    } else if (!numberValidation.test(e.target.value)) {
+    }
+     else if (!numberValidation.test(e.target.value)) {
       setfs_PhoneNoErr("Phone number is invalid");
+    }
+    else if (e.target.value.length > 50) {
+      setfs_PhoneNoErr("Phone number must be 50 or less.");
     } else {
       setfs_PhoneNoErr("");
       setfs_PhoneNo(e.target.value);
@@ -920,6 +960,9 @@ function ApprovalFields(props) {
       setfs_EmailErr("Email is required");
     } else if (!emailValidation.test(e.target.value)) {
       setfs_EmailErr("Email is invalid");
+    }
+    else if (e.target.value.length > 50) {
+      setfs_EmailErr("Email must be 50 or less.");
     } else {
       setfs_EmailErr("");
       setfs_Email(e.target.value);
@@ -929,6 +972,9 @@ function ApprovalFields(props) {
     setmngs_ContactName(e.target.value);
     if (e.target.value.length === 0) {
       setmngs_ContactNameErr("Contact name is required");
+    }
+    else if (e.target.value.length > 30) {
+      setmngs_ContactNameErr("Contact name must be 30 or less.");
     } else {
       setmngs_ContactNameErr("");
       setmngs_ContactName(e.target.value);
@@ -938,6 +984,8 @@ function ApprovalFields(props) {
     setmngs_Designation(e.target.value);
     if (e.target.value.length === 0) {
       setmngs_DesignationErr("Designation is required");
+    }else if (e.target.value.length > 30) {
+      setmngs_DesignationErr("Designation must be 30 or less.");
     } else {
       setmngs_DesignationErr("");
       setmngs_Designation(e.target.value);
@@ -949,6 +997,9 @@ function ApprovalFields(props) {
       setmngs_PhoneNoErr("Phone number is required");
     } else if (!numberValidation.test(e.target.value)) {
       setmngs_PhoneNoErr("Phone number is invalid");
+    }
+    else if (e.target.value.length > 50) {
+      setmngs_PhoneNoErr("Phone number must be 50 or less.");
     } else {
       setmngs_PhoneNoErr("");
       setmngs_PhoneNo(e.target.value);
@@ -960,6 +1011,8 @@ function ApprovalFields(props) {
       setmngs_EmailErr("Email is required");
     } else if (!emailValidation.test(e.target.value)) {
       setmngs_EmailErr("Email is invalid");
+    }else if (e.target.value.length > 50) {
+      setmngs_EmailErr("Email must be 50 or less.");
     } else {
       setmngs_EmailErr("");
       setmngs_Email(e.target.value);
@@ -969,6 +1022,9 @@ function ApprovalFields(props) {
     setmastervendor_email(e.target.value);
     if (e.target.value.length === 0 && userStatus !== "NewRegistration") {
       setmastervendor_emailErr("Email is required");
+    }
+    else if (e.target.value.length > 50) {
+      setmastervendor_emailErr("Email must be 50 or less.");
     } else {
       setmastervendor_emailErr("");
       setmastervendor_email(e.target.value);
@@ -988,7 +1044,11 @@ function ApprovalFields(props) {
     setbankName(e.target.value);
     if (e.target.value.length === 0) {
       setbankNameErr("Bank name is required");
-    } else {
+    }
+    else if (e.target.value.length > 30) {
+      setbankNameErr("Bank name must be 30 or less.");
+    }
+     else {
       setbankNameErr("");
       setbankName(e.target.value);
     }
@@ -997,6 +1057,9 @@ function ApprovalFields(props) {
     setbankAccountNumber(e.target.value);
     if (e.target.value.length === 0) {
       setbankAccountNumberErr("Account number is required");
+    }
+    else if (e.target.value.length > 20) {
+      setbankAccountNumberErr("Account number must be 20 or less.");
     } else {
       setbankAccountNumberErr("");
       setbankAccountNumber(e.target.value);
@@ -1006,7 +1069,10 @@ function ApprovalFields(props) {
     setifscCode(e.target.value);
     if (e.target.value.length === 0) {
       setifscCodeErr("IFSC code is required");
-    } else {
+    }
+    else if (e.target.value.length > 20) {
+      setifscCodeErr("IFSC must be 20 or less.");
+    }  else {
       setifscCodeErr("");
       setifscCode(e.target.value);
     }
@@ -1015,7 +1081,9 @@ function ApprovalFields(props) {
     setMICRcode(e.target.value);
     if (e.target.value.length === 0) {
       setMICRcodeErr("MICR code is required");
-    } else {
+    }else if (e.target.value.length > 30) {
+      setMICRcodeErr("IFSC must be 30 or less.");
+    }  else {
       setMICRcodeErr("");
       setMICRcode(e.target.value);
     }
@@ -1024,6 +1092,8 @@ function ApprovalFields(props) {
     setbranchAddress(e.target.value);
     if (e.target.value.length === 0) {
       setbranchAddressErr("Branch address is required");
+    } else if (e.target.value.length > 50) {
+      setbranchAddressErr("Branch address must be 50 or less.");
     } else {
       setbranchAddressErr("");
       setbranchAddress(e.target.value);
@@ -1034,7 +1104,10 @@ function ApprovalFields(props) {
     setname(e.target.value);
     if (e.target.value.length === 0) {
       setnameErr("Name is required");
-    } else {
+    }else if (e.target.value.length > 30) {
+      setnameErr("Name must be 30 or less.");
+    }
+     else {
       setnameErr("");
       setname(e.target.value);
     }
@@ -1043,14 +1116,29 @@ function ApprovalFields(props) {
     setcontactNumber(e.target.value);
     if (e.target.value.length === 0) {
       setcontactNumberErr("Contact number is required");
-    } else if (
-      !numberValidation.test(e.target.value) ||
-      e.target.value.length !== 10
-    ) {
-      setcontactNumberErr("Contact number is invalid");
+    } else if (e.target.value.length > 50){
+      setcontactNumberErr("Contact number must be 50 or less.");
     } else {
       setcontactNumberErr("");
       setcontactNumber(e.target.value);
+    }
+  };
+  const validatecontactNumber2 = (e) => {
+    setcontactNumber2(e.target.value);
+  if (e.target.value.length > 50){
+      setcontactNumber2Err("Contact number must be 50 or less.");
+    } else {
+      setcontactNumber2Err("");
+      setcontactNumber2(e.target.value);
+    }
+  };
+  const validatecontactNumber3 = (e) => {
+    setcontactNumber3(e.target.value);
+  if (e.target.value.length > 50){
+      setcontactNumber3Err("Contact number must be 50 or less.");
+    } else {
+      setcontactNumber3Err("");
+      setcontactNumber3(e.target.value);
     }
   };
   const validateemail = (e) => {
@@ -1062,37 +1150,40 @@ function ApprovalFields(props) {
       !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
     ) {
       setemailErr("Email is invalid");
-    } else {
+    }else if (e.target.value.length > 50){
+      setemailErr("Email must be 50 or less.");
+    }
+     else {
       setemailErr("");
       setemail(e.target.value);
     }
   };
   const validateemail2 = (e) => {
-    setemail(e.target.value);
-    if (e.target.value.length === 0) {
-      setemailErr("Email is required");
+    setemail2(e.target.value);
+    if (e.target.value.length > 50) {
+      setemail2Err("HSI Contact E-Mail-2 must be 50 or less.");
     } else if (
       email &&
       !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
     ) {
-      setemailErr("Email is invalid");
+      setemail2Err("HSI Contact E-Mail-2 is invalid");
     } else {
-      setemailErr("");
-      setemail(e.target.value);
+      setemail2Err("");
+      setemail2(e.target.value);
     }
   };
   const validateemail3 = (e) => {
     setemail3(e.target.value);
-    if (e.target.value.length === 0) {
-      setemailErr("Email is required");
+    if (e.target.value.length > 50) {
+      setemail3Err("HSI Contact E-Mail-3 must be 50 or less.");
     } else if (
       email &&
       !new RegExp("@" + desiredDomain + "\\s*$").test(e.target.value)
     ) {
-      setemailErr("Email is invalid");
+      setemail3Err("HSI Contact E-Mail-3 is invalid");
     } else {
-      setemailErr("");
-      setemail(e.target.value);
+      setemail3Err("");
+      setemail3(e.target.value);
     }
   };
   // approval manager
@@ -1161,7 +1252,11 @@ function ApprovalFields(props) {
       e.target.value !== "N/A"
     ) {
       setGST_NoErr("GST Number is not valid");
-    } else {
+    }
+    else if (e.target.value.length > 15) {
+      setGST_NoErr("GST Number must be 15 or less.");
+    }
+     else {
       setGST_NoErr("");
       setGST_No(e.target.value);
     }
@@ -1179,7 +1274,10 @@ function ApprovalFields(props) {
     setPAN_No(e.target.value);
     if (e.target.value.length === 0) {
       setPAN_NoErr("Pan number is required");
-    } else if (!PANValidation.test(e.target.value)) {
+    } else if (e.target.value.length > 20) {
+      setPAN_NoErr("Pan number must be 20 or less.");
+    }
+    else if (!PANValidation.test(e.target.value)) {
       setPAN_NoErr("Pan number is not valid");
     } else {
       setPAN_NoErr("");
@@ -1199,7 +1297,10 @@ function ApprovalFields(props) {
     setCIN_No(e.target.value);
     if (e.target.value.length === 0) {
       setCIN_NoErr("CIN number is required");
-    } else {
+    } else if (e.target.value.length > 21) {
+      setCIN_NoErr("CIN number must be 21 or less.");
+    }
+    else {
       setCIN_NoErr("");
       setCIN_No(e.target.value);
     }
@@ -1241,6 +1342,8 @@ function ApprovalFields(props) {
     setMSME_No(e.target.value);
     if (e.target.value.length === 0) {
       setMSME_NoErr("MSME number is required");
+    }else if (e.target.value.length > 50) {
+      setMSME_NoErr("MSME number must be 50 or less.");
     } else {
       setMSME_NoErr("");
       setMSME_No(e.target.value);
@@ -1266,10 +1369,10 @@ function ApprovalFields(props) {
   };
   const validateTAN_No = (e) => {
     setTAN_No(e.target.value);
-    if (e.target.value.length === 0) {
-      // setTAN_NoErr("TAN number is required");
+    if (e.target.value.length > 10) {
+      setTAN_NoErr("TAN number must be 10 or less.");
     } else {
-      // setTAN_NoErr("");
+      setTAN_NoErr("");
       setTAN_No(e.target.value);
     }
   };
@@ -4038,6 +4141,7 @@ function ApprovalFields(props) {
                       value={Address_2}
                       onChange={(e) => validateaddress2(e)}
                     />
+                    <span className="formError">{address2Err}</span>
                     {/* <span className="formError">{address2Err}</span> */}
                   </div>
                 ) : (
@@ -5298,11 +5402,12 @@ function ApprovalFields(props) {
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Revenue</label>
                       <input
-                        type="text"
+                        type="number"
                         className="mb-2 inputbox"
                         name="Revenue"
                         value={Revenue}
                         onChange={(e) => setRevenue(e.target.value)}
+                        onKeyDown={handleKeyDown}
                       />
                     </div>
                   ) : (
@@ -5314,11 +5419,12 @@ function ApprovalFields(props) {
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Profit</label>
                       <input
-                        type="text"
+                        type="number"
                         className="mb-2 inputbox"
                         name="Profit"
                         value={Profit}
                         onChange={(e) => setProfit(e.target.value)}
+                        onKeyDown={handleKeyDown}
                       />
                     </div>
                   ) : (
@@ -5330,11 +5436,12 @@ function ApprovalFields(props) {
                     <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                       <label className="banklabel">Networth</label>
                       <input
-                        type="text"
+                        type="number"
                         className="mb-2 inputbox"
                         name="netWorth"
                         value={netWorth}
                         onChange={(e) => setnetWorth(e.target.value)}
+                        onKeyDown={handleKeyDown}
                       />
                     </div>
                   ) : (
@@ -5514,7 +5621,7 @@ function ApprovalFields(props) {
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Contact number*</label>
                     <input
-                      type="text"
+                    type="number"
                       className="mb-2 inputbox"
                       name="contactNumber"
                       value={contactNumber}
@@ -5551,8 +5658,10 @@ function ApprovalFields(props) {
                           className="mb-2 inputbox"
                           name="email2"
                           value={email2}
-                          onChange={(e) => setemail2(e.target.value)}
+                          onChange={(e) => validateemail2(e)}
+                          // onChange={(e) => setemail2(e.target.value)}
                         />
+                         <span className="formError">{email2Err}</span>
                       </div>
                     ) : (
                       ""
@@ -5562,12 +5671,13 @@ function ApprovalFields(props) {
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Contact Number*</label>
                         <input
-                          type="text"
+                          type="number"
                           className="mb-2 inputbox"
                           name="contactNumber2"
                           value={contactNumber2}
-                          onChange={(e) => setcontactNumber2(e.target.value)}
+                          onChange={(e) => validatecontactNumber2(e)}
                         />
+                        <span className="formError">{contactNumber2Err}</span>
                       </div>
                     ) : (
                       ""
@@ -5601,8 +5711,10 @@ function ApprovalFields(props) {
                           className="mb-2 inputbox"
                           name="email3"
                           value={email3}
-                          onChange={(e) => setemail3(e.target.value)}
+                          onChange={(e) => validateemail3(e)}
+                          // onChange={(e) => setemail3(e.target.value)}
                         />
+                         <span className="formError">{email3Err}</span>
                       </div>
                     ) : (
                       ""
@@ -5612,12 +5724,13 @@ function ApprovalFields(props) {
                       <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <label className="banklabel">Contact Number*</label>
                         <input
-                          type="text"
+                          type="number"
                           className="mb-2 inputbox"
                           name="contactNumber3"
                           value={contactNumber3}
-                          onChange={(e) => setcontactNumber3(e.target.value)}
+                          onChange={(e) => validatecontactNumber3(e)}
                         />
+                        <span className="formError">{contactNumber3Err}</span>
                       </div>
                     ) : (
                       ""

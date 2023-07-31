@@ -244,6 +244,12 @@ const FinancialDetails = () => {
     }
     // saveFinancialDetail(e);
   }
+  const handleKeyDown = (event) => {
+    // Prevent the letter 'e' from being typed in the input field
+    if (event.key === 'e' || event.key === 'E') {
+      event.preventDefault();
+    }
+  };
   const handleChange = (name) => (event) => {
     setIsNewValueEntered(true);
     setValues({ ...values, [name]: event.target.value });
@@ -253,6 +259,13 @@ const FinancialDetails = () => {
         ...errors,
         [name]: null,
       });
+      // if (name === "Revenue" && values.toLowerCase().includes("e")) {
+        
+      //   setValues({ ...values, [name]: "" });
+      // } else {
+       
+      //   setValues({ ...values, [name]: values });
+      // }
   };
   const validateForm = () => {
     const { yearOfAuditedFinancial,currentAssets,directorDetails,shareholderName } = values;
@@ -262,12 +275,12 @@ const FinancialDetails = () => {
     if (yearOfAuditedFinancial.length > 10) {
       newErrors.yearOfAuditedFinancial = "yearOfAuditedFinancial must be less than or equal to 10 characters";
     }
-    if (currentAssets.length > 10) {
-      newErrors.currentAssets = "CurrentAssets must be less than or equal to 10 characters";
+    if (currentAssets.length > 30) {
+      newErrors.currentAssets = "CurrentAssets must be less than or equal to 30 characters";
     }
 
-if (directorDetails.length > 20) {
-      newErrors.directorDetails = "DirectorDetails must be less than or equal to 20 characters";
+if (directorDetails.length > 30) {
+      newErrors.directorDetails = "DirectorDetails must be less than or equal to 30 characters";
     }
     if (shareholderName.length > 100) {
       newErrors.shareholderName = "shareholderName must be less than or equal to 100 characters";
@@ -600,7 +613,7 @@ if (directorDetails.length > 20) {
                   Year of audited financial
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   className="mb-4 inputbox"
                   name="yearOfAuditedFinancial"
                   value={values.yearOfAuditedFinancial}
@@ -615,21 +628,23 @@ if (directorDetails.length > 20) {
                 )}
                 <label htmlFor="netWorth">NetWorth</label>
                 <input
-                  type="text"
+                  type="number"
                   className="mb-4 inputbox"
                   name="netWorth"
                   value={values.netWorth}
                   onChange={handleChange("netWorth")}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="Revenue">Revenue</label>
                 <input
-                  type="text"
+                  type="number"
                   className="mb-4 inputbox"
                   name="Revenue"
                   value={values.Revenue}
                   onChange={handleChange("Revenue")}
+                  onKeyDown={handleKeyDown}
                 />
                 <label htmlFor="currentAssets">Current assets</label>
                 <input
@@ -638,6 +653,7 @@ if (directorDetails.length > 20) {
                   name="currentAssets"
                   value={values.currentAssets}
                   onChange={handleChange("currentAssets")}
+                  onKeyDown={handleKeyDown}
                 />
                 {errors.currentAssets ? (
                   <p className="text text-danger small">
@@ -650,11 +666,12 @@ if (directorDetails.length > 20) {
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="Profit">Profit</label>
                 <input
-                  type="text"
+                  type="number"
                   className="mb-4 inputbox"
                   name="Profit"
                   value={values.Profit}
                   onChange={handleChange("Profit")}
+                  onKeyDown={handleKeyDown}
                 />
                 <label htmlFor="directorDetails">Director Detail</label>
                 <input

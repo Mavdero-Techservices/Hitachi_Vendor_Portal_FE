@@ -50,15 +50,25 @@ export default function Signup(props) {
 
     if (!contactPerson || contactPerson === "") {
       newErrors.contactPerson = "Please enter contactPerson";
+    }else if (contactPerson.length > 30) {
+      newErrors.contactPerson = "contactPerson must be 30 characters or less";
     }
+
     if (!phoneNumber || phoneNumber === "") {
       newErrors.phoneNumber = "Please enter phoneNumber";
-    } 
+    }else if (phoneNumber.length > 50) {
+      newErrors.phoneNumber = "phoneNumber must be 50 characters or less";
+    }
     // else if (!mobileValReg.test(phoneNumber))
     //   newErrors.phoneNumber = "Please enter a valid phoneNumber";
+  
     if (!emailId || emailId === "") {
       newErrors.emailId = "Please enter emailId";
-    } else if (!mailValReg.test(emailId))
+    }
+    else if (emailId && emailId.length > 50) {
+      newErrors.emailId = "emailId must be 50 characters or less";
+    }
+     else if (!mailValReg.test(emailId))
       newErrors.emailId = "Please enter a valid email";
     return newErrors;
   };
