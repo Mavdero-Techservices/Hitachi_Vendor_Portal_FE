@@ -83,10 +83,19 @@ function MRTteam() {
             textTransform: "none",
         },
     });
+    const [reloadAdminPage, setReloadAdminPage] = useState(false);
 
+    const handleAdminPageReload = () => {
+     console.log("pageRefreshed::")
+      setReloadAdminPage(true);
+    };
     useEffect(() => {
         getApprovedList();
-    }, [])
+        if (reloadAdminPage) {
+            getApprovedList();
+            setReloadAdminPage(false);
+          }
+        }, [reloadAdminPage]);
 
     const getApprovedList = async () => {
         const Level2rejected = [];
@@ -248,7 +257,7 @@ function MRTteam() {
 
                                     <AccordionDetails>
                                         {/* <ApprovalFields vendordata={vendorDetail} /> */}
-                                        <ApprovalFields userid={item.userId} MRT="MRTteam" />
+                                        <ApprovalFields userid={item.userId} onMRTApprovalDone={handleAdminPageReload}  MRT="MRTteam" />
                                     </AccordionDetails>
                                 </Accordion>
                             </>)}

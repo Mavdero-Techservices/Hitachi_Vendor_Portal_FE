@@ -653,7 +653,6 @@ if (directorDetails.length > 30) {
                   name="currentAssets"
                   value={values.currentAssets}
                   onChange={handleChange("currentAssets")}
-                  onKeyDown={handleKeyDown}
                 />
                 {errors.currentAssets ? (
                   <p className="text text-danger small">

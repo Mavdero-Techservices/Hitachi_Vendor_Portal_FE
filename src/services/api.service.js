@@ -399,6 +399,9 @@ getDocuments() {
   {
     return http.get(`/SearchpanNo/${P_A_N_No}`);
   }
+  resetUsernameAndPassword(data) {
+    return http.post('/resetUsernameAndPassword', data);
+  }
   
 }
 export default new apiService();

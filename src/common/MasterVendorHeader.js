@@ -24,10 +24,12 @@ const settings = ['Logout'];
 function MasterVendorHeader() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [handleVcode,sethandleVcode]= useState();
     const navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
+ 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };

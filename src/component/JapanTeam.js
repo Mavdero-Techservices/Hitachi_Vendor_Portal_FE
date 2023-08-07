@@ -84,10 +84,19 @@ function JapanTeam() {
             textTransform: "none",
         },
     });
+    const [reloadAdminPage, setReloadAdminPage] = useState(false);
 
+    const handleAdminPageReload = () => {
+     console.log("pageRefreshed::")
+      setReloadAdminPage(true);
+    };
     useEffect(() => {
         getApprovalStatus();
-    }, [])
+        if (reloadAdminPage) {
+            getApprovalStatus();
+            setReloadAdminPage(false);
+          }
+        }, [reloadAdminPage]);
 
     const getApprovalStatus = async () => {
         apiService.getApprovedStatus().then((res) => {
@@ -266,7 +275,7 @@ function JapanTeam() {
                                         <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <ApprovalFields userid={item.userId} japan="JapanTeam" />
+                                        <ApprovalFields userid={item.userId} onApprovaljapanDone={handleAdminPageReload} japan="JapanTeam" />
                                     </AccordionDetails>
                                 </Accordion>
                             </>)}

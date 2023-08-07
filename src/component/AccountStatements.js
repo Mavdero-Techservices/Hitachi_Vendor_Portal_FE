@@ -272,12 +272,15 @@ function AccountStatements() {
   const openStatementConfirmation = (event) => {
     setacState("StatementConfirmation");
   };
-
+  const [vendorCodeDoc, setvendorCodeDoc] = useState();
+  const handleVcode = (msg) => {
+    setvendorCodeDoc(msg);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ backgroundColor: "#f3f4f7" }}>
         <CssBaseline />
-        <VendorPortalHeader />
+        <VendorPortalHeader handleVcode={handleVcode} />
 
         <Box sx={{ display: "flex" }}>
           <VendorPortSidemenu />

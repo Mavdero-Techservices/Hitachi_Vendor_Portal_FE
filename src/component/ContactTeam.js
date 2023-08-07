@@ -372,16 +372,19 @@ const ContactTeam = () => {
         const hasError = {};
         let gstDoc5Pushed = false;
         let unregDocPushed = false;
+        let msmedocpushed=false;
         if (
           basicInfo?.length > 0 &&
           basicInfo[0]?.Country_Region_Code &&
           basicInfo[0].Country_Region_Code === "IN"
         ) {
           if (
+            !msmedocpushed &&
             (statutory[0].MSME_Doc === "" || null) &&
             statutory[0].MSMED === "1"
           ) {
             statutoryArray.push("MSME Doc");
+            msmedocpushed = true;
           }
           if (
             (statutory[0].MSMED_Number === "" || null) &&
@@ -517,11 +520,14 @@ const ContactTeam = () => {
           const hasError = {};
           let gstDoc5Pushed = false;
           let unregDocPushed = false;
+          let msmedocpushed=false;
           if (
+            !msmedocpushed &&
             (statutory[0].MSME_Doc === "" || null) &&
             statutory[0].MSMED === "1"
           ) {
             statutoryArray.push("MSME Doc");
+            msmedocpushed = true;
           }
           if (
             (statutory[0].MSMED_Number === "" || null) &&
@@ -593,9 +599,9 @@ const ContactTeam = () => {
               if (key === "CIN_No") {
                 statutoryArray.push("CIN No");
               }
-              if (key === "MSMED_Number") {
-                statutoryArray.push("MSME No");
-              }
+              // if (key === "MSMED_Number") {
+              //   statutoryArray.push("MSME No");
+              // }
               // if (key === "GST_Doc") {
               //   statutoryArray.push("GST Doc");
               // }
@@ -1531,6 +1537,7 @@ const ContactTeam = () => {
         const hasError = {};
         let gstDoc5Pushed = false;
         let unregDocPushed = false;
+        let msmedocpushed=false;
         if (
           basicInfo?.length > 0 &&
           basicInfo[0]?.Country_Region_Code &&
@@ -1587,10 +1594,12 @@ const ContactTeam = () => {
                 }
               }
               if (
+                !msmedocpushed &&
                 (statutory[0].MSME_Doc === "" || null) &&
                 statutory[0].MSMED === "1"
               ) {
                 statutoryArray.push("MSME Doc");
+                msmedocpushed = true;
               }
             }
 
@@ -1648,6 +1657,7 @@ const ContactTeam = () => {
           const hasError = {};
           let gstDoc5Pushed = false;
           let unregDocPushed = false;
+          let msmedocpushed=false;
           Object.entries(statutory[0]).map(([key, value]) => {
             if (value === "" || value === null || value === undefined) {
               if (key === "form_10f_Doc") {
@@ -1688,10 +1698,12 @@ const ContactTeam = () => {
                 unregDocPushed = true;
               }
               if (
+                !msmedocpushed &&
                 (statutory[0].MSME_Doc === "" || null) &&
                 statutory[0].MSMED === "1"
               ) {
                 statutoryArray.push("MSME Doc");
+                msmedocpushed = true;
               }
             }
             if (

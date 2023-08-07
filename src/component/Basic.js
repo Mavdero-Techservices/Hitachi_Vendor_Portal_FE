@@ -30,6 +30,8 @@ export class Basic extends React.Component {
       companyName: "",
       image: "",
       stateCode: "",
+      phoneNumberSignUp:JSON.parse(window.sessionStorage.getItem("jwt")).result?.phoneNumber,
+      contactPerson:JSON.parse(window.sessionStorage.getItem("jwt")).result?.contactPerson,
       financeSpoccontactName: "",
       financeSpocdesignation: "",
       financeSpocphoneNo: "",
@@ -367,6 +369,9 @@ export class Basic extends React.Component {
             Post_Code: this.state.Post_Code,
             companyName: this.state.companyName,
             image: this.state.image,
+            stateCode: this.state.stateCode,
+            contactPerson:this.state.contactPerson,
+            phoneNumber:this.state.phoneNumberSignUp,
             userStatus:
               JSON.parse(window.sessionStorage.getItem("jwt")).result
                 ?.usertype === "NewRegistration"
@@ -423,6 +428,9 @@ export class Basic extends React.Component {
                 Post_Code: this.state.Post_Code,
                 companyName: this.state.companyName,
                 image: this.state.image,
+                stateCode: this.state.stateCode,
+                contactPerson:this.state.contactPerson,
+                phoneNumber:this.state.phoneNumberSignUp,
                 userStatus:
                   JSON.parse(window.sessionStorage.getItem("jwt")).result
                     ?.usertype === "NewRegistration"
@@ -989,6 +997,8 @@ export class Basic extends React.Component {
       companyName: this.state.companyName,
       image: this.state.image,
       stateCode: this.state.stateCode,
+      contactPerson:this.state.contactPerson,
+      phoneNumber:this.state.phoneNumberSignUp,
       userStatus:
         JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
         "NewRegistration"
@@ -1115,6 +1125,8 @@ export class Basic extends React.Component {
       companyName: this.state.companyName,
       image: this.state.image,
       stateCode: this.state.stateCode,
+      contactPerson:this.state.contactPerson,
+      phoneNumber:this.state.phoneNumberSignUp,
       userStatus:
         JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
         "NewRegistration"

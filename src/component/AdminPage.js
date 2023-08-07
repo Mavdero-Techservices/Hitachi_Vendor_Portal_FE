@@ -73,7 +73,12 @@ function AdminPage() {
   const handleClose = () => {
     setOpen(false);
   };
+  const [reloadAdminPage, setReloadAdminPage] = useState(false);
 
+  const handleAdminPageReload = () => {
+   console.log("pageRefreshed::")
+    setReloadAdminPage(true);
+  };
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -86,7 +91,11 @@ function AdminPage() {
 
   useEffect(() => {
     getApprovalList();
-  }, []);
+    if (reloadAdminPage) {
+      getApprovalList();
+      setReloadAdminPage(false);
+    }
+  }, [reloadAdminPage]);
 
   const getApprovalList = async () => {
     let applist = [];
@@ -372,6 +381,7 @@ function AdminPage() {
                       <ApprovalFields
                         userid={item.userId}
                         approvedV="approvalTeam"
+                        onApprovalDone={handleAdminPageReload} 
                       />
                     </AccordionDetails>
                   </Accordion>

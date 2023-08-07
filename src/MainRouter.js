@@ -143,6 +143,10 @@ const MainRouter = () => {
           path="/passwordGeneration/:emailId/:mailConfirmationCode/:userName"
           element={<Password />}
         />
+         <Route
+          path="/passwordGeneration/:emailId/:mailConfirmationCode/:userName/:new"
+          element={<Password />}
+        />
         <Route path="/approvalReq" element={<ApprovalRequest />} />
         <Route path="/vendorPortal" element={<VendorPortalHeader />} />
         <Route path="/MasterVendorHeader" element={<MasterVendorHeader />} />

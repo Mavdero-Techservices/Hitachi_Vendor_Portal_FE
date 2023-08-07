@@ -11,7 +11,9 @@ import { MDBCol, MDBRow } from "mdb-react-ui-kit";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useLocation } from 'react-router-dom';
 export default function Password(props) {
+  const location = useLocation();
   const { emailId, mailConfirmationCode,userName } = useParams();
   const [passwordType, setPasswordType] = useState("password");
   const [ConfirmPasswordType, setConfirmPasswordType] = useState("password");
@@ -37,6 +39,7 @@ export default function Password(props) {
         [name]: null,
       });
   };
+  const isNewUsernameAndPassword = location.pathname.includes('/New');
   const validateForm = () => {
     const uppercaseRegExp = /(?=.*?[A-Z])/;
     const lowercaseRegExp = /(?=.*?[a-z])/;
@@ -51,9 +54,11 @@ export default function Password(props) {
     const digitsReg = digitsRegExp.test(password);
     const newErrors = {};
 
-    // if (!userName || userName === "") {
-    //   newErrors.userName = "Please enter user name";
-    // }
+    if (!userName || userName === "") {
+      if (location.pathname.includes('/New')) {
+        newErrors.userName = "Please enter user name";
+      }
+    }
 
     if (!password || password === "") {
       newErrors.password = "Please enter password";
@@ -103,6 +108,23 @@ export default function Password(props) {
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
+      if (isNewUsernameAndPassword) {
+        apiService.resetUsernameAndPassword(user).then((data) => {
+          if (data) {
+            Swal.fire({
+              title: data.data.data,
+              icon: data.data.status,
+              confirmButtonText: "OK",
+            }).then((result) => {
+              if (data.data.status === "success") {
+                navigate("/login");
+              }
+            });
+          }
+        }); 
+      }
+      else
+      {
       apiService.resetPassword(user).then((data) => {
         if (data) {
           Swal.fire({
@@ -117,6 +139,7 @@ export default function Password(props) {
         }
       });
     }
+    }
   };
   useEffect(() => {});
   return (
@@ -129,9 +152,40 @@ export default function Password(props) {
           <Row>
             <Col sm={12}>
               <img className="hitachi-logo" alt="" src={Logo} />
+              {isNewUsernameAndPassword ? (
+            <>
+              <h2 className="textReg">UserName and Password Generation</h2>
+             
+            </>
+          ) : (
+            <>
               <h2 className="textReg">Reset Password</h2>
+            </>
+          )}
+             
             </Col>
           </Row>
+          {isNewUsernameAndPassword ? (
+  <MDBCol>
+    <div>
+      <label htmlFor="userName">Username*</label>
+    </div>
+    <div>
+      <input
+        type="text"
+        className="mb-4 loginInput"
+        value={values.userName || ""}
+        onChange={formValChange("userName")}
+      />
+      {errors.userName ? (
+        <p className="text text-danger small">{errors.userName}</p>
+      ) : (
+        ""
+      )}
+    </div>
+  </MDBCol>
+) : null}
+
           <MDBCol>
               <div>
                 <label htmlFor="password">Password*</label>
@@ -189,9 +243,20 @@ export default function Password(props) {
               )}
             </MDBCol>
           </MDBRow>
-          <button className="signupButton" onClick={handleSubmit}>
+          {isNewUsernameAndPassword ? (
+            <>
+         <button className="signupButton" onClick={handleSubmit}>
+           Generate UserName and Password
+          </button>  
+            </>
+          ) : (
+            <>
+               <button className="signupButton" onClick={handleSubmit}>
             Create password
           </button>
+            </>
+          )}
+         
         </Col>
       </Row>
     </Container>

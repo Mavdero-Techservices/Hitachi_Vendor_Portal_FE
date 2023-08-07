@@ -114,6 +114,8 @@ function ApprovalFields(props) {
         setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
         setstateCode(res.data.basicInfo[0].stateCode);
+        setcontactPerson(res.data.basicInfo[0].contactPerson);
+        setphoneNumber(res.data.basicInfo[0].phoneNumber);
         setcountry(res.data.basicInfo[0].Country_Region_Code);
         setstate(res.data.basicInfo[0].state);
         setcity(res.data.basicInfo[0].City);
@@ -135,6 +137,8 @@ function ApprovalFields(props) {
         userStatus("");
         setVendor_Account_Manager("");
         setVendor_Type("");
+        setcontactPerson("");
+        setphoneNumber("");
       }
 
       if (
@@ -435,11 +439,13 @@ function ApprovalFields(props) {
         seteditData([]);
         seteditData((prevState) => [...prevState, ...abc]);
         setaddress1(res.data.basicInfo[0].Address);
-        setstateCode(res.data.basicInfo[0].stateCode);
         setaddress2(res.data.basicInfo[0].Address_2);
         setcompanyName(res.data.basicInfo[0].companyName);
+        setstateCode(res.data.basicInfo[0].stateCode);
         setcountry(res.data.basicInfo[0].Country_Region_Code);
         setstate(res.data.basicInfo[0].state);
+        setcontactPerson(res.data.basicInfo[0].contactPerson);
+        setphoneNumber(res.data.basicInfo[0].phoneNumber);
         setcity(res.data.basicInfo[0].City);
         setpinCode(res.data.basicInfo[0].Post_Code);
         setlogo(res.data.basicInfo[0].image);
@@ -458,6 +464,8 @@ function ApprovalFields(props) {
         userStatus("");
         setVendor_Account_Manager("");
         setVendor_Type("");
+        setcontactPerson("");
+        setphoneNumber("");
       }
 
       if (
@@ -762,6 +770,8 @@ function ApprovalFields(props) {
   const [contactNumber3, setcontactNumber3] = useState("");
   const [email3, setemail3] = useState("");
   const [TicketID, setTicketID] = useState("");
+  const [contactPerson, setcontactPerson] = useState("");
+  const [phoneNumber, setphoneNumber] = useState("");
 
   const [vendorType, setvendorType] = useState("");
   const [acManager, setacManager] = useState("");
@@ -880,6 +890,24 @@ function ApprovalFields(props) {
   };
   const validatestate = (e) => {
     setstate(e.target.value);
+    apiService.getErpStateCode(e.target.value)
+    .then((response) => {
+      console.log("ERP API response:", response);
+      if (
+        response.data.message === "Success" &&
+        response.data.result.length > 0
+      ) {
+        const firstCodeValue = response.data.result[0].Code;
+        console.log("First value of Code:", firstCodeValue);
+        setstateCode(response.data.result[0].Code);
+      } else {
+        console.log("No data found or an error occurred.");
+        setstateCode("");
+      }
+    })
+    .catch((error) => {
+      console.log("ERP API error:", error);
+    });
     if (e.target.value.length === 0) {
       setstateErr("State is required");
     } else {
@@ -1749,6 +1777,8 @@ function ApprovalFields(props) {
       TAN_No: TAN_No || undefined,
       Vendor_Account_Manager: Vendor_Account_Manager || undefined,
       State_Code: stateCode || undefined,
+      Contact: contactPerson || undefined,
+      Phone_No:  phoneNumber || undefined,
       Finance_Contact_Name: fs_ContactName || undefined,
       Finance_Contact_Designation: fs_Designation || undefined,
       Finance_Contact_Phone_No: fs_PhoneNo || undefined,
@@ -1862,12 +1892,21 @@ function ApprovalFields(props) {
                               showCloseButton: false,
                               allowOutsideClick: false,
                               allowEscapeKey: false,
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                props.onApprovaljapanDone(); 
+                              }
                             });
+                            
                           } else {
                             Swal.fire({
                               title: responseData.data.message,
                               icon: "error",
                               confirmButtonText: "OK",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                props.onApprovaljapanDone(); 
+                              }
                             });
                           }
                         });
@@ -1909,9 +1948,10 @@ function ApprovalFields(props) {
                       P_A_N_No: PAN_No || undefined,
                       CIN_No: CIN_No || undefined,
                       TAN_No: TAN_No || undefined,
-                      Vendor_Account_Manager:
-                        Vendor_Account_Manager || undefined,
+                      Vendor_Account_Manager:Vendor_Account_Manager || undefined,
                       State_Code: stateCode || undefined,
+                      Contact: contactPerson || undefined,
+      Phone_No:  phoneNumber || undefined,
                       Finance_Contact_Name: fs_ContactName || undefined,
                       Finance_Contact_Designation: fs_Designation || undefined,
                       Finance_Contact_Phone_No: fs_PhoneNo || undefined,
@@ -1982,12 +2022,21 @@ function ApprovalFields(props) {
                                 showCloseButton: false,
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  props.onApprovaljapanDone(); 
+                                }
                               });
+                             
                             } else {
                               Swal.fire({
                                 title: responseData.data.message,
                                 icon: "error",
                                 confirmButtonText: "OK",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  props.onApprovaljapanDone(); 
+                                }
                               });
                             }
                           });
@@ -2075,12 +2124,21 @@ function ApprovalFields(props) {
           title: "Rejected",
           icon: "success",
           confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            props.onApprovaljapanDone();
+          }
         });
+       
       } else {
         Swal.fire({
           title: responseData.data.message,
           icon: "error",
           confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            props.onApprovaljapanDone();
+          }
         });
       }
     });
@@ -2361,6 +2419,7 @@ function ApprovalFields(props) {
       data.append("companyName", companyName);
       data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
+      data.append("stateCode",stateCode);
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
@@ -2500,6 +2559,8 @@ function ApprovalFields(props) {
         TAN_No: TAN_No || undefined,
         Vendor_Account_Manager: Vendor_Account_Manager || undefined,
         State_Code: stateCode || undefined,
+        Contact: contactPerson || undefined,
+      Phone_No:  phoneNumber || undefined,
         Finance_Contact_Name: fs_ContactName || undefined,
         Finance_Contact_Designation: fs_Designation || undefined,
         Finance_Contact_Phone_No: fs_PhoneNo || undefined,
@@ -2613,13 +2674,23 @@ function ApprovalFields(props) {
                                 showCloseButton: false,
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  props.onMRTApprovalDone();
+                                }
                               });
+                             
                             } else {
                               Swal.fire({
                                 title: responseData.data.message,
                                 icon: "error",
                                 confirmButtonText: "OK",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  props.onMRTApprovalDone();
+                                }
                               });
+                             
                             }
                           });
                       });
@@ -2654,12 +2725,21 @@ function ApprovalFields(props) {
                                   showCloseButton: false,
                                   allowOutsideClick: false,
                                   allowEscapeKey: false,
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    props.onMRTApprovalDone();
+                                  }
                                 });
+                                
                               } else {
                                 Swal.fire({
                                   title: responseData.data.message,
                                   icon: "error",
                                   confirmButtonText: "OK",
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    props.onMRTApprovalDone();
+                                  }
                                 });
                               }
                             });
@@ -2754,12 +2834,21 @@ function ApprovalFields(props) {
                 title: "Rejected",
                 icon: "success",
                 confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onMRTApprovalDone();
+                }
               });
+              
             } else {
               Swal.fire({
                 title: responseData.data.message,
                 icon: "error",
                 confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onMRTApprovalDone();
+                }
               });
             }
           });
@@ -3059,6 +3148,7 @@ function ApprovalFields(props) {
       data.append("companyName", companyName);
       data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
+      data.append("stateCode",stateCode);
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
@@ -3180,13 +3270,23 @@ function ApprovalFields(props) {
             title: "Approved",
             icon: "success",
             confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              props.onApprovalDone();
+            }
           });
+          
         } else {
           Swal.fire({
             title: responseData.data.message,
             icon: "error",
             confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              props.onApprovalDone();
+            }
           });
+          
         }
       });
     } else {
@@ -3229,12 +3329,21 @@ function ApprovalFields(props) {
                 title: "Rejected",
                 icon: "success",
                 confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onApprovalDone();
+                }
               });
+              
             } else {
               Swal.fire({
                 title: responseData.data.message,
                 icon: "error",
                 confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onApprovalDone();
+                }
               });
             }
           });
@@ -3527,6 +3636,7 @@ function ApprovalFields(props) {
       data.append("companyName", companyName);
       data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
+      data.append("stateCode",stateCode);
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
@@ -3668,6 +3778,7 @@ function ApprovalFields(props) {
   };
 
   const submitMRTHandler = (e, team) => {
+    console.log("Vendor_Type::",Vendor_Type);
     e.preventDefault();
     let FormarrayErr = [];
     if (companyName.length === 0) {
@@ -3950,11 +4061,12 @@ function ApprovalFields(props) {
       data.append("companyName", companyName);
       data.append("Country_Region_Code", Country_Region_Code);
       data.append("state", state);
+      data.append("stateCode",stateCode);
       data.append("City", City);
       data.append("Post_Code", Post_Code);
       data.append("image", logo);
-      data.append("Vendor_Type", vendorType);
-      data.append("Vendor_Account_Manager", acManager);
+      data.append("Vendor_Type", Vendor_Type);
+      data.append("Vendor_Account_Manager",Vendor_Account_Manager);
       data.append("mkDenialCheque", mkcheck);
       data.append("financeSpoccontactName", fs_ContactName);
       data.append("financeSpocdesignation", fs_Designation);
@@ -4855,7 +4967,7 @@ function ApprovalFields(props) {
                           type="text"
                           className="mb-2 inputbox"
                           name="P_A_N_No"
-                          value={Country_Region_Code !== "IN" ? "N/A" : PAN_No}
+                          value={(Country_Region_Code !== "IN" ? "N/A" : PAN_No).toUpperCase()}
                           readOnly={
                             GST_type === "Import" ||
                             Country_Region_Code !== "IN"
@@ -5274,7 +5386,7 @@ function ApprovalFields(props) {
                       type="text"
                       className="mb-2 inputbox"
                       name="IFSC_Code"
-                      value={ifscCode}
+                      value={(ifscCode || "").toUpperCase()}
                       onChange={(e) => validateifscCode(e)}
                     />
                     <span className="formError">{ifscCodeErr}</span>
@@ -5285,7 +5397,7 @@ function ApprovalFields(props) {
                       type="text"
                       className="mb-2 inputbox"
                       name="Bank_Name"
-                      value={bankName}
+                      value={(bankName || "").toUpperCase()}
                       onChange={(e) => validatebankName(e)}
                     />
                     <span className="formError">{bankNameErr}</span>
@@ -5318,7 +5430,7 @@ function ApprovalFields(props) {
                       type="text"
                       className="mb-2 inputbox"
                       name="Bank_Address"
-                      value={branchAddress}
+                      value={(branchAddress|| "").toUpperCase()}
                       onChange={(e) => validatebranchAddress(e)}
                     />
                     <span className="formError">{branchAddressErr}</span>

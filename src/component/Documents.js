@@ -141,8 +141,10 @@ function Documents() {
     // apiService.VendorregList().then(response => {
     //     setvendorList(response.data.result);
     // })
+    console.log("param?.vId",param?.vId);
     apiService.vendorIdList(param?.vId).then((response) => {
-      setdoclist(response.data.result);
+      console.log("vendorapi::",response.data.result);
+      // setdoclist(response.data.result);
       // setreqData(response.data.result);
     });
 
@@ -151,7 +153,10 @@ function Documents() {
         return item.vendorId === vendorCodeDoc;
       });
       setdoclist(arr);
+      console.log("getdoc::",arr);
+      console.log("vendorCodeDoc",vendorCodeDoc)
     });
+    console.log("getdoc::",doclist);
   }, [vendorCodeDoc]);
 
   const submitHandler = (e) => {
