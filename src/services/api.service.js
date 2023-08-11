@@ -262,6 +262,10 @@ class apiService {
   getVendorLedgerEntries() {
     return http.get('/getVendorLedgerEntries');
   }
+  getVendorLedgerEntriesById(Vendor_No) {
+    return http.get(`/getVendorLedgerEntriesById/${Vendor_No}`);
+  }
+  
 
   downloadCurrentAccountStatement() {
     return axios.get(
@@ -395,9 +399,9 @@ getDocuments() {
   {
     return http.post("/GenerateVendorCode",data);
   }
-  SearchpanNo(P_A_N_No)
+  SearchpanNo(P_A_N_No,userId)
   {
-    return http.get(`/SearchpanNo/${P_A_N_No}`);
+    return http.get(`/SearchpanNo/${P_A_N_No}/${userId}`);
   }
   resetUsernameAndPassword(data) {
     return http.post('/resetUsernameAndPassword', data);

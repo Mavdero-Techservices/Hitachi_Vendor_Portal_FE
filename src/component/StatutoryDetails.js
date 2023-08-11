@@ -46,6 +46,7 @@ export default function Statutory(props) {
   const [GST_type, setGST_type] = useState("Registered");
   const [MSME, setMSME] = useState("1");
   const [staticPAN_No, setstaticPAN_No] = useState("");
+  const [masterVendoremail, setmasterVendoremail] = useState("");
   const [MSME_status, setMSME_status] = useState("1");
   const [GST_Doc, setFile] = useState();
   const [PAN_Doc, setPAN_Doc] = useState();
@@ -257,15 +258,17 @@ export default function Statutory(props) {
      console.log("panno length equal to 10",newValue);
 
      //SearchpanNo
-     apiService.SearchpanNo(newValue).then((res) => {
+     apiService.SearchpanNo(newValue,JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
      console.log("responsepanno::",res.data.result);
      if(res.data.result==="Pan no already exists!")
      {
       setvalidpanNo(true);
+      setmasterVendoremail(res.data.mastervendor_email);
      }
      else
      {
       setvalidpanNo(false);
+      setmasterVendoremail("");
      }
      });
     }
@@ -492,6 +495,15 @@ export default function Statutory(props) {
     }
     if (PAN_No && validpanNo) {
       newErrors.PAN_No = "PAN No already exist";
+      Swal.fire({
+        title: "PAN Number already exist",
+        html: `Please contact your admin: <strong>${masterVendoremail}</strong>`,
+        icon: "warning",
+        dangerMode: true,
+        showCloseButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      })
     }
     if (CIN_No && CIN_No.length > 21) {
       newErrors.CIN_No = "CIN No must be 21 characters or less";
@@ -1780,13 +1792,13 @@ export default function Statutory(props) {
                                   </Tooltip>
                                 </InputGroup.Text>
                               </InputGroup>
-                              {errors.PAN_No ? (
+                              {/* {errors.PAN_No ? (
                                 <p className="text text-danger small">
                                   {errors.PAN_No}
                                 </p>
                               ) : (
                                 ""
-                              )}
+                              )} */}
                             </Form.Group>
                           </Col>
                         )
