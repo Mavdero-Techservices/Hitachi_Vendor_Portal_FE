@@ -3,7 +3,7 @@ import "../css/signUp.css";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import simg from "../img/signup.png";
-import Logo from "../img/logo.png";
+import Logo from "../img/logo1.png";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -168,7 +168,7 @@ export default function Password(props) {
           {isNewUsernameAndPassword ? (
   <MDBCol>
     <div>
-      <label htmlFor="userName">Username*</label>
+      <label htmlFor="userName">New Username*</label>
     </div>
     <div>
       <input
@@ -188,7 +188,7 @@ export default function Password(props) {
 
           <MDBCol>
               <div>
-                <label htmlFor="password">Password*</label>
+                <label htmlFor="password">New Password*</label>
               </div>
               <div>
                 <input
@@ -217,7 +217,7 @@ export default function Password(props) {
           <MDBRow className="mb-4">
            
             <MDBCol>
-              <label>confirm Password*</label>
+              <label>Confirm Password*</label>
               <input
                 type={ConfirmPasswordType}
                 className="mb-4 signupInput"

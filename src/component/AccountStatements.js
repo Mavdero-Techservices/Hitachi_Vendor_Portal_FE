@@ -36,14 +36,12 @@ function AccountStatements() {
     apiService.vendorApprovalList().then((response) => {
       setacList(response.data.result);
     });
-
-    // apiService.getVendorLedgerEntries().then((response) => {
-    //   setledgerDetail(response.data.value);
-    // });
     apiService.getVendorLedgerEntriesById(vendorCodeDoc).then((response) => {
       setledgerDetail(response.data.value);
     });
-    //getVendorLedgerEntriesById
+    // apiService.getVendorLedgerEntries().then((response) => {
+    //   setledgerDetail(response.data.value);
+    // });
 
   }, []);
 
@@ -278,7 +276,6 @@ function AccountStatements() {
   };
   const [vendorCodeDoc, setvendorCodeDoc] = useState();
   const handleVcode = (msg) => {
-    console.log("msg",msg)
     setvendorCodeDoc(msg);
   };
   return (

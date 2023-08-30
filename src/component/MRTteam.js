@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminHeader from "../common/AdminHeader";
 import apiService from "../services/api.service";
+import handleApiError from '../utils/Errorhandler';
 import CssBaseline from "@mui/material/CssBaseline";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -118,16 +119,12 @@ function MRTteam() {
                         // const s = moment(item.level2Date).format("MMM DD");
                         // item.level2Date = s;
                         // Level2rejected.push(item);
-                        var currentdate = new Date();
-                        // currentdate.setDate(currentdate.getDate() + 1);
                         var subDate = new Date(item.level2Date);
-                        var dueDate = new Date();
-                        dueDate.setDate(subDate.getDate() + 3);
-                        var Difference_In_Time = dueDate.getTime() - currentdate.getTime();
-                        var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24));
-
-                        let arr = [3, 2, 1]
-                        item.updatedAt = -(arr.indexOf(Difference_In_Days));
+                        var currentDate = new Date();
+                        var timeDifference = currentDate - subDate;
+                        var differenceInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                        var adjustedDifference = differenceInDays;
+                item.updatedAt =adjustedDifference;
                         const s = moment(item.level2Date).format('MMM DD');
                         item.level2Date = s
                         Level2rejected.push(item)
@@ -136,7 +133,9 @@ function MRTteam() {
                 setvendors([]);
                 setvendors((array) => [...array, ...Level2rejected]);
             }
-        });
+        }).catch((error) => {
+            handleApiError(error);
+          });
     };
 
     const filterHandler = (e) => {

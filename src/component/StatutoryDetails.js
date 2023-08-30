@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 import InfoIcon from "@mui/icons-material/Info";
 import InputGroup from "react-bootstrap/InputGroup";
 import Tooltip from "@material-ui/core/Tooltip";
+import handleApiError from '../utils/Errorhandler';
 const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
 const PANValidation = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 const gstNo = `Goods and Service Tax`;
@@ -259,18 +260,34 @@ export default function Statutory(props) {
 
      //SearchpanNo
      apiService.SearchpanNo(newValue,JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
-     console.log("responsepanno::",res.data.result);
-     if(res.data.result==="Pan no already exists!")
-     {
-      setvalidpanNo(true);
-      setmasterVendoremail(res.data.mastervendor_email);
-     }
-     else
-     {
+      console.log("responsepanno::",res.data.result);
+      if(res.data.result==="Pan no already exists!")
+      {
+       setvalidpanNo(true);
+       setmasterVendoremail(res.data.mastervendor_email);
+      }
+      else
+      {
+       setvalidpanNo(false);
+       setmasterVendoremail("");
+      }
+      }).catch((error) => {
+        console.log("errorstatutory:::",error);
+        if (error.code === 'ERR_NETWORK') {
+          console.log("networkerror:::",error);
+          handleApiError(error);
+        }
+        else
+        {
+          console.log("error:::",error);
+          handleApiError(error);
+        }
+      });
+    }
+    else
+    {
       setvalidpanNo(false);
       setmasterVendoremail("");
-     }
-     });
     }
   };
 
@@ -437,7 +454,8 @@ export default function Statutory(props) {
     }
   }
   const redirectToComplianceDetail = () => {
-    if (redirectUrl.ComplianceDetail?.length <= 0 || "" || undefined) {
+    console.log("redirectUrl",redirectUrl)
+    if (redirectUrl===undefined||redirectUrl?.ComplianceDetail?.length <= 0 || "" || undefined) {
       navigate("/ComplianceDetail");
     } else {
       navigate(`/ComplianceDetail/${params.userId}`);
@@ -809,6 +827,17 @@ export default function Statutory(props) {
           if (res.data.basicInfo[0]?.Country_Region_Code === "IN") {
             setshowLoginTab(false);
           }
+        }).catch((error) => {
+          console.log("error2:::",error);
+          if (error.code === 'ERR_NETWORK') {
+            console.log("networkerror:::",error);
+            handleApiError(error);
+          }
+          else
+          {
+            console.log("error:::",error);
+            handleApiError(error);
+          }
         });
         
 
@@ -817,6 +846,17 @@ export default function Statutory(props) {
        apiService.signupFindByUserId(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         ).then((res) => {
           finalstatus = res.data.result?.finalStatus;
+        }).catch((error) => {
+          console.log("error2:::",error);
+          if (error.code === 'ERR_NETWORK') {
+            console.log("networkerror:::",error);
+            handleApiError(error);
+          }
+          else
+          {
+            console.log("error:::",error);
+            handleApiError(error);
+          }
         });
        apiService.getAllCollection(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
         ).then((res) => {
@@ -882,6 +922,17 @@ export default function Statutory(props) {
             setEditform_10f_Doc(replaceform10fValue);
             setEditPE_Declaration_Doc(replacePE_Declaration_DocValue);
           });
+        }).catch((error) => {
+          console.log("error2:::",error);
+          if (error.code === 'ERR_NETWORK') {
+            console.log("networkerror:::",error);
+            handleApiError(error);
+          }
+          else
+          {
+            console.log("error:::",error);
+            handleApiError(error);
+          }
         });
       }
       console.log("country::") 
@@ -986,6 +1037,17 @@ export default function Statutory(props) {
               });
               resolve("error");
             }
+          }).catch((error) => {
+            console.log("error2:::",error);
+            if (error.code === 'ERR_NETWORK') {
+              console.log("networkerror:::",error);
+              handleApiError(error);
+            }
+            else
+            {
+              console.log("error:::",error);
+              handleApiError(error);
+            }
           });
         } else {
           let newuser = JSON.parse(
@@ -1056,6 +1118,17 @@ export default function Statutory(props) {
                   allowEscapeKey: false,
                 });
               }
+            }).catch((error) => {
+              console.log("error2:::",error);
+              if (error.code === 'ERR_NETWORK') {
+                console.log("networkerror:::",error);
+                handleApiError(error);
+              }
+              else
+              {
+                console.log("error:::",error);
+                handleApiError(error);
+              }
             });
           } else {
             apiService.saveStatutoryDetail(data).then((res) => {
@@ -1083,6 +1156,17 @@ export default function Statutory(props) {
                   allowOutsideClick: false,
                   allowEscapeKey: false,
                 });
+              }
+            }).catch((error) => {
+              console.log("errorstatutory:::",error);
+              if (error.code === 'ERR_NETWORK') {
+                console.log("networkerror:::",error);
+                handleApiError(error);
+              }
+              else
+              {
+                console.log("error:::",error);
+                handleApiError(error);
               }
             });
           }
@@ -1174,6 +1258,17 @@ export default function Statutory(props) {
             });
             resolve("error");
           }
+        }).catch((error) => {
+          console.log("errorstatutory1:::",error);
+          if (error.code === 'ERR_NETWORK') {
+            console.log("networkerror:::",error);
+            handleApiError(error);
+          }
+          else
+          {
+            console.log("error:::",error);
+            handleApiError(error);
+          }
         });
       } else {
         let newuser = JSON.parse(
@@ -1244,6 +1339,17 @@ export default function Statutory(props) {
                 allowEscapeKey: false,
               });
             }
+          }).catch((error) => {
+            console.log("errorstatutory2:::",error);
+            if (error.code === 'ERR_NETWORK') {
+              console.log("networkerror:::",error);
+              handleApiError(error);
+            }
+            else
+            {
+              console.log("error:::",error);
+              handleApiError(error);
+            }
           });
         } else {
           apiService.saveStatutoryDetail(data).then((res) => {
@@ -1271,6 +1377,17 @@ export default function Statutory(props) {
                 allowOutsideClick: false,
                 allowEscapeKey: false,
               });
+            }
+          }).catch((error) => {
+            console.log("errorstatutory3:::",error);
+            if (error.code === 'ERR_NETWORK') {
+              console.log("networkerror:::",error);
+              handleApiError(error);
+            }
+            else
+            {
+              console.log("error:::",error);
+              handleApiError(error);
             }
           });
         }
@@ -1792,13 +1909,13 @@ export default function Statutory(props) {
                                   </Tooltip>
                                 </InputGroup.Text>
                               </InputGroup>
-                              {/* {errors.PAN_No ? (
+                              {!validpanNo&&errors.PAN_No ? (
                                 <p className="text text-danger small">
                                   {errors.PAN_No}
                                 </p>
                               ) : (
                                 ""
-                              )} */}
+                              )}
                             </Form.Group>
                           </Col>
                         )

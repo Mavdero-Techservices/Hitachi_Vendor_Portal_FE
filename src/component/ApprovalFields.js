@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import "../css/ApprovalFields.css";
 import apiService from "../services/api.service";
+import handleApiError from '../utils/Errorhandler';
 import Swal from "sweetalert2";
 function ApprovalFields(props) {
   const GSTValidation = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
@@ -354,6 +355,8 @@ function ApprovalFields(props) {
         setemail3("");
         setTicketID("");
       }
+    }).catch((error) => {
+      handleApiError(error);
     });
   };
   const handleKeyDown = (event) => {
@@ -683,6 +686,8 @@ function ApprovalFields(props) {
         setemail3("");
         setTicketID("");
       }
+    }).catch((error) => {
+      handleApiError(error);
     });
   }, [props.userid]);
   const [Vendor_Type, setVendor_Type] = useState("");
@@ -904,9 +909,8 @@ function ApprovalFields(props) {
         console.log("No data found or an error occurred.");
         setstateCode("");
       }
-    })
-    .catch((error) => {
-      console.log("ERP API error:", error);
+    }).catch((error) => {
+      handleApiError(error);
     });
     if (e.target.value.length === 0) {
       setstateErr("State is required");
@@ -1870,6 +1874,8 @@ function ApprovalFields(props) {
                     .GenerateVendorCode(VendorCodeGenration)
                     .then((response) => {
                       console.log("vendorCodeGenerate::", response);
+                    }).catch((error) => {
+                      handleApiError(error);
                     });
                   const MasterVendor = {
                     mastervendor_email: mastervendor_email || undefined,
@@ -1877,40 +1883,80 @@ function ApprovalFields(props) {
                     Ticket_ID: TicketID || undefined,
                     Country_Region_Code: countryRegionCode || undefined,
                   };
-                  apiService
-                    .saveMasterLogin(MasterVendor)
-                    .then((Masterresponse) => {
-                      console.log("masterLogin::", Masterresponse);
-                      apiService
-                        .updateApprovalStatus(userId, data)
-                        .then((responseData) => {
-                          if (responseData.data.status === "success") {
-                            Swal.fire({
-                              title: "Approved",
-                              icon: "success",
-                              confirmButtonText: "OK",
-                              showCloseButton: false,
-                              allowOutsideClick: false,
-                              allowEscapeKey: false,
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                props.onApprovaljapanDone(); 
-                              }
-                            });
-                            
-                          } else {
-                            Swal.fire({
-                              title: responseData.data.message,
-                              icon: "error",
-                              confirmButtonText: "OK",
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                props.onApprovaljapanDone(); 
-                              }
-                            });
+                  if (userStatus === "NewRegistration") {
+                    console.log("NewRegistration::")
+                    apiService
+                    .updateApprovalStatus(userId, data)
+                    .then((responseData) => {
+                      if (responseData.data.status === "success") {
+                        Swal.fire({
+                          title: "Approved",
+                          icon: "success",
+                          confirmButtonText: "OK",
+                          showCloseButton: false,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            props.onApprovaljapanDone(); 
                           }
                         });
+                        
+                      } else {
+                        Swal.fire({
+                          title: responseData.data.message,
+                          icon: "error",
+                          confirmButtonText: "OK",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            props.onApprovaljapanDone(); 
+                          }
+                        });
+                      }
+                    }).catch((error) => {
+                      handleApiError(error);
                     });
+                                        }
+                                        else
+                                        {
+                                          apiService
+                                          .saveMasterLogin(MasterVendor)
+                                          .then((Masterresponse) => {
+                                            console.log("masterLogin::", Masterresponse);
+                                            apiService
+                                              .updateApprovalStatus(userId, data)
+                                              .then((responseData) => {
+                                                if (responseData.data.status === "success") {
+                                                  Swal.fire({
+                                                    title: "Approved",
+                                                    icon: "success",
+                                                    confirmButtonText: "OK",
+                                                    showCloseButton: false,
+                                                    allowOutsideClick: false,
+                                                    allowEscapeKey: false,
+                                                  }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                      props.onApprovaljapanDone(); 
+                                                    }
+                                                  });
+                                                  
+                                                } else {
+                                                  Swal.fire({
+                                                    title: responseData.data.message,
+                                                    icon: "error",
+                                                    confirmButtonText: "OK",
+                                                  }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                      props.onApprovaljapanDone(); 
+                                                    }
+                                                  });
+                                                }
+                                              });
+                                          }).catch((error) => {
+                                            handleApiError(error);
+                                          });
+                                        }
+                
                 } else {
                   const errorMessage =
                     response.data.Result?.["odata.error"]?.message?.value ||
@@ -2004,90 +2050,81 @@ function ApprovalFields(props) {
                       Shareholder_Name: shareholderName || undefined,
                       Organization_Type: organisationType || undefined,
                     };
-                    apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
-                      console.log("masterResponse:::")
-                      if (Masterresponse && Masterresponse.data.msg !== "error") {
-                        if (Masterresponse && !Masterresponse.data.Result?.["odata.error"]) {
-                          console.log("DataUpdated::");
-                          apiService
-                          .updateMasterLogin(UpdateMasterVendor)
-                          .then((Masterresponse) => {
-                            console.log("masterLogin::", Masterresponse);
-                            apiService
-                              .updateApprovalStatus(userId, data)
-                              .then((responseData) => {
-                                if (responseData.data.status === "success") {
-                                  Swal.fire({
-                                    title: responseData.data.message,
-                                    icon: "success",
-                                    confirmButtonText: "OK",
-                                    showCloseButton: false,
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                  }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      props.onApprovaljapanDone(); 
-                                    }
-                                  });
-                                 
-                                } else {
-                                  Swal.fire({
-                                    title: responseData.data.message,
-                                    icon: "error",
-                                    confirmButtonText: "OK",
-                                  }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      props.onApprovaljapanDone(); 
-                                    }
-                                  });
-                                }
-                              }).catch((error) => {
-                                console.log("error::",error);
-                                // Swal.fire({
-                                //   icon: "error",
-                                //   title: "Error in update Approval status",
-                                //   confirmButtonText: "OK",
-                                //   showCloseButton: false,
-                                //   allowOutsideClick: false,
-                                //   allowEscapeKey: false,
-                                // });
-                              });
-                          }).catch((error) => {
-                            console.log("error::",error);
-                            // Swal.fire({
-                            //   icon: "error",
-                            //   title: "Error in update MAster Api",
-                            //   confirmButtonText: "OK",
-                            //   showCloseButton: false,
-                            //   allowOutsideClick: false,
-                            //   allowEscapeKey: false,
-                            // });
-                          });
-                        }}
-                        else
-                        {
-                          console.log("DataUpdated::");
-                          const erpErrorResponse = Masterresponse.data.error;
+                    if (userStatus === "NewRegistration") {
+                      console.log("NewRegistration::");
+                      apiService
+                      .updateApprovalStatus(userId, data)
+                      .then((responseData) => {
+                        if (responseData.data.status === "success") {
                           Swal.fire({
-                            icon: "error",
-                            title: `In ERP,${erpErrorResponse}`,
+                            title: responseData.data.message,
+                            icon: "success",
                             confirmButtonText: "OK",
                             showCloseButton: false,
                             allowOutsideClick: false,
                             allowEscapeKey: false,
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              props.onApprovaljapanDone(); 
+                            }
+                          });
+                         
+                        } else {
+                          Swal.fire({
+                            title: responseData.data.message,
+                            icon: "error",
+                            confirmButtonText: "OK",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              props.onApprovaljapanDone(); 
+                            }
                           });
                         }
-
-                    }).catch((error) => {
-                      Swal.fire({
-                        icon: "error",
-                        title: "Error in update ResourcePortalVendorlist Api",
-                        confirmButtonText: "OK",
-                        showCloseButton: false,
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
+                      }).catch((error) => {
+                        handleApiError(error);
                       });
-                    });
+                                          }
+                                          else
+                                          {
+                                            apiService
+                                            .updateMasterLogin(UpdateMasterVendor)
+                                            .then((Masterresponse) => {
+                                              console.log("masterLogin::", Masterresponse);
+                                              apiService
+                                                .updateApprovalStatus(userId, data)
+                                                .then((responseData) => {
+                                                  if (responseData.data.status === "success") {
+                                                    Swal.fire({
+                                                      title: responseData.data.message,
+                                                      icon: "success",
+                                                      confirmButtonText: "OK",
+                                                      showCloseButton: false,
+                                                      allowOutsideClick: false,
+                                                      allowEscapeKey: false,
+                                                    }).then((result) => {
+                                                      if (result.isConfirmed) {
+                                                        props.onApprovaljapanDone(); 
+                                                      }
+                                                    });
+                                                   
+                                                  } else {
+                                                    Swal.fire({
+                                                      title: responseData.data.message,
+                                                      icon: "error",
+                                                      confirmButtonText: "OK",
+                                                    }).then((result) => {
+                                                      if (result.isConfirmed) {
+                                                        props.onApprovaljapanDone(); 
+                                                      }
+                                                    });
+                                                  }
+                                                });
+                                            }).catch((error) => {
+                                              handleApiError(error);
+                                            });
+                                          }
+                    // apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
+                    // })
                     // apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {})
                   
                   } else {
@@ -2117,6 +2154,8 @@ function ApprovalFields(props) {
                   allowEscapeKey: false,
                 });
               }
+            }).catch((error) => {
+              handleApiError(error);
             });
         } else {
           Swal.fire({
@@ -2141,56 +2180,63 @@ function ApprovalFields(props) {
       });
   };
   const handleConcernFound = (event) => {
-    // Swal.fire({
-    //   heightAuto: true,
-    //   title: "Review vendor details",
-    //   html: `<div class="rejectstyle">
-    //         <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
-    //         <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
-    //    </div> `,
-    //   confirmButtonText: "Reject",
-    //   confirmButtonColor: "#B1000E",
-    //   showCancelButton: true,
-    //   focusConfirm: false,
-    //   customClass: "swal-wide",
-    //   preConfirm: () => {
-    //     const comment = Swal.getPopup().querySelector("#comment").value;
-    //     const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
-    //     if (!comment || !rejectdoc) {
-    //       Swal.showValidationMessage(`Please enter comments and file`);
-    //     } else {
-    const data = new FormData();
-    console.log("new date--------", new Date());
-    data.append("userId", event);
-    data.append("level2Status", "rejected");
-    data.append("level2RejectComment", "");
-    data.append("level2rejectFileDoc", undefined);
-    data.append("level2Date", new Date());
-    const userId = event;
-    apiService.updateApprovalStatus(userId, data).then((responseData) => {
-      if (responseData.data.status === "success") {
-        Swal.fire({
-          title: "Rejected",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            props.onApprovaljapanDone();
-          }
-        });
-       
-      } else {
-        Swal.fire({
-          title: responseData.data.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            props.onApprovaljapanDone();
-          }
-        });
-      }
-    });
+    Swal.fire({
+      heightAuto: true,
+      title: "Review vendor details",
+      html: `<div class="rejectstyle">
+            <textarea rows="10" cols="30" id="comment" class="swal01-input" placeholder="Comments "></textarea>
+            <input type="file" id="rejectdoc" class="swal01-input" placeholder="Select file">
+       </div> `,
+      confirmButtonText: "Reject",
+      confirmButtonColor: "#B1000E",
+      showCancelButton: true,
+      focusConfirm: false,
+      customClass: "swal-wide",
+      preConfirm: () => {
+        const comment = Swal.getPopup().querySelector("#comment").value;
+        const rejectdoc = Swal.getPopup().querySelector("#rejectdoc").files[0];
+        if (!comment) {
+          Swal.showValidationMessage(`Please enter comments`);
+        } else {
+          const data = new FormData();
+          console.log("new date--------", new Date());
+          data.append("userId", event);
+          data.append("level2Status", "rejected");
+          data.append("level2RejectComment", comment);
+          data.append("level2rejectFileDoc", rejectdoc);
+          data.append("level2Date", new Date());
+          const userId = event;
+          apiService.updateApprovalStatus(userId, data).then((responseData) => {
+            if (responseData.data.status === "success") {
+              Swal.fire({
+                title: "Rejected",
+                icon: "success",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onApprovaljapanDone();
+                }
+              });
+             
+            } else {
+              Swal.fire({
+                title: responseData.data.message,
+                icon: "error",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  props.onApprovaljapanDone();
+                }
+              });
+            }
+          }).catch((error) => {
+            handleApiError(error);
+          });
+        }
+    
+   
+  }
+})
     //     }
     //   },
     // });
@@ -2581,6 +2627,8 @@ function ApprovalFields(props) {
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
         console.log("data::");
+      }).catch((error) => {
+        handleApiError(error);
       });
 
       const userId = event;
@@ -2708,7 +2756,44 @@ function ApprovalFields(props) {
                       Ticket_ID: TicketID || undefined,
                       Country_Region_Code: countryRegionCode || undefined,
                     };
-                    apiService
+                    if (userStatus === "NewRegistration") {
+console.log("NewRegistration::")
+apiService
+.updateApprovalStatus(userId, data1)
+.then((responseData) => {
+  if (responseData.data.status === "success") {
+    Swal.fire({
+      title: "Approved",
+      icon: "success",
+      confirmButtonText: "OK",
+      showCloseButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        props.onMRTApprovalDone();
+      }
+    });
+   
+  } else {
+    Swal.fire({
+      title: responseData.data.message,
+      icon: "error",
+      confirmButtonText: "OK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        props.onMRTApprovalDone();
+      }
+    });
+   
+  }
+}).catch((error) => {
+  handleApiError(error);
+});
+                    }
+                    else
+                    {
+                      apiService
                       .saveMasterLogin(MasterVendor)
                       .then((Masterresponse) => {
                         console.log("masterLogin::", Masterresponse);
@@ -2741,13 +2826,23 @@ function ApprovalFields(props) {
                               });
                              
                             }
+                          }).catch((error) => {
+                            handleApiError(error);
                           });
+                      }).catch((error) => {
+                        handleApiError(error);
                       });
+                    }
+                   
                   } else {
                     if (
                       response.data.Result?.["odata.error"]?.message?.value ===
                       "The record already exists."
                     ) {
+                      //                   apiService.updateErpResourcePortalVendorlist(ERPData).then((updateresponse) => {
+
+                      // console.log("updateresponse::")
+                      //                   })
                       console.log("already exists::");
                       const UpdateMasterVendor = {
                         mastervendor_email: mastervendor_email || undefined,
@@ -2755,86 +2850,80 @@ function ApprovalFields(props) {
                         Ticket_ID: TicketID || undefined,
                         Country_Region_Code: countryRegionCode || undefined,
                       };
-                      apiService.updateErpResourcePortalVendorlist(ERPData).then((Masterresponse) => {
-                        console.log("masterResponse:::")
-                        if (Masterresponse && Masterresponse.data.msg !== "error") {
-                          if (Masterresponse && !Masterresponse.data.Result?.["odata.error"]) {
-                            console.log("DataUpdated::");
-                            apiService.updateMasterLogin(UpdateMasterVendor).then((Masterresponse) => {
-                              console.log("masterLogin::", Masterresponse);
-                              apiService.updateApprovalStatus(userId, data).then((responseData) => {
-                                  if (responseData.data.status === "success") {
-                                    Swal.fire({
-                                      title: responseData.data.message,
-                                      icon: "success",
-                                      confirmButtonText: "OK",
-                                      showCloseButton: false,
-                                      allowOutsideClick: false,
-                                      allowEscapeKey: false,
-                                    }).then((result) => {
-                                      if (result.isConfirmed) {
-                                        props.onApprovaljapanDone(); 
-                                      }
-                                    });
-                                   
-                                  } else {
-                                    Swal.fire({
-                                      title: responseData.data.message,
-                                      icon: "error",
-                                      confirmButtonText: "OK",
-                                    }).then((result) => {
-                                      if (result.isConfirmed) {
-                                        props.onApprovaljapanDone(); 
-                                      }
-                                    });
-                                  }
-                                }).catch((error) => {
-                                  console.log("error::",error);
-                                  // Swal.fire({
-                                  //   icon: "error",
-                                  //   title: "Error in update Approval status",
-                                  //   confirmButtonText: "OK",
-                                  //   showCloseButton: false,
-                                  //   allowOutsideClick: false,
-                                  //   allowEscapeKey: false,
-                                  // });
-                                });
-                            }).catch((error) => {
-                              console.log("error::",error);
-                              // Swal.fire({
-                              //   icon: "error",
-                              //   title: "Error in update MAster Api",
-                              //   confirmButtonText: "OK",
-                              //   showCloseButton: false,
-                              //   allowOutsideClick: false,
-                              //   allowEscapeKey: false,
-                              // });
-                            });
-                          }}
-                          else
-                          {
-                            console.log("DataUpdated::");
-                            const erpErrorResponse = Masterresponse.data.error;
+                      if (userStatus === "NewRegistration") {
+                        console.log("NewRegistration::")
+                        apiService
+                        .updateApprovalStatus(userId, data1)
+                        .then((responseData) => {
+                          if (responseData.data.status === "success") {
                             Swal.fire({
-                              icon: "error",
-                              title: `In ERP,${erpErrorResponse}`,
+                              title: responseData.data.message,
+                              icon: "success",
                               confirmButtonText: "OK",
                               showCloseButton: false,
                               allowOutsideClick: false,
                               allowEscapeKey: false,
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                props.onMRTApprovalDone();
+                              }
+                            });
+                            
+                          } else {
+                            Swal.fire({
+                              title: responseData.data.message,
+                              icon: "error",
+                              confirmButtonText: "OK",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                props.onMRTApprovalDone();
+                              }
                             });
                           }
-  
-                      }).catch((error) => {
-                        Swal.fire({
-                          icon: "error",
-                          title: "Error in update ResourcePortalVendorlist Api",
-                          confirmButtonText: "OK",
-                          showCloseButton: false,
-                          allowOutsideClick: false,
-                          allowEscapeKey: false,
+                        }).catch((error) => {
+                          handleApiError(error);
                         });
-                      });
+                                            }
+                                            else
+                                            {
+                                              apiService
+                                              .updateMasterLogin(UpdateMasterVendor)
+                                              .then((Masterresponse) => {
+                                                console.log("masterLogin::", Masterresponse);
+                                                apiService
+                                                  .updateApprovalStatus(userId, data1)
+                                                  .then((responseData) => {
+                                                    if (responseData.data.status === "success") {
+                                                      Swal.fire({
+                                                        title: responseData.data.message,
+                                                        icon: "success",
+                                                        confirmButtonText: "OK",
+                                                        showCloseButton: false,
+                                                        allowOutsideClick: false,
+                                                        allowEscapeKey: false,
+                                                      }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                          props.onMRTApprovalDone();
+                                                        }
+                                                      });
+                                                      
+                                                    } else {
+                                                      Swal.fire({
+                                                        title: responseData.data.message,
+                                                        icon: "error",
+                                                        confirmButtonText: "OK",
+                                                      }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                          props.onMRTApprovalDone();
+                                                        }
+                                                      });
+                                                    }
+                                                  });
+                                              }).catch((error) => {
+                                                handleApiError(error);
+                                              });
+                                            }
+                     
                     } else {
                       const errorMessage =
                         response.data.Result?.["odata.error"]?.message?.value ||
@@ -2862,6 +2951,8 @@ function ApprovalFields(props) {
                     allowEscapeKey: false,
                   });
                 }
+              }).catch((error) => {
+                handleApiError(error);
               });
           } else {
             Swal.fire({
@@ -2942,6 +3033,8 @@ function ApprovalFields(props) {
                 }
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       },
@@ -3350,7 +3443,9 @@ function ApprovalFields(props) {
       data.append("email3", email3);
       data.append("approverFile", approverFile);
 
-      apiService.updateAllCollection(props.userid, data).then((response) => {});
+      apiService.updateAllCollection(props.userid, data).then((response) => {}).catch((error) => {
+        handleApiError(error);
+      });
 
       const data1 = new FormData();
       data1.append("level1Status", "approved");
@@ -3379,6 +3474,8 @@ function ApprovalFields(props) {
           });
           
         }
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       Swal.fire({
@@ -3437,6 +3534,8 @@ function ApprovalFields(props) {
                 }
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       },
@@ -3858,6 +3957,8 @@ function ApprovalFields(props) {
             confirmButtonText: "OK",
           });
         }
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       Swal.fire({
@@ -4284,6 +4385,8 @@ function ApprovalFields(props) {
             confirmButtonText: "OK",
           });
         }
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       Swal.fire({
@@ -6059,14 +6162,14 @@ function ApprovalFields(props) {
                   onClick={(e) => handleConcernFound(props.userid)}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  Concern found
+                 Reject
                 </button>
                 <button
                   type="button"
                   onClick={(e) => handleNoConcernFound(props.userid)}
                   className="btn bankbtn btn-primary btn-md m-2"
                 >
-                  No Concern found
+                  Approve
                 </button>
               </div>
             </>

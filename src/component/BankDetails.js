@@ -6,6 +6,7 @@ import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import handleApiError from '../utils/Errorhandler';
 // const ifscValidation = "^[A-Z]{4}0[A-Z0-9]{6}$";
 const BankDetails = (props) => {
   const [redirectUrl, setredirectUrl] = useState();
@@ -227,7 +228,7 @@ const BankDetails = (props) => {
   }
   const redirectToFinancialDetail = () => {
     if (
-      (redirectUrl &&
+      (redirectUrl===undefined||redirectUrl &&
         redirectUrl.FinancialDetail &&
         redirectUrl.FinancialDetail?.length <= 0) ||
       "" ||
@@ -333,20 +334,20 @@ const BankDetails = (props) => {
             });
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+          if (redirectUrl===undefined||redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
             navigate("/FinancialDetail");
           } else {
             navigate(
-              `/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`
+              `/FinancialDetail/${redirectUrl?.FinancialDetail[0]?.userId}`
             );
           }
         }
       });
     } else {
-      if (redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
+      if (redirectUrl===undefined||redirectUrl.FinancialDetail?.length <= 0 || "" || undefined) {
         navigate("/FinancialDetail");
       } else {
-        navigate(`/FinancialDetail/${redirectUrl.FinancialDetail[0].userId}`);
+        navigate(`/FinancialDetail/${redirectUrl?.FinancialDetail[0]?.userId}`);
       }
     }
   }
@@ -416,6 +417,8 @@ const BankDetails = (props) => {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         } else {
           let newuser = JSON.parse(
@@ -472,6 +475,8 @@ const BankDetails = (props) => {
                   confirmButtonText: "OK",
                 });
               }
+            }).catch((error) => {
+              handleApiError(error);
             });
           } else {
             apiService.savebankdetail(data).then((response) => {
@@ -518,6 +523,8 @@ const BankDetails = (props) => {
                   confirmButtonText: "OK",
                 });
               }
+            }).catch((error) => {
+              handleApiError(error);
             });
           }
         }
@@ -585,6 +592,8 @@ const BankDetails = (props) => {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       });
@@ -600,6 +609,8 @@ const BankDetails = (props) => {
       let finalstatus = "";
       apiService.signupFindByUserId(params?.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(params?.userId).then((res) => {
         setredirectUrl(res.data);
@@ -631,12 +642,16 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else if (newuser) {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
@@ -657,6 +672,8 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       apiService
@@ -665,6 +682,8 @@ const BankDetails = (props) => {
         )
         .then((res) => {
           setredirectUrl(res.data);
+        }).catch((error) => {
+          handleApiError(error);
         });
       setEditBank(false);
     }
@@ -682,6 +701,8 @@ const BankDetails = (props) => {
       let finalstatus = "";
       apiService.signupFindByUserId(params?.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(params?.userId).then((res) => {
         setredirectUrl(res.data);
@@ -712,12 +733,16 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else if (newuser) {
       // eslint-disable-next-line no-unused-vars
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
@@ -738,6 +763,8 @@ const BankDetails = (props) => {
           seteditValuefileBank(bankdetailDoc);
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       apiService
@@ -746,6 +773,8 @@ const BankDetails = (props) => {
         )
         .then((res) => {
           setredirectUrl(res.data);
+        }).catch((error) => {
+          handleApiError(error);
         });
       setEditBank(false);
     }

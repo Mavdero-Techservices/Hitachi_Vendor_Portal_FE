@@ -5,6 +5,7 @@ import Navbar1 from "../common/navbar.js";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import withRouter from "../component/withRouter";
+import handleApiError from '../utils/Errorhandler';
 import {
   MDBCard,
   MDBCardBody,
@@ -91,6 +92,7 @@ export class Basic extends React.Component {
         emailError: null,
         mastervendor_emailError: null,
       },
+      
     };
 
     this.togglebutton = this.togglebutton.bind(this);
@@ -212,6 +214,16 @@ export class Basic extends React.Component {
     });
     this.setState({ Post_Code: e.target.value });
   }
+  handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      this.mouseOut(event);
+    }
+console.log("event:",event)
+  }
+  onBlur = (event) => {
+   console.log("mouseout");
+   this.mouseOut(event);
+  };
   mouseOut(e) {
     e.preventDefault();
     const { name, value } = e.target;
@@ -248,6 +260,23 @@ export class Basic extends React.Component {
           console.log("res--------->", response);
           if (response && response.data.status === "success") {
             if (response.data.postalcodes.length === 0) {
+const errorMessage = "City and state are not available for the entered pincode. Please enter them manually.";
+Swal.fire({
+  icon: "error",
+  title: "Enter City and State",
+  text: errorMessage,
+  confirmButtonText: "OK",
+  showCloseButton: false,
+  allowOutsideClick: false,
+  allowEscapeKey: false,
+})
+// if (this.state.Post_Code !== value) {
+//   this.setState({ getCityAndState: "" });
+//   this.setState({ state: "" });
+//   this.setState({ City: "" });
+// }
+             
+              console.log("nocityandstate",response.data.postalcodes)
               this.setState({ getCityAndState: "" });
               this.setState({ state: "" });
               this.setState({ City: "" });
@@ -311,16 +340,8 @@ export class Basic extends React.Component {
             //   allowEscapeKey: false,
             // });
           }
-        })
-        .catch((error) => {
-          // Swal.fire({
-          //   icon: 'error',
-          //   title: 'Error in Fetching Pincode',
-          //   confirmButtonText: "OK",
-          //   showCloseButton: false,
-          //   allowOutsideClick: false,
-          //   allowEscapeKey: false,
-          // });
+        }).catch((error) => {
+          handleApiError(error);
         });
     } else {
     }
@@ -407,13 +428,17 @@ export class Basic extends React.Component {
                   });
                 } else {
                   Swal.fire({
-                    title: "Error While Fetching",
                     icon: "error",
+                    title: "Server Unavailable",
+                    text: "The server is currently unavailable. Please try again later.",
                     confirmButtonText: "OK",
-                    showCloseButton: true,
+                    showCloseButton: false,
                     allowOutsideClick: false,
+                    allowEscapeKey: false,
                   });
                 }
+              }).catch((error) => {
+                handleApiError(error);
               });
           } else {
             if (this.props.params.newReg) {
@@ -462,13 +487,17 @@ export class Basic extends React.Component {
                   });
                 } else {
                   Swal.fire({
-                    title: "Error While Fetching",
                     icon: "error",
+                    title: "Server Unavailable",
+                    text: "The server is currently unavailable. Please try again later.",
                     confirmButtonText: "OK",
-                    showCloseButton: true,
+                    showCloseButton: false,
                     allowOutsideClick: false,
-                  });
+                    allowEscapeKey: false,
+                  })
                 }
+              }).catch((error) => {
+                handleApiError(error);
               });
             } else {
               console.log("save::", this.state.basicInfoVendor);
@@ -495,13 +524,17 @@ export class Basic extends React.Component {
                   });
                 } else {
                   Swal.fire({
-                    title: "Error While Fetching",
                     icon: "error",
+                    title: "Server Unavailable",
+                    text: "The server is currently unavailable. Please try again later.",
                     confirmButtonText: "OK",
-                    showCloseButton: true,
+                    showCloseButton: false,
                     allowOutsideClick: false,
-                  });
+                    allowEscapeKey: false,
+                  })
                 }
+              }).catch((error) => {
+                handleApiError(error);
               });
             }
           }
@@ -607,13 +640,17 @@ export class Basic extends React.Component {
                     });
                   } else {
                     Swal.fire({
-                      title: "Error While Fetching",
                       icon: "error",
+                      title: "Server Unavailable",
+                      text: "The server is currently unavailable. Please try again later.",
                       confirmButtonText: "OK",
-                      showCloseButton: true,
+                      showCloseButton: false,
                       allowOutsideClick: false,
-                    });
+                      allowEscapeKey: false,
+                    })
                   }
+                }).catch((error) => {
+                  handleApiError(error);
                 });
             } else {
               apiService
@@ -648,13 +685,17 @@ export class Basic extends React.Component {
                     });
                   } else {
                     Swal.fire({
-                      title: "Error While Fetching",
                       icon: "error",
+                      title: "Server Unavailable",
+                      text: "The server is currently unavailable. Please try again later.",
                       confirmButtonText: "OK",
-                      showCloseButton: true,
+                      showCloseButton: false,
                       allowOutsideClick: false,
-                    });
+                      allowEscapeKey: false,
+                    })
                   }
+                }).catch((error) => {
+                  handleApiError(error);
                 });
             }
           } else {
@@ -695,13 +736,17 @@ export class Basic extends React.Component {
                     });
                   } else {
                     Swal.fire({
-                      title: "Error While Fetching",
                       icon: "error",
+                      title: "Server Unavailable",
+                      text: "The server is currently unavailable. Please try again later.",
                       confirmButtonText: "OK",
-                      showCloseButton: true,
+                      showCloseButton: false,
                       allowOutsideClick: false,
-                    });
+                      allowEscapeKey: false,
+                    })
                   }
+                }).catch((error) => {
+                  handleApiError(error);
                 });
             } else {
               apiService
@@ -736,13 +781,17 @@ export class Basic extends React.Component {
                     });
                   } else {
                     Swal.fire({
-                      title: "Error While Fetching",
                       icon: "error",
+                      title: "Server Unavailable",
+                      text: "The server is currently unavailable. Please try again later.",
                       confirmButtonText: "OK",
-                      showCloseButton: true,
+                      showCloseButton: false,
                       allowOutsideClick: false,
-                    });
+                      allowEscapeKey: false,
+                    })
                   }
+                }).catch((error) => {
+                  handleApiError(error);
                 });
             }
           }
@@ -1032,13 +1081,17 @@ export class Basic extends React.Component {
             });
           } else {
             Swal.fire({
-              title: "Error While Fetching",
               icon: "error",
+              title: "Server Unavailable",
+              text: "The server is currently unavailable. Please try again later.",
               confirmButtonText: "OK",
-              showCloseButton: true,
+              showCloseButton: false,
               allowOutsideClick: false,
-            });
+              allowEscapeKey: false,
+            })
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
     } else {
       if (this.props.params.newReg) {
@@ -1063,13 +1116,17 @@ export class Basic extends React.Component {
             });
           } else {
             Swal.fire({
-              title: "Error While Fetching",
               icon: "error",
+              title: "Server Unavailable",
+              text: "The server is currently unavailable. Please try again later.",
               confirmButtonText: "OK",
-              showCloseButton: true,
+              showCloseButton: false,
               allowOutsideClick: false,
-            });
+              allowEscapeKey: false,
+            })
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       } else {
         console.log("save::", this.state.basicInfoVendor);
@@ -1094,13 +1151,17 @@ export class Basic extends React.Component {
             });
           } else {
             Swal.fire({
-              title: "Error While Fetching",
               icon: "error",
+              title: "Server Unavailable",
+              text: "The server is currently unavailable. Please try again later.",
               confirmButtonText: "OK",
-              showCloseButton: true,
+              showCloseButton: false,
               allowOutsideClick: false,
-            });
+              allowEscapeKey: false,
+            })
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       }
     }
@@ -1160,13 +1221,17 @@ export class Basic extends React.Component {
             });
           } else {
             Swal.fire({
-              title: "Error While Fetching",
               icon: "error",
+              title: "Server Unavailable",
+              text: "The server is currently unavailable. Please try again later.",
               confirmButtonText: "OK",
-              showCloseButton: true,
+              showCloseButton: false,
               allowOutsideClick: false,
-            });
+              allowEscapeKey: false,
+            })
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
     }
   };
@@ -1236,13 +1301,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       } else {
         apiService
@@ -1268,13 +1337,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       }
     } else {
@@ -1306,13 +1379,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       } else {
         apiService
@@ -1338,13 +1415,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       }
     }
@@ -1406,13 +1487,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       } else {
         apiService
@@ -1438,13 +1523,17 @@ export class Basic extends React.Component {
               });
             } else {
               Swal.fire({
-                title: "Error While Fetching",
                 icon: "error",
+                title: "Server Unavailable",
+                text: "The server is currently unavailable. Please try again later.",
                 confirmButtonText: "OK",
-                showCloseButton: true,
+                showCloseButton: false,
                 allowOutsideClick: false,
-              });
+                allowEscapeKey: false,
+              })
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
       }
     }
@@ -1488,7 +1577,9 @@ export class Basic extends React.Component {
   };
 
   updateVendordetail(userId, data) {
-    apiService.updateVendordetail(userId, data).then((response) => {});
+    apiService.updateVendordetail(userId, data).then((response) => {}).catch((error) => {
+      handleApiError(error);
+    });
   }
   fetchData() {
     const storedData = sessionStorage.getItem("master");
@@ -1506,6 +1597,8 @@ export class Basic extends React.Component {
       this.setState({ approval: res.data.result?.role });
       this.setState({ companyName: res.data.result?.companyName });
       this.setState({ vendorId: res.data.result?.vendorId });
+    }).catch((error) => {
+      handleApiError(error);
     });
 
     let newuser = JSON.parse(
@@ -1540,6 +1633,8 @@ export class Basic extends React.Component {
       .then((res) => {
         finalstatus = res.data.result?.finalStatus;
         console.log("finalstatus", finalstatus);
+      }).catch((error) => {
+        handleApiError(error);
       });
     apiService
       .getAllCollection(
@@ -1731,6 +1826,8 @@ export class Basic extends React.Component {
           });
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     if (newuser) {
       this.edit = true;
@@ -1788,12 +1885,16 @@ export class Basic extends React.Component {
           });
           return null;
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     }
 
     console.log("basicInfoVendor::", this.state.basicInfoVendor);
     apiService.getCountry().then((response) => {
       this.setState({ countryData: response.data.data });
+    }).catch((error) => {
+      handleApiError(error);
     });
     if (this.state.Country_Region_Code && this.state.Post_Code) {
       apiService
@@ -1803,6 +1904,8 @@ export class Basic extends React.Component {
         )
         .then((response) => {
           this.setState({ getCityAndState: response.data.postalcodes });
+        }).catch((error) => {
+          handleApiError(error);
         });
     }
   }
@@ -1903,7 +2006,7 @@ export class Basic extends React.Component {
               onClick={this.togglebuttonCommu}
             >
               <span className={commu ? "dotActive" : "dotInActive"}></span>
-              <label className="labelName">communication Details</label>
+              <label className="labelName">Communication details</label>
             </div>
           </div>
           <div className="container">
@@ -1911,7 +2014,7 @@ export class Basic extends React.Component {
               {open && (
                 <div className="container-fluid">
                   <MDBTypography tag="h5" className="mb-0 info">
-                    Basic information
+                  Basic Information
                   </MDBTypography>
                   <br />
                   <MDBRow>
@@ -1948,7 +2051,7 @@ export class Basic extends React.Component {
                                         <div>
                                           {" "}
                                           <label htmlFor="Address">
-                                            Address line - 1*
+                                          Address Line-1*
                                           </label>
                                         </div>
                                         <div>
@@ -1976,7 +2079,7 @@ export class Basic extends React.Component {
                                     </MDBRow>
                                     <div>
                                       <label htmlFor="Address_2">
-                                        Address line - 2
+                                      Address Line-2
                                       </label>
                                     </div>
                                     <div>
@@ -2052,7 +2155,10 @@ export class Basic extends React.Component {
                                             id="Post_Code"
                                             value={Post_Code}
                                             onMouseLeave={this.mouseOut}
+                                            onKeyPress={this.handleKeyPress}
+                                            onClick={this.handleKeyPress}
                                             onChange={this.mouseEnter}
+                                            onBlur={this.onBlur}
                                           />
                                           <Tooltip
                                             class="tooltipstyle"
@@ -2326,7 +2432,7 @@ export class Basic extends React.Component {
                                   </div>
                                 </MDBCol>
                                 <MDBCol>
-                                  <label>Email*</label>
+                                  <label>Email</label>
                                   <input
                                     type="text"
                                     className="mb-4 VendorInput"
@@ -2647,7 +2753,7 @@ export class Basic extends React.Component {
                                   )}
                                 </MDBCol>
                               </MDBRow>
-                              <label className="fieldHeader">others</label>
+                              <label className="fieldHeader">Others</label>
                               <MDBRow className="mb-4">
                                 <MDBCol>
                                   <label>Contact name</label>

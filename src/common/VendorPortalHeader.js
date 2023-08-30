@@ -16,6 +16,7 @@ import Logo1 from "../img/logo1.png";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MailIcon from "@mui/icons-material/Mail";
 import apiService from "../services/api.service";
+import handleApiError from '../utils/Errorhandler';
 const pages = ["Home", "Admin", "Master"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function VendorPortalHeader({ handleVcode }) {
@@ -56,6 +57,17 @@ function VendorPortalHeader({ handleVcode }) {
   useEffect(() => {
     apiService.getErpResourcePortalVendorlist().then((res) => {
       setvendoCode(res.data.value);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
 
     let subUserid = JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -64,6 +76,17 @@ function VendorPortalHeader({ handleVcode }) {
     apiService.getSubuserId(subUserid).then((res) => {
       setsubUserId(res.data.result);
       newMethod(res.data.result);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
 
     if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.Country_Region_Code !== "IND") {
@@ -77,14 +100,36 @@ function VendorPortalHeader({ handleVcode }) {
         setoutofIndVcode(res.data),
         setheadvendoCode(res.data[0].Vendor_No + "_" + res.data[0].City + "_" + res.data[0].Post_Code),
         handleVcode(res.data[0].Vendor_No),
-      ])
+      ]).catch((error) => {
+        console.log("error2:::",error);
+        if (error.code === 'ERR_NETWORK') {
+          console.log("networkerror:::",error);
+          handleApiError(error);
+        }
+        else
+        {
+          console.log("error:::",error);
+          handleApiError(error);
+        }
+      });
     }
 
    
 
     
 
-    apiService.getErpVendor_API().then((res) => {});
+    apiService.getErpVendor_API().then((res) => {}).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
+    });
     let arr = [];
     apiService.getErpVendor_API().then((res) => {
       for (let i = 0; i < res.data.value.length; i++) {
@@ -93,6 +138,17 @@ function VendorPortalHeader({ handleVcode }) {
         }
       }
       if (arr.length > 0) {
+      }
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
       }
     });
   }, []);

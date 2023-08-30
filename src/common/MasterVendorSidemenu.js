@@ -24,16 +24,67 @@ import { Link } from "react-router-dom";
 import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import MenuItem from "@mui/material/MenuItem";
+import AddIcon from "@mui/icons-material/Add";
+import PreviewIcon from '@mui/icons-material/Preview';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from '@mui/material/TextField';
+import handleApiError from '../utils/Errorhandler';
+import {
+  Popover
+} from '@mui/material';
 
 export const MasterVendorSidemenu = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [VendorCodeGenerated, setVendorCodeGenerated] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openReviewVendor, setopenReviewVendor] = useState(false);
+  const [ReviewVendor, setReviewVendor] = useState('');
   const sidemenuOpen = () => {
     setOpen(!open);
   };
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleButtonClick = (event) => {
+    if (anchorEl) {
+      setAnchorEl(null); // Close the submenu if it's already open
+    } else {
+      setAnchorEl(event.currentTarget); // Open the submenu
+    }
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const [selectedTicketId, setSelectedTicketId] = useState('');
+
+  const handleTicketIdSelect = (event, value) => {
+    console.log("value::",value);
+    setSelectedTicketId(value?.Ticket_ID || '');
+  };
+  
+  const handleReviewPage = () => {
+    console.log("ReviewVendor::",ReviewVendor);
+    if(ReviewVendor?.length>0)
+    {
+      console.log("ReviewVendorlength::",ReviewVendor?.length);
+      setopenReviewVendor(true);
+    }
+    else
+    {
+      Swal.fire({
+        title: "Please create Vendors to review",
+        icon: "error",
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        allowOutsideClick: false,
+      });
+    }
+  };
+  const isSubMenuOpen = Boolean(anchorEl);
   const [vendorDetails, setvendorDetails] = useState([]);
   const [vendorComDetails, setvendorComDetails] = useState([]);
   const [UserId, setUserId] = useState("");
@@ -97,18 +148,77 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
         }
      
       }
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
     let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId;
 
     apiService.signupFindByUserId(userid).then((res) => {
       setAdminEmail(res.data.result.emailId);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
 
     apiService.getAllUserDetail().then((res) => {
       setvendorComDetails(res.data.CommunicationDetails[0]);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
+    });
+    apiService.ReviewNewRegisteredVendorByMaster(JSON.parse(window.sessionStorage.getItem("jwt")).result.userId).then((res) => {
+      console.log("vendorsCreatedBymasters",res.data.result.length);
+      setReviewVendor(res.data.result);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
   }, [City]);
   const resetForm = () => {
@@ -181,6 +291,17 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
   const openModelShow = () => {
     apiService.getAllUserDetail().then((res) => {
       setvendorDetails(res.data.basicInfo[0]);
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
 
     setModalShow(true);
@@ -199,7 +320,6 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
         item.result.Ticket_ID2 = response.data.result.Ticket_ID
         sessionStorage.setItem("jwt", JSON.stringify(item));
         navigate(`/basic`);
-
       }
       else {
         Swal.fire({
@@ -210,9 +330,37 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
           allowOutsideClick: false,
         });
       }
+    }).catch((error) => {
+      console.log("error2:::",error);
+      if (error.code === 'ERR_NETWORK') {
+        console.log("networkerror:::",error);
+        handleApiError(error);
+      }
+      else
+      {
+        console.log("error:::",error);
+        handleApiError(error);
+      }
     });
   };
-
+  const onSubmitClickReviewVendor = () => {
+   const selectedVendor = ReviewVendor.find((vendor) => vendor.Ticket_ID === selectedTicketId); 
+    if (selectedVendor) {
+      const selectedUserId = selectedVendor.userId;
+      const matchedTicketId = selectedVendor.Ticket_ID;
+      console.log('Selected User ID:', selectedUserId);
+      let item = JSON.parse(window.sessionStorage.getItem("jwt"));
+      item.result.userId = selectedUserId
+      item.result.userId2 = JSON.parse(window.sessionStorage.getItem("jwt")).result.userId
+      item.result.usertype = "NewRegistration"
+      item.result.Ticket_ID2= matchedTicketId
+      sessionStorage.setItem("jwt", JSON.stringify(item));
+      console.log("UserId",selectedUserId);
+      navigate(`/basic`);
+    }
+    setopenReviewVendor(false);
+   
+  };
   const onSubmitClick = () => {
     console.log("VendorId::",VendorId);
     if (VendorId.length > 0 && VendorId[0] !== '') {
@@ -233,6 +381,17 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
       apiService.UpdateUserStatusByUserId(UserId).then((res) => {
         console.log("res###############", res)
         // setAdminEmail(res.data.result.emailId);
+      }).catch((error) => {
+        console.log("error2:::",error);
+        if (error.code === 'ERR_NETWORK') {
+          console.log("networkerror:::",error);
+          handleApiError(error);
+        }
+        else
+        {
+          console.log("error:::",error);
+          handleApiError(error);
+        }
       });
     }
     else
@@ -308,7 +467,7 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
               </ListItemButton>
             </ListItem>
 
-            <ListItem
+            {/* <ListItem
               disablePadding
               component={Link}
               to="/"
@@ -323,12 +482,60 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
                 <ListItemIcon>
                   <PostAddIcon sx={{ color: "white" }} />
                 </ListItemIcon>
+                
                 <ListItemText
                   primary="New Registration"
                   sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
+  <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItemButton
+              onClick={handleButtonClick}
+              sx={{
+                '&:hover': { backgroundColor: 'gray' },
+                borderRadius: '20px',
+              }}
+            >
+              <ListItemIcon>
+                <PostAddIcon sx={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="New Registration" />
+              <IconButton
+                onClick={handleButtonClick}
+              >
+                <ArrowDropDownIcon sx={{ color: 'white' }} />
+              </IconButton>
+            </ListItemButton>
+          </ListItem>
+          {isSubMenuOpen && (
+            <List component="div" disablePadding>
+              <ListItem disablePadding>
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon><PreviewIcon sx={{ color: "white" }} /></ListItemIcon>
+                  <ListItemText primary="Review" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon>
+                    <AddIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Create New" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          )}
             <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{
@@ -413,8 +620,139 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
                 />
               </ListItemButton>
             </ListItem>
+            {/* <ListItem disablePadding sx={{ color: "white" }}>
+  <ListItemButton
+    sx={{
+      "&:hover": { backgroundColor: "gray" },
+      borderRadius: "20px",
+    }}
+  >
+    <ListItemIcon>
+      <AppRegistrationSharpIcon sx={{ color: "white" }} />
+    </ListItemIcon>
+    <ListItemText sx={{ ...(open && { display: "none" }) }}>
+      <Select
+        value={newRegistrationOption}
+        onChange={handleNewRegistrationOptionChange}
+        displayEmpty
+        sx={{
+          color: "white",
+          minWidth: "120px",
+          ...(open && { display: "none" }),
+        }}
+      >
+        <MenuItem value="">
+          New Registration
+        </MenuItem>
+        <MenuItem value="review">
+        <PreviewIcon sx={{ mr: 1 }} />
+          Review Vendor</MenuItem>
+        <MenuItem value="createNew" onClick={(e) => handleState(e.target.value)}>
+          <AddIcon sx={{ mr: 1 }} />
+          Create New Vendor
+        </MenuItem>
+      </Select>
+    </ListItemText>
+  </ListItemButton>
+</ListItem> */}
+ <ListItem disablePadding sx={{ color: 'white' }}>
+            <ListItemButton
+              onClick={handleButtonClick}
+              sx={{
+                '&:hover': { backgroundColor: 'gray' },
+                borderRadius: '20px',
+              }}
+            >
+              <ListItemIcon>
+                <PostAddIcon sx={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="New Registration" />
+              <IconButton
+                onClick={handleButtonClick}
+              >
+                <ArrowDropDownIcon sx={{ color: 'white' }} />
+              </IconButton>
+            </ListItemButton>
+          </ListItem>
+          {isSubMenuOpen && (
+            <List component="div" disablePadding>
+              <ListItem disablePadding>
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon><PreviewIcon sx={{ color: "white" }} /></ListItemIcon>
+                  <ListItemText   onClick={handleReviewPage} primary="Review" />
+                </ListItemButton>
+              </ListItem>
+              <Modal
+                  show={openReviewVendor}
+                  onHide={() => {
+                    setopenReviewVendor(false);
+                  }}
+                  aria-labelledby="contained-modal-title-vcenter"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                     Review vendor by TicketId
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Container sx={{ mt: 5 }}>
+                  <Autocomplete
+      id="country-select-demo"
+      sx={{ width: 300 }}
+      options={ReviewVendor}
+      autoHighlight
+      onChange={handleTicketIdSelect}
+      getOptionLabel={(option) => option.Ticket_ID}
+      renderOption={(props, option) => (
+        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+          {option.Ticket_ID} 
+        </Box>
+      )}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Select Ticket Id"
+          inputProps={{
+            ...params.inputProps,
+        
+          }}
+        />
+      )}
+    />
+                    </Container>
+                  <Box sx={{ display: "flex", ml: 50, mb: 1 }}>
+                    <Box>
+                      <Button
+                        variant="contained"
+                        onClick={onSubmitClickReviewVendor}
+                      >
+                        Submit
+                      </Button>
+                    </Box>
+                  </Box>
+                </Modal>
+              <ListItem disablePadding>
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: 'gray' },
+                    borderRadius: '20px',
+                  }}
+                >
+                  <ListItemIcon>
+                    <AddIcon sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText value={state}
+                onClick={(e) => handleState(e.target.value)} primary="Create New" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          )}
 
-            <ListItem disablePadding sx={{ color: "white" }}>
+            {/* <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{
                   "&:hover": { backgroundColor: "gray" },
@@ -432,7 +770,7 @@ const [pincodeOptions, setPincodeOptions] = useState([]);
                   sx={{ mr: 2, ...(open && { display: "none" }) }}
                 />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ color: "white" }}>
               <ListItemButton
                 sx={{

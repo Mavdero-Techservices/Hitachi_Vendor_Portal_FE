@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import apiService from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import handleApiError from '../utils/Errorhandler';
 const mailValReg = RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const numberValidation = /^-?(0|[1-9]\d*)?$/;
 // /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
@@ -69,6 +70,7 @@ const ContactTeam = () => {
   }
   const handleChange = (name) => (event) => {
     const newValue = event.target.value;
+    console.log("event.target.value",event.target.value);
     setValues({ ...values, [name]: event.target.value });
     if (!!errors[name])
       setErrors({
@@ -87,6 +89,26 @@ const ContactTeam = () => {
     //  // Update the errors state
     //  setErrors(newErrors);
   };
+  // const handleChange = (name) => (event) => {
+  //   const newValue = event.target.value;
+  //   setValues({ ...values, [name]: event.target.value });
+  //   if (!!errors[name])
+  //     setErrors({
+  //       ...errors,
+  //       [name]: null,
+  //     });
+  //   //  // Perform length validation for the specific field
+  //   //  const newErrors = { ...errors };
+  //   //  if (name === 'contactName1' && newValue.length > 30) {
+  //   //    newErrors.contactName1 = 'contactName should be 30 characters or less.';
+  //   //  } else {
+  //   //    // If the length is valid, remove the error message for that field
+  //   //    delete newErrors.contactName1;
+  //   //  }
+
+  //   //  // Update the errors state
+  //   //  setErrors(newErrors);
+  // };
 
   const validateFormLength = () => {
     const {
@@ -172,24 +194,36 @@ const ContactTeam = () => {
     if (!emailId1 || emailId1 === "") {
       newErrors.emailId1 = "EmailId";
     }
-    if (emailId1) {
-      if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId1)) {
-        newErrors.emailId1 =
-          "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
-      }
-    }
-    if (emailId2) {
-      if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId2)) {
-        newErrors.emailId2 =
-          "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
-      }
-    }
-    if (emailId3) {
-      if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId3)) {
-        newErrors.emailId3 =
-          "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
-      }
-    }
+    // if (emailId1) {
+    //   if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId1)) {
+    //     newErrors.emailId1 =
+    //       "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
+    //   }
+    //   else if (!emailValidation.test(emailId1))
+    //   {
+    //    newErrors.emailId1 ="Email is invalid";
+    //   }
+    // }
+    // if (emailId2) {
+    //   if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId2)) {
+    //     newErrors.emailId2 =
+    //       "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
+    //   }
+    //   else if (!emailValidation.test(emailId2))
+    //   {
+    //    newErrors.emailId1 ="Email is invalid";
+    //   }
+    // }
+    // if (emailId3) {
+    //   if (!new RegExp("@" + desiredDomain + "\\s*$").test(emailId3)) {
+    //     newErrors.emailId3 =
+    //       "PLEASE ENTER THE VALID HITACHI CONTACT PERSON EMAIL ID";
+    //   }
+    //   else if (!emailValidation.test(emailId3))
+    //   {
+    //    newErrors.emailId1 ="Email is invalid";
+    //   }
+    // }
     // if (!groupEmailValidation.test(emailId1)) {
     //   newErrors.emailId1 = "Please enter a valid Email";
     // }
@@ -208,11 +242,14 @@ const ContactTeam = () => {
     return newErrors;
   };
   const saveContactTeam = async (e) => {
+    console.log("contactName1::");
+    console.log("contactName1values::",values.contactName1);
     e.preventDefault();
     const formlengthErrors = validateFormLength();
     if (Object.keys(formlengthErrors).length > 0) {
       setErrors(formlengthErrors);
     } else {
+      console.log("basicInfo",basicInfo)
       const formErrors = validateForm();
       var basicInfoArray = [];
       var basicInfoMandtatory = "";
@@ -225,7 +262,7 @@ const ContactTeam = () => {
       if (!basicInfo || !communicationDetail || !statutory) {
         console.log("not loaded yet");
       }
-      if (basicInfo.length <= 0) {
+      if (Object.keys(basicInfo).length <= 0) {
         basicInfoArray.push("Address Line-1");
         basicInfoArray.push("City");
         basicInfoArray.push("companyName");
@@ -260,8 +297,7 @@ const ContactTeam = () => {
           // }
         });
       }
-
-      if (communicationDetail.length <= 0) {
+      if (Object.keys(communicationDetail).length <= 0) {
         communicationArray.push("financeSpoc-contactName");
         communicationArray.push("financeSpoc-designation");
         communicationArray.push("financeSpoc-phoneNo");
@@ -340,7 +376,7 @@ const ContactTeam = () => {
           }
         });
       }
-      if (statutory?.length <= 0) {
+      if (Object.keys(statutory).length <= 0||statutory?.length <= 0) {
         if (
           basicInfo?.length > 0 &&
           basicInfo[0]?.Country_Region_Code &&
@@ -661,7 +697,7 @@ const ContactTeam = () => {
           });
         }
       }
-      if (compaliance.length <= 0) {
+      if (Object.keys(compaliance).length <= 0||compaliance.length <= 0) {
         complianceArray.push("Related Party Disclosure");
         complianceArray.push("COC for services support/installation");
         complianceArray.push("Non-disclosure agreement");
@@ -680,7 +716,7 @@ const ContactTeam = () => {
           }
         });
       }
-      if (bankDetail.length <= 0) {
+      if (Object.keys(bankDetail).length <= 0||bankDetail.length <= 0) {
         bankDetailArray.push("Bank Account Name");
         bankDetailArray.push("Bank Name");
         bankDetailArray.push("Bank AccountNumber");
@@ -747,18 +783,30 @@ const ContactTeam = () => {
       //     "There are no blank or incomplete required fields"
       //   );
       // }
-
+console.log("values",values.emailId1)
       const user = {
-        userId: values.userId || undefined,
-        contactName1: values.contactName1 || undefined,
-        emailId1: values.emailId1 || undefined,
-        contactNumber1: values.contactNumber1 || undefined,
-        contactName2: values.contactName2 || undefined,
-        emailId2: values.emailId2 || undefined,
-        contactNumber2: values.contactNumber2 || undefined,
-        contactName3: values.contactName3 || undefined,
-        emailId3: values.emailId3 || undefined,
-        contactNumber3: values.contactNumber3 || undefined,
+        userId: values.userId,
+        contactName1: values.contactName1,
+        emailId1: values.emailId1
+        ? values.emailId1.includes("@hitachi-systems.com")
+          ? values.emailId1
+          : `${values.emailId1}@hitachi-systems.com`
+        : "",
+        contactNumber1: values.contactNumber1,
+        contactName2: values.contactName2,
+        emailId2: values.emailId2
+        ? values.emailId2.includes("@hitachi-systems.com")
+          ? values.emailId2
+          : `${values.emailId2}@hitachi-systems.com`
+        : "",
+        contactNumber2: values.contactNumber2,
+        contactName3: values.contactName3,
+        emailId3: values.emailId3
+        ? values.emailId3.includes("@hitachi-systems.com")
+          ? values.emailId3
+          : `${values.emailId3}@hitachi-systems.com`
+        : "",
+        contactNumber3: values.contactNumber3,
         Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result
           .Ticket_ID2
           ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2
@@ -951,6 +999,8 @@ const ContactTeam = () => {
               // });
             }
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       } else {
         let newuser = JSON.parse(
@@ -1154,6 +1204,8 @@ const ContactTeam = () => {
                 // });
               }
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         } else {
           apiService.saveContactTeam(user).then((response) => {
@@ -1344,6 +1396,8 @@ const ContactTeam = () => {
                 // });
               }
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       }
@@ -1351,6 +1405,8 @@ const ContactTeam = () => {
   };
   const updateContactTeam = (e) => {
     e.preventDefault();
+    console.log("contactName1::");
+    console.log("contactName1values::",values.contactName1);
     const formlengthErrors = validateFormLength();
     if (Object.keys(formlengthErrors).length > 0) {
       setErrors(formlengthErrors);
@@ -1847,16 +1903,28 @@ const ContactTeam = () => {
       // }
 
       const user = {
-        userId: params.userId || undefined,
-        contactName1: values.contactName1 || undefined,
-        emailId1: values.emailId1 || undefined,
-        contactNumber1: values.contactNumber1 || undefined,
-        contactName2: values.contactName2 || undefined,
-        emailId2: values.emailId2 || undefined,
-        contactNumber2: values.contactNumber2 || undefined,
-        contactName3: values.contactName3 || undefined,
-        emailId3: values.emailId3 || undefined,
-        contactNumber3: values.contactNumber3 || undefined,
+        userId: params.userId ,
+        contactName1: values.contactName1 ,
+        emailId1: values.emailId1
+        ? values.emailId1.includes("@hitachi-systems.com")
+          ? values.emailId1
+          : `${values.emailId1}@hitachi-systems.com`
+        : "",
+        contactNumber1: values.contactNumber1 ,
+        contactName2: values.contactName2 ,
+        emailId2: values.emailId2
+        ? values.emailId2.includes("@hitachi-systems.com")
+          ? values.emailId2
+          : `${values.emailId2}@hitachi-systems.com`
+        : "",
+        contactNumber2: values.contactNumber2 ,
+        contactName3: values.contactName3 ,
+        emailId3: values.emailId3
+        ? values.emailId3.includes("@hitachi-systems.com")
+          ? values.emailId3
+          : `${values.emailId3}@hitachi-systems.com`
+        : "",
+        contactNumber3: values.contactNumber3 ,
         Ticket_ID: JSON.parse(window.sessionStorage.getItem("jwt")).result
           .Ticket_ID2
           ? JSON.parse(window.sessionStorage.getItem("jwt")).result.Ticket_ID2
@@ -1923,6 +1991,8 @@ const ContactTeam = () => {
                       // chandran
                     });
                 }
+              }).catch((error) => {
+                handleApiError(error);
               });
 
               // let userid = JSON.parse(window.sessionStorage.getItem("jwt")).result
@@ -2027,6 +2097,8 @@ const ContactTeam = () => {
               });
             }
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       }
     }
@@ -2039,6 +2111,8 @@ const ContactTeam = () => {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(params.userId).then((res) => {
         if (
@@ -2075,11 +2149,15 @@ const ContactTeam = () => {
               value.contactNumber3 === "null" ? "" : value.contactNumber3,
           });
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(newuser).then((res) => {
         if (
@@ -2102,6 +2180,8 @@ const ContactTeam = () => {
             contactNumber3: value.contactNumber3,
           });
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     }
     if (newuser) {
@@ -2112,6 +2192,8 @@ const ContactTeam = () => {
         setcompaliance(getAllCollection.data.ComplianceDetail);
         setfinancialDetail(getAllCollection.data.FinancialDetail);
         setbankDetail(getAllCollection.data.Bankdetail);
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       if (
@@ -2127,6 +2209,8 @@ const ContactTeam = () => {
           setcompaliance(getAllCollection.data.ComplianceDetail);
           setfinancialDetail(getAllCollection.data.FinancialDetail);
           setbankDetail(getAllCollection.data.Bankdetail);
+        }).catch((error) => {
+          handleApiError(error);
         });
       } else {
         apiService.getAllCollection(values.userId).then((getAllCollection) => {
@@ -2136,6 +2220,8 @@ const ContactTeam = () => {
           setcompaliance(getAllCollection.data.ComplianceDetail);
           setfinancialDetail(getAllCollection.data.FinancialDetail);
           setbankDetail(getAllCollection.data.Bankdetail);
+        }).catch((error) => {
+          handleApiError(error);
         });
       }
     }
@@ -2165,13 +2251,20 @@ const ContactTeam = () => {
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="emailId1">Email*</label>
-                <input
-                  type="text"
-                  className="mb-4 Contactinputbox"
-                  name="emailId1"
-                  value={values.emailId1}
-                  onChange={handleChange("emailId1")}
-                />
+                <div className="input-group mb-4 emailusername">
+        <input
+          type="text"
+          className="form-control Contactinputbox"
+          name="emailId1"
+          value={values.emailId1?.split("@")[0]} 
+          onChange={handleChange("emailId1")}
+        />
+        <div className="input-group-append emailDomain">
+          <span className="input-group-text" id="basic-addon2">
+            <span matSuffix>@hitachi-systems.com&nbsp;</span>
+          </span>
+        </div>
+      </div>
                 {errors.emailId1 && (
                   <p className="text text-danger small">{errors.emailId1}</p>
                 )}
@@ -2208,13 +2301,20 @@ const ContactTeam = () => {
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="emailId2">Email</label>
-                <input
-                  type="text"
-                  className="mb-4 Contactinputbox"
-                  name="emailId2"
-                  value={values.emailId2}
-                  onChange={handleChange("emailId2")}
-                />{" "}
+                <div className="input-group mb-4 emailusername">
+        <input
+          type="text"
+          className="form-control Contactinputbox"
+          name="emailId2"
+          value={values.emailId2?.split("@")[0]} 
+          onChange={handleChange("emailId2")}
+        />
+        <div className="input-group-append emailDomain">
+          <span className="input-group-text" id="basic-addon2">
+            <span matSuffix>@hitachi-systems.com&nbsp;</span>
+          </span>
+        </div>
+      </div>
                 {errors.emailId2 && (
                   <p className="text text-danger small">{errors.emailId2}</p>
                 )}
@@ -2251,13 +2351,20 @@ const ContactTeam = () => {
               </div>
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <label htmlFor="emailId3">Email</label>
-                <input
-                  type="text"
-                  className="mb-4 Contactinputbox"
-                  name="emailId3"
-                  value={values.emailId3}
-                  onChange={handleChange("emailId3")}
-                />
+                <div className="input-group mb-4 emailusername">
+        <input
+          type="text"
+          className="form-control Contactinputbox"
+          name="emailId3"
+          value={values.emailId3?.split("@")[0]} 
+          onChange={handleChange("emailId3")}
+        />
+        <div className="input-group-append emailDomain">
+          <span className="input-group-text" id="basic-addon2">
+            <span matSuffix>@hitachi-systems.com&nbsp;</span>
+          </span>
+        </div>
+      </div>
                 {errors.emailId3 && (
                   <p className="text text-danger small">{errors.emailId3}</p>
                 )}

@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/api.service";
 import { Navigate } from "react-router-dom";
+import handleApiError from '../utils/Errorhandler';
 function App() {
   const response = JSON.parse(window.sessionStorage.getItem("newregUser"));
   const hasValue = response?.newregUser !== undefined && response?.newregUser !== null;
@@ -208,6 +209,17 @@ console.log("newReg")
     } else {
       setEdit(false);
     }
+  }).catch((error) => {
+    console.log("error2:::",error);
+    if (error.code === 'ERR_NETWORK') {
+      console.log("networkerror:::",error);
+      handleApiError(error);
+    }
+    else
+    {
+      console.log("error:::",error);
+      handleApiError(error);
+    }
   });
      const queryParams = new URLSearchParams(location.search);
      const isMaster = queryParams.get("master") === "true";
@@ -279,7 +291,7 @@ console.log("newReg")
               <Nav.Link onClick={contactDetails}>Contact Team</Nav.Link>
               {JSON.parse(window.sessionStorage.getItem("jwt")).result.role !== 'Admin' ?
                 <Nav.Link onClick={handleClickOpen} id="b3">
-                  logOut
+                  Logout
                 </Nav.Link>
                 :
                 <Nav.Link onClick={redirectToMaster}>Back To Master</Nav.Link>

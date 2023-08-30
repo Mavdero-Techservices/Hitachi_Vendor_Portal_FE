@@ -1,3 +1,4 @@
+import handleApiError from '../utils/Errorhandler';
 const signin = async (user) => {
     try {
       let response = await fetch(`${process.env.REACT_APP_API_URL}:12707/login`, {
@@ -11,7 +12,9 @@ const signin = async (user) => {
       })
       return await response.json()
     } catch(err) {
-      console.log(err)
+      console.log("loginError::",err)
+      handleApiError(err);
+
     }
   }
   
@@ -21,6 +24,7 @@ const signin = async (user) => {
       return await response.json()
     } catch(err) {
       console.log(err)
+      handleApiError(err);
     }
   }
   

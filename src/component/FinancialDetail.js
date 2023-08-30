@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import apiService from "../services/api.service";
 import { useParams } from "react-router-dom";
 import { TroubleshootSharp } from "@mui/icons-material";
+import handleApiError from '../utils/Errorhandler';
 const FinancialDetails = () => {
   const [redirectUrl, setredirectUrl] = useState();
   const params = useParams();
@@ -190,10 +191,10 @@ const FinancialDetails = () => {
     });
   }
   const redirectToContactTeam = () => {
-    if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
+    if (redirectUrl===undefined||redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
       navigate("/ContactTeam");
     } else {
-      navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+      navigate(`/ContactTeam/${redirectUrl?.contactDetail[0]?.userId}`);
     }
   };
   function next(e) {
@@ -228,18 +229,18 @@ const FinancialDetails = () => {
           });
         }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
+          if (redirectUrl===undefined||redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
             navigate("/ContactTeam");
           } else {
-            navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+            navigate(`/ContactTeam/${redirectUrl?.contactDetail[0]?.userId}`);
           }
         }
       });
     } else {
-      if (redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
+      if (redirectUrl===undefined||redirectUrl?.contactDetail?.length <= 0 || "" || undefined) {
         navigate("/ContactTeam");
       } else {
-        navigate(`/ContactTeam/${redirectUrl.contactDetail[0].userId}`);
+        navigate(`/ContactTeam/${redirectUrl?.contactDetail[0]?.userId}`);
       }
     }
     // saveFinancialDetail(e);
@@ -340,6 +341,8 @@ if (directorDetails.length > 30) {
                 navigate(`/ContactTeam/${params.userId}`);
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         } else {
           Swal.fire({
@@ -391,6 +394,8 @@ if (directorDetails.length > 30) {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         } else {
           apiService.saveFinacialDetail(data).then((res) => {
@@ -416,6 +421,8 @@ if (directorDetails.length > 30) {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       }
@@ -469,6 +476,8 @@ if (directorDetails.length > 30) {
               allowEscapeKey: false,
             });
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       }
     });
@@ -482,6 +491,8 @@ if (directorDetails.length > 30) {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
@@ -525,11 +536,15 @@ if (directorDetails.length > 30) {
           seteditfileFD2(replaceUrlFinancialData2);
           setEditfinancialDetail(true);
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
@@ -573,6 +588,8 @@ if (directorDetails.length > 30) {
           seteditfileFD2(replaceUrlFinancialData2);
           setEditfinancialDetail(true);
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       let finalstatus = "";
@@ -593,6 +610,8 @@ if (directorDetails.length > 30) {
          else{
             setStyle("editable");
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       setEditfinancialDetail(false);
     }
@@ -626,7 +645,7 @@ if (directorDetails.length > 30) {
                 ) : (
                   ""
                 )}
-                <label htmlFor="netWorth">NetWorth</label>
+                <label htmlFor="netWorth">Networth</label>
                 <input
                   type="number"
                   className="mb-4 inputbox"
@@ -672,7 +691,7 @@ if (directorDetails.length > 30) {
                   onChange={handleChange("Profit")}
                   onKeyDown={handleKeyDown}
                 />
-                <label htmlFor="directorDetails">Director Detail</label>
+                <label htmlFor="directorDetails">Director detail</label>
                 <input
                   type="text"
                   className="mb-4 inputbox"

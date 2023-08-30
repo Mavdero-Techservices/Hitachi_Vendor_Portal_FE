@@ -3,12 +3,13 @@ import "../css/signUp.css";
 import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import simg from "../img/signup.png";
-import Logo from "../img/logo.png";
+import Logo from "../img/logo1.png";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import { MDBCol, MDBRow } from "mdb-react-ui-kit";
+import handleApiError from '../utils/Errorhandler';
 const mailValReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 const mobileValReg = RegExp(
@@ -86,33 +87,40 @@ export default function Signup(props) {
     } else {
       apiService.saveUser(user).then((response) => {
         console.log("response-------------->", response);
-        if (response.data.message === "User Email already exist") {
-          Swal.fire({
-            title: response.data.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        } else if (response.data.message === "User Phone Number already exist") {
-          Swal.fire({
-            title: response.data.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+          if (response && response.data.message === "User Email already exist") {
+            Swal.fire({
+              title: response.data.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          } else if (response && response.data.message === "User Phone Number already exist") {
+            Swal.fire({
+              title: response.data.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+          else if (response && response.data.message === "Registered Successfully") {
+            Swal.fire({
+              title: "Please check your email to proceed",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then((ok) => {
+              navigate("/login");
+            });
+          } 
+        
+
+      }).catch((error) => {
+        console.log("error2:::",error);
+        if (error.code === 'ERR_NETWORK') {
+          console.log("networkerrorsignup:::",error);
+          handleApiError(error);
         }
-        else if (response.data.message === "Registered Successfully") {
-          Swal.fire({
-            title: "Please check your email to proceed",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then((ok) => {
-            navigate("/login");
-          });
-        } else {
-          Swal.fire({
-            title: "Error While Fetching",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+        else
+        {
+          console.log("error:::",error);
+          handleApiError(error);
         }
       });
     }
@@ -172,7 +180,7 @@ export default function Signup(props) {
           <MDBRow className="mb-4">
             <MDBCol>
               <div>
-                <label htmlFor="phoneNumber">Phone number*</label>
+                <label htmlFor="phoneNumber">Contact Number*</label>
               </div>
               <div>
                 <input
@@ -191,7 +199,7 @@ export default function Signup(props) {
               </div>
             </MDBCol>
             <MDBCol>
-              <label htmlFor="emailId">email id*</label>
+              <label htmlFor="emailId">Email Id*</label>
               <input
                 type="text"
                 className="mb-4 signupInput"

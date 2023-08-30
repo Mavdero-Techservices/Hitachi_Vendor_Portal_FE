@@ -19,6 +19,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import AdminHeader from "../common/AdminHeader";
 import apiService from "../services/api.service";
+import handleApiError from '../utils/Errorhandler';
 import ApprovalFields from "./ApprovalFields";
 import SideBar from "./SideBar";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -102,52 +103,19 @@ function AdminPage() {
     apiService.getApprovalList().then((res) => {
       setapproveList(res.data.result);
       applist = res.data.result;
+    }).catch((error) => {
+      handleApiError(error);
     });
 
     apiService.getAllUserDetail().then((res) => {
       setFilter(res.data.basicInfo[0]);
       res.data.basicInfo[0].forEach((item) => {
-        // var date1 = new Date();
-        // var date01 = new Date(item.submitDate);
-        // var date2 = new Date();
-        // date2.setDate(date01.getDate() + 3);
-        // var Difference_In_Time = date2.getTime() - date1.getTime();
-        // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        // item.updatedAt = Difference_In_Days;
-        // const s = moment(date01).format("MMM DD");
-        var currentdate = new Date();
-        // var dates = new Date();
-        // currentdate.setDate(currentdate.getDate() + 1);
         var subDate = new Date(item.submitDate);
-        var dueDate = new Date();
-        dueDate.setDate(subDate.getDate() + 3);
-        var Difference_In_Time = dueDate.getTime() - currentdate.getTime();
-        var Difference_In_Days = Math.trunc(
-          Difference_In_Time / (1000 * 3600 * 24)
-        );
-        console.log(
-          "Difference_In_Days--------------->>>>>>>>>",
-          Difference_In_Days
-        );
-        console.log("subDate::", subDate);
-        let arr = [3, 2, 1];
-        console.log(
-          "(arr.indexOf(Difference_In_Days))",
-          arr.indexOf(Difference_In_Days)
-        );
-        // if (Difference_In_Days === 3) {
-        //   item.updatedAt = 1;
-        // } else if (Difference_In_Days === 2) {
-        //   item.updatedAt = 2;
-        // }
-        // else if (Difference_In_Days === 1) {
-        //   item.updatedAt = 3;
-        // }else{
-        //   item.updatedAt ="expired";
-        // }
-        // item.updatedAt = Difference_In_Days === 3 ? 1 : Difference_In_Days === 2 ? 2 : Difference_In_Days === 1?3;
-
-        item.updatedAt = -arr.indexOf(Difference_In_Days);
+        var currentDate = new Date();
+        var timeDifference = currentDate - subDate;
+        var differenceInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        var adjustedDifference = differenceInDays;
+item.updatedAt =adjustedDifference;
 
         const s = moment(item.submitDate).format("MMM DD");
         item.submitDate = s;
@@ -160,6 +128,8 @@ function AdminPage() {
         }
       });
       setvendors((array) => [...array, ...arr]);
+    }).catch((error) => {
+      handleApiError(error);
     });
   };
 

@@ -13,6 +13,7 @@ import apiService from "../services/api.service";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
+import handleApiError from '../utils/Errorhandler';
 const ComplianceDetails = () => {
   const [redirectUrl, setredirectUrl] = useState();
   const location = useLocation();
@@ -270,13 +271,15 @@ const ComplianceDetails = () => {
       userName: pdfValues.userName || undefined,
     };
     e.preventDefault();
-    apiService.downloadPdf(user).then((response) => {});
+    apiService.downloadPdf(user).then((response) => {}).catch((error) => {
+      handleApiError(error);
+    });
   };
   const redirectToBankdetail = () => {
-    if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
+    if (redirectUrl===undefined||redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
       navigate("/bank");
     } else {
-      navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
+      navigate(`/bank/${redirectUrl?.Bankdetail[0]?.userId}`);
     }
   };
   function next(e) {
@@ -306,7 +309,7 @@ const ComplianceDetails = () => {
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
+          if (redirectUrl===undefined||redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
             navigate("/bank");
           } else {
             navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
@@ -314,7 +317,7 @@ const ComplianceDetails = () => {
         }
       });
     } else {
-      if (redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
+      if (redirectUrl===undefined||redirectUrl?.Bankdetail?.length <= 0 || "" || undefined) {
         navigate("/bank");
       } else {
         navigate(`/bank/${redirectUrl.Bankdetail[0].userId}`);
@@ -329,6 +332,8 @@ const ComplianceDetails = () => {
       let finalstatus = "";
       apiService.signupFindByUserId(params.userId).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(params.userId).then((res) => {
         setredirectUrl(res.data);
@@ -364,11 +369,15 @@ const ComplianceDetails = () => {
           seteditVlauefileNDA(NDA_Doc);
           setEditCompliance(true);
         });
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else if (newuser) {
       let finalstatus = "";
       apiService.signupFindByUserId(newuser).then((res) => {
         finalstatus = res.data.result?.finalStatus;
+      }).catch((error) => {
+        handleApiError(error);
       });
       apiService.getAllCollection(newuser).then((res) => {
         setredirectUrl(res.data);
@@ -396,6 +405,8 @@ const ComplianceDetails = () => {
             setEditCompliance(true);
           });
         }
+      }).catch((error) => {
+        handleApiError(error);
       });
     } else {
       apiService
@@ -404,6 +415,8 @@ const ComplianceDetails = () => {
         )
         .then((res) => {
           setredirectUrl(res.data);
+        }).catch((error) => {
+          handleApiError(error);
         });
       setEditCompliance(false);
     }
@@ -413,11 +426,19 @@ const ComplianceDetails = () => {
       userId: pdfValues.userId || undefined,
     };
     setshowEditUploadsField(true);
-    apiService.createRelatedDisclosurePdf(user).then((res) => {});
-    apiService.createCocPdf(user).then((res) => {});
-    apiService.createNDAPdf(user).then((res) => {});
+    apiService.createRelatedDisclosurePdf(user).then((res) => {}).catch((error) => {
+      handleApiError(error);
+    });
+    apiService.createCocPdf(user).then((res) => {}).catch((error) => {
+      handleApiError(error);
+    });
+    apiService.createNDAPdf(user).then((res) => {}).catch((error) => {
+      handleApiError(error);
+    });
     apiService.getFinancialDate().then((res) => {
       setfinancialYearEnd(res.data.endDate);
+    }).catch((error) => {
+      handleApiError(error);
     });
     seturlRPD(
       `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
@@ -465,6 +486,8 @@ const ComplianceDetails = () => {
               confirmButtonText: "OK",
             });
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       } else {
         let newuser = JSON.parse(
@@ -499,6 +522,8 @@ const ComplianceDetails = () => {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         } else {
           apiService.saveComplianceDetail(data).then((res) => {
@@ -524,6 +549,8 @@ const ComplianceDetails = () => {
                 confirmButtonText: "OK",
               });
             }
+          }).catch((error) => {
+            handleApiError(error);
           });
         }
       }
@@ -563,6 +590,8 @@ const ComplianceDetails = () => {
               confirmButtonText: "OK",
             });
           }
+        }).catch((error) => {
+          handleApiError(error);
         });
       }
     });
@@ -744,7 +773,7 @@ const ComplianceDetails = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Form.Label>Non-disclosure agreement*</Form.Label>
+                      <Form.Label>Non-Disclosure agreement*</Form.Label>
                       <Col>
                         <a href={urlNDA} download="Related_Party_Declaration">
                           <Button className="ViewBtn">Download</Button>
