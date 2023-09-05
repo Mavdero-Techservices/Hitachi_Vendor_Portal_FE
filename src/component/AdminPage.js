@@ -97,41 +97,67 @@ function AdminPage() {
       setReloadAdminPage(false);
     }
   }, [reloadAdminPage]);
-
   const getApprovalList = async () => {
-    let applist = [];
-    apiService.getApprovalList().then((res) => {
-      setapproveList(res.data.result);
-      applist = res.data.result;
-    }).catch((error) => {
-      handleApiError(error);
-    });
-
-    apiService.getAllUserDetail().then((res) => {
-      setFilter(res.data.basicInfo[0]);
-      res.data.basicInfo[0].forEach((item) => {
-        var subDate = new Date(item.submitDate);
-        var currentDate = new Date();
-        var timeDifference = currentDate - subDate;
-        var differenceInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        var adjustedDifference = differenceInDays;
-item.updatedAt =adjustedDifference;
-
-        const s = moment(item.submitDate).format("MMM DD");
-        item.submitDate = s;
-      });
-      setvendors([]);
-
-      const arr = res.data.basicInfo[0]?.filter((vend) => {
+    try {
+      const approvalListResponse = await apiService.getApprovalList();
+      const approvalList = approvalListResponse.data.result;
+      setapproveList(approvalList);
+      const userDetailResponse = await apiService.getAllUserDetail();
+      const userDetailData = userDetailResponse.data.basicInfo[0];
+      const filteredVendors = userDetailData.map((item) => {
+        const subDate = new Date(item.submitDate);
+        const currentDate = new Date();
+        const timeDifference = currentDate - subDate;
+        const differenceInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        item.updatedAt = differenceInDays;
+        item.submitDate = moment(item.submitDate).format("MMM DD");
+        return item;
+      }).filter((vend) => {
         if (vend.submitStatus === "Submitted") {
-          return !applist?.find((item1) => item1.userId === vend.userId);
+          return !approvalList.find((item1) => item1.userId === vend.userId);
         }
+        return false;
       });
-      setvendors((array) => [...array, ...arr]);
-    }).catch((error) => {
+      setvendors(filteredVendors);
+    } catch (error) {
       handleApiError(error);
-    });
+    }
   };
+  
+//   const getApprovalList = async () => {
+//     let applist = [];
+//     apiService.getApprovalList().then((res) => {
+//       setapproveList(res.data.result);
+//       applist = res.data.result;
+//     }).catch((error) => {
+//       handleApiError(error);
+//     });
+
+//     apiService.getAllUserDetail().then((res) => {
+//       setFilter(res.data.basicInfo[0]);
+//       res.data.basicInfo[0].forEach((item) => {
+//         var subDate = new Date(item.submitDate);
+//         var currentDate = new Date();
+//         var timeDifference = currentDate - subDate;
+//         var differenceInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+//         var adjustedDifference = differenceInDays;
+// item.updatedAt =adjustedDifference;
+
+//         const s = moment(item.submitDate).format("MMM DD");
+//         item.submitDate = s;
+//       });
+//       setvendors([]);
+
+//       const arr = res.data.basicInfo[0]?.filter((vend) => {
+//         if (vend.submitStatus === "Submitted") {
+//           return !applist?.find((item1) => item1.userId === vend.userId);
+//         }
+//       });
+//       setvendors((array) => [...array, ...arr]);
+//     }).catch((error) => {
+//       handleApiError(error);
+//     });
+//   };
 
   const searchHandler = (e) => {
     let input;
@@ -155,6 +181,7 @@ item.updatedAt =adjustedDifference;
     let newFilteredSuggestions1;
 
     if (submitDate) {
+      console.log("submitdatedisplaye::");
       newFilteredSuggestions = filter?.filter(
         (suggestion) =>
           suggestion.submitDate === submitDate &&
@@ -182,6 +209,7 @@ item.updatedAt =adjustedDifference;
 
       setvendors(newFilteredSuggestions1);
     } else if (dueDay) {
+      console.log("duedatedisplaye::");
       let newFilteredSuggestions2;
       let newFilteredSuggestions3;
       newFilteredSuggestions2 = filter?.filter(
@@ -198,6 +226,7 @@ item.updatedAt =adjustedDifference;
       console.log("newFilteredSuggestions2--------->", newFilteredSuggestions2);
       setvendors(newFilteredSuggestions3);
     } else {
+      console.log("displayallgetapproval::");
       getApprovalList();
     }
   };

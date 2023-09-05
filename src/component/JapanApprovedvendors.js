@@ -185,7 +185,8 @@ function JapanApprovedvendors() {
                                 <Typography sx={{ width: '40%', flexShrink: 0, fontWeight: "bold" }}>Vendor name</Typography>
                                 <Typography sx={{ width: '36%', }}></Typography>
                                 <Typography sx={{ width: '12%', fontWeight: "bold" }}>Approved date</Typography>
-                                {/* <Typography sx={{ fontWeight: "bold" }}>Age</Typography> */}
+                                {/* <Typography sx={{ width: '20%',padding: '0 15px',fontWeight: "bold" }}>Mrt Status</Typography>
+                                <Typography sx={{ fontWeight: "bold" }}>Age</Typography> */}
                             </AccordionSummary>
                         </Accordion>
                         {vendors?.map((item, key) => <>
@@ -201,7 +202,7 @@ function JapanApprovedvendors() {
                                     </IconButton>
                                     <Typography textAlign="center" sx={{ width: '55%', flexShrink: 0, my: 'auto', fontWeight: "bold" }}>{item.userStatus === "MasterData" ? "Review updated vendor details" : "Review Vendor Details"}</Typography>
                                     <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.level2Date}</Typography>
-                                    {/* <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.updatedAt} {item.updatedAt > 1 ? "Days" : "Day"}</Typography> */}
+                                    {/* <Typography textAlign="right" sx={{ width: '10%', flexShrink: 0, my: 'auto', fontWeight: "bold" }} >{item.level3Status}</Typography> */}
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ApprovalFields userid={item.userId} />

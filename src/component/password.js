@@ -186,62 +186,64 @@ export default function Password(props) {
   </MDBCol>
 ) : null}
 
-          <MDBCol>
-              <div>
-                <label htmlFor="password">New Password*</label>
-              </div>
-              <div>
-                <input
-                  type={passwordType}
-                  className="mb-4 signupInput"
-                  name="password"
-                  id="password"
-                  onChange={formValChange("password")}
-                  value={values.password}
-                />
-                <VisibilityIcon
-                  style={{
-                    position: "absolute",
-                    right: "11%",
-                    marginTop: "8.5%",
-                  }}
-                  onClick={toggleConfirmPassword}
-                />
-                {errors.password ? (
-                  <p className="text text-danger small">{errors.password}</p>
-                ) : (
-                  ""
-                )}{" "}
-              </div>
-            </MDBCol>
+<MDBCol>
+  <div style={{ position: 'relative' }}>
+    <label htmlFor="password">New Password*</label>
+    <input
+      type={passwordType}
+      className="mb-4 signupInput"
+      name="password"
+      id="password"
+      onChange={formValChange("password")}
+      value={values.password}
+    />
+    <VisibilityIcon
+      style={{
+        position: "absolute",
+        right: "8%",
+        top: "50%",
+        transform: "translateY(-50%)", 
+      }}
+      onClick={togglePassword}
+    />
+    {errors.password ? (
+      <p className="text text-danger small">{errors.password}</p>
+    ) : (
+      ""
+    )}
+  </div>
+</MDBCol>
+
           <MDBRow className="mb-4">
            
-            <MDBCol>
-              <label>Confirm Password*</label>
-              <input
-                type={ConfirmPasswordType}
-                className="mb-4 signupInput"
-                name="confirmPassword"
-                id="confirmPassword"
-                onChange={formValChange("confirmPassword")}
-                value={values.confirmPassword}
-              />
-              <VisibilityIcon
-                onClick={togglePassword}
-                style={{
-                  position: "absolute",
-                  left: "87%",
-                  marginTop: "-5.7%",
-                }}
-              />
-              {errors.confirmPassword ? (
-                <p className="text text-danger small">
-                  {errors.confirmPassword}
-                </p>
-              ) : (
-                ""
-              )}
-            </MDBCol>
+          <MDBCol>
+  <div style={{ position: 'relative' }}>
+    <label>Confirm Password*</label>
+    <input
+      type={ConfirmPasswordType}
+      className="mb-4 signupInput"
+      name="confirmPassword"
+      id="confirmPassword"
+      onChange={formValChange("confirmPassword")}
+      value={values.confirmPassword}
+    />
+    <VisibilityIcon
+      style={{
+        position: "absolute",
+        right: "8%", 
+        top: "50%", 
+        transform: "translateY(-50%)",
+      }}
+      onClick={toggleConfirmPassword}
+    />
+    {errors.confirmPassword ? (
+      <p className="text text-danger small">{errors.confirmPassword}</p>
+    ) : (
+      ""
+    )}
+  </div>
+</MDBCol>
+
           </MDBRow>
           {isNewUsernameAndPassword ? (
             <>

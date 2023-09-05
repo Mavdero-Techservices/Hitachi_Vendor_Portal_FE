@@ -163,7 +163,15 @@ function UserCreation() {
   const UpdateMasterVendor = (e) => {
     e.preventDefault();
 
-    
+    const userUpdate = {
+      userId: JSON.parse(window.sessionStorage.getItem("jwt")).result.userId,
+      Name: Name,
+      designation: designation,
+      Department: Department,
+      emailId: emailId,
+      mobileNo: mobileNo,
+      roles: roles,
+    };
 
     const user = {
       SubUserId: subUserId.SubUserId,
@@ -180,6 +188,16 @@ function UserCreation() {
 
     apiService.UpdateMasterSubUserById(user).then((res) => {
       if (res) {
+        apiService.getMasterVendorById(userUpdate).then((res) => {
+          const modifiedUsers = res.data.result?.map((user) => {
+            return {
+              ...user,
+              password: "*****",
+            };
+          });
+          setgetAllUser(modifiedUsers);
+          setModalShow(false);
+        });
         Swal.fire({
           title: "Data Updated",
           icon: "success",
@@ -560,7 +578,7 @@ function UserCreation() {
                               >
                                 <Modal.Header closeButton>
                                   <Modal.Title id="contained-modal-title-vcenter">
-                                    edit User Detail
+                                    Edit User Detail
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body className="show-grid">
@@ -629,30 +647,6 @@ function UserCreation() {
                                         />
                                       </Col>
                                       <Col xs={12} md={6}>
-                                        <input
-                                          type="text"
-                                          id="LoginId"
-                                          className="swal2-input"
-                                          name="loginId"
-                                          value={loginId}
-                                          onChange={(e) => validateLoginId(e)}
-                                          placeholder="LoginId"
-                                        />
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col xs={12} md={6}>
-                                        <input
-                                          type="text"
-                                          id="Password"
-                                          className="swal2-input"
-                                          name="password"
-                                          value={password}
-                                          onChange={(e) => validatePassword(e)}
-                                          placeholder="Password"
-                                        />
-                                      </Col>
-                                      <Col xs={12} md={6}>
                                         <select
                                           id="roles"
                                           className="swal2-input"
@@ -669,6 +663,47 @@ function UserCreation() {
                                           <option value="vendor">Other</option>
                                         </select>
                                       </Col>
+                                      {/* <Col xs={12} md={6}>
+                                        <input
+                                          type="text"
+                                          id="LoginId"
+                                          className="swal2-input"
+                                          name="loginId"
+                                          value={loginId}
+                                          onChange={(e) => validateLoginId(e)}
+                                          placeholder="LoginId"
+                                        />
+                                      </Col> */}
+                                    </Row>
+                                    <Row>
+                                      {/* <Col xs={12} md={6}>
+                                        <input
+                                          type="text"
+                                          id="Password"
+                                          className="swal2-input"
+                                          name="password"
+                                          value={password}
+                                          onChange={(e) => validatePassword(e)}
+                                          placeholder="Password"
+                                        />
+                                      </Col> */}
+                                      {/* <Col xs={12} md={6}>
+                                        <select
+                                          id="roles"
+                                          className="swal2-input"
+                                          name="roles"
+                                          value={roles}
+                                          onChange={(e) => validateRole(e)}
+                                        >
+                                          <option value="">
+                                            Select a role
+                                          </option>
+                                          <option value="financial">
+                                            Financial
+                                          </option>
+                                          <option value="vendor">Other</option>
+                                        </select>
+                                      </Col> */}
                                     </Row>
                                   </Container>
                                 </Modal.Body>
