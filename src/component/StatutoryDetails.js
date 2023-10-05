@@ -940,162 +940,84 @@ export default function Statutory(props) {
     seturl(pdf);
   }, []);
   const saveStatutoryDetail = (e) => {
-    console.log("saveApi::");
+    console.log("saveApi::",values.PAN_No);
     console.log("valuesbeforupdate::", values.TAN_No);
     console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
-    const formErrors = validateForm();
-    e.preventDefault();
-    if (Object.keys(formErrors)?.length > 0) {
-      setErrors(formErrors);
-    } else {
-      
-      return new Promise((resolve) => {
-        // e.preventDefault();
-        setIsNewValueEntered(false);
-        const data = new FormData();
-        data.append("GST_Vendor_Type", GST_type);
-        if (GST_type === "UnRegistered") {
-          data.append("GST_Registration_No", "N/A");
-        } else if (GST_type === "Import") {
-          data.append("GST_Registration_No", "N/A");
-        } else {
-          data.append("GST_Registration_No", values.GST_No);
-        }
-        if (countryName !== "IN") {
-          data.append("P_A_N_No", "N/A");
-          data.append("PAN_Doc", "");
-        } else {
-          if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
-  {
-    data.append("P_A_N_No",staticPAN_No);
-    data.append("PAN_Doc", "");
-  }
-  else
-  {
-    data.append("P_A_N_No", values.PAN_No);
-    data.append("PAN_Doc", PAN_Doc);
-  }
-         
-        }
-        if (GST_type === "Registered") {
-          data.append("GST_Doc", GST_Doc);
-          data.append("fileDisclosure", "");
-        } else {
-          data.append("GST_Doc", "");
-          data.append("fileDisclosure", fileDisclosure);
-        }
-        if (MSME_status === "2") {
-          data.append("MSMED_Number", "N/A");
-        } else {
-          data.append("MSMED_Number", values.MSME_No);
-        }
-        data.append("form_10f_Doc", form_10f_Doc);
-        data.append("TAN_Doc", TAN_Doc);
-        data.append("PE_DeclarationNo", values.PE_DeclarationNo);
-        data.append("PE_Declaration_Doc", PE_Declaration_Doc);
-        data.append("MSME_Doc", MSME_Doc);
-        data.append("Tax_residency_Doc", Tax_residency_Doc);
-        data.append("CIN_No", values.CIN_No);
-        data.append("form_10f", values.form_10f);
-        data.append("MSMED", MSME_status);
-  
-        data.append("MSMED_Vendor_Type", MSME);
-        data.append("TAN_No", values.TAN_No);
-        data.append(
-          "userId",
-          JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
-        );
-        data.append("Tax_residency_No", values.Tax_residency_No);
-        if (params.userId) {
-          console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
-          console.log("dataupdatecinno::", values.CIN_No);
-          console.log("update2::",values.CIN_No)
-          apiService.updateStatutoryDetail(params.userId, data).then((res) => {
-            if (res.data.status === "success") {
-              Swal.fire({
-                title: "Data Updated",
-                icon: "success",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  resolve("success");
-                } else {
-                  resolve("error");
-                }
-              });
-            } else {
-              Swal.fire({
-                title: "Error While Fetching",
-                icon: "error",
-                confirmButtonText: "OK",
-                showCloseButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-              });
-              resolve("error");
-            }
-          }).catch((error) => {
-            console.log("error2:::",error);
-            if (error.code === 'ERR_NETWORK') {
-              console.log("networkerror:::",error);
-              handleApiError(error);
-            }
-            else
-            {
-              console.log("error:::",error);
-              handleApiError(error);
-            }
-          });
-        } else {
-          let newuser = JSON.parse(
-            window.sessionStorage.getItem("newregUser")
-          )?.newregUser;
-          if (newuser) {
-            const statdata = new FormData();
-            statdata.append("GST_Vendor_Type", GST_type);
-            statdata.append("GST_Registration_No", values.GST_No);
-            if (GST_type === "UnRegistered") {
-              statdata.append("GST_Registration_No", "N/A");
-            } else if (GST_type === "Import") {
-              statdata.append("GST_Registration_No", "N/A");
-            } else {
-              statdata.append("GST_Registration_No", values.GST_No);
-            }
-            if (countryName !== "IN") {
-              statdata.append("P_A_N_No", values.PAN_No);
-              statdata.append("PAN_Doc", PAN_Doc);
-            } else {
-              statdata.append("P_A_N_No", "N/A");
-              statdata.append("PAN_Doc", "");
-            }
-            if (GST_type === "Registered") {
-              statdata.append("GST_Doc", GST_Doc);
-              statdata.append("fileDisclosure", "");
-            } else {
-              statdata.append("GST_Doc", "");
-              statdata.append("fileDisclosure", fileDisclosure);
-            }
-            statdata.append("form_10f_Doc", form_10f_Doc);
-            statdata.append("TAN_Doc", TAN_Doc);
-            statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
-            statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
-            statdata.append("MSME_Doc", MSME_Doc);
-            statdata.append("Tax_residency_Doc", Tax_residency_Doc);
-            statdata.append("CIN_No", values.CIN_No);
-            statdata.append("form_10f", values.form_10f);
-            statdata.append("MSMED", MSME_status);
-            statdata.append("MSMED_Number", values.MSME_No);
-            statdata.append("MSMED_Vendor_Type", MSME);
-            statdata.append("TAN_No", values.TAN_No);
-            statdata.append("userId", newuser);
-            statdata.append("Tax_residency_No", values.Tax_residency_No);
-            apiService.saveStatutoryDetail(statdata).then((res) => {
+    if (values.PAN_No === null || values.PAN_No === undefined || values.PAN_No === "" || values.PAN_No === "N/A" ) {
+      console.log("pan no n/a::");
+      console.log("valuesbeforupdate::", values.TAN_No);
+      console.log("valuesbeforupdatevalues.CIN_No::", values.CIN_No);
+      const formErrors = validateForm();
+      e.preventDefault();
+      if (Object.keys(formErrors)?.length > 0) {
+        setErrors(formErrors);
+      } else {
+        
+        return new Promise((resolve) => {
+          // e.preventDefault();
+          setIsNewValueEntered(false);
+          const data = new FormData();
+          data.append("GST_Vendor_Type", GST_type);
+          if (GST_type === "UnRegistered") {
+            data.append("GST_Registration_No", "N/A");
+          } else if (GST_type === "Import") {
+            data.append("GST_Registration_No", "N/A");
+          } else {
+            data.append("GST_Registration_No", values.GST_No);
+          }
+          if (countryName !== "IN") {
+            data.append("P_A_N_No", "N/A");
+            data.append("PAN_Doc", "");
+          } else {
+            if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
+    {
+      data.append("P_A_N_No",staticPAN_No);
+      data.append("PAN_Doc", "");
+    }
+    else
+    {
+      data.append("P_A_N_No", values.PAN_No);
+      data.append("PAN_Doc", PAN_Doc);
+    }
+           
+          }
+          if (GST_type === "Registered") {
+            data.append("GST_Doc", GST_Doc);
+            data.append("fileDisclosure", "");
+          } else {
+            data.append("GST_Doc", "");
+            data.append("fileDisclosure", fileDisclosure);
+          }
+          if (MSME_status === "2") {
+            data.append("MSMED_Number", "N/A");
+          } else {
+            data.append("MSMED_Number", values.MSME_No);
+          }
+          data.append("form_10f_Doc", form_10f_Doc);
+          data.append("TAN_Doc", TAN_Doc);
+          data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+          data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+          data.append("MSME_Doc", MSME_Doc);
+          data.append("Tax_residency_Doc", Tax_residency_Doc);
+          data.append("CIN_No", values.CIN_No);
+          data.append("form_10f", values.form_10f);
+          data.append("MSMED", MSME_status);
+    
+          data.append("MSMED_Vendor_Type", MSME);
+          data.append("TAN_No", values.TAN_No);
+          data.append(
+            "userId",
+            JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
+          );
+          data.append("Tax_residency_No", values.Tax_residency_No);
+          if (params.userId) {
+            console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
+            console.log("dataupdatecinno::", values.CIN_No);
+            console.log("update2::",values.CIN_No)
+            apiService.updateStatutoryDetail(params.userId, data).then((res) => {
               if (res.data.status === "success") {
                 Swal.fire({
-                  title: "Data saved",
+                  title: "Data Updated",
                   icon: "success",
                   confirmButtonText: "OK",
                   showCloseButton: true,
@@ -1117,6 +1039,7 @@ export default function Statutory(props) {
                   allowOutsideClick: false,
                   allowEscapeKey: false,
                 });
+                resolve("error");
               }
             }).catch((error) => {
               console.log("error2:::",error);
@@ -1131,45 +1054,394 @@ export default function Statutory(props) {
               }
             });
           } else {
-            apiService.saveStatutoryDetail(data).then((res) => {
-              if (res.data.status === "success") {
-                Swal.fire({
-                  title: "Data saved",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                  showCloseButton: true,
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    resolve("success");
+            let newuser = JSON.parse(
+              window.sessionStorage.getItem("newregUser")
+            )?.newregUser;
+            if (newuser) {
+              const statdata = new FormData();
+              statdata.append("GST_Vendor_Type", GST_type);
+              statdata.append("GST_Registration_No", values.GST_No);
+              if (GST_type === "UnRegistered") {
+                statdata.append("GST_Registration_No", "N/A");
+              } else if (GST_type === "Import") {
+                statdata.append("GST_Registration_No", "N/A");
+              } else {
+                statdata.append("GST_Registration_No", values.GST_No);
+              }
+              if (countryName !== "IN") {
+                statdata.append("P_A_N_No", values.PAN_No);
+                statdata.append("PAN_Doc", PAN_Doc);
+              } else {
+                statdata.append("P_A_N_No", "N/A");
+                statdata.append("PAN_Doc", "");
+              }
+              if (GST_type === "Registered") {
+                statdata.append("GST_Doc", GST_Doc);
+                statdata.append("fileDisclosure", "");
+              } else {
+                statdata.append("GST_Doc", "");
+                statdata.append("fileDisclosure", fileDisclosure);
+              }
+              statdata.append("form_10f_Doc", form_10f_Doc);
+              statdata.append("TAN_Doc", TAN_Doc);
+              statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+              statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+              statdata.append("MSME_Doc", MSME_Doc);
+              statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+              statdata.append("CIN_No", values.CIN_No);
+              statdata.append("form_10f", values.form_10f);
+              statdata.append("MSMED", MSME_status);
+              statdata.append("MSMED_Number", values.MSME_No);
+              statdata.append("MSMED_Vendor_Type", MSME);
+              statdata.append("TAN_No", values.TAN_No);
+              statdata.append("userId", newuser);
+              statdata.append("Tax_residency_No", values.Tax_residency_No);
+              apiService.saveStatutoryDetail(statdata).then((res) => {
+                if (res.data.status === "success") {
+                  Swal.fire({
+                    title: "Data saved",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      resolve("success");
+                    } else {
+                      resolve("error");
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error While Fetching",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  });
+                }
+              }).catch((error) => {
+                console.log("error2:::",error);
+                if (error.code === 'ERR_NETWORK') {
+                  console.log("networkerror:::",error);
+                  handleApiError(error);
+                }
+                else
+                {
+                  console.log("error:::",error);
+                  handleApiError(error);
+                }
+              });
+            } else {
+              apiService.saveStatutoryDetail(data).then((res) => {
+                if (res.data.status === "success") {
+                  Swal.fire({
+                    title: "Data saved",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      resolve("success");
+                    } else {
+                      resolve("error");
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error While Fetching",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                  });
+                }
+              }).catch((error) => {
+                console.log("errorstatutory:::",error);
+                if (error.code === 'ERR_NETWORK') {
+                  console.log("networkerror:::",error);
+                  handleApiError(error);
+                }
+                else
+                {
+                  console.log("error:::",error);
+                  handleApiError(error);
+                }
+              });
+            }
+          }
+        });
+      }
+    
+    }
+    else
+    {
+      console.log("panno has value::",values.PAN_No);
+      apiService
+      .SearchpanNo(values.PAN_No, JSON.parse(window.sessionStorage.getItem("jwt")).result.userId)
+      .then((res) => {
+        console.log("responsepanno::", res.data.result);
+        if (res.data.result === "Pan no already exists!") {
+          setvalidpanNo(true);
+          setmasterVendoremail(res.data.mastervendor_email);
+          Swal.fire({
+            title: "PAN Number already exist",
+            html: `Please contact your admin: <strong>${res.data.mastervendor_email}</strong>`,
+            icon: "warning",
+            dangerMode: true,
+            showCloseButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          })
+        } else {
+          setvalidpanNo(false);
+          setmasterVendoremail("");
+          const formErrors = validateForm();
+          e.preventDefault();
+          if (Object.keys(formErrors)?.length > 0) {
+            setErrors(formErrors);
+          }
+          else {
+            
+            return new Promise((resolve) => {
+              // e.preventDefault();
+              setIsNewValueEntered(false);
+              const data = new FormData();
+              data.append("GST_Vendor_Type", GST_type);
+              if (GST_type === "UnRegistered") {
+                data.append("GST_Registration_No", "N/A");
+              } else if (GST_type === "Import") {
+                data.append("GST_Registration_No", "N/A");
+              } else {
+                data.append("GST_Registration_No", values.GST_No);
+              }
+              if (countryName !== "IN") {
+                data.append("P_A_N_No", "N/A");
+                data.append("PAN_Doc", "");
+              } else {
+                if(JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype === "NewRegistration")
+        {
+          data.append("P_A_N_No",staticPAN_No);
+          data.append("PAN_Doc", "");
+        }
+        else
+        {
+          data.append("P_A_N_No", values.PAN_No);
+          data.append("PAN_Doc", PAN_Doc);
+        }
+               
+              }
+              if (GST_type === "Registered") {
+                data.append("GST_Doc", GST_Doc);
+                data.append("fileDisclosure", "");
+              } else {
+                data.append("GST_Doc", "");
+                data.append("fileDisclosure", fileDisclosure);
+              }
+              if (MSME_status === "2") {
+                data.append("MSMED_Number", "N/A");
+              } else {
+                data.append("MSMED_Number", values.MSME_No);
+              }
+              data.append("form_10f_Doc", form_10f_Doc);
+              data.append("TAN_Doc", TAN_Doc);
+              data.append("PE_DeclarationNo", values.PE_DeclarationNo);
+              data.append("PE_Declaration_Doc", PE_Declaration_Doc);
+              data.append("MSME_Doc", MSME_Doc);
+              data.append("Tax_residency_Doc", Tax_residency_Doc);
+              data.append("CIN_No", values.CIN_No);
+              data.append("form_10f", values.form_10f);
+              data.append("MSMED", MSME_status);
+        
+              data.append("MSMED_Vendor_Type", MSME);
+              data.append("TAN_No", values.TAN_No);
+              data.append(
+                "userId",
+                JSON.parse(window.sessionStorage.getItem("jwt"))?.result?.userId
+              );
+              data.append("Tax_residency_No", values.Tax_residency_No);
+              if (params.userId) {
+                console.log("dataupdateparams::", values.TAN_No, values.CIN_No);
+                console.log("dataupdatecinno::", values.CIN_No);
+                console.log("update2::",values.CIN_No)
+                apiService.updateStatutoryDetail(params.userId, data).then((res) => {
+                  if (res.data.status === "success") {
+                    Swal.fire({
+                      title: "Data Updated",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        resolve("success");
+                      } else {
+                        resolve("error");
+                      }
+                    });
                   } else {
+                    Swal.fire({
+                      title: "Error While Fetching",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                      showCloseButton: true,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                    });
                     resolve("error");
+                  }
+                }).catch((error) => {
+                  console.log("error2:::",error);
+                  if (error.code === 'ERR_NETWORK') {
+                    console.log("networkerror:::",error);
+                    handleApiError(error);
+                  }
+                  else
+                  {
+                    console.log("error:::",error);
+                    handleApiError(error);
                   }
                 });
               } else {
-                Swal.fire({
-                  title: "Error While Fetching",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                  showCloseButton: true,
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                });
-              }
-            }).catch((error) => {
-              console.log("errorstatutory:::",error);
-              if (error.code === 'ERR_NETWORK') {
-                console.log("networkerror:::",error);
-                handleApiError(error);
-              }
-              else
-              {
-                console.log("error:::",error);
-                handleApiError(error);
+                let newuser = JSON.parse(
+                  window.sessionStorage.getItem("newregUser")
+                )?.newregUser;
+                if (newuser) {
+                  const statdata = new FormData();
+                  statdata.append("GST_Vendor_Type", GST_type);
+                  statdata.append("GST_Registration_No", values.GST_No);
+                  if (GST_type === "UnRegistered") {
+                    statdata.append("GST_Registration_No", "N/A");
+                  } else if (GST_type === "Import") {
+                    statdata.append("GST_Registration_No", "N/A");
+                  } else {
+                    statdata.append("GST_Registration_No", values.GST_No);
+                  }
+                  if (countryName !== "IN") {
+                    statdata.append("P_A_N_No", values.PAN_No);
+                    statdata.append("PAN_Doc", PAN_Doc);
+                  } else {
+                    statdata.append("P_A_N_No", "N/A");
+                    statdata.append("PAN_Doc", "");
+                  }
+                  if (GST_type === "Registered") {
+                    statdata.append("GST_Doc", GST_Doc);
+                    statdata.append("fileDisclosure", "");
+                  } else {
+                    statdata.append("GST_Doc", "");
+                    statdata.append("fileDisclosure", fileDisclosure);
+                  }
+                  statdata.append("form_10f_Doc", form_10f_Doc);
+                  statdata.append("TAN_Doc", TAN_Doc);
+                  statdata.append("PE_DeclarationNo", values.PE_DeclarationNo);
+                  statdata.append("PE_Declaration_Doc", PE_Declaration_Doc);
+                  statdata.append("MSME_Doc", MSME_Doc);
+                  statdata.append("Tax_residency_Doc", Tax_residency_Doc);
+                  statdata.append("CIN_No", values.CIN_No);
+                  statdata.append("form_10f", values.form_10f);
+                  statdata.append("MSMED", MSME_status);
+                  statdata.append("MSMED_Number", values.MSME_No);
+                  statdata.append("MSMED_Vendor_Type", MSME);
+                  statdata.append("TAN_No", values.TAN_No);
+                  statdata.append("userId", newuser);
+                  statdata.append("Tax_residency_No", values.Tax_residency_No);
+                  apiService.saveStatutoryDetail(statdata).then((res) => {
+                    if (res.data.status === "success") {
+                      Swal.fire({
+                        title: "Data saved",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          resolve("success");
+                        } else {
+                          resolve("error");
+                        }
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error While Fetching",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      });
+                    }
+                  }).catch((error) => {
+                    console.log("error2:::",error);
+                    if (error.code === 'ERR_NETWORK') {
+                      console.log("networkerror:::",error);
+                      handleApiError(error);
+                    }
+                    else
+                    {
+                      console.log("error:::",error);
+                      handleApiError(error);
+                    }
+                  });
+                } else {
+                  apiService.saveStatutoryDetail(data).then((res) => {
+                    if (res.data.status === "success") {
+                      Swal.fire({
+                        title: "Data saved",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          resolve("success");
+                        } else {
+                          resolve("error");
+                        }
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error While Fetching",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      });
+                    }
+                  }).catch((error) => {
+                    console.log("errorstatutory:::",error);
+                    if (error.code === 'ERR_NETWORK') {
+                      console.log("networkerror:::",error);
+                      handleApiError(error);
+                    }
+                    else
+                    {
+                      console.log("error:::",error);
+                      handleApiError(error);
+                    }
+                  });
+                }
               }
             });
           }
+        }
+      })
+      .catch((error) => {
+        console.log("errorstatutory:::", error);
+        if (error.code === "ERR_NETWORK") {
+          console.log("networkerror:::", error);
+          handleApiError(error);
+        } else {
+          console.log("error:::", error);
+          handleApiError(error);
         }
       });
     }

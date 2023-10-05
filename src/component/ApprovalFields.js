@@ -31,6 +31,7 @@ function ApprovalFields(props) {
   const [editBankUploadFile, seteditBankUploadFile] = useState(false);
   const [editfindataUploadFile, seteditfindataUploadFile] = useState(false);
   const [editfindata2UploadFile, seteditfindata2UploadFile] = useState(false);
+  const [editedFields, setEditedFields] = useState([]);
 
   const reload = () => {
     console.log("reloading------------------>>>>>");
@@ -367,6 +368,12 @@ function ApprovalFields(props) {
   };
 
   useEffect(() => {
+    apiService.getEditLogOfAllcollection(props.userid).then((res) => {
+      console.log("EditLog::",res.data.Result);
+      if (res.data.Result && res.data.Result.EditedFields) {
+        setEditedFields(JSON.parse(res.data.Result.EditedFields));
+      }
+    })
     apiService.getAllCollection(props.userid).then((res) => {
       console.log("acmanager::", res.data.basicInfo[0].Vendor_Account_Manager);
       if (res.data.basicInfo[0] !== "null" && res.data.basicInfo?.length > 0) {
@@ -690,6 +697,118 @@ function ApprovalFields(props) {
       handleApiError(error);
     });
   }, [props.userid]);
+    // basicInfo
+    const isCompanyNameEdited = editedFields?.includes('companyName');
+    const isAddressEdited = editedFields?.includes('Address');
+    const isAddress_2Edited = editedFields?.includes('Address_2');
+    const isCountry_Region_CodeEdited = editedFields?.includes('Country_Region_Code');
+    const isstateEdited = editedFields?.includes('state');
+    const isCityEdited = editedFields?.includes('City');
+    const isPost_CodeEdited = editedFields?.includes('Post_Code');
+    //communication
+    const isfinanceSpoccontactNameEdited = editedFields?.includes('financeSpoccontactName');
+    const isfinanceSpocdesignationEdited = editedFields?.includes('financeSpocdesignation');
+    const isfinanceSpocphoneNoEdited = editedFields?.includes('financeSpocphoneNo');
+    const isfinanceSpocemailEdited = editedFields?.includes('financeSpocemail');
+    const isoperationSpoccontactNameEdited = editedFields?.includes('operationSpoccontactName');
+    const isoperationSpocdesignationEdited = editedFields?.includes('operationSpocdesignation');
+    const isoperationSpocphoneNoEdited = editedFields?.includes('operationSpocphoneNo');
+    const isoperationSpocemailEdited = editedFields?.includes('operationSpocemail');
+    const iscollectionSpoccontactNameEdited = editedFields?.includes('collectionSpoccontactName');
+    const iscollectionSpocdesignationEdited = editedFields?.includes('collectionSpocdesignation');
+    const iscollectionSpocphoneNoEdited = editedFields?.includes('collectionSpocphoneNo');
+    const iscollectionSpocemailEdited = editedFields?.includes('collectionSpocemail');
+    const ismanagementSpoccontactNameEdited = editedFields?.includes('managementSpoccontactName');
+    const ismanagementSpocdesignationEdited = editedFields?.includes('managementSpocdesignation');
+    const ismanagementSpocphoneNoEdited = editedFields?.includes('managementSpocphoneNo');
+    const ismanagementSpocemailEdited = editedFields?.includes('managementSpocemail');
+    const iscontactNameEdited = editedFields?.includes('contactName');
+    const isdesignationEdited = editedFields?.includes('designation');
+    const isphoneNoEdited = editedFields?.includes('phoneNo');
+    const isemailEdited = editedFields?.includes('email');
+    const ismastervendor_emailEdited = editedFields?.includes('mastervendor_email');
+    //statutory
+    const isGST_DocEdited = editedFields?.includes('GST_Doc');
+  
+  const isfileDisclosureEdited = editedFields?.includes('fileDisclosure');
+  
+  const isPAN_DocEdited = editedFields?.includes('PAN_Doc');
+  
+  const isform_10f_DocEdited = editedFields?.includes('form_10f_Doc');
+  
+  const isTAN_DocEdited = editedFields?.includes('TAN_Doc');
+  
+  const isPE_Declaration_DocEdited = editedFields?.includes('PE_Declaration_Doc');
+  
+  const isMSME_DocEdited = editedFields?.includes('MSME_Doc');
+  
+  const isTax_residency_DocEdited = editedFields?.includes('Tax_residency_Doc');
+  
+  const isGST_Vendor_TypeEdited = editedFields?.includes('GST_Vendor_Type');
+  
+  const isGST_Registration_NoEdited = editedFields?.includes('GST_Registration_No');
+  
+  const isP_A_N_NoEdited = editedFields?.includes('P_A_N_No');
+  
+  const isCIN_NoEdited = editedFields?.includes('CIN_No');
+  
+  const isMSMEDEdited = editedFields?.includes('MSMED');
+  
+  const isMSMED_NumberEdited = editedFields?.includes('MSMED_Number');
+  
+  const isMSMED_Vendor_TypeEdited = editedFields?.includes('MSMED_Vendor_Type');
+  
+  const isTAN_NoEdited = editedFields?.includes('TAN_No');
+  
+    //compliance
+    const isRPD_DocEdited = editedFields?.includes('RPD_Doc');
+  
+  const isCOC_DocEdited = editedFields?.includes('COC_Doc');
+  
+  const isNDA_DocEdited = editedFields?.includes('NDA_Doc');
+    //bank
+    const isbankdetailDocEdited = editedFields?.includes('bankdetailDoc');
+  const isAccount_Holder_NameEdited = editedFields?.includes('Account_Holder_Name');
+  const isBank_NameEdited = editedFields?.includes('Bank_Name');
+  const isAccount_NoEdited = editedFields?.includes('Account_No');
+  const isIFSC_CodeEdited = editedFields?.includes('IFSC_Code');
+  const isMICRcodeEdited = editedFields?.includes('MICRcode');
+  const isBank_AddressEdited = editedFields?.includes('Bank_Address');
+    //finance 
+    const isfinancial_dataEdited = editedFields?.includes('financial_data');
+  const isfinancial_data2Edited = editedFields?.includes('financial_data2');
+  const isyearOfAuditedFinancialEdited = editedFields?.includes('yearOfAuditedFinancial');
+  const isRevenueEdited = editedFields?.includes('Revenue');
+  const isProfitEdited = editedFields?.includes('Profit');
+  const isnetWorthEdited = editedFields?.includes('netWorth');
+  const iscurrentAssetsEdited = editedFields?.includes('currentAssets');
+  const isdirectorDetailsEdited = editedFields?.includes('directorDetails');
+  const isorganisationTypeEdited = editedFields?.includes('organisationType');
+  const isshareholderNameEdited = editedFields?.includes('shareholderName');
+    //contact 
+  const iscontactName1Edited = editedFields?.includes('contactName1');
+  const isemailId1Edited = editedFields?.includes('emailId1');
+  const iscontactNumber1Edited = editedFields?.includes('contactNumber1');
+  const iscontactName2Edited = editedFields?.includes('contactName2');
+  const isemailId2Edited = editedFields?.includes('emailId2');
+  const iscontactNumber2Edited = editedFields?.includes('contactNumber2');
+  const iscontactName3Edited = editedFields?.includes('contactName3');
+  const iscontactNumber3Edited = editedFields?.includes('contactNumber3');
+  const isemailId3Edited = editedFields?.includes('emailId3');
+    const shouldHighlightInput =
+    JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&
+    JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' &&
+    (isCompanyNameEdited || isAddressEdited || isAddress_2Edited|| isCountry_Region_CodeEdited || isstateEdited || isCityEdited ||isPost_CodeEdited || isfinanceSpoccontactNameEdited || isfinanceSpocdesignationEdited ||isfinanceSpocphoneNoEdited || isfinanceSpocemailEdited || isoperationSpoccontactNameEdited || isoperationSpocdesignationEdited || isoperationSpocphoneNoEdited
+      || isoperationSpocemailEdited || iscollectionSpoccontactNameEdited || iscollectionSpocdesignationEdited || iscollectionSpocphoneNoEdited
+       || iscollectionSpocemailEdited || ismanagementSpoccontactNameEdited || ismanagementSpocdesignationEdited || ismanagementSpocphoneNoEdited
+       || ismanagementSpocemailEdited || iscontactNameEdited || isdesignationEdited || isphoneNoEdited || isemailEdited || ismastervendor_emailEdited
+       || isRPD_DocEdited || isCOC_DocEdited || isNDA_DocEdited 
+      || isTAN_NoEdited || isMSMED_Vendor_TypeEdited ||isMSMED_NumberEdited || isMSMEDEdited || isCIN_NoEdited || isP_A_N_NoEdited
+      || isGST_Registration_NoEdited || isGST_Vendor_TypeEdited || isGST_DocEdited || isfileDisclosureEdited  || isPAN_DocEdited  || isform_10f_DocEdited  || isTAN_DocEdited  || isPE_Declaration_DocEdited  || isMSME_DocEdited  || isTax_residency_DocEdited || isfinancial_dataEdited  || isfinancial_data2Edited   || isyearOfAuditedFinancialEdited   ||
+      isRevenueEdited   ||isProfitEdited   || isnetWorthEdited  || iscurrentAssetsEdited  || isdirectorDetailsEdited || isorganisationTypeEdited  || isshareholderNameEdited  ||isbankdetailDocEdited  || isAccount_Holder_NameEdited  || isBank_NameEdited  || isAccount_NoEdited  ||isIFSC_CodeEdited   || isMICRcodeEdited   || isBank_AddressEdited 
+       || iscontactName1Edited  || isemailId1Edited  || iscontactNumber1Edited  || iscontactName2Edited  || isemailId2Edited  || iscontactNumber2Edited   || iscontactName3Edited  ||  iscontactNumber3Edited   ||  isemailId3Edited );
+  
+   
   const [Vendor_Type, setVendor_Type] = useState("");
   const [Vendor_Account_Manager, setVendor_Account_Manager] = useState("");
   const [Address, setaddress1] = useState("");
@@ -2086,6 +2205,11 @@ function ApprovalFields(props) {
                                           }
                                           else
                                           {
+                                             apiService.updateErpResourcePortalVendorlist(TicketID,ERPData).then((Masterresponse) => {
+                    console.log("ErpDataupdates",Masterresponse);
+                                            }).catch((error) => {
+                                              handleApiError(error);
+                                            });
                                             apiService
                                             .updateMasterLogin(UpdateMasterVendor)
                                             .then((Masterresponse) => {
@@ -2624,6 +2748,7 @@ function ApprovalFields(props) {
       data.append("contactNumber3", contactNumber3);
       data.append("email3", email3);
       data.append("approverFile", approverFile);
+      data.append("role", JSON.parse(window.sessionStorage.getItem("jwt")).result?.role);
 
       apiService.updateAllCollection(props.userid, data).then((response) => {
         console.log("data::");
@@ -2886,6 +3011,11 @@ apiService
                                             }
                                             else
                                             {
+                                              apiService.updateErpResourcePortalVendorlist(TicketID,ERPData).then((Masterresponse) => {
+                                                console.log("ErpDataupdates",Masterresponse);
+                                                                        }).catch((error) => {
+                                                                          handleApiError(error);
+                                                                        });
                                               apiService
                                               .updateMasterLogin(UpdateMasterVendor)
                                               .then((Masterresponse) => {
@@ -4247,6 +4377,7 @@ apiService
     console.log("FormarrayErr######chandrasekaran##############", FormarrayErr);
     if (FormarrayErr.length === 0) {
       const data = new FormData();
+      data.append("role", JSON.parse(window.sessionStorage.getItem("jwt")).result?.role);
       data.append("userId", props.userid);
       data.append("Address", Address);
       data.append("Address_2", Address_2);
@@ -4418,23 +4549,29 @@ apiService
                   <label htmlFor="companyName*">Company Name</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isCompanyNameEdited ? 'highlighted-input' : ''}`}
                     name="companyName"
                     value={companyName}
                     onChange={(e) => validatecompanyName(e)}
                   />
+                   {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isCompanyNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   <span className="formError">{companyNameErr}</span>
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="Address">Address 1</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isAddressEdited ? 'highlighted-input' : ''}`}
                     name="Address"
                     value={Address}
                     onChange={(e) => validateaddress1(e)}
                   />
                   <span className="formError">{address1Err}</span>
+                  {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isAddressEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                 </div>
 
                 {editData[0]?.Address_2 !== "null" && editData[0]?.Address_2 ? (
@@ -4442,13 +4579,15 @@ apiService
                     <label htmlFor="Address_2">Address 2</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isAddress_2Edited ? 'highlighted-input' : ''}`}
                       name="Address_2"
                       value={Address_2}
                       onChange={(e) => validateaddress2(e)}
                     />
                     <span className="formError">{address2Err}</span>
-                    {/* <span className="formError">{address2Err}</span> */}
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isAddress_2Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                 ) : (
                   ""
@@ -4457,46 +4596,58 @@ apiService
                   <label htmlFor="country">Country</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isCountry_Region_CodeEdited ? 'highlighted-input' : ''}`}
                     name="country"
                     value={Country_Region_Code}
                     onChange={(e) => validatecountry(e)}
                     readOnly
                   />
                   <span className="formError">{countryErr}</span>
+                  {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isCountry_Region_CodeEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="state">State</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isstateEdited ? 'highlighted-input' : ''}`}
                     name="state"
                     value={state}
                     onChange={(e) => validatestate(e)}
                   />
                   <span className="formError">{stateErr}</span>
+                  {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isstateEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="City">City</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isCityEdited ? 'highlighted-input' : ''}`}
                     name="City"
                     value={City}
                     onChange={(e) => validatecity(e)}
                   />
                   <span className="formError">{cityErr}</span>
+                  {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isCityEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                   <label htmlFor="Post_Code">PinCode</label>
                   <input
                     type="text"
-                    className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && isPost_CodeEdited ? 'highlighted-input' : ''}`}
                     name="Post_Code"
                     value={Post_Code}
                     onChange={(e) => validatepinCode(e)}
                   />
                   <span className="formError">{pinCodeErr}</span>
+                  {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isPost_CodeEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                 </div>
                 <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12 mb-0">
                   {style === "cont2" ? (
@@ -4555,45 +4706,57 @@ apiService
                     <label htmlFor="fs_ContactName">Contact Name</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isfinanceSpoccontactNameEdited ? 'highlighted-input' : ''}`}
                       name="fs_ContactName"
                       value={fs_ContactName}
                       onChange={(e) => validatefs_ContactName(e)}
                     />
                     <span className="formError">{fs_ContactNameErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinanceSpoccontactNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="fs_Designation">Designation</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isfinanceSpocdesignationEdited ? 'highlighted-input' : ''}`}
                       name="fs_Designation"
                       value={fs_Designation}
                       onChange={(e) => validatefs_Designation(e)}
                     />
                     <span className="formError">{fs_DesignationErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinanceSpocdesignationEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="fs_PhoneNo">Phone no</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isfinanceSpocphoneNoEdited ? 'highlighted-input' : ''}`}
                       name="fs_PhoneNo"
                       value={fs_PhoneNo}
                       onChange={(e) => validatefs_PhoneNo(e)}
                     />
                     <span className="formError">{fs_PhoneNoErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinanceSpocphoneNoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="fs_Email">Email</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isfinanceSpocemailEdited ? 'highlighted-input' : ''}`}
                       name="fs_Email"
                       value={fs_Email}
                       onChange={(e) => validatefs_Email(e)}
                     />
                     <span className="formError">{fs_EmailErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinanceSpocemailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                 </div>
 
@@ -4619,11 +4782,14 @@ apiService
                         <label htmlFor="ops_ContactName">Contact Name</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isoperationSpoccontactNameEdited ? 'highlighted-input' : ''}`}
                           name="ops_ContactName"
                           value={ops_ContactName}
                           onChange={(e) => setops_ContactName(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isoperationSpoccontactNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4634,11 +4800,14 @@ apiService
                         <label htmlFor="ops_Designation">Designation</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isoperationSpocdesignationEdited ? 'highlighted-input' : ''}`}
                           name="ops_Designation"
                           value={ops_Designation}
                           onChange={(e) => setops_Designation(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isoperationSpocdesignationEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4649,11 +4818,14 @@ apiService
                         <label htmlFor="ops_PhoneNo">Phone no</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isoperationSpocphoneNoEdited ? 'highlighted-input' : ''}`}
                           name="ops_PhoneNo"
                           value={ops_PhoneNo}
                           onChange={(e) => setops_PhoneNo(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isoperationSpocphoneNoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4664,11 +4836,14 @@ apiService
                         <label htmlFor="ops_Email">Email</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isoperationSpocemailEdited ? 'highlighted-input' : ''}`}
                           name="ops_Email"
                           value={ops_Email}
                           onChange={(e) => setops_Email(e.target.value)}
                         />
+                         {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isoperationSpocemailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4698,11 +4873,14 @@ apiService
                         <label htmlFor="country">Contact Name</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscollectionSpoccontactNameEdited ? 'highlighted-input' : ''}`}
                           name="colls_ContactName"
                           value={colls_ContactName}
                           onChange={(e) => setcolls_ContactName(e.target.value)}
                         />
+                         {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscollectionSpoccontactNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4713,11 +4891,14 @@ apiService
                         <label htmlFor="country">Designation</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscollectionSpocdesignationEdited ? 'highlighted-input' : ''}`}
                           name="colls_Designation"
                           value={colls_Designation}
                           onChange={(e) => setcolls_Designation(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscollectionSpocdesignationEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4728,11 +4909,14 @@ apiService
                         <label htmlFor="country">Phone no</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscollectionSpocphoneNoEdited ? 'highlighted-input' : ''}`}
                           name="colls_PhoneNo"
                           value={colls_PhoneNo}
                           onChange={(e) => setcolls_PhoneNo(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscollectionSpocphoneNoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4743,11 +4927,14 @@ apiService
                         <label htmlFor="country">Email</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscollectionSpocemailEdited ? 'highlighted-input' : ''}`}
                           name="colls_Email"
                           value={colls_Email}
                           onChange={(e) => setcolls_Email(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscollectionSpocemailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4763,45 +4950,57 @@ apiService
                     <label htmlFor="mngs_ContactName">Contact Name</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && ismanagementSpoccontactNameEdited ? 'highlighted-input' : ''}`}
                       name="mngs_ContactName"
                       value={mngs_ContactName}
                       onChange={(e) => validatemngs_ContactName(e)}
                     />
                     <span className="formError">{mngs_ContactNameErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && ismanagementSpoccontactNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="mngs_Designation">Designation</label>
                     <input
-                      type="text"
-                      className="mb-2 inputbox"
+                      type="text"                
+className={`mb-2 inputbox ${shouldHighlightInput && ismanagementSpocdesignationEdited ? 'highlighted-input' : ''}`}
                       name="mngs_Designation"
                       value={mngs_Designation}
                       onChange={(e) => validatemngs_Designation(e)}
                     />
                     <span className="formError">{mngs_DesignationErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && ismanagementSpocdesignationEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="mngs_PhoneNo">Phone no</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && ismanagementSpocphoneNoEdited ? 'highlighted-input' : ''}`}
                       name="mngs_PhoneNo"
                       value={mngs_PhoneNo}
                       onChange={(e) => validatemngs_PhoneNo(e)}
                     />
                     <span className="formError">{mngs_PhoneNoErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && ismanagementSpocphoneNoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-6 col-xs-12">
                     <label htmlFor="mngs_Email">Email</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && ismanagementSpocemailEdited ? 'highlighted-input' : ''}`}
                       name="mngs_Email"
                       value={mngs_Email}
                       onChange={(e) => validatemngs_Email(e)}
                     />
                     <span className="formError">{mngs_EmailErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && ismanagementSpocemailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                 </div>
 
@@ -4827,13 +5026,16 @@ apiService
                         <label htmlFor="others_ContactName">Contact Name</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscontactNameEdited ? 'highlighted-input' : ''}`}
                           name="others_ContactName"
                           value={others_ContactName}
                           onChange={(e) =>
                             setothers_ContactName(e.target.value)
                           }
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4845,13 +5047,16 @@ apiService
                         <label htmlFor="others_Designation">Designation</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isdesignationEdited ? 'highlighted-input' : ''}`}
                           name="others_Designation"
                           value={others_Designation}
                           onChange={(e) =>
                             setothers_Designation(e.target.value)
                           }
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isdesignationEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4862,11 +5067,14 @@ apiService
                         <label htmlFor="others_PhoneNo">Phone no</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isphoneNoEdited ? 'highlighted-input' : ''}`}
                           name="others_PhoneNo"
                           value={others_PhoneNo}
                           onChange={(e) => setothers_PhoneNo(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isphoneNoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4877,11 +5085,14 @@ apiService
                         <label htmlFor="others_Email">Email</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isemailEdited ? 'highlighted-input' : ''}`}
                           name="others_Email"
                           value={others_Email}
                           onChange={(e) => setothers_Email(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isemailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -4895,12 +5106,15 @@ apiService
                     <label htmlFor="Post_Code">Master vendor email id*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && ismastervendor_emailEdited ? 'highlighted-input' : ''}`}
                       name="mastervendor_email"
                       value={mastervendor_email}
                       onChange={(e) => validatemastervendor_email(e)}
                     />
                     <span className="formError">{mastervendor_emailErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && ismastervendor_emailEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                 )}
               </div>
@@ -4924,7 +5138,7 @@ apiService
                             checked={GST_type === "Registered"}
                             // disabled={GST_type !== "Registered"?true:false}
                             onChange={(e) => validateGST_type(e)}
-                          />
+                          />              
                           <label
                             className="form-check-label"
                             htmlFor="flexRadioDefault1"
@@ -5026,7 +5240,7 @@ apiService
                         <label htmlFor="GST_Registration_No">GST no*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isGST_Registration_NoEdited ? 'highlighted-input' : ''}`}
                           name="GST_Registration_No"
                           value={GST_No}
                           readOnly={
@@ -5035,6 +5249,9 @@ apiService
                           onChange={(e) => validateGST_No(e)}
                         />
                         <span className="formError">{GST_NoErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isGST_Registration_NoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                       {GST_type === "Registered" ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
@@ -5069,6 +5286,9 @@ apiService
                             </button>
                           )}
                           <p className="formError">{GST_DocErr}</p>
+                          {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isGST_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                         </div>
                       ) : (
                         <></>
@@ -5101,6 +5321,9 @@ apiService
                             </button>
                           )}
                           <p className="formError">{fileDisclosureErr}</p>
+                          {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfileDisclosureEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                         </div>
                       ) : (
                         <></>
@@ -5113,13 +5336,16 @@ apiService
                         <label htmlFor="MSME_No">MSME no*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isMSMED_NumberEdited ? 'highlighted-input' : ''}`}
                           name="MSME_No"
                           value={MSME_No}
                           onChange={(e) => validateMSME_No(e)}
                           readOnly={MSME_status === "2"}
                         />
                         <span className="formError">{MSME_NoErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isMSMED_NumberEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                       {MSME_status === "1" ? (
                         <div className="col-sm-12 col-lg-4 m-auto">
@@ -5147,6 +5373,9 @@ apiService
                             </button>
                           )}
                           <p className="formError">{MSME_DocErr}</p>
+                          {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isMSME_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                         </div>
                       ) : (
                         <></>
@@ -5159,7 +5388,7 @@ apiService
                         <label htmlFor="P_A_N_No">PAN no*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isP_A_N_NoEdited ? 'highlighted-input' : ''}`}
                           name="P_A_N_No"
                           value={(Country_Region_Code !== "IN" ? "N/A" : PAN_No).toUpperCase()}
                           readOnly={
@@ -5169,6 +5398,9 @@ apiService
                           onChange={(e) => validatePAN_No(e)}
                         />
                         <span className="formError">{PAN_NoErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isP_A_N_NoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                       {GST_type !== "Import" &&
                       Country_Region_Code === "IN" &&
@@ -5196,6 +5428,9 @@ apiService
                             </button>
                           )}
                           <p className="formError">{PAN_DocErr}</p>
+                          {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isPAN_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                         </div>
                       ) : (
                         <></>
@@ -5274,7 +5509,7 @@ apiService
                     <label htmlFor="CIN_No">CIN no*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isCIN_NoEdited ? 'highlighted-input' : ''}`}
                       name="CIN_No"
                       value={CIN_No}
                       onChange={(e) => validateCIN_No(e)}
@@ -5282,6 +5517,9 @@ apiService
                     {/* </div> */}
                     {/* </div> */}
                     <span className="formError">{CIN_NoErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isCIN_NoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-xl-6 col-lg-6 col-sm-6 col-xs-12">
                     <div className="row">
@@ -5289,12 +5527,15 @@ apiService
                         <label htmlFor="TAN_No">TAN no*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isTAN_NoEdited ? 'highlighted-input' : ''}`}
                           name="TAN_No"
                           value={TAN_No}
                           onChange={(e) => validateTAN_No(e)}
                         />
                         <span className="formError">{TAN_NoErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isTAN_NoEdited&& (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                       <div className="col-sm-12 col-lg-4 m-auto ">
                         {style === "cont2" ? (
@@ -5317,6 +5558,9 @@ apiService
                           </button>
                         )}
                         <p className="formError">{TAN_DocErr}</p>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isTAN_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     </div>
                   </div>
@@ -5356,6 +5600,9 @@ apiService
                                         <input type="text" className="mb-2 inputbox" name="form_10f" value={form_10f} onChange={(e) => validateform_10f(e)}   /> */}
 
                         <span className="formError">{form_10fErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isform_10f_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     </>
                   ) : (
@@ -5399,6 +5646,9 @@ apiService
                         {/* <label htmlFor="Tax_residency">Tax Residency certificate*</label>
                                         <input type="text" className="mb-2 inputbox" name="Tax_residency" value={Tax_residency} onChange={(e) => validateTax_residency(e)}  /> */}
                         <span className="formError">{Tax_residencyErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isTax_residency_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     </>
                   ) : (
@@ -5442,6 +5692,9 @@ apiService
                         {/* <label htmlFor="pe_declaration">No PE declaration*</label>
                                         <input type="text" className="mb-2 inputbox" name="pe_declaration" value={pe_declaration} onChange={(e) => validatepe_declaration(e)}  /> */}
                         <span className="formError">{pe_declarationErr}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isPE_Declaration_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     </>
                   ) : (
@@ -5487,6 +5740,9 @@ apiService
                         {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                       </div>
                       <span className="formError">{RPD_DocErr}</span>
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isRPD_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pt-1">
@@ -5519,6 +5775,9 @@ apiService
                         {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                       </div>
                       <span className="formError">{COC_DocErr}</span>
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isCOC_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pt-1">
@@ -5551,6 +5810,9 @@ apiService
                         {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">View File</button> */}
                       </div>
                       <span className="formError">{NDA_DocErr}</span>
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isNDA_DocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   </div>
                 </div>
@@ -5567,67 +5829,85 @@ apiService
                     <label className="banklabel">Name as per Bank A/c</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isAccount_Holder_NameEdited ? 'highlighted-input' : ''}`}
                       name="Account_Holder_Name"
                       value={bankAccountName}
                       onChange={(e) => validatebankAccountName(e)}
                     />
                     <span className="formError">{bankAccountNameErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isAccount_Holder_NameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">IFSC code*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isIFSC_CodeEdited ? 'highlighted-input' : ''}`}
                       name="IFSC_Code"
                       value={(ifscCode || "").toUpperCase()}
                       onChange={(e) => validateifscCode(e)}
                     />
                     <span className="formError">{ifscCodeErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isIFSC_CodeEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Bank name*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isBank_NameEdited ? 'highlighted-input' : ''}`}
                       name="Bank_Name"
                       value={(bankName || "").toUpperCase()}
                       onChange={(e) => validatebankName(e)}
                     />
                     <span className="formError">{bankNameErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isBank_NameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">MICR code/ Swift code*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isMICRcodeEdited ? 'highlighted-input' : ''}`}
                       name="MICRcode"
                       value={MICRcode}
                       onChange={(e) => validateMICRcode(e)}
                     />
                     <span className="formError">{MICRcodeErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isMICRcodeEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Bank A/C no*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isAccount_NoEdited ? 'highlighted-input' : ''}`}
                       name="Account_No"
                       value={bankAccountNumber}
                       onChange={(e) => validatebankAccountNumber(e)}
                     />
                     <span className="formError">{bankAccountNumberErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isAccount_NoEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Branch address*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isBank_AddressEdited ? 'highlighted-input' : ''}`}
                       name="Bank_Address"
                       value={(branchAddress|| "").toUpperCase()}
                       onChange={(e) => validatebranchAddress(e)}
                     />
                     <span className="formError">{branchAddressErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isBank_AddressEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
                     <div className="d-flex">
@@ -5658,6 +5938,9 @@ apiService
                           </button>
                         )}
                         <p className="formError">{bankdetailDocErr}</p>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isbankdetailDocEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     </div>
 
@@ -5691,13 +5974,16 @@ apiService
                       </label>
                       <input
                         type="text"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isyearOfAuditedFinancialEdited ? 'highlighted-input' : ''}`}
                         name="yearOfAuditedFinancial"
                         value={yearOfAuditedFinancial}
                         onChange={(e) =>
                           setyearOfAuditedFinancial(e.target.value)
                         }
                       />
+         {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isyearOfAuditedFinancialEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5709,12 +5995,15 @@ apiService
                       <label className="banklabel">Revenue</label>
                       <input
                         type="number"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isRevenueEdited ? 'highlighted-input' : ''}`}
                         name="Revenue"
                         value={Revenue}
                         onChange={(e) => setRevenue(e.target.value)}
                         onKeyDown={handleKeyDown}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isRevenueEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5726,12 +6015,15 @@ apiService
                       <label className="banklabel">Profit</label>
                       <input
                         type="number"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isProfitEdited ? 'highlighted-input' : ''}`}
                         name="Profit"
                         value={Profit}
                         onChange={(e) => setProfit(e.target.value)}
                         onKeyDown={handleKeyDown}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isProfitEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5743,12 +6035,15 @@ apiService
                       <label className="banklabel">Networth</label>
                       <input
                         type="number"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isnetWorthEdited ? 'highlighted-input' : ''}`}
                         name="netWorth"
                         value={netWorth}
                         onChange={(e) => setnetWorth(e.target.value)}
                         onKeyDown={handleKeyDown}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isnetWorthEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5760,11 +6055,14 @@ apiService
                       <label className="banklabel">Current Assets</label>
                       <input
                         type="text"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && iscurrentAssetsEdited ? 'highlighted-input' : ''}`}
                         name="currentAssets"
                         value={currentAssets}
                         onChange={(e) => setcurrentAssets(e.target.value)}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscurrentAssetsEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5776,11 +6074,14 @@ apiService
                       <label className="banklabel">Director detail</label>
                       <input
                         type="text"
-                        className="mb-2 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isdirectorDetailsEdited ? 'highlighted-input' : ''}`}
                         name="directorDetails"
                         value={directorDetails}
                         onChange={(e) => setdirectorDetails(e.target.value)}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isdirectorDetailsEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5820,11 +6121,14 @@ apiService
                       <label htmlFor="Shareholdername">Shareholder name</label>
                       <input
                         type="text"
-                        className="mb-4 inputbox"
+                        className={`mb-2 inputbox ${shouldHighlightInput && isshareholderNameEdited ? 'highlighted-input' : ''}`}
                         name="Shareholdername"
                         value={shareholderName}
                         onChange={(e) => setshareholderName(e.target.value)}
                       />
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isshareholderNameEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                     </div>
                   ) : (
                     ""
@@ -5840,7 +6144,7 @@ apiService
                           onClick={(e) => handleEditPopup("financial_data")}
                           className={`btn bankbtn ${
                             editfindataUploadFile ? "upload" : "delete"
-                          } btn-primary btn-md mt-3`}
+                          } btn-primary btn-md mt-2`}
                         >
                           {editfindataUploadFile
                             ? "Upload Financials data"
@@ -5855,6 +6159,9 @@ apiService
                           View Financials data
                         </button>
                       )}
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinancial_dataEdited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data</button> */}
                     </div>
                   ) : (
@@ -5870,7 +6177,7 @@ apiService
                           onClick={(e) => handleEditPopup("financial_data2")}
                           className={`btn bankbtn ${
                             editfindata2UploadFile ? "upload" : "delete"
-                          } btn-primary btn-md mt-3`}
+                          } btn-primary btn-md mt-2 view-financial-data2-button`}
                         >
                           {editfindata2UploadFile
                             ? "Upload Financials data 2"
@@ -5880,11 +6187,14 @@ apiService
                         <button
                           type="button"
                           onClick={(e) => handleView(financial_data2)}
-                          className="btn bankbtn btn-primary btn-md mt-1"
+                          className="btn bankbtn btn-primary btn-md mt-2 view-financial-data2-button"
                         >
                           View Financials data 2
                         </button>
                       )}
+                      {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isfinancial_data2Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       {/* <button type="button" className="btn bankbtn btn-primary btn-md m-1">Financials data 2</button> */}
                     </div>
                   ) : (
@@ -5906,34 +6216,43 @@ apiService
                     <label className="banklabel">Name*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && iscontactName1Edited ? 'highlighted-input' : ''}`}
                       name="name"
                       value={name}
                       onChange={(e) => validatename(e)}
                     />
                     <span className="formError">{nameErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactName1Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Email*</label>
                     <input
                       type="text"
-                      className="mb-2 inputbox"
+                      className={`mb-2 inputbox ${shouldHighlightInput && isemailId1Edited ? 'highlighted-input' : ''}`}
                       name="email"
                       value={email}
                       onChange={(e) => validateemail(e)}
                     />
                     <span className="formError">{emailErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isemailId1Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                   <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     <label className="banklabel">Contact number*</label>
                     <input
                     type="number"
-                      className="mb-2 inputbox"
+                    className={`mb-2 inputbox ${shouldHighlightInput && iscontactNumber1Edited ? 'highlighted-input' : ''}`}
                       name="contactNumber"
                       value={contactNumber}
                       onChange={(e) => validatecontactNumber(e)}
                     />
                     <span className="formError">{contactNumberErr}</span>
+                    {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactNumber1Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                   </div>
                 </div>
 
@@ -5945,11 +6264,14 @@ apiService
                         <label className="banklabel">Name*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscontactName2Edited ? 'highlighted-input' : ''}`}
                           name="name2"
                           value={name2}
                           onChange={(e) => setname2(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactName2Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -5961,13 +6283,16 @@ apiService
                         <label className="banklabel">Email*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isemailId2Edited ? 'highlighted-input' : ''}`}
                           name="email2"
                           value={email2}
                           onChange={(e) => validateemail2(e)}
                           // onChange={(e) => setemail2(e.target.value)}
                         />
                          <span className="formError">{email2Err}</span>
+                         {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isemailId2Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -5978,12 +6303,15 @@ apiService
                         <label className="banklabel">Contact Number*</label>
                         <input
                           type="number"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscontactNumber2Edited ? 'highlighted-input' : ''}`}
                           name="contactNumber2"
                           value={contactNumber2}
                           onChange={(e) => validatecontactNumber2(e)}
                         />
                         <span className="formError">{contactNumber2Err}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactNumber2Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -5999,11 +6327,14 @@ apiService
                         <label className="banklabel">Name*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscontactName3Edited ? 'highlighted-input' : ''}`}
                           name="name3"
                           value={name3}
                           onChange={(e) => setname3(e.target.value)}
                         />
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactName3Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -6014,13 +6345,16 @@ apiService
                         <label className="banklabel">Email*</label>
                         <input
                           type="text"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && isemailId3Edited ? 'highlighted-input' : ''}`}
                           name="email3"
                           value={email3}
                           onChange={(e) => validateemail3(e)}
                           // onChange={(e) => setemail3(e.target.value)}
                         />
                          <span className="formError">{email3Err}</span>
+                         {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && isemailId3Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""
@@ -6031,12 +6365,15 @@ apiService
                         <label className="banklabel">Contact Number*</label>
                         <input
                           type="number"
-                          className="mb-2 inputbox"
+                          className={`mb-2 inputbox ${shouldHighlightInput && iscontactNumber3Edited ? 'highlighted-input' : ''}`}
                           name="contactNumber3"
                           value={contactNumber3}
                           onChange={(e) => validatecontactNumber3(e)}
                         />
                         <span className="formError">{contactNumber3Err}</span>
+                        {JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'VCT' &&JSON.parse(window.sessionStorage.getItem("jwt")).result?.role !== 'MRT' && iscontactNumber3Edited && (
+        <span className="formError">Edited by MRT*</span>
+      )}
                       </div>
                     ) : (
                       ""

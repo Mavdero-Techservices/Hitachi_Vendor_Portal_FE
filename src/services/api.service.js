@@ -409,5 +409,9 @@ getDocuments() {
   ReviewNewRegisteredVendorByMaster(userId) {
     return http.get(`/ReviewNewRegisteredVendorByMaster/${userId}`).catch(handleApiError);
   }
+  getEditLogOfAllcollection(userId)
+  {
+    return http.get(`/getEditLogOfAllcollection/${userId}`).catch(handleApiError);
+  }
 }
 export default new apiService();

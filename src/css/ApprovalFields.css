@@ -98,3 +98,23 @@ input[readonly] {
 {
   margin-top: 10% !important;
 }
+
+.btn-primary.btn-md.mt-2.view-financial-data2-button {
+  margin-top: 11% !important;
+}
+
+@media (max-width: 768px) {
+  .btn-primary.btn-md.mt-2.view-financial-data2-button {
+    margin-top: 7% !important; 
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-primary.btn-md.mt-2.view-financial-data2-button {
+    margin-top: 4% !important; 
+  }
+}
+.highlighted-input {
+  background-color: #FFFFE0; 
+  border: 1px solid #FFD700; 
+}
