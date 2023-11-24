@@ -7,7 +7,7 @@ export default function ImageUpload() {
     image: "",
   });
 
-  const url = `${process.env.REACT_APP_API_URL}:12707/imageUpload`;
+  const url = `${process.env.REACT_APP_API_URL}/imageUpload`;
   const createImage = (newImage) => axios.post(url, newImage);
 
   const createPost = async (post) => {

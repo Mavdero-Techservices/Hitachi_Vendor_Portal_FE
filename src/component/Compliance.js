@@ -441,13 +441,13 @@ const ComplianceDetails = () => {
       handleApiError(error);
     });
     seturlRPD(
-      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}Rpd.pdf`
+      `${process.env.REACT_APP_API_URL}/downloadPdf/${pdfValues.companyName}Rpd.pdf`
     );
     seturlCoc(
-      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}COC.pdf`
+      `${process.env.REACT_APP_API_URL}/downloadPdf/${pdfValues.companyName}COC.pdf`
     );
     seturlNDA(
-      `${process.env.REACT_APP_API_URL}:12707/downloadPdf/${pdfValues.companyName}NDA.pdf`
+      `${process.env.REACT_APP_API_URL}/downloadPdf/${pdfValues.companyName}NDA.pdf`
     );
   }, []);
   const saveComplianceDetail = (e) => {

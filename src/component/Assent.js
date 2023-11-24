@@ -52,7 +52,7 @@ export default function Assent() {
         e.preventDefault();
         // setpdfdata("")
         // let arrayBuffer = new Uint8Array(e.target.files[0]);
-        await fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/Resume@Kewin.pdf`).then(
+        await fetch(`${process.env.REACT_APP_API_URL}/downloadPdfUploads/Resume@Kewin.pdf`).then(
             (response) => {
                 response.blob().then((blob) => {
                     console.log("e.target", blob)

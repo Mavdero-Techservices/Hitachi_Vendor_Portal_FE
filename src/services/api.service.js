@@ -43,31 +43,31 @@ class apiService {
     return http.get(`/getStateAndcityByzipcode/${code}/${Post_Code}`).catch(handleApiError);
   }
   saveStatutoryDetail(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveStatutoryDetail`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/saveStatutoryDetail`, data).catch(handleApiError);
   }
   saveComplianceDetail(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveComplianceDetail`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/saveComplianceDetail`, data).catch(handleApiError);
   }
   savebankdetail(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveBankDetail`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/saveBankDetail`, data).catch(handleApiError);
   }
   saveFinacialDetail(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveFinacialDetail`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/saveFinacialDetail`, data).catch(handleApiError);
   }
   createRelatedDisclosurePdf(data) {
     return axios.post(
-      `${process.env.REACT_APP_API_URL}:12707/createRelatedDisclosurePdf`,
+      `${process.env.REACT_APP_API_URL}/createRelatedDisclosurePdf`,
       data
     ).catch(handleApiError);
   }
   createCocPdf(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/createCompliancePdf`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/createCompliancePdf`, data).catch(handleApiError);
   }
   createNDAPdf(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/createnonDisclosure`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/createnonDisclosure`, data).catch(handleApiError);
   }
   downloadPdf(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/downloadPdf`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/downloadPdf`, data).catch(handleApiError);
   }
   readPdf() {
     return http.get('/readPdf').catch(handleApiError);
@@ -101,49 +101,49 @@ class apiService {
   }
   updateAllCollection(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updateAllCollection/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updateAllCollection/${userId}`,
       data
     ).catch(handleApiError);
   }
   saveApproval(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveApproval`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/saveApproval`, data).catch(handleApiError);
   }
   updateApprovalStatus(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updateApprovalStatus/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updateApprovalStatus/${userId}`,
       data
     ).catch(handleApiError);
   }
   getApprovedStatus() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getApprovedStatus`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/getApprovedStatus`).catch(handleApiError);
   }
   getRejectStatus() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getRejectStatus`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/getRejectStatus`).catch(handleApiError);
   }
   getApprovalList() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getApprovalList`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/getApprovalList`).catch(handleApiError);
   }
   updateCommunicationdetail(userId, data) {
     return http.put(`/updateCommunication/${userId}`, data).catch(handleApiError);
   }
   updateStatutoryDetail(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updateStatutoryDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updateStatutoryDetail/${userId}`,
       data
     ).catch(handleApiError);
   }
   updateComplianceDetail(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updateComplianceDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updateComplianceDetail/${userId}`,
       data
     ).catch(handleApiError);
   }
   updateBankDetail(userId, data) {
-    return axios.put(`${process.env.REACT_APP_API_URL}:12707/updateBankDetail/${userId}`, data).catch(handleApiError);
+    return axios.put(`${process.env.REACT_APP_API_URL}/updateBankDetail/${userId}`, data).catch(handleApiError);
   }
   updateFinacialDetail(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updateFinacialDetail/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updateFinacialDetail/${userId}`,
       data
     ).catch(handleApiError);
   }
@@ -190,46 +190,46 @@ class apiService {
     return http.get('/getAllMasterVendorUserAccess').catch(handleApiError);
   }
   savePeriodicReq(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/savePeriodicReq`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/savePeriodicReq`, data).catch(handleApiError);
   }
   getPeriodicReq() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getPeriodicReq`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/getPeriodicReq`).catch(handleApiError);
   }
   deletePeriodicReq(id) {
-    return axios.delete(`${process.env.REACT_APP_API_URL}:12707/deletePeriodicReq/${id}`).catch(handleApiError);
+    return axios.delete(`${process.env.REACT_APP_API_URL}/deletePeriodicReq/${id}`).catch(handleApiError);
   }
   updatePeriodicReq(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/updatePeriodicReq/${userId}`,
+      `${process.env.REACT_APP_API_URL}/updatePeriodicReq/${userId}`,
       data
     ).catch(handleApiError);
   }
   saveVendorApproval(data) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/accountStatementApproval`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/accountStatementApproval`, data).catch(handleApiError);
   }
   updatevendorApprovalStatus(userId, data) {
     return axios.put(
-      `${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/update/${userId}`,
+      `${process.env.REACT_APP_API_URL}/accountStatementApproval/update/${userId}`,
       data
     ).catch(handleApiError);
   }
   vendorApprovalList() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/findAll`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/accountStatementApproval/findAll`).catch(handleApiError);
   }
   downloadVendorApprovalList(vendorCode) {
     return axios.get(
-      `${process.env.REACT_APP_API_URL}:12707/accountStatementApproval/exportExcel/${vendorCode}`,
+      `${process.env.REACT_APP_API_URL}/accountStatementApproval/exportExcel/${vendorCode}`,
       { responseType: 'blob' }
     ).catch(handleApiError);
   }
   VendorregList() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/vendorCodeDetail/findAll`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/vendorCodeDetail/findAll`).catch(handleApiError);
   }
   vendorIdList(vendorId) {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/vendorIdList/${vendorId}`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/vendorIdList/${vendorId}`).catch(handleApiError);
   }
   AllRejectVendorList() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/AllRejectVendorList`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/AllRejectVendorList`).catch(handleApiError);
   }
   //ERP
   getErpVendor_API() {
@@ -269,38 +269,38 @@ class apiService {
 
   downloadCurrentAccountStatement() {
     return axios.get(
-      `${process.env.REACT_APP_API_URL}:12707/downloadCurrentAccountStatement/exportExcel`,
+      `${process.env.REACT_APP_API_URL}/downloadCurrentAccountStatement/exportExcel`,
       { responseType: 'blob' }
     ).catch(handleApiError);
   }
 
   downloadAccStatementConfirmation() {
     return axios.get(
-      `${process.env.REACT_APP_API_URL}:12707/downloadAccStatementConfirmation/exportExcel`,
+      `${process.env.REACT_APP_API_URL}/downloadAccStatementConfirmation/exportExcel`,
       { responseType: 'blob' }
     ).catch(handleApiError);
   }
 
   approveAccStatementDetail(value) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/approveAccStatementDetail`, value).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/approveAccStatementDetail`, value).catch(handleApiError);
   }
 
   rejectAccStatementDetail(data, No) {
-    return axios.post(`${process.env.REACT_APP_API_URL}:12707/rejectAccStatementDetail/${No}`, data).catch(handleApiError);
+    return axios.post(`${process.env.REACT_APP_API_URL}/rejectAccStatementDetail/${No}`, data).catch(handleApiError);
   }
   saveMasterLogin(data) {
     return http.post('/saveMasterLogin', data).catch(handleApiError);
   }
 
   getErpPurchaseOrder_API() {
-    return axios.get(`${process.env.REACT_APP_API_URL}:12707/getErpPurchaseOrder_API`).catch(handleApiError);
+    return axios.get(`${process.env.REACT_APP_API_URL}/getErpPurchaseOrder_API`).catch(handleApiError);
   }
 
   getErpPurchaseOrderLineEDD_API() {
-    return http.get(`${process.env.REACT_APP_API_URL}:12707/getErpPurchaseOrderLineEDD_API`).catch(handleApiError);
+    return http.get(`${process.env.REACT_APP_API_URL}/getErpPurchaseOrderLineEDD_API`).catch(handleApiError);
   }
   getPOfileDownload(){
-    return http.get(`${process.env.REACT_APP_API_URL}:12707/getPOfileDownload`, { responseType: 'blob' }).catch(handleApiError);
+    return http.get(`${process.env.REACT_APP_API_URL}/getPOfileDownload`, { responseType: 'blob' }).catch(handleApiError);
   }
   getErpPurchaseOrdersLists()
   {
@@ -311,11 +311,11 @@ class apiService {
   return http.get('/getPo');
 }
 updatePo(data) {
-  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updatePo`, data).catch(handleApiError);
+  return axios.put(`${process.env.REACT_APP_API_URL}/updatePo`, data).catch(handleApiError);
 }
 savePO(data)
 {
-  return axios.post(`${process.env.REACT_APP_API_URL}:12707/savePo`, data).catch(handleApiError);
+  return axios.post(`${process.env.REACT_APP_API_URL}/savePo`, data).catch(handleApiError);
 }
 getMailIdbyvendorNo(No)
 {
@@ -323,15 +323,15 @@ getMailIdbyvendorNo(No)
 }
 updatePoInvoice(data)
 {
-  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updatePoInvoice`, data).catch(handleApiError);
+  return axios.put(`${process.env.REACT_APP_API_URL}/updatePoInvoice`, data).catch(handleApiError);
 }
 mailApprovePo_Invoice(data)
 {
-  return axios.post(`${process.env.REACT_APP_API_URL}:12707/POInvoiceMailApprove`, data).catch(handleApiError);
+  return axios.post(`${process.env.REACT_APP_API_URL}/POInvoiceMailApprove`, data).catch(handleApiError);
 }
 mailApproveFinance_order(data)
 {
-  return axios.post(`${process.env.REACT_APP_API_URL}:12707/mailApprovePo_Invoice`, data).catch(handleApiError);
+  return axios.post(`${process.env.REACT_APP_API_URL}/mailApprovePo_Invoice`, data).catch(handleApiError);
 }
 updateFinanceInvoiceApproval(data)
 {
@@ -339,16 +339,16 @@ updateFinanceInvoiceApproval(data)
 }
 updateFinanceInvoiceReject(data)
 {
-  return axios.put(`${process.env.REACT_APP_API_URL}:12707/updateFinanceInvoiceReject`, data).catch(handleApiError);
+  return axios.put(`${process.env.REACT_APP_API_URL}/updateFinanceInvoiceReject`, data).catch(handleApiError);
 }
 
 saveInvoiceInfo(data) {
-  return axios.post(`${process.env.REACT_APP_API_URL}:12707/saveInvoiceInfo`, data).catch(handleApiError);
+  return axios.post(`${process.env.REACT_APP_API_URL}/saveInvoiceInfo`, data).catch(handleApiError);
 }
 
 uploadDocbyVendorCode(data){
   console.log("data-------->", data);
-  return axios.post(`${process.env.REACT_APP_API_URL}:12707/uploadDocbyVendorCode`, data).catch(handleApiError);
+  return axios.post(`${process.env.REACT_APP_API_URL}/uploadDocbyVendorCode`, data).catch(handleApiError);
 }
 
 getOutOfIndiaVcode(ticketId) {

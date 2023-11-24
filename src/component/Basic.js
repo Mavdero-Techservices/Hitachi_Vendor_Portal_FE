@@ -1910,6 +1910,7 @@ Swal.fire({
     }
   }
   componentDidMount() {
+    console.log("process.env.REACT_APP_API_URL",process.env.REACT_APP_API_URL)
     if (
       JSON.parse(window.sessionStorage.getItem("jwt")).result?.usertype ===
       "NewRegistration"

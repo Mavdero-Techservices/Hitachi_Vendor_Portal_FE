@@ -5,6 +5,7 @@ const checkConnectivity = async () => {
     try {
       const response = await fetch('/check-connectivity');
       if (response.ok) {
+        console.log("response.ok",response.ok)
         return true; // Server is reachable
       } else {
         return false; // Server is not reachable

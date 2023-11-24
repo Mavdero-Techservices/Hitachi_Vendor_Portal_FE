@@ -47,7 +47,7 @@ function Documents() {
       //     let name = fname[1]
 
       fetch(
-        `${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`
+        `${process.env.REACT_APP_API_URL}/downloadPdfUploads/${fname[1]}`
       ).then((response) => {
         console.log("path---------------->>>>>", response);
 

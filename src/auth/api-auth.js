@@ -20,11 +20,15 @@ const signin = async (user) => {
   
   const signout = async () => {
     try {
-      let response = await fetch('/signout', { method: 'GET' })
+      let response = await fetch(`${process.env.REACT_APP_API_URL}/signout`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      })
       return await response.json()
     } catch(err) {
       console.log(err)
-      handleApiError(err);
     }
   }
   

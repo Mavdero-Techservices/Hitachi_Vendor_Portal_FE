@@ -514,7 +514,7 @@ export default function PoApproval() {
       console.log("event", event);
       let text = event;
       let fname = text.split("/");
-      fetch(`${process.env.REACT_APP_API_URL}:12707/downloadPdfUploads/${fname[1]}`).then(
+      fetch(`${process.env.REACT_APP_API_URL}/downloadPdfUploads/${fname[1]}`).then(
         (response) => {
           response.blob().then((blob) => {
             let url = URL.createObjectURL(blob, "application/pdf");
@@ -1290,7 +1290,8 @@ export default function PoApproval() {
         //   (item) => !poValues.includes(item.No) // Modify 'someValueToCompare' to the actual property name you want to compare with the 'getPo' response
         // );
         const invoiceValues = invoiceRes.data.result.filter((item) => item.level1ApprovalStatus !== "Approved" && item.level1ApprovalStatus !== "Rejected");
-        let erpDATA = [{
+        let erpDATA = [
+          {
           Document_Type: "Order",
           No: "BGL202223PO0007",
           Posting_Date: "2023-01-23T00:00:00",
